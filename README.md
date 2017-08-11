@@ -1,6 +1,6 @@
-# AdonisJs docs
+# AdonisJs Website
 
-This repo contains the docs, as well as the server to run the website. The server uses AdonisJs.
+This repo contains the source code of the website.
 
 ## Setup
 
