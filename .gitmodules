@@ -1,0 +1,8 @@
+[submodule "4.0"]
+	path = content/4.0
+	url = https://github.com/adonisjs/docs
+	branch = 4.0
+[submodule "3.2"]
+	path = content/3.2
+	url = https://github.com/adonisjs/docs
+	branch = 3.2
