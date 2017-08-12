@@ -322,17 +322,29 @@ table.tableblock {
 }
 
 .toc {
-  padding: 35px 25px 35px 35px;
-  border: 1px solid $grey-3;
+  border-top: 1px dashed $grey-3;
+  border-bottom: 1px dashed $grey-3;
   display: inline-block;
+  padding: 10px;
   margin: 40px 0;
+  width: 100%;
 
   #toctitle {
-    display: none;
+    margin-bottom: 10px;
   }
 
   li a {
+    margin-left: 20px;
     text-decoration: none;
+
+    &:hover {
+      color: lighten($color-red, 15);
+      transition: 0.3s color;
+    }
+
+    &:before {
+      content: '# ';
+    }
   }
 }
 
