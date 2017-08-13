@@ -1,9 +1,29 @@
 'use strict'
 
+<<<<<<< f2844be563a186b631a75f35664fdea53f994352
 const path = require('path')
 const { Ignitor } = require('@adonisjs/ignitor')
 
 new Ignitor(require('@adonisjs/fold'))
   .appRoot(path.join(__dirname, './'))
+=======
+/*
+|--------------------------------------------------------------------------
+| Ace Commands
+|--------------------------------------------------------------------------
+|
+| The ace file is just a regular Javascript file but with no extension. You
+| can call `node ace` followed by the command name and it just works.
+|
+| Also you can use `adonis` followed by the command name, since the adonis
+| global proxy all the ace commands.
+|
+*/
+
+const { Ignitor } = require('@adonisjs/ignitor')
+
+new Ignitor(require('@adonisjs/fold'))
+  .appRoot(__dirname)
+>>>>>>> refactor(design): cleanup sass pipeline and design
   .fireAce()
   .catch(console.error)

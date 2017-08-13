@@ -1,0 +1,303 @@
+h1, h2, h3, h4, h5 {
+  font-family: $headings-font-family;
+  font-feature-settings: 'dlig', 'liga', 'lnum', 'kern';
+  color: $headingColour;
+  font-weight: 700;
+}
+
+p {
+  font-feature-settings: 'kern', 'onum', 'liga';
+  &.faded {
+    color: $gray2;
+  }
+}
+
+.typeset {
+  .image {
+    display: block;
+    padding: 20px 0;
+  }
+
+  h1, h2, h3, h4, h5 {
+    a {
+      color: $headingColour;
+      text-decoration: none;
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  h2 {
+    font-size: 30px;
+    line-height: 30px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 22px;
+    line-height: 30px;
+    margin-bottom: 8px;
+  }
+
+  h4 {
+    font-size: 18px;
+    line-height: 26px;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 50px;
+    line-height: 60px;
+    margin-bottom: 25px;
+  }
+
+  h1, h2, h3, h4, h5 {
+    a, a:hover, a:active, a:focus {
+      background: none;
+      text-shadow: none;
+    }
+  }
+
+  a {
+    color: $linkColour;
+    text-decoration: none;
+    background-image: linear-gradient(to bottom,rgba(0, 0, 0, 0) 50%,lighten($linkColour,10%) 50%);
+    background-position: 0 93%;
+    background-repeat: repeat-x;
+    background-size: 100% 0.15rem;
+    text-shadow: 0.1rem 0 #fff,
+                 0.15rem 0 #fff,
+                -0.1rem 0 #fff,
+                -0.15rem 0 #fff;
+
+    &:hover, &:active, &:focus {
+      background-image: linear-gradient(to bottom,rgba(0, 0, 0, 0) 50%,lighten($linkColour,20%) 50%);
+    }
+  }
+
+  p strong, p b {
+    font-weight: 600;
+  }
+
+  #preamble {
+    margin-bottom: 70px;
+
+    p {
+      font-size: 18px;
+      line-height: 30px;
+    }
+  }
+
+  .sect1 {
+    padding-top: 56px;
+    margin-bottom: 32px;
+    border-top: 1px solid $gray3;
+  }
+
+  .sect2 {
+    padding-top: 10px;
+  }
+
+  h2 a.link {
+    text-decoration: none;
+    display: block;
+    position: relative;
+
+    &:before {
+      content: "#";
+      position: absolute;
+      margin-left: -27px;
+      top: 1px;
+      color: $gray3;
+    }
+  }
+
+  .olist {
+    margin-bottom: 40px;
+
+    ol {
+      list-style-type: none;
+
+      li {
+        padding: 6px 0;
+        counter-increment: top-level;
+        &:before {
+          content: counter(top-level) '.';
+          font-feature-settings: 'lnum', 'tnum';
+          margin-left: -25px;
+          position: absolute;
+          text-align: right;
+          width: 15px;
+        }
+      }
+
+      &.ol-shrinked {
+        li {
+          padding: 0;
+        }
+      }
+
+      &.ol-spaced {
+        li {
+          padding: 12px 0;
+        }
+      }
+    }
+  }
+
+  .paragraph {
+    margin-bottom: 25px;
+  }
+
+  .paragraph + .listingblock pre {
+    margin-top: -16px;
+  }
+
+  code {
+    padding: 3px 8px;
+    background: #f4f5f6;
+    border-radius: 4px;
+    color: #395062;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 15px;
+    -webkit-font-smoothing: auto;
+    font-family: "source-code-pro";
+  }
+
+  pre.highlight {
+    font-family: $code-font-family;
+    display: block;
+    padding: 25px 25px 25px 30px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    position: relative;
+    overflow-x: scroll;
+    background: #fff;
+    border: none;
+
+    code {
+      font-size: 14px;
+      line-height: 24px;
+      display: block;
+      background: transparent;
+      font-family: $code-font-family;
+      margin: 0;
+    }
+  }
+
+  pre.line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+
+    > code {
+      position: initial;
+      padding-left: 40px;
+    }
+  }
+
+  .line-numbers .line-numbers-rows {
+    left: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 28px 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.02);
+  }
+
+  .line-numbers-rows > span:before {
+    text-align: center;
+    padding: 0;
+  }
+
+  .paragraph + .dlist {
+    margin-top: -16px;
+  }
+
+  pre.line-numbers > code {
+    position: initial;
+    padding-left: 0;
+  }
+
+  .listingblock {
+    position: relative;
+
+    .title {
+      font-family: $headings-font-family;
+      font-weight: 500;
+      position: absolute;
+      right: 10px;
+      top: 4px;
+      z-index: 1;
+      font-size: 13px;
+      color: #919EAB;
+    }
+  }
+
+  .description {
+    font-size: 12px;
+    display: block;
+    line-height: 1.35;
+    color: #919EAB;
+  }
+
+  .toc {
+    padding: 35px 25px 35px 35px;
+    border: 1px solid $gray3;
+    display: inline-block;
+    margin: 40px 0;
+
+    #toctitle {
+      display: none;
+    }
+
+    ul {
+      list-style: none outside none;
+    }
+
+    li a {
+      text-decoration: none;
+      background: none;
+      text-shadow: none;
+    }
+  }
+
+  .dlist {
+    border: 1px solid $gray3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+
+    dt {
+      font-weight: 600;
+      color: $headingColour;
+      padding: 0 20px;
+    }
+
+    dd {
+      margin-bottom: 20px;
+      border-bottom: 1px solid $gray3;
+      padding: 0 20px;
+      &:last-child {
+        border: none;
+        margin: 0;
+      }
+    }
+
+    dd .paragraph {
+      margin-bottom: 0
+    }
+
+    dd p {
+      margin-bottom: 15px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+

@@ -1,32 +1,26 @@
-@layout('layouts.main')
-
-@section('intro')
-<div class="header-container">
-  <div class="wrapper">
-    @include('partials.header')
-  </div>
-</div>
-@endsection
+@layout('layouts.master')
 
 @section('body')
-  <div class="wrapper">
-    <div class="docs">
-      <aside class="docs-nav">
-        @include('partials.menu')
-      </aside>
-      <section class="docs-content">
-        <h1> {{ doc.title }}</h1>
+<div class="docs-container">
+  <div class="grid-container">
+    <div class="docs-content">
+      <div class="left-bar">
+        @each((items, category) in menu)
+          <div class="navlist">
+            <h3> {{ humanize(category) }} </h3>
+            <ul>
+              @each(item in items)
+              {{ el('<li class="$class"><a href="$item.permalink">$item.title</a></li>', { item, class: item.permalink === doc.permalink ? 'active' : '' }) }}
+              @endeach
+            </ul>
+          </div>
+        @endeach
+      </div>
+      <div class="document typeset">
+        <h1> {{ doc.title }} </h1>
         @adoc(doc.path)
-      </section>
+      </div>
     </div>
   </div>
-@endsection
-
-@section('scripts')
-  <script type="text/javascript">
-    document.querySelectorAll('pre').forEach(function (elem) {
-      elem.className += ' line-numbers'
-    })
-  </script>
-  <script src="/prism.js" async="true"></script>
+</div>
 @endsection

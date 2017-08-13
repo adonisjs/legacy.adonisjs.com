@@ -9,14 +9,13 @@ const Env = use('Env')
 const matter = use('gray-matter')
 const watchFn = use('node-watch')
 const _ = use('lodash')
-const bs = require("browser-sync").create()
+const bs = require('browser-sync').create()
 const { Command } = ace
 
 class CompileDoc extends Command {
   constructor () {
     super()
-    // TODO : Use a selector
-    this.contentDir = path.join(Helpers.appRoot(), 'content/4.0')
+    this.contentDir = path.join(Helpers.appRoot(), 'content')
     this.menuFile = Helpers.tmpPath('menu.json')
   }
 

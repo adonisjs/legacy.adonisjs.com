@@ -1,0 +1,29 @@
+@import "variables";
+@import "typeplate";
+@import "typography";
+@import "elements";
+@import "home";
+@import "docs";
+
+html {
+  font: normal 112.5% / 1.65 serif;
+}
+
+body, html {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: $base-font-family;
+  font-size: 16px;
+  background: #fff;
+  color: $bodyColour;
+}

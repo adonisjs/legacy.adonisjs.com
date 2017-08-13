@@ -40,7 +40,7 @@ hooks.after.providersRegistered(() => {
       context.macro('renderAdoc', (input) => {
         const fileContents = fs.readFileSync(input, 'utf-8')
         const output = asciidoctor.load(fileContents, DEFAULTS)
-        return output.convert()
+        return output.convert().replace(/<pre class="highlight">/g, () => '<pre class="highlight line-numbers">')
       })
     }
   }

@@ -1,17 +1,20 @@
 'use strict'
 
-const _ = require('lodash')
+/*
+|--------------------------------------------------------------------------
+| Routes
+|--------------------------------------------------------------------------
+|
+| Http routes are entry points to your web application. You can create
+| routes for different URL's and bind Controller actions to them.
+|
+| A complete guide on routing is available here.
+| http://adonisjs.com/guides/routing
+|
+*/
+
 const Route = use('Route')
-const Helpers = use('Helpers')
 
-Route.get('/guides/:permalink', async ({ params, view, request }) => {
-  if (process.env.NODE_ENV === 'development') {
-    require('clear-require')(Helpers.tmpPath('menu'))
-  }
-  const menu = require(Helpers.tmpPath('menu'))
-  const menuForPermalink = menu.find((item) => item.permalink === params.permalink)
-  const menuGroup = _.groupBy(menu, 'category')
-  return view.render('docs', { doc: menuForPermalink, menu: menuGroup })
-})
-
+Route.on('sink').render('sink')
 Route.on('/').render('home')
+Route.get('guides/:permalink?', 'GuideController.render')

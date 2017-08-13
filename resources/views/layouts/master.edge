@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <script src="https://use.typekit.net/dpd2zbd.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  {{ css('normalize') }}
+  {{ css('css/prism') }}
+  {{ css('style') }}
+</head>
+<body>
+  <section class="body-container">
+    <div class="splash-container">
+      <div class="grid-container">
+        @section('header')
+        <header class="header">
+          <a href="/" class="logo">
+            <img src="/images/header-logo.svg" />
+          </a>
+
+          <nav class="navbar">
+            <a href="/guides/installation"> Guides </a>
+            <a href="https://adonisjs.svbtle.com" target="_blank"> Blog </a>
+            <a href="https://github.com/adonisjs" target="_blank"> Github </a>
+            <a href="" target="_blank"> Forum </a>
+            <a href="https://www.patreon.com/adonisframework" target="_blank"> Patreon </a>
+          </nav>
+        </header>
+        @endsection
+      </div>
+    </div>
+
+    @!section('body')
+
+    <footer class="footer">
+      <div class="grid-container">
+        <div class="footer-content">
+          <p> Designed by <a href=""> Abhimanyu Rana </a></p>
+          <div class="logo"><img src="/images/badge.svg" alt="" /></div>
+          <p> Developer by <a href=""> Harminder Virk </a> </p>
+        </div>
+      </div>
+    </footer>
+  </section>
+  {{ script('js/prism') }}
+</body>
+</html>

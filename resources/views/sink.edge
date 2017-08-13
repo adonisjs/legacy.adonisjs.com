@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+  <script src="https://use.typekit.net/dpd2zbd.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  {{ css('css/prism') }}
+  {{ css('style') }}
+</head>
+<body>
+  <section class="sheet-container">
+    <section class="sheet">
+      <div class="typeset">
+        <h1> h1. Convention Over Configuration </h1>
+        <h2> h2. Convention Over Configuration </h2>
+        <h3> h3. Convention Over Configuration </h3>
+        <h4> h4. Convention Over Configuration </h4>
+        <br />
+        <h4> Paragraphs </h4>
+        <p>AdonisJs is a Node.js MVC framework that runs on all major operating systems. It offers you a stable eco-system to write web servers so that you can focus on business needs over finalizing which package to choose or not.</p>
+
+        <p>AdonisJs favors developer joy with consistent and expressive API to build fullstack web-servers or a micro API server. </p>
+
+        <h4> Unordered list </h4>
+        <ul class="arabic">
+          <li> <a href="">Node.js</a> version 8.0 or greater </li>
+          <li> <a href="">npm</a> version 3.0 or greater </li>
+        </ul>
+
+        <h4> Ordered list </h4>
+        <ol class="arabic spaced">
+          <li> <p>The <a href="">discourse forum</a>, where we talk about everything about AdonisJs from fixing bugs to discussing new features.</p> </li>
+          <li><p>If you love the project, then please consider supporting us on patreon.</p></li>
+          <li><p>By default <a href="https://github.com/adonisjs/adonis-slim-app">slim app</a> blueprint will be cloned from github, which can be customized by passing <code>--full-stack</code> or <code>--api-only</code> flag. Which will clone appropriate repos for you.</p></li>
+        </ol>
+
+        <h4> Admonition Block </h4>
+        <div class="admonitionblock tip">
+          <table>
+          <tbody><tr>
+          <td class="icon">
+          <i class="fa icon-tip" title="Tip"></i>
+          </td>
+          <td class="content">
+          You can also make use of <a href="https://github.com/creationix/nvm">nvm</a> to manage and run multiple versions of Node.js
+          </td>
+          </tr>
+          </tbody></table>
+        </div>
+
+        <div class="admonitionblock note">
+          <table>
+          <tbody><tr>
+          <td class="icon">
+            <i class="fa icon-note" title="Note"></i>
+          </td>
+          <td class="content">
+            When in doubt, make use of the <code>adonis new --help</code> command to see the list of available options.
+          </td>
+          </tr>
+          </tbody></table>
+        </div>
+
+        <h4> Table </h4>
+        <table class="tableblock">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th><code>droplet.json</code> key</th>
+              <th>Config Initializable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>server</td>
+              <td>ServerProtocol.Type</td>
+              <td>server</td>
+              <td>no</td>
+            </tr>
+            <tr>
+              <td>client</td>
+              <td>ClientProtocol.Type</td>
+              <td>client</td>
+              <td>no</td>
+            </tr>
+            <tr>
+              <td>log</td>
+              <td>LogProtocol</td>
+              <td>log</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>hash</td>
+              <td>HashProtocol</td>
+              <td>hash</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>cipher</td>
+              <td>CipherProtocol</td>
+              <td>cipher</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>middleware</td>
+              <td>Middleware</td>
+              <td>middleware.[server,client]</td>
+              <td>no</td>
+            </tr>
+            <tr>
+              <td>console</td>
+              <td>ConsoleProtocol</td>
+              <td>console</td>
+              <td>yes</td>
+            </tr>
+            <tr>
+              <td>cache</td>
+              <td>CacheProtocol</td>
+              <td>cache</td>
+              <td>yes</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4> Code blocks </h4>
+        <pre class="language-js line-numbers"><code>const Route = use('Route')
+
+Route.get('/', 'PostsController.index')
+Route.on('about').render('about')
+Route.on('contact').render('contact')</code></pre>
+
+        <pre class="language-js line-numbers"><code>'use strict'
+
+class PostsController {
+
+  async index (request, response) {
+    await response.sendView('home')
+  }
+
+}
+
+module.exports = PostsController</code></pre>
+
+        <h4> Buttons </h4>
+        <br />
+        <div>
+          <a href="" class="button secondary arrow-right">
+            Get started
+            @inlineSvg('images/arrow-right')
+          </a>
+
+          <a href="" class="button secondary naked arrow-right">
+            Get started
+            @inlineSvg('images/arrow-right')
+          </a>
+        </div>
+        <br />
+
+        <h4> Logos </h4>
+        <div class="logo-wrapper"><img src="/images/badge.svg" /></div>
+        <div class="logo-wrapper"><img src="/images/logo.svg" /></div>
+        <div class="logo-wrapper header-logo"><img src="/images/header-logo.svg" /></div>
+      </div>
+    </section>
+  </section>
+  {{ script('js/prism') }}
+</body>
+</html>
