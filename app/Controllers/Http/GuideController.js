@@ -34,6 +34,9 @@ class GuideController {
     const { version, permalink } = params
 
     try {
+      if (Env.get('NODE_ENV') === 'development') {
+        require('clear-require')(Helpers.resourcesPath(`docs/menu/${version}.json`))
+      }
       const menu = require(Helpers.resourcesPath(`docs/menu/${version}.json`))
       const menuForPermalink = menu.find((item) => item.permalink === permalink)
       const menuGroup = _.groupBy(menu, 'category')
