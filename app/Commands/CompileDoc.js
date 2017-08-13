@@ -15,8 +15,6 @@ const { Command } = ace
 class CompileDoc extends Command {
   constructor () {
     super()
-    this.contentDir = path.join(Helpers.appRoot(), 'content')
-    this.menuFile = Helpers.tmpPath('menu.json')
   }
 
   /**
@@ -27,7 +25,11 @@ class CompileDoc extends Command {
    * @return {String}
    */
   static get signature () {
-    return 'compile:docs {-w, --watch : Watch files}'
+    return `
+    compile:docs
+    {-v, --version=@value : The version to compile}
+    {-w, --watch : Watch files}
+    `
   }
 
   /**
@@ -184,7 +186,16 @@ class CompileDoc extends Command {
    *
    * @return {void}
    */
-  async handle (args, { watch }) {
+  async handle (args, { watch, version }) {
+    version = parseFloat(version).toFixed(1)
+    if (!version || isNaN(version)) {
+      this.error('Specify a version to compile')
+      return
+    }
+
+    this.contentDir = path.join(Helpers.appRoot(), 'content', version)
+    this.menuFile = Helpers.resourcesPath(`docs/menu/${version}.json`)
+
     const docs = await this._getPathsForDocs()
     const docsMeta = await Promise.all(docs.map((doc) => this._getMetaFor(doc)))
     await this._saveMenuFile(docsMeta)
