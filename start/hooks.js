@@ -18,6 +18,14 @@ hooks.after.providersRegistered(() => {
     }))
   })
 
+  View.global('getProps', (item, doc) => {
+    return {
+      permalink: item.permalink,
+      class: doc.permalink === item.permalink ? 'active' : '',
+      title: item.title
+    }
+  })
+
   class AsciiDocTag extends View.engine.BaseTag {
     get tagName () {
       return 'adoc'

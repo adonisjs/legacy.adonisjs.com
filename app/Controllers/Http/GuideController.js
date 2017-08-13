@@ -4,7 +4,11 @@ const _ = require('lodash')
 const Helpers = use('Helpers')
 
 class GuideController {
-  render ({ params, view }) {
+  render ({ params, view, response }) {
+    if (!params.permalink) {
+      return response.redirect('/guides/installation')
+    }
+
     if (process.env.NODE_ENV === 'development') {
       require('clear-require')(Helpers.tmpPath('menu'))
     }
