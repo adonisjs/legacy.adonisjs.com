@@ -31,11 +31,13 @@ class GuideController {
       }
     }
 
+    const { version, permalink } = params
+
     try {
-      const menu = require(Helpers.resourcesPath(`docs/menu/${params.version}.json`))
-      const menuForPermalink = menu.find((item) => item.permalink === params.permalink)
+      const menu = require(Helpers.resourcesPath(`docs/menu/${version}.json`))
+      const menuForPermalink = menu.find((item) => item.permalink === permalink)
       const menuGroup = _.groupBy(menu, 'category')
-      return view.render('docs', { doc: menuForPermalink, menu: menuGroup })
+      return view.render('docs', { doc: menuForPermalink, menu: menuGroup, versions, currentVersion: version })
     } catch (error) {
       return response.redirect('/404')
     }

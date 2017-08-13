@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "styles": "watch 'node-sass resources/sass/app.scss > public/css/style.css' resources/sass"
+    "compile:styles": "node-sass resources/sass/app.scss > public/css/style.css",
+    "compile:scripts": "webpack",
+    "styles": "watch 'npm run compile:styles' resources/sass",
+    "scripts": "watch 'npm run compile:scripts' resources/scripts"
   },
   "keywords": [
     "adonisjs",
@@ -18,7 +21,7 @@
   "dependencies": {
     "@adonisjs/ace": "^4.0.4",
     "@adonisjs/fold": "^4.0.2",
-    "@adonisjs/framework": "^4.0.8",
+    "@adonisjs/framework": "^4.0.10",
     "@adonisjs/ignitor": "^1.0.6",
     "clear-require": "^2.0.0"
   },
@@ -26,11 +29,14 @@
     "asciidoctor.js": "^1.5.6-preview.3",
     "browser-sync": "^2.18.13",
     "gray-matter": "^3.0.2",
+    "imports-loader": "^0.7.1",
     "klaw": "^2.1.0",
     "node-sass": "^4.5.3",
     "node-watch": "^0.5.5",
     "sassline": "^2.1.2",
     "through2": "^2.0.3",
-    "watch": "^1.0.2"
+    "watch": "^1.0.2",
+    "webpack": "^3.5.4",
+    "zepto": "^1.2.0"
   }
 }

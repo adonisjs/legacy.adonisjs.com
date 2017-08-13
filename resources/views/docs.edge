@@ -5,8 +5,14 @@
   <div class="grid-container">
     <div class="docs-content">
       <div class="left-bar">
-        <div class="version-switch">
-
+        <div class="version-switch pure-css-select-style">
+          <select name="docs-version" id="docs-version">
+            @each(version in versions)
+              <option value="{{ version }}" {{ version === currentVersion ? 'selected' : '' }}>
+              Version {{ version }}
+              </option>
+            @endeach
+          </select>
         </div>
         @include('partials.menu')
       </div>
@@ -17,4 +23,14 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('scripts')
+  @super()
+  <script>
+    window.AD = {
+      permalink: '{{ doc.permalink }}',
+      version: '{{ currentVersion }}'
+    }
+  </script>
 @endsection

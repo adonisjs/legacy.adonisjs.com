@@ -56,6 +56,9 @@
   </section>
 
   {{-- Scripts --}}
-  {{ script('js/prism') }}
+  @section('scripts')
+    {{ script('js/prism') }}
+    {{ script('js/app') }}
+  @endsection
 </body>
 </html>
