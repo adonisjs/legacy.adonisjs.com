@@ -11,7 +11,6 @@ class GuideController {
      * When Version and permalink both are not defined, then
      * redirect user to the latest version of docs.
      */
-    console.log(params)
     if (!params.permalink && !params.version) {
       return response.route('guides', { version: Env.get('LATEST_VERSION') })
     }

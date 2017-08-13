@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "styles": "watch 'node-sass resources/sass/app.scss > public/style.css' resources/sass"
+    "styles": "watch 'node-sass resources/sass/app.scss > public/css/style.css' resources/sass"
   },
   "keywords": [
     "adonisjs",

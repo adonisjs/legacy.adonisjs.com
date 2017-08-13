@@ -26,6 +26,13 @@ hooks.after.providersRegistered(() => {
     }
   })
 
+  View.global('getMetaDescription', (doc) => {
+    if (!doc || !doc.description) {
+      return ''
+    }
+    return doc.description
+  })
+
   class AsciiDocTag extends View.engine.BaseTag {
     get tagName () {
       return 'adoc'
