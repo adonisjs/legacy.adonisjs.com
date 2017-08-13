@@ -17,4 +17,5 @@ const Route = use('Route')
 
 Route.on('sink').render('sink')
 Route.on('/').render('home')
-Route.get('guides/:permalink?', 'GuideController.render')
+Route.on('404').render('errors.404')
+Route.get('guides/:version?/:permalink?', 'GuideController.render').as('guides')

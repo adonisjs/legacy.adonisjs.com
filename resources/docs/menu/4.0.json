@@ -1,0 +1,50 @@
+[
+  {
+    "title": "About AdonisJs",
+    "permalink": "about",
+    "category": "introduction",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/01-introduction/01-about.adoc"
+  },
+  {
+    "title": "Upgrading from 3.x",
+    "permalink": "upgrade-guide",
+    "category": "introduction",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/01-introduction/02-upgrade-guide.adoc"
+  },
+  {
+    "permalink": "installation",
+    "title": "Installation",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-getting-started/01-installation.adoc"
+  },
+  {
+    "permalink": "folder-structure",
+    "title": "Folder structure",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-getting-started/02-folder-structure.adoc"
+  },
+  {
+    "permalink": "number-guessing-game",
+    "title": "Number guessing game",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-getting-started/03-number-guessing-game.adoc"
+  },
+  {
+    "permalink": "database",
+    "title": "Database",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-getting-started/04-database.adoc"
+  },
+  {
+    "permalink": "http-context",
+    "title": "Introduction",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/01-introduction.adoc"
+  },
+  {
+    "permalink": "routing",
+    "title": "Routing",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/02-routing.adoc"
+  }
+]

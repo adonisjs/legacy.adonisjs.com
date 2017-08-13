@@ -102,6 +102,7 @@ class CompileDoc extends Command {
   async _saveMenuFile (docsMeta) {
     const orderedMeta = _.orderBy(docsMeta, 'path', 'asc')
     await this.writeFile(this.menuFile, JSON.stringify(docsMeta, null, 2))
+    require('clear-require')(this.menuFile)
   }
 
   /**
