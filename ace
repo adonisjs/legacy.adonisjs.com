@@ -1,12 +1,4 @@
 'use strict'
-
-<<<<<<< f2844be563a186b631a75f35664fdea53f994352
-const path = require('path')
-const { Ignitor } = require('@adonisjs/ignitor')
-
-new Ignitor(require('@adonisjs/fold'))
-  .appRoot(path.join(__dirname, './'))
-=======
 /*
 |--------------------------------------------------------------------------
 | Ace Commands
@@ -24,6 +16,5 @@ const { Ignitor } = require('@adonisjs/ignitor')
 
 new Ignitor(require('@adonisjs/fold'))
   .appRoot(__dirname)
->>>>>>> refactor(design): cleanup sass pipeline and design
   .fireAce()
   .catch(console.error)
