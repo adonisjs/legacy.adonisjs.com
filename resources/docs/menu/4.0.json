@@ -30,7 +30,7 @@
     "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-getting-started/03-number-guessing-game.adoc"
   },
   {
-    "permalink": "database",
+    "permalink": "database-basics",
     "title": "Database",
     "category": "getting-started",
     "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-getting-started/04-database.adoc"
@@ -46,5 +46,48 @@
     "title": "Routing",
     "category": "http-lifecycle",
     "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/02-routing.adoc"
+  },
+  {
+    "title": "Introduction",
+    "permalink": "database",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/01-introduction.adoc"
+  },
+  {
+    "permalink": "query-builder",
+    "title": "Query builder",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/02-query-builder.adoc"
+  },
+  {
+    "permalink": "migrations",
+    "title": "Migrations",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/03-migrations.adoc"
+  },
+  {
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/04-seeds.adoc",
+    "title": "Seeds & Factories",
+    "permalink": "seeds-and-factories",
+    "category": "database"
+  },
+  {
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/01-model.adoc",
+    "title": "Lucid Models",
+    "permalink": "lucid",
+    "category": "lucid"
+  },
+  {
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/02-lucid-hooks.adoc",
+    "title": "Hooks",
+    "permalink": "database-hooks",
+    "category": "lucid"
+  },
+  {
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/03-getters-and-setters.adoc",
+    "permalink": "database-getters-setters",
+    "title": "Getters & Setters",
+    "categories": "lucid",
+    "category": "lucid"
   }
 ]

@@ -154,3 +154,21 @@ footer.footer {
     }
   }
 }
+
+kbd:not(.keyseq) {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: $code-font-family;
+  background-color: $gray4;
+  border: 1px solid $gray3;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 0.1em #fff inset;
+  -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 0 0 0.1em #fff inset;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2), 0 0 0 0.1em #fff inset;
+  margin: -0.15em 0.15em 0 0.15em;
+  padding: 0.2em 0.6em 0.2em 0.5em;
+  vertical-align: middle;
+  white-space: nowrap;
+}

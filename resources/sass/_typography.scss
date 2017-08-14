@@ -148,6 +148,14 @@ p {
     }
   }
 
+  .ulist {
+    &.ul-spaced {
+      li {
+        padding: 12px 0;
+      }
+    }
+  }
+
   .paragraph {
     margin-bottom: 25px;
   }
@@ -157,15 +165,15 @@ p {
   }
 
   code {
-    padding: 3px 8px;
+    padding: 1px 6px;
     background: #f4f5f6;
     border-radius: 4px;
     color: #395062;
     margin-left: 2px;
     margin-right: 2px;
-    font-size: 15px;
+    font-size: 14px;
     -webkit-font-smoothing: auto;
-    font-family: "source-code-pro";
+    font-family: $code-font-family;
   }
 
   pre.highlight {
@@ -281,10 +289,11 @@ p {
     dd {
       margin-bottom: 20px;
       border-bottom: 1px solid $gray3;
-      padding: 0 20px;
+      padding: 0 20px 20px 20px;
       &:last-child {
         border: none;
         margin: 0;
+        padding-bottom: 0;
       }
     }
 

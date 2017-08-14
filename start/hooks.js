@@ -7,7 +7,7 @@ const asciidoctor = require('asciidoctor.js')()
 
 const DEFAULTS = {
   doctype: 'article',
-  attributes: ['icons=font', 'skip-front-matter=true', 'sectlinks', 'sectanchors', 'linkattrs', 'toc=macro', 'toclevels=1']
+  attributes: ['icons=font', 'skip-front-matter=true', 'sectlinks', 'sectanchors', 'linkattrs', 'toc=macro', 'toclevels=1', 'experimental=true']
 }
 
 hooks.after.providersRegistered(() => {
