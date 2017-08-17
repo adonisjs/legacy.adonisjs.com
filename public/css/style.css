@@ -108,6 +108,12 @@ p {
 
 .typeset .paragraph {
   margin-bottom: 25px; }
+  .typeset .paragraph.img-frame span {
+    display: block;
+    border: 1px solid #DFE3E8;
+    box-shadow: 0px 0px 8px #F9FAFB;
+    padding: 20px;
+    margin-bottom: 25px; }
 
 .typeset .paragraph + .listingblock pre {
   margin-top: -16px; }
@@ -207,7 +213,7 @@ p {
   margin-bottom: 30px; }
   .typeset .dlist dt {
     font-weight: 600;
-    color: #001728;
+    color: #525659;
     padding: 0 20px; }
   .typeset .dlist dd {
     margin-bottom: 20px;
@@ -217,6 +223,10 @@ p {
       border: none;
       margin: 0;
       padding-bottom: 0; }
+    .typeset .dlist dd ul {
+      padding: 5px; }
+      .typeset .dlist dd ul li {
+        list-style: none; }
   .typeset .dlist dd .paragraph {
     margin-bottom: 0; }
   .typeset .dlist dd p {

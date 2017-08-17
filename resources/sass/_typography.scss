@@ -158,6 +158,15 @@ p {
 
   .paragraph {
     margin-bottom: 25px;
+    &.img-frame {
+      span {
+        display: block;
+        border: 1px solid $gray3;
+        box-shadow: 0px 0px 8px $gray4;
+        padding: 20px;
+        margin-bottom: 25px;
+      }
+    }
   }
 
   .paragraph + .listingblock pre {
@@ -282,7 +291,7 @@ p {
 
     dt {
       font-weight: 600;
-      color: $headingColour;
+      color: #525659;
       padding: 0 20px;
     }
 
@@ -294,6 +303,12 @@ p {
         border: none;
         margin: 0;
         padding-bottom: 0;
+      }
+      ul {
+        padding: 5px;
+        li {
+          list-style: none;
+        }
       }
     }
 

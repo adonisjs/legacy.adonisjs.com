@@ -66,28 +66,39 @@
     "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/03-migrations.adoc"
   },
   {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/04-seeds.adoc",
     "title": "Seeds & Factories",
     "permalink": "seeds-and-factories",
-    "category": "database"
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/04-seeds.adoc"
   },
   {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/01-model.adoc",
     "title": "Lucid Models",
     "permalink": "lucid",
-    "category": "lucid"
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/01-model.adoc"
   },
   {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/02-lucid-hooks.adoc",
     "title": "Hooks",
     "permalink": "database-hooks",
-    "category": "lucid"
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/02-lucid-hooks.adoc"
   },
   {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/03-getters-and-setters.adoc",
     "permalink": "database-getters-setters",
     "title": "Getters & Setters",
-    "categories": "lucid",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/03-getters-and-setters.adoc"
+  },
+  {
+    "title": "Relationships",
+    "permalink": "relationships",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/04-relationships.adoc"
+  },
+  {
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/05-serializers.adoc",
+    "title": "Serializers",
+    "permalink": "serializers",
     "category": "lucid"
   }
 ]
