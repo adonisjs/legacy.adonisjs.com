@@ -54,6 +54,30 @@
     "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/03-request.adoc"
   },
   {
+    "permalink": "response",
+    "title": "Response",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/04-response.adoc"
+  },
+  {
+    "permalink": "views",
+    "title": "Views",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/05-views.adoc"
+  },
+  {
+    "permalink": "middleware",
+    "title": "Middleware",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/06-middleware.adoc"
+  },
+  {
+    "permalink": "sessions",
+    "title": "Sessions",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/07-sessions.adoc"
+  },
+  {
     "title": "Introduction",
     "permalink": "database",
     "category": "database",
@@ -108,21 +132,15 @@
     "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/05-serializers.adoc"
   },
   {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/04-response.adoc",
-    "permalink": "response",
-    "title": "Response",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/08-authentication.adoc",
+    "permalink": "authentication",
+    "title": "Authentication",
     "category": "http-lifecycle"
   },
   {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/05-views.adoc",
-    "permalink": "views",
-    "title": "Views",
-    "category": "http-lifecycle"
-  },
-  {
-    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/06-sessions.adoc",
-    "permalink": "sessions",
-    "title": "Sessions",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-http-lifecycle/09-handling-exceptions.adoc",
+    "permalink": "exceptions",
+    "title": "Handling Exceptions",
     "category": "http-lifecycle"
   }
 ]

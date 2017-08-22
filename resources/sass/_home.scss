@@ -155,7 +155,7 @@
   text-align: center;
   width: 780px;
   margin: auto;
-  height: 500px;
+  height: 600px;
   position: relative;
   overflow: hidden;
 
@@ -172,11 +172,99 @@
   background: #fff;
   border-radius: 5px;
   position: absolute;
-  height: 350px;
-  border: 1px solid #e8e8e8;
+  height: 400px;
   left: 0;
   right: 0;
   margin-top: 50px;
+  cursor: pointer;
+
+  &:after, &:before {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+  }
+
+  &:before {
+    content: "";
+    display: block;
+    width: 82px;
+    height: 82px;
+    background: rgba($linkColour, 0.9);
+    border-radius: 50%;
+    transition: all 200ms cubic-bezier(.23,1,.32,1);
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 13px 0 13px 22px;
+    border-color: transparent transparent transparent #fff;
+    margin-left: 4px;
+  }
+
+  &:hover {
+    &:before {
+      background: $linkColour;
+      width: 90px;
+      height: 90px;
+    }
+  }
+}
+
+.codeshell-header {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  background: hsl(232, 14%, 31%);
+  height: 27px;
+
+  .disc {
+    width: 11px;
+    border-radius: 50%;
+    height: 11px;
+    background: #1e282e;
+    margin: 0 2px;
+  }
+}
+
+.codeshell-body {
+  color: hsl(60, 30%, 96%);
+  font-family: $code-font-family;
+  background: hsl(231, 15%, 18%);
+  padding: 20px 20px 30px;
+  height: 100%;
+  text-align: left;
+  line-height: 22px;
+  font-size: 15px;
+
+  .codeshell-action {
+    color: hsl(135, 94%, 65%);
+    font-weight: 600;
+  }
+
+  .codeshell-title {
+    color: hsl(191, 97%, 77%);
+    font-weight: 600;
+    margin-top: 20px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .purple {
+    color: hsl(65, 92%, 76%);
+  }
+
+  ul {
+    padding-left: 20px;
+    li {
+    }
+  }
 }
 
 @media only screen and (max-width: 1140px) {
