@@ -54,10 +54,10 @@ Let's start with the documentation outline.
   - Routing
   - Request
   - Response
-  - Cookies
-  - Sessions
-  - Authentication
   - Views
+  - Sessions
+  - Middleware
+  - Authentication
   - Handling Exceptions
   - Logging
 
@@ -73,14 +73,16 @@ Let's start with the documentation outline.
   - Authentication
   - Model serializers
 
-6. Database and Models
+6. Database
   - Introduction
   - Query builder
-  - Models
-  - Hooks
-  - Traits
-  - Serializers
   - Migrations
   - Factories and Seeds
-
-7. Testing
+  
+7. Lucid
+  - Models
+  - Hooks
+  - Getters & Setters
+  - Relationships
+  - Serializers
+  - Traits
