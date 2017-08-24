@@ -23,6 +23,8 @@
     "@adonisjs/fold": "^4.0.2",
     "@adonisjs/framework": "^4.0.11",
     "@adonisjs/ignitor": "^1.0.7",
+    "@adonisjs/session": "^1.0.10",
+    "@adonisjs/shield": "^1.0.2",
     "clear-require": "^2.0.0"
   },
   "devDependencies": {
