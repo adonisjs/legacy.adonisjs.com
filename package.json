@@ -27,10 +27,10 @@
     "@adonisjs/ignitor": "^1.0.10",
     "@adonisjs/session": "^1.0.10",
     "@adonisjs/shield": "^1.0.2",
+    "asciidoctor.js": "^1.5.6-preview.3",
     "clear-require": "^2.0.0"
   },
   "devDependencies": {
-    "asciidoctor.js": "^1.5.6-preview.3",
     "browser-sync": "^2.18.13",
     "clean-css-cli": "^4.1.6",
     "gray-matter": "^3.0.3",
