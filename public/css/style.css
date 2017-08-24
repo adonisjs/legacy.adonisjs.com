@@ -125,7 +125,7 @@ p {
   color: #395062;
   margin-left: 2px;
   margin-right: 2px;
-  font-size: 14px;
+  font-size: 13px;
   -webkit-font-smoothing: auto;
   font-family: "source-code-pro", monospace; }
 
@@ -141,7 +141,7 @@ p {
   background: #fff;
   border: none; }
   .typeset pre.highlight code {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 24px;
     display: block;
     background: transparent;
@@ -529,28 +529,6 @@ kbd:not(.keyseq) {
   right: 0;
   margin-top: 50px;
   cursor: pointer; }
-  .codeshell:after, .codeshell:before {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute; }
-  .codeshell:before {
-    content: "";
-    display: block;
-    width: 82px;
-    height: 82px;
-    background: rgba(251, 47, 81, 0.9);
-    border-radius: 50%;
-    transition: all 200ms cubic-bezier(0.23, 1, 0.32, 1); }
-  .codeshell:after {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 13px 0 13px 22px;
-    border-color: transparent transparent transparent #fff;
-    margin-left: 4px; }
   .codeshell:hover:before {
     background: #FB2F51;
     width: 90px;
