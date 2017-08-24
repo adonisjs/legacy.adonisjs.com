@@ -1,10 +1,11 @@
 'use strict'
 
-const _ = require('lodash')
+const _ = use('lodash')
 const Helpers = use('Helpers')
+const GE = use('@adonisjs/generic-exceptions')
 const Env = use('Env')
-const versionsMap = { '4.0': 'Version 4.0 dev' }
-const versions = Object.keys(versionsMap)
+const Config = use('Config')
+const versions = Config.get('app.docs.versions')
 
 class GuideController {
   render ({ params, view, response }) {
@@ -17,7 +18,7 @@ class GuideController {
     }
 
     if (!params.permalink && params.version) {
-      if (_.includes(versions, params.version)) {
+      if (_.includes(_.keys(versions), params.version)) {
         /**
          * When version exists but no permalink, then redirect to installation path
          */
@@ -41,14 +42,15 @@ class GuideController {
       const menu = require(Helpers.resourcesPath(`docs/menu/${version}.json`))
       const menuForPermalink = menu.find((item) => item.permalink === permalink)
       const menuGroup = _.groupBy(menu, 'category')
+
       return view.render('docs', {
         doc: menuForPermalink,
         menu: menuGroup,
-        versions: versionsMap,
+        versions: versions,
         currentVersion: version
       })
     } catch (error) {
-      return response.redirect('/404')
+      throw new GE.HttpException('Page not found', 404)
     }
   }
 }

@@ -1,0 +1,24 @@
+@layout('layouts.master')
+
+@section('header')
+@endsection
+
+@section('body')
+  <div class="missing-message">
+    <div class="graphic"><img src="/images/pyramid.png" /></div>
+    <div class="message">
+      @if(status === 404)
+         <h2> Page not found </h2>
+         <p> The page you are looking for has not been found </p>
+         <a class="button secondary" href="/docs"> Browse documentation </a>
+      @else
+         <h2> Oh snap! </h2>
+         <p> Something unexpected happended </p>
+         <a class="button secondary" href="/"> Eww! Let me out </a>
+      @endif
+    </div>
+  </div>
+@endsection
+
+@section('footer')
+@endsection

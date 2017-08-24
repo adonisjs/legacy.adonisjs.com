@@ -155,5 +155,9 @@ module.exports = {
     |
     */
     fallbackLocale: 'en'
+  },
+
+  docs: {
+    versions: { '4.0': 'Version 4.0 dev' }
   }
 }

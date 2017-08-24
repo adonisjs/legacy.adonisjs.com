@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "compile:styles": "node-sass resources/sass/app.scss > public/css/style.css",
+    "minify:styles": "cleancss node_modules/normalize.css/normalize.css resources/css/prism.css resources/css/style.css -o public/css/app.min.css",
+    "compile:styles": "node-sass resources/sass/app.scss > resources/css/style.css && npm run minify:styles",
     "compile:scripts": "webpack",
     "styles": "watch 'npm run compile:styles' resources/sass",
     "scripts": "watch 'npm run compile:scripts' resources/scripts"
@@ -21,8 +22,9 @@
   "dependencies": {
     "@adonisjs/ace": "^4.0.5",
     "@adonisjs/fold": "^4.0.2",
-    "@adonisjs/framework": "^4.0.11",
-    "@adonisjs/ignitor": "^1.0.7",
+    "@adonisjs/framework": "^4.0.14",
+    "@adonisjs/generic-exceptions": "^1.0.0",
+    "@adonisjs/ignitor": "^1.0.10",
     "@adonisjs/session": "^1.0.10",
     "@adonisjs/shield": "^1.0.2",
     "clear-require": "^2.0.0"
@@ -30,13 +32,16 @@
   "devDependencies": {
     "asciidoctor.js": "^1.5.6-preview.3",
     "browser-sync": "^2.18.13",
+    "clean-css-cli": "^4.1.6",
     "gray-matter": "^3.0.3",
     "imports-loader": "^0.7.1",
     "klaw": "^2.1.0",
     "node-sass": "^4.5.3",
     "node-watch": "^0.5.5",
+    "normalize.css": "^7.0.0",
     "sassline": "^2.1.2",
     "through2": "^2.0.3",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "watch": "^1.0.2",
     "webpack": "^3.5.5",
     "zepto": "^1.2.0"

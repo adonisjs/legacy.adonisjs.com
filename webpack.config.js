@@ -1,9 +1,10 @@
 const path = require('path')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: './resources/scripts/app.js',
   output: {
-    filename: 'app.js',
+    filename: 'app.min.js',
     path: path.resolve(__dirname, 'public/js')
   },
   module: {
@@ -13,5 +14,15 @@ module.exports = {
         use: 'imports-loader?this=>window'
       }
     ]
-  }
+  },
+  plugins: [
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        mangle: true,
+        output: {
+          ascii_only: true
+        }
+      }
+    })
+  ]
 }

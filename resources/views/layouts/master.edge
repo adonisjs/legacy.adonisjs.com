@@ -12,9 +12,7 @@
   <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
   {{-- Styles --}}
-  {{ css('css/normalize') }}
-  {{ css('css/prism') }}
-  {{ css('css/style') }}
+  {{ css('css/app.min') }}
 
   {{-- Favicon --}}
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png" />
@@ -52,12 +50,14 @@
     </div>
 
     @!section('body')
-    @include('partials.footer')
+
+    @section('footer')
+      @include('partials.footer')
+    @endsection
   </section>
 
   {{-- Scripts --}}
   @section('scripts')
-    {{ script('js/prism') }}
     {{ script('js/app') }}
   @endsection
 </body>
