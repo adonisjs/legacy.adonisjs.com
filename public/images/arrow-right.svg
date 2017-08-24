@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="18px" height="14px" viewBox="0 0 18 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs></defs>
-    <g id="Adonis---Branding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Adonis---Landing" transform="translate(-825.000000, -2530.000000)" fill-rule="nonzero" fill="#FB2F51" class="fill__group">
-            <g id="Group-6" transform="translate(636.000000, 2511.000000)">
-                <g id="arrow-right" transform="translate(189.000000, 19.000000)">
-                    <path d="M13.5857864,6 L0,6 L0,8 L13.5857864,8 L9.29289322,12.2928932 L10.7071068,13.7071068 L17.4142136,7 L10.7071068,0.292893219 L9.29289322,1.70710678 L13.5857864,6 Z" id="Combined-Shape"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8"?><svg width="18px" height="14px" viewBox="0 0 18 14" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M13.586 6H0v2h13.586l-4.293 4.293 1.414 1.414L17.414 7 10.707.293 9.293 1.707 13.586 6z" fill-rule="nonzero" fill="#FB2F51" class="fill__group"/></svg>

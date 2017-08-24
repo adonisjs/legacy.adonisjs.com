@@ -619,6 +619,26 @@ kbd:not(.keyseq) {
 .version-switch {
   margin-bottom: 30px; }
 
+.missing-message {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #220052;
+  color: #fff; }
+  .missing-message img {
+    max-width: 400px; }
+  .missing-message .message {
+    margin-left: 150px; }
+    .missing-message .message h2 {
+      color: #fff;
+      font-size: 48px;
+      font-weight: 800; }
+    .missing-message .message p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 18px;
+      margin-bottom: 30px; }
+
 html {
   font: normal 112.5% / 1.65 serif; }
 
