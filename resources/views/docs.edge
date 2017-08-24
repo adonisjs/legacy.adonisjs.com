@@ -7,9 +7,9 @@
       <div class="left-bar">
         <div class="version-switch pure-css-select-style">
           <select name="docs-version" id="docs-version">
-            @each(version in versions)
+            @each((name, version) in versions)
               <option value="{{ version }}" {{ version === currentVersion ? 'selected' : '' }}>
-              Version {{ version }}
+              {{ name }}
               </option>
             @endeach
           </select>

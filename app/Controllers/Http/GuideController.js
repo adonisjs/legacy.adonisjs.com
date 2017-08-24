@@ -3,7 +3,8 @@
 const _ = require('lodash')
 const Helpers = use('Helpers')
 const Env = use('Env')
-const versions = ['4.0', '3.2']
+const versionsMap = { '4.0': 'Version 4.0 dev' }
+const versions = Object.keys(versionsMap)
 
 class GuideController {
   render ({ params, view, response }) {
@@ -40,7 +41,12 @@ class GuideController {
       const menu = require(Helpers.resourcesPath(`docs/menu/${version}.json`))
       const menuForPermalink = menu.find((item) => item.permalink === permalink)
       const menuGroup = _.groupBy(menu, 'category')
-      return view.render('docs', { doc: menuForPermalink, menu: menuGroup, versions, currentVersion: version })
+      return view.render('docs', {
+        doc: menuForPermalink,
+        menu: menuGroup,
+        versions: versionsMap,
+        currentVersion: version
+      })
     } catch (error) {
       return response.redirect('/404')
     }
