@@ -88,10 +88,10 @@ p {
   margin-bottom: 40px; }
   .typeset .olist ol {
     list-style-type: none; }
-    .typeset .olist ol li {
+    .typeset .olist ol > li {
       padding: 6px 0;
       counter-increment: top-level; }
-      .typeset .olist ol li:before {
+      .typeset .olist ol > li:before {
         content: counter(top-level) ".";
         font-feature-settings: 'lnum', 'tnum';
         margin-left: -25px;
@@ -100,8 +100,12 @@ p {
         width: 15px; }
     .typeset .olist ol.ol-shrinked li {
       padding: 0; }
-    .typeset .olist ol.ol-spaced li {
+    .typeset .olist ol.ol-spaced > li {
       padding: 12px 0; }
+  .typeset .olist.ol-shrinked {
+    margin-bottom: 30px; }
+  .typeset .olist .ulist {
+    padding-left: 15px; }
 
 .typeset .ulist.ul-spaced li {
   padding: 12px 0; }
@@ -118,15 +122,13 @@ p {
 .typeset .paragraph + .listingblock pre {
   margin-top: -16px; }
 
-.typeset code {
+.typeset p > code {
   padding: 1px 6px;
-  background: #f4f5f6;
-  border-radius: 4px;
   color: #395062;
-  margin-left: 2px;
-  margin-right: 2px;
-  font-size: 13px;
+  font-size: 14px;
   -webkit-font-smoothing: auto;
+  border-radius: 4px;
+  background: #f4f5f6;
   font-family: "source-code-pro", monospace; }
 
 .typeset pre.highlight {
@@ -138,6 +140,7 @@ p {
   margin-bottom: 30px;
   position: relative;
   overflow-x: scroll;
+  -webkit-font-smoothing: auto;
   background: #fff;
   border: none; }
   .typeset pre.highlight code {

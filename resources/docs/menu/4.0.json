@@ -1,0 +1,278 @@
+[
+  {
+    "title": "About AdonisJs",
+    "permalink": "about",
+    "category": "introduction",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/01-introduction/01-about.adoc"
+  },
+  {
+    "title": "Upgrading from 3.x",
+    "permalink": "upgrade-guide",
+    "category": "introduction",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/01-introduction/02-upgrade-guide.adoc"
+  },
+  {
+    "permalink": "ioc-container",
+    "title": "Ioc container",
+    "category": "internals",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-internals/01-ioc-container.adoc"
+  },
+  {
+    "permalink": "service-providers",
+    "title": "Service providers",
+    "category": "internals",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-internals/02-service-providers.adoc"
+  },
+  {
+    "permalink": "ignitor",
+    "title": "Ignitor",
+    "category": "internals",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/02-internals/03-ignitor.adoc"
+  },
+  {
+    "permalink": "installation",
+    "title": "Installation",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-getting-started/01-installation.adoc"
+  },
+  {
+    "permalink": "folder-structure",
+    "title": "Folder structure",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-getting-started/02-folder-structure.adoc"
+  },
+  {
+    "permalink": "configuration-and-env",
+    "title": "Configuration and Env",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-getting-started/03-configuration-and-env.adoc"
+  },
+  {
+    "permalink": "number-guessing-game",
+    "title": "Number guessing game",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-getting-started/04-number-guessing-game.adoc"
+  },
+  {
+    "permalink": "database-basics",
+    "title": "Database",
+    "category": "getting-started",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/03-getting-started/05-database.adoc"
+  },
+  {
+    "permalink": "http-context",
+    "title": "Introduction",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/01-introduction.adoc"
+  },
+  {
+    "permalink": "routing",
+    "title": "Routing",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/02-routing.adoc"
+  },
+  {
+    "permalink": "request",
+    "title": "Request",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/03-request.adoc"
+  },
+  {
+    "permalink": "response",
+    "title": "Response",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/04-response.adoc"
+  },
+  {
+    "permalink": "views",
+    "title": "Views",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/05-views.adoc"
+  },
+  {
+    "title": "File uploads",
+    "permalink": "file-uploads",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/07-file-uploads.adoc"
+  },
+  {
+    "permalink": "middleware",
+    "title": "Middleware",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/08-middleware.adoc"
+  },
+  {
+    "permalink": "sessions",
+    "title": "Sessions",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/09-sessions.adoc"
+  },
+  {
+    "permalink": "authentication",
+    "title": "Authentication",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/10-authentication.adoc"
+  },
+  {
+    "title": "Social authentication",
+    "permalink": "social-auth",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/11-social-auth.adoc"
+  },
+  {
+    "permalink": "exceptions",
+    "title": "Handling Exceptions",
+    "category": "http-lifecycle",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/04-http-lifecycle/12-handling-exceptions.adoc"
+  },
+  {
+    "title": "Introduction",
+    "permalink": "database",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/01-introduction.adoc"
+  },
+  {
+    "permalink": "query-builder",
+    "title": "Query builder",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/02-query-builder.adoc"
+  },
+  {
+    "permalink": "migrations",
+    "title": "Migrations",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/03-migrations.adoc"
+  },
+  {
+    "title": "Seeds & Factories",
+    "permalink": "seeds-and-factories",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/04-seeds.adoc"
+  },
+  {
+    "title": "Redis",
+    "permalink": "redis",
+    "category": "database",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/06-database/05-redis.adoc"
+  },
+  {
+    "title": "Lucid Models",
+    "permalink": "lucid",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/01-model.adoc"
+  },
+  {
+    "title": "Hooks",
+    "permalink": "database-hooks",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/02-lucid-hooks.adoc"
+  },
+  {
+    "permalink": "database-getters-setters",
+    "title": "Getters & Setters",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/03-getters-and-setters.adoc"
+  },
+  {
+    "title": "Relationships",
+    "permalink": "relationships",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/04-relationships.adoc"
+  },
+  {
+    "title": "Serializers",
+    "permalink": "serializers",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/05-serializers.adoc"
+  },
+  {
+    "title": "Traits",
+    "permalink": "traits",
+    "category": "lucid",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/07-lucid/06-traits.adoc"
+  },
+  {
+    "title": "Validator",
+    "permalink": "validator",
+    "category": "cookbooks",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/08-cookbooks/01-validator.adoc"
+  },
+  {
+    "title": "Encryption and Hashing",
+    "permalink": "encryption-and-hashing",
+    "category": "cookbooks",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/08-cookbooks/02-encryption-and-hashing.adoc"
+  },
+  {
+    "title": "Ace commands",
+    "permalink": "ace",
+    "category": "cookbooks",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/08-cookbooks/03-ace-commands.adoc"
+  },
+  {
+    "title": "Mail",
+    "permalink": "mail",
+    "category": "cookbooks",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/08-cookbooks/04-mail.adoc"
+  },
+  {
+    "title": "File System",
+    "permalink": "file-system",
+    "category": "cookbooks",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/08-cookbooks/05-file-system.adoc"
+  },
+  {
+    "title": "Logger",
+    "permalink": "logger",
+    "category": "cookbooks",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/08-cookbooks/06-logger.adoc"
+  },
+  {
+    "permalink": "security-introduction",
+    "title": "Introduction",
+    "category": "web-security",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/09-web-security/01-introduction.adoc"
+  },
+  {
+    "permalink": "csrf",
+    "title": "CSRF protection",
+    "category": "web-security",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/09-web-security/02-csrf.adoc"
+  },
+  {
+    "permalink": "cors",
+    "title": "CORS",
+    "category": "web-security",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/09-web-security/03-cors.adoc"
+  },
+  {
+    "permalink": "shield",
+    "title": "Shield middleware",
+    "category": "web-security",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/09-web-security/04-shield-middleware.adoc"
+  },
+  {
+    "permalink": "testing",
+    "title": "Introduction",
+    "category": "testing",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/10-testing/01-introduction.adoc"
+  },
+  {
+    "permalink": "api-tests",
+    "title": "REST API tests",
+    "category": "testing",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/10-testing/02-api-tests.adoc"
+  },
+  {
+    "permalink": "browser-tests",
+    "title": "Browser tests",
+    "category": "testing",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/10-testing/03-browser-tests.adoc"
+  },
+  {
+    "permalink": "testing-fakes",
+    "title": "Testing fakes and Helpers",
+    "category": "testing",
+    "path": "/Users/harmindervirk/workspace/dawn/@adonisjs/adonisjs.com/content/4.0/10-testing/04-testing-fakes.adoc"
+  }
+]

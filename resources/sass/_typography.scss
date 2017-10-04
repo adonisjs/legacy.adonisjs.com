@@ -121,7 +121,7 @@ p {
     ol {
       list-style-type: none;
 
-      li {
+      > li {
         padding: 6px 0;
         counter-increment: top-level;
         &:before {
@@ -141,10 +141,18 @@ p {
       }
 
       &.ol-spaced {
-        li {
+        > li {
           padding: 12px 0;
         }
       }
+    }
+
+    &.ol-shrinked {
+      margin-bottom: 30px;
+    }
+
+    .ulist {
+      padding-left: 15px;
     }
   }
 
@@ -173,15 +181,13 @@ p {
     margin-top: -16px;
   }
 
-  code {
+  p > code {
     padding: 1px 6px;
-    background: #f4f5f6;
-    border-radius: 4px;
     color: #395062;
-    margin-left: 2px;
-    margin-right: 2px;
-    font-size: 13px;
+    font-size: 14px;
     -webkit-font-smoothing: auto;
+    border-radius: 4px;
+    background: #f4f5f6;
     font-family: $code-font-family;
   }
 
@@ -194,6 +200,7 @@ p {
     margin-bottom: 30px;
     position: relative;
     overflow-x: scroll;
+    -webkit-font-smoothing: auto;
     background: #fff;
     border: none;
 
