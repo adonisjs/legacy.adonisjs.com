@@ -1,0 +1,119 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_conventions_over_configuration">Conventions Over Configuration</a></li>
+<li><a href="#_simplest_example">Simplest Example</a></li>
+<li><a href="#_where_to_start">Where To Start</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs is a <a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a> MVC framework to write the web application with less code. We focus on writing elegant code and being one of the most stable frameworks in the Node community. Unlike other frameworks, AdonisJs comes with a bunch of battle tested modules to make your development experience enjoyable.</p>
+</div>
+<div class="paragraph">
+<p>Below is the list of core features:</p>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Powerful <a href="https://en.wikipedia.org/wiki/Object-relational_mapping" target="_blank" rel="noopener">ORM</a> to make secure SQL queries.</p>
+</li>
+<li>
+<p>API &amp; Session based Authentication System.</p>
+</li>
+<li>
+<p>Easy way to send emails via SMTP or Web Service (Mailgun, Mandrill, etc.)</p>
+</li>
+<li>
+<p>Validate &amp; Sanitise every user&#8217;s inputs.</p>
+</li>
+<li>
+<p>Strong emphasis on security.</p>
+</li>
+<li>
+<p>Extendable application layout.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conventions_over_configuration"><a class="anchor" href="#_conventions_over_configuration"></a><a class="link" href="#_conventions_over_configuration">Conventions Over Configuration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This software paradigm is the core of AdonisJs. We attempt to <strong>decrease the time you lose</strong> when making decisions, by following well-known conventions from popular frameworks like Rails, Django or Laravel without losing any flexibility. For example, if you have a User model the corresponding table in the database should be named <code>users</code> by default (of course you can change this by overriding a property on your model).</p>
+</div>
+<div class="paragraph">
+<p>You can learn more about this paradigm on <a href="https://en.wikipedia.org/wiki/Convention_over_configuration" target="_blank" rel="noopener">the Wikipedia page</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_simplest_example"><a class="anchor" href="#_simplest_example"></a><a class="link" href="#_simplest_example">Simplest Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As we said, AdonisJs attempts to remove the big pieces of unmanageable code with <strong>simple, readable API</strong>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>AdonisJs removes the unnecessary callbacks from your code and introduces <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators" target="_blank" rel="noopener">ES2015 Generators</a>.</p>
+</li>
+<li>
+<p>It organizes everything into different directories so that you can quickly know where your files are.</p>
+</li>
+<li>
+<p>It does not add anything to the globals except the <code>use</code> and <code>make</code> function that you will learn about soon.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If we told you that within six lines of code you can fetch all users from the database and send them back as <code>JSON</code> response would you believe us?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Route = use('Route')
+const User = use('App/Model/User')
+
+Route.get('/', function * (request, response) {
+  const users = yield User.all()
+  response.json(users)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Hopefully, this quick overview has intrigued you and don&#8217;t worry if you do not fully understand the code above&#8201;&#8212;&#8201;the Getting Started chapter is for you!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_to_start"><a class="anchor" href="#_where_to_start"></a><a class="link" href="#_where_to_start">Where To Start</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Learning a new framework can be overwhelming at first. Since AdonisJs ships with a bunch of pre-configured modules/addons, you will always feel right at home without spending time searching for the best modules.</p>
+</div>
+<div class="paragraph">
+<p>To start your development journey, we recommend you begin by reading the following topics:</p>
+</div>
+<div class="ulist support-list">
+<ul class="support-list">
+<li>
+<p><a href="routing">Routing</a></p>
+</li>
+<li>
+<p><a href="request">Request</a></p>
+</li>
+<li>
+<p><a href="response">Response</a></p>
+</li>
+<li>
+<p><a href="views">Views</a> and <a href="controllers">Controllers</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Also make sure to follow the <a href="installation">Installation</a> guide to setup the essentials.</p>
+</div>
+</div>
+</div>

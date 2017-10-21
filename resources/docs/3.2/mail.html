@@ -1,0 +1,602 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_drivers">Drivers</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_mail_methods">Mail Methods</a></li>
+<li><a href="#_message_builder">Message Builder</a></li>
+<li><a href="#_passing_multiple_views">Passing Multiple Views</a></li>
+<li><a href="#_switching_drivers">Switching Drivers</a></li>
+<li><a href="#_adding_new_drivers">Adding New Drivers</a></li>
+<li><a href="#_testing_emails">Testing Emails</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Sending email is a common task for web applications. AdonisJs official <strong>Mail Provider</strong> makes it so easy and intuitive to send emails using one of the available drivers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drivers"><a class="anchor" href="#_drivers"></a><a class="link" href="#_drivers">Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available drivers and you are free to extend and add your custom drivers.</p>
+</div>
+<div class="olist support-list">
+<ol class="support-list">
+<li>
+<p>SMTP (smtp).</p>
+</li>
+<li>
+<p>Amazon SES (ses).</p>
+</li>
+<li>
+<p>Mandrill (mandrill).</p>
+</li>
+<li>
+<p>MailGun (mailgun).</p>
+</li>
+<li>
+<p>Log (log)</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The <code>log</code> driver is used when running tests since it will log emails to a file instead of sending it to the real people.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Mail provider is not part of the base installation, and you have to pull the package from <strong>npm</strong> and register the provider. Let&#8217;s do a quick 2min setup.</p>
+</div>
+<div class="listingblock">
+<div class="title">Install From Npm</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save adonis-mail-provider</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to register the provider and setup an alias for same.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const providers = [
+  ...,
+  'adonis-mail-provider/providers/MailProvider'
+]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const aliases = {
+  Mail: 'Adonis/Addons/Mail'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also, a configuration file needs to be saved as <code>config/mail.js</code>. You can download the sample configuration from <a href="https://raw.githubusercontent.com/adonisjs/adonis-mail/master/examples/mail.js" target="_blank" rel="noopener">github</a> or run the below bash command to save the file automatically.</p>
+</div>
+<div class="listingblock">
+<div class="title">Download using wget</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">wget https://raw.githubusercontent.com/adonisjs/adonis-mail/master/examples/mail.js -O config/mail.js</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take a basic example of sending a welcome email to the newly registered user. We need to set up a route and a view before sending the email.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Route = use('Route')
+Route.post('users', 'UsersController.store')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Mail = use('Mail')
+const User = use('App/Model/User')
+
+class UsersController {
+
+  * store (request, response) {
+    const user = yield User.create(userDetails) <i class="conum" data-value="1"></i><b>(1)</b>
+
+    yield Mail.send('emails.welcome', user, (message) =&gt; {
+      message.to(user.email, user.firstname)
+      message.from('awesome@adonisjs.com')
+      message.subject('Welcome to the Kitten\'s World')
+    }) <i class="conum" data-value="2"></i><b>(2)</b>
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Make sure to validate the user details before saving them to the DB.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>Mail.send</code> method will send the email by accepting a path to the view as the 1st parameter.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Creating emails.welcome view</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:view emails/welcome</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/emails/welcome.njk</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">&lt;h2&gt; Heya {{ firstname}} &lt;/h2&gt;
+
+&lt;p&gt; Welcome to the kitten's world. We will be sharing lots of cute kittens with you soon&lt;/p&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mail_methods"><a class="anchor" href="#_mail_methods"></a><a class="link" href="#_mail_methods">Mail Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods to be used for sending emails.</p>
+</div>
+<div class="sect3">
+<h4 id="_send_view_data_callback_configkey"><a class="anchor" href="#_send_view_data_callback_configkey"></a><a class="link" href="#_send_view_data_callback_configkey">send(view, data, callback, [configKey])</a></h4>
+<div class="paragraph">
+<p>The <code>send</code> method will compile a view with given data and send it as HTML. Attached callback gives you the access to the <a href="#_message_builder">message builder</a> to define email properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {name: 'Doe', amount: 22}, message =&gt; {
+  // ...
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raw_body_callback_configkey"><a class="anchor" href="#_raw_body_callback_configkey"></a><a class="link" href="#_raw_body_callback_configkey">raw(body, callback, [configKey])</a></h4>
+<div class="paragraph">
+<p>Send email using raw text, instead of using a view.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.raw('Your security code is 301030', message =&gt; {
+  message.from('secret@yourcompany.com')
+  message.to('doe@example.org', 'Doe')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_message_builder"><a class="anchor" href="#_message_builder"></a><a class="link" href="#_message_builder">Message Builder</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Message Builder makes it super easy to chain methods and build the message body. The <code>message</code> argument passed to the <strong>Mail.send</strong> the method is an instance of message builder and below is the list of methods you can call on it.</p>
+</div>
+<div class="sect3">
+<h4 id="_from_email_name"><a class="anchor" href="#_from_email_name"></a><a class="link" href="#_from_email_name">from(email, [name])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.from('awesome@adonisjs.com', 'AdonisJs')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sender_email_name"><a class="anchor" href="#_sender_email_name"></a><a class="link" href="#_sender_email_name">sender(email, [name])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.sender('awesome@adonisjs.com', 'AdonisJs')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_replyto_email_name"><a class="anchor" href="#_replyto_email_name"></a><a class="link" href="#_replyto_email_name">replyTo(email, [name])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.replyTo('noreply@adonisjs.com')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_to_email_name"><a class="anchor" href="#_to_email_name"></a><a class="link" href="#_to_email_name">to(email, [name])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.to('johndoe@example.com', 'John Doe')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cc_email_name"><a class="anchor" href="#_cc_email_name"></a><a class="link" href="#_cc_email_name">cc(email, [name])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.cc('jamie@example.com', 'Jamie Doe')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bcc_email_name"><a class="anchor" href="#_bcc_email_name"></a><a class="link" href="#_bcc_email_name">bcc(email, [name])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.bcc('finance@example.com')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_subject_message"><a class="anchor" href="#_subject_message"></a><a class="link" href="#_subject_message">subject(message)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send('receipt', {}, message =&gt; {
+  message.subject('Recent purchase receipt')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>priority(level)
+Set priority for the email. It needs to be one of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>high</p>
+</li>
+<li>
+<p>low</p>
+</li>
+<li>
+<p>normal</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.priority('high')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_header_key_value"><a class="anchor" href="#_header_key_value"></a><a class="link" href="#_header_key_value">header(key, value)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.header('x-id', 1)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_arrayofheaders"><a class="anchor" href="#_headers_arrayofheaders"></a><a class="link" href="#_headers_arrayofheaders">headers(arrayOfHeaders)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.header([{ key: 'x-id', value: 1 }])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attach_filepath_options"><a class="anchor" href="#_attach_filepath_options"></a><a class="link" href="#_attach_filepath_options">attach(filePath, [options])</a></h4>
+<div class="paragraph">
+<p>Attach a file to the email</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.attach(path.join(__dirname, '/assets/logo.png'))
+message.attach(path.join(__dirname, '/assets/logo.png'), { filename: 'MyLogo.png' })</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Attachment Options</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">filename</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the file. If not defined, will be picked from the file path.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">contentType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attachment <strong>Content type</strong>. If not defined, will be picked from the file extension.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">contentDisposition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content-disposition, defaults to attachment.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">encoding</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attachment encoding must from <strong>base64</strong>, <strong>hex</strong> and <strong>binary</strong>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_attachdata_data_filename_options"><a class="anchor" href="#_attachdata_data_filename_options"></a><a class="link" href="#_attachdata_data_filename_options">attachData(data, filename, [options])</a></h4>
+<div class="paragraph">
+<p>Attach raw data as an attachment to the email.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Attachment options are same as the <code>attach</code> method.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.attachData('some raw content', 'raw.txt')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_embed_filepath_cid_options"><a class="anchor" href="#_embed_filepath_cid_options"></a><a class="link" href="#_embed_filepath_cid_options">embed(filePath, cid, [options])</a></h4>
+<div class="paragraph">
+<p>Embed a file within the email body. The <code>cid</code> must be unique and is required so that you can reference it inside your HTML views.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.embed(path.join(__dirname, '/assets/logo.png'), 'logo')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Embedding inside views</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">&lt;img src="cid:logo" /&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_html_body"><a class="anchor" href="#_html_body"></a><a class="link" href="#_html_body">html(body)</a></h4>
+<div class="paragraph">
+<p>HTML of the email gets automatically created from the view. If for any reasons you want to override, make use of this method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.html('My custom html')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_text_body"><a class="anchor" href="#_text_body"></a><a class="link" href="#_text_body">text(body)</a></h4>
+<div class="paragraph">
+<p>Set <strong>plaintext</strong> for the email. It is defined for the email clients which do not support HTML.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+All popular email clients does support HTML.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.text('A plaintext view')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_watchhtml_body"><a class="anchor" href="#_watchhtml_body"></a><a class="link" href="#_watchhtml_body">watchHtml(body)</a></h4>
+<div class="paragraph">
+<p>Set HTML to be displayed for the <strong>Apple Watch</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">message.watchHtml('Email body for apple watch')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_passing_multiple_views"><a class="anchor" href="#_passing_multiple_views"></a><a class="link" href="#_passing_multiple_views">Passing Multiple Views</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can define multiple views for <strong>HTML</strong>, <strong>Plain text</strong> and <strong>Apple watch</strong> by passing an array to the <a href="#_send_view_data_callback_configkey">send</a> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.send(['welcome', 'welcome-text', 'welcome-watch'], {}, message =&gt; {
+  // ...
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switching_drivers"><a class="anchor" href="#_switching_drivers"></a><a class="link" href="#_switching_drivers">Switching Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The default driver defined inside the config file is used to send emails, but you can switch between drivers on runtime using the <code>driver</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const mandrill = Mail.driver('mandrill')
+
+yield mandrill.send('emails.welcome', {}, message =&gt; {
+  // ...
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_new_drivers"><a class="anchor" href="#_adding_new_drivers"></a><a class="link" href="#_adding_new_drivers">Adding New Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can also add new drivers to the <strong>Mail provider</strong> by extending it and here are some points to keep in mind.</p>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>AdonisJs internally uses <a href="https://github.com/nodemailer/nodemailer" target="_blank" rel="noopener">nodemailer</a> to send emails. You can also wrap an existing nodemailer transport to a driver.</p>
+</li>
+<li>
+<p>Your driver must have a <code>send</code> method.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s make use of <a href="https://github.com/killmenot/nodemailer-postmark-transport" target="_blank" rel="noopener">nodemailer postmark transport</a> to create a new driver and register it via IoC container.</p>
+</div>
+<div class="sect2">
+<h3 id="_writing_driver"><a class="anchor" href="#_writing_driver"></a><a class="link" href="#_writing_driver">Writing Driver</a></h3>
+<div class="listingblock">
+<div class="title">src/PostMark.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class PostMark {
+
+  constructor (Config) {
+    this.config = Config
+    this.transport = this._createTransport('mail.postmark') <i class="conum" data-value="1"></i><b>(1)</b>
+  }
+
+  _createTransport (configKey) {
+    const options = this.config.get(configKey) <i class="conum" data-value="2"></i><b>(2)</b>
+    const nodemailer = require('nodemailer')
+    const postmarkTransport = require('nodemailer-postmark-transport')
+    return nodemailer.createTransport(postmarkTransport(options)) <i class="conum" data-value="3"></i><b>(3)</b>
+  }
+
+  send (message, configKey) {
+    const transport = configKey ? this._createTransport(configKey) : this.transport <i class="conum" data-value="4"></i><b>(4)</b>
+    return transport.sendMail(message) <i class="conum" data-value="5"></i><b>(5)</b>
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We create a default transport by calling <code>_createTransport</code> method and passing it the key to the config block.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Here we use the <a href="config">config provider</a> <code>get</code> method to pull the configuration for the given key.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Next, we return an instance of nodemailer transport.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Inside <code>send</code> method we create transport if a user defines a different config key at runtime. Otherwise, we use the default transport.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Finally, we will send the email using the transport <code>sendMail</code> method.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registering_driver"><a class="anchor" href="#_registering_driver"></a><a class="link" href="#_registering_driver">Registering Driver</a></h3>
+<div class="paragraph">
+<p>We are all set to register the driver by extending the Mail provider.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/extend.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Ioc = use('adonis-fold').Ioc
+const Postmark = require('../src/PostMark')
+
+Ioc.extend('Adonis/Addons/Mail', 'postmark', function (app) {
+  const Config = app.use('Adonis/Src/Config')
+  return new PostMark(Config)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_postmark_driver"><a class="anchor" href="#_using_postmark_driver"></a><a class="link" href="#_using_postmark_driver">Using PostMark Driver</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Mail.driver('postmark').send('emails.welcome', {}, message =&gt; {
+  // ...
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_testing_emails"><a class="anchor" href="#_testing_emails"></a><a class="link" href="#_testing_emails">Testing Emails</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs ships a <strong>Log Driver</strong>, which can be used when writing tests. Log driver will save all the emails to <strong>storage/logs/mail.eml</strong> file as a string. You can parse this file to make test assertions.</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,220 @@
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this tutorial, we will continue the topic of <a href="adonis-blog-part3">Database Models</a> by using them inside <strong>PostController</strong>. Make sure your server is up and running on <a href="http://localhost:3333" class="bare">http://localhost:3333</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fetching_blog_posts"><a class="anchor" href="#_fetching_blog_posts"></a><a class="link" href="#_fetching_blog_posts">Fetching Blog Posts</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quickly open the <strong>PostController</strong> file and paste the following snippet into it.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/PostController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Post = use('App/Model/Post') <i class="conum" data-value="1"></i><b>(1)</b>
+
+class PostController {
+
+  * index (request, response) {
+    const posts = yield Post.all() <i class="conum" data-value="2"></i><b>(2)</b>
+    yield response.sendView('home', { posts: posts.toJSON() }) <i class="conum" data-value="3"></i><b>(3)</b>
+  }
+
+}
+
+module.exports = PostController</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have made few changes to the existing controller file.</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here we import the previously created <strong>Post</strong> model.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Next we call the <code>all</code> method on the model to fetch all the posts.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Finally, we pass the posts to our home view.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Replace everything inside your view with the below code snippet.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/home.njk</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% extends 'master' %}
+
+{% block content %}
+  &lt;div class="posts-wrapper"&gt;
+    {% for post in posts %} <i class="conum" data-value="1"></i><b>(1)</b>
+      &lt;div class="post"&gt;
+        &lt;h2&gt;&lt;a href=""&gt; {{ post.title }} &lt;/a&gt;&lt;/h2&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+        &lt;p&gt; {{ post.content }} &lt;/p&gt;
+      &lt;/div&gt;
+    {% endfor %}
+  &lt;/div&gt;
+{% endblock %}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We make use of the templating engine <code>for</code> loop to iterate over the list of posts.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Here we display the post title and content.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you refresh the page, you will see nothing on the screen since there are <strong>no posts</strong> inside our database. Before we add them, let&#8217;s show a message on the web page if there are no posts.</p>
+</div>
+<div class="paragraph">
+<p>Just before the {% endfor %} tag add the below snippet.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/home.njk</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% else %}
+  &lt;h2&gt; No posts found &lt;/h2&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So it will be</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for post in posts %}
+    .....
+{% else %}
+  &lt;h2&gt; No posts found &lt;/h2&gt;
+{% endfor %}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_seeds_and_factories"><a class="anchor" href="#_seeds_and_factories"></a><a class="link" href="#_seeds_and_factories">Seeds And Factories</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before we implement the logic of adding new posts, we need some dummy posts. You can create new posts by running SQL queries inside your database interface, but that will defeat the whole purpose of rapid development and re-usability.</p>
+</div>
+<div class="paragraph">
+<p>There are plenty of use cases for <a href="seeds-and-factories#_about_factories">Database Factories</a> and <a href="seeds-and-factories#_about_seeds">Seeds</a>, but for now, we will use them to create some dummy blog posts.</p>
+</div>
+<div class="listingblock">
+<div class="title">database/factory.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Factory = use('Factory')
+
+Factory.blueprint('App/Model/Post', (fake) =&gt; {
+  return {
+    title: fake.sentence(),
+    content: fake.paragraph()
+  }
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Factories let you define blueprints for your models. Each blueprint takes the model name as the first parameter and a callback as the second parameter. Callback get&#8217;s access to the <a href="http://chancejs.com/" target="_blank" rel="noopener">chancejs</a> instance, which is used to generate random data.</p>
+</div>
+<div class="paragraph">
+<p>Next, we need to make use of the defined blueprint inside the <code>database/seeds/Database.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">database/seeds/Database.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Factory = use('Factory')
+
+class DatabaseSeeder {
+
+  * run () {
+    yield Factory.model('App/Model/Post').create(5) <i class="conum" data-value="1"></i><b>(1)</b>
+  }
+
+}
+
+module.exports = DatabaseSeeder</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here we make use of the blueprint and create five posts using the <code>create</code> method.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Finally, we need to seed this file by running an ace command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace db:seed</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>✔ seeded database successfully</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_final_enhancements"><a class="anchor" href="#_final_enhancements"></a><a class="link" href="#_final_enhancements">Final Enhancements</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now refresh the browser and you will see all the newly created posts. At last, we are going to make some enhancements to the posts list.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/home.njk</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ post.content | truncate(150) }} <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Here we use the <code>truncate</code> filter on the post content by limit the characters count to 150.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">public/style.css</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-css" data-lang="css">.post {
+  margin-top: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e8e8e8;
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_posts_list_preview"><a class="anchor" href="#_posts_list_preview"></a><a class="link" href="#_posts_list_preview">Posts List Preview</a></h3>
+<div class="paragraph">
+<p><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/v1472841292/posts-list_wkpogd.png" alt="posts list wkpogd"></span></p>
+</div>
+</div>
+</div>
+</div>

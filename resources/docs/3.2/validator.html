@@ -1,0 +1,383 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_validator_methods">Validator Methods</a></li>
+<li><a href="#_custom_rules">Custom Rules</a></li>
+<li><a href="#_extending_validator">Extending Validator</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Validating user data is an essential requirement for any application. AdonisJs makes use of <a href="http://indicative.adonisjs.com/" target="_blank" rel="noopener">Indicative</a> to sanitize and validate user inputs. It supports all validation rules from indicative, so make sure to check indicative&#8217;s documentation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Validator is not the part of the base installation and hence you are required to install and register it manually.</p>
+</div>
+<div class="listingblock">
+<div class="title">Installing From Npm</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save adonis-validation-provider</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const providers = [
+  // ...
+  'adonis-validation-provider/providers/ValidatorProvider'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const aliases = {
+  // ...
+  Validator: 'Adonis/Addons/Validator'
+  // ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take the most basic example of validating a form to create a user. For now, we will perform all the validations within the controller, but you are free to organize them into separate services.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start by defining the rules on the User model. Make sure also to check out indicative docs on <a href="http://indicative.adonisjs.com/#indicative-schema-rules" target="_blank" rel="noopener">schema rules</a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/User</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Lucid = use('Lucid')
+
+class User extends Lucid {
+  static get rules () { <i class="conum" data-value="1"></i><b>(1)</b>
+    return {
+      username: 'required|unique:users',
+      email: 'required|email|unique:users',
+      password: 'required|confirmed',
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+const Validator = use('Validator')
+const User = use('App/Model/User')
+
+class UsersController {
+
+  * store(request, response) {
+    const userData = request.all()
+    const validation = yield Validator.validate(userData, User.rules)  <i class="conum" data-value="2"></i><b>(2)</b>
+
+    if (validation.fails()) { <i class="conum" data-value="3"></i><b>(3)</b>
+      response.json(validation.messages()) <i class="conum" data-value="4"></i><b>(4)</b>
+      return
+    }
+
+    // Validation passed, create the user.
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We start by defining the rules inside the <strong>User Model</strong>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Next we validate the user data from request against the previously defined rules.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>validation.fails()</code> returns true, if validation has failed.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The <code>validation.messages()</code> will return all the error messages as an array.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validator_methods"><a class="anchor" href="#_validator_methods"></a><a class="link" href="#_validator_methods">Validator Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods exposed by the Validation Provider.</p>
+</div>
+<div class="sect3">
+<h4 id="_validate_data_rules_messages"><a class="anchor" href="#_validate_data_rules_messages"></a><a class="link" href="#_validate_data_rules_messages">validate(data, rules, [messages])</a></h4>
+<div class="paragraph">
+<p>Validate user data against defined rules and returns as soon as first validation get&#8217;s failed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const validation = yield Validator.validate(data, rules, messages)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_validateall_data_rules_messages"><a class="anchor" href="#_validateall_data_rules_messages"></a><a class="link" href="#_validateall_data_rules_messages">validateAll(data, rules, [messages])</a></h4>
+<div class="paragraph">
+<p>Same as <code>validate</code> but instead continue till the last validation and returns multiple error messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const validation = yield Validator.validateAll(data, rules, messages)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fails"><a class="anchor" href="#_fails"></a><a class="link" href="#_fails">fails()</a></h4>
+<div class="paragraph">
+<p>Returns a boolean indicating whether the validation has been failed or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const validation = yield Validator.validate(data, rules, messages)
+if (validation.fails ()) {
+  // validation failed
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_messages"><a class="anchor" href="#_messages"></a><a class="link" href="#_messages">messages</a></h4>
+<div class="paragraph">
+<p>Returns an array of validation error message</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const validation = yield Validator.validate(data, rules, messages)
+if (validation.fails ()) {
+  response.send({error: validation.messages()})
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sanitize_data_rules"><a class="anchor" href="#_sanitize_data_rules"></a><a class="link" href="#_sanitize_data_rules">sanitize(data, rules)</a></h4>
+<div class="paragraph">
+<p>Sanitize user data. Also make sure to check the <a href="sanitization">sanitization</a> docs for more info.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const data = request.all()
+const rules = {
+  email: 'normalize_email',
+  bio: 'strip_links',
+  fullname: 'capitalize'
+}
+
+const sanitizedData = Validator.sanitize(data, rules)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_is"><a class="anchor" href="#_is"></a><a class="link" href="#_is">is</a></h4>
+<div class="paragraph">
+<p>You can make use of is method to do inline validations instead of going through a complete validation lifecycle.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">if (Validator.is.email('foo')) {
+  // ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sanitizor"><a class="anchor" href="#_sanitizor"></a><a class="link" href="#_sanitizor">sanitizor</a></h4>
+<div class="paragraph">
+<p>Same as <code>is</code>, you can do inline data sanitisation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const sanitizedEmail = Validator
+  .sanitizor
+  .normalizeEmail('bar.sneaky+foo@googlemail.com')
+
+// returns barsneaky@gmail.com</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_custom_rules"><a class="anchor" href="#_custom_rules"></a><a class="link" href="#_custom_rules">Custom Rules</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs supports all the validation rules by Indicative, but also adds a few who are specific to AdonisJs only. Below is the list of custom rules.</p>
+</div>
+<div class="sect3">
+<h4 id="_unique_tablename_fieldname"><a class="anchor" href="#_unique_tablename_fieldname"></a><a class="link" href="#_unique_tablename_fieldname">unique(tableName, [fieldName])</a></h4>
+<div class="paragraph">
+<p>Makes sure a given value is unique in a given database table.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/User</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class User extends Lucid {
+
+  static get rules () {
+    return {
+      email: 'unique:users,email'
+    }
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now when trying to update a user, you would never want to run the unique validation for the same user. Same can be achieved by defining a <code>whereNot</code> clause.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/User</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class User extends Lucid {
+
+  static rules (userId) {
+    return {
+      email: `unique:users,email,id,${userId}`
+    }
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Inside you controller, you can do</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const User = use('App/Model/User')
+
+class UsersController {
+
+  * update (request, response) {
+    const userId = request.param('id')
+
+    const rules = User.rules(userId) <i class="conum" data-value="1"></i><b>(1)</b>
+    const validation = yield Validator.validate(request.all(), rules)
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>When fetching the rules from the <strong>User Model</strong>, we pass along the user id which gets ignored when checking the email uniqueness.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_validator"><a class="anchor" href="#_extending_validator"></a><a class="link" href="#_extending_validator">Extending Validator</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you have the requirement of extending the <strong>Validator Provider</strong> by adding new validation rules. You can make use of the <code>extend</code> method provided by <a href="http://indicative.adonisjs.com/#indicative-extending" target="_blank" rel="noopener">Indicative</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_application_specific"><a class="anchor" href="#_application_specific"></a><a class="link" href="#_application_specific">Application Specific</a></h4>
+<div class="paragraph">
+<p>For application specific rules you can make use of <code>app/Listeners/Http.js</code> file to listen for the <strong>start</strong> event and your custom rule.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Listeners/Http.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Http.onStart = function () {
+
+  const Validator = use('Adonis/Addons/Validator')
+  Validator.extend('adult', (data, field, message, args, get) =&gt; {
+
+    return new Promise((resolve, reject) =&gt; {
+      const fieldValue = get(data, field)
+      if (fieldValue &gt; 18) {
+        resolve('Allowed')
+        return
+      }
+      reject(message)
+    })
+
+  }, 'You must be an adult')
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_via_provider"><a class="anchor" href="#_via_provider"></a><a class="link" href="#_via_provider">Via Provider</a></h4>
+<div class="paragraph">
+<p>If you are writing a module/addon for AdonisJs, you can add your custom rules inside the <code>boot</code> method of your service provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const ServiceProvider = require('adonis-fold').ServiceProvider
+
+class MyServiceProvider extends ServiceProvider {
+
+  _adultValidation (data, field, message, args, get) {
+
+    return new Promise((resolve, reject) =&gt; {
+      const fieldValue = get(data, field)
+      if (fieldValue &gt; 18) {
+        resolve('Allowed')
+        return
+      }
+      reject(message)
+    })
+
+  }
+
+  boot () {
+    const Validator = use('Adonis/Addons/Validator')
+    Validator.extend('adult', this._adultValidation, 'You must be an adult')
+  }
+
+  * register () {
+    // register bindings
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can make use of the above defined <code>adult</code> like any other validation rule.</p>
+</div>
+</div>
+</div>
+</div>

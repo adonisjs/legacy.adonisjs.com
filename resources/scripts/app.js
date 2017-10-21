@@ -56,4 +56,14 @@ Zepto(function () {
       showMobileMenu(this)
     }
   })
+
+
+  if ($('#version-switch')) {
+    $('#version-switch').on('change', function () {
+      const currentUrl = window.location.pathname
+      const selectedVersion = $(this).val()
+      window.location = currentUrl.replace(/\/docs\/\d\.\d/, `/docs/${selectedVersion}`)
+    })
+  }
+
 })

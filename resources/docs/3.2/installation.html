@@ -1,0 +1,280 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_installing_node_js_npm">Installing Node.js &amp; Npm</a></li>
+<li><a href="#_installing_adonis_cli">Installing Adonis-CLI</a></li>
+<li><a href="#_creating_new_project">Creating New Project</a></li>
+<li><a href="#_getting_proxies_error">Getting Proxies Error</a></li>
+<li><a href="#_serving_the_app">Serving The App</a></li>
+<li><a href="#_manual_installation">Manual Installation</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Installing AdonisJs is a relatively straightforward process and will only take a few minutes. Feel free to <a href="https://github.com/adonisjs/adonis-framework/issues" target="_blank" rel="noopener">file an issue</a> if you ever face any problems during the installation process.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_node_js_npm"><a class="anchor" href="#_installing_node_js_npm"></a><a class="link" href="#_installing_node_js_npm">Installing Node.js &amp; Npm</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Being a Node.js framework, AdonisJs has a core dependency on Node.js. Make sure the installed version of <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a> is <strong>4.0</strong> or greater.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://www.npmjs.org/" target="_blank" rel="noopener">Npm</a> is a package manager for Node.js. During the development process, you will find yourself using <code>npm install</code> a lot. Hence all dependencies are pulled from npm only.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In October 2016 <code>v6.x.x</code> of Node.js will be under LTS and also the newer versions of AdonisJs will be targeted towards Node.js v6.0 or greater. So it is recommended to use one of the latest releases of Node.js.
+The existing version of the framework will be compatible with Node.js 4.0 or greater.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_downloading"><a class="anchor" href="#_downloading"></a><a class="link" href="#_downloading">Downloading</a></h3>
+<div class="paragraph">
+<p>You can download the installer for your OS from <a href="https://nodejs.org/en/download" target="_blank" rel="noopener">Node.js downloads page</a>, or should make use of <a href="https://github.com/creationix/nvm#install-script" target="_blank" rel="noopener">Nvm</a>. Nvm is a command line tool to install and use multiple versions of Node.js on a single machine.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_verifying_installation"><a class="anchor" href="#_verifying_installation"></a><a class="link" href="#_verifying_installation">Verifying Installation</a></h3>
+<div class="paragraph">
+<p>Once you are done with the download process, make sure to verify the installed version of Node.js and npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">node -v
+# &gt;= v4.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and for npm</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm -v
+# &gt;= 3.0.0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_adonis_cli"><a class="anchor" href="#_installing_adonis_cli"></a><a class="link" href="#_installing_adonis_cli">Installing Adonis-CLI</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adonis-CLI is a command line tool to install stable and dev releases of AdonisJs with all required dependencies. It is an <a href="https://www.npmjs.com/package/adonis-cli" target="_blank" rel="noopener">npm package</a> and needs to be installed globally.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i -g adonis-cli</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run the following command to verify the installation of <code>adonis-cli</code>. Sometimes you may have to open a new terminal tab to get it working.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis --help</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Commands
+------------
+Usage: index [options] [command]
+
+  Commands:
+
+    new [options] &lt;name&gt;  Scaffold a new AdonisJs application with the name provided.
+
+  Options:
+
+    -h, --help     output usage information
+    -V, --version  output the version number</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_new_project"><a class="anchor" href="#_creating_new_project"></a><a class="link" href="#_creating_new_project">Creating New Project</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the <code>adonis-cli</code> has been installed, you can make use of the <code>adonis</code> global from your command line. Let&#8217;s use it to create a new project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis new yardstick</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_yarn"><a class="anchor" href="#_using_yarn"></a><a class="link" href="#_using_yarn">Using Yarn</a></h3>
+<div class="paragraph">
+<p>If you are thrilled with <a href="https://yarnpkg.com/" target="_blank" rel="noopener">yarn</a> and do not want to install your dependencies using npm. Run the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis new yardstick --yarn</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ Your current Node.js &amp; npm version match the AdonisJs requirements!
+
+⠋ Cloning master branch of adonisjs/adonis-app blueprint
+    clone: Repository cloned
+
+⠧ Installing dependencies using npm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>new</code> command will create a project called <strong>yardstick</strong> with pre-defined directory structure and will also install all the required dependencies from npm.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If <code>new</code> command fails in the middle, make sure to <code>cd</code> into the newly created project and manually run <code>npm install</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scaffold_options"><a class="anchor" href="#_scaffold_options"></a><a class="link" href="#_scaffold_options">Scaffold Options</a></h3>
+<div class="paragraph">
+<p>You can provide number of options to mimic the scaffold process.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Flag</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--skip-install</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To skip the dependecies installation from npm or yarn</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--branch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Adonisjs makes use of master branch when creating a new project. For bleeding edge changes, you can create a project from <code>develop</code> branch.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--blueprint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blueprint is the incremental path to the Github repo. By default AdonisJs makes use of <code>adonisjs/adonis-app</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--yarn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Make use of yarn for installing modules</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--npm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Make use of npm for installing modules</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_proxies_error"><a class="anchor" href="#_getting_proxies_error"></a><a class="link" href="#_getting_proxies_error">Getting Proxies Error</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Older versions of Node.js requires <code>--harmony_proxies</code> flag to add support for <strong>ES2015 Proxies</strong>. If you are using <strong>Node.js &lt; 6.0</strong>, make sure to make following changes.</p>
+</div>
+<div class="paragraph">
+<p>Replace the scripts inside <code>package.json</code> file with following</p>
+</div>
+<div class="listingblock">
+<div class="title">package.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">"scripts": {
+  "serve:dev": "nodemon --watch app --watch bootstrap --watch config --watch .env -x \"node --harmony_proxies\" server.js",
+  "serve": "node --harmony_proxies server.js"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace the first line of the <code>ace</code> file with following
+.ace</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">#!/usr/bin/env node --harmony_proxies</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_serving_the_app"><a class="anchor" href="#_serving_the_app"></a><a class="link" href="#_serving_the_app">Serving The App</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You are all set to see your brand new project. Run the below commands to start a development server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">cd yardstick
+npm run serve:dev</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">[nodemon] starting `node server.js`
+info adonis:framework serving app on http://localhost:3333</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, AdonisJs will use port <code>3333</code> to start the server, which is configurable via <code>.env</code> file. Now open <a href="http://localhost:3333" class="bare">http://localhost:3333</a> to see the welcome page.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="http://i.imgbox.com/xAYvmnBq.png" alt="Welcome page"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manual_installation"><a class="anchor" href="#_manual_installation"></a><a class="link" href="#_manual_installation">Manual Installation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If for any reasons you are not using <a href="#_installing_adonis_cli">Adonis CLI</a> ( which you should ), you have to perform following steps to clone the repo from GitHub and manually install dependencies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">git clone --dissociate https://github.com/adonisjs/adonis-app yardstick
+cd yardstick</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Installing dependencies</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm install</code></pre>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,170 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_global_middleware">Global Middleware</a></li>
+<li><a href="#_named_middleware">Named Middleware</a></li>
+<li><a href="#_creating_a_middleware">Creating A Middleware</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>HTTP Middleware is a layer of methods executed before your Routes actions. They have more than a single use case. For example:</p>
+</div>
+<div class="paragraph">
+<p>The <strong>body parser</strong> middleware is responsible for parsing the request body. Whereas the <strong>Auth</strong> middleware is used to authenticate the requests and throw <strong>401 Exception</strong> if the user is not authenticated.</p>
+</div>
+<div class="paragraph">
+<p>Middleware can:</p>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Decorate request object and add values to it.</p>
+</li>
+<li>
+<p>Respond to a given request, without reaching your route action.</p>
+</li>
+<li>
+<p>Or to deny requests by throwing errors.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_global_middleware"><a class="anchor" href="#_global_middleware"></a><a class="link" href="#_global_middleware">Global Middleware</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Global middleware is defined inside <code>app/Http/kernel.js</code> file as an array and get executed on every request in the sequence they are registered.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const globalMiddleware = [
+  // ...
+  'Adonis/Middleware/Cors',
+  'Adonis/Src/BodyParser',
+  // ...
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_named_middleware"><a class="anchor" href="#_named_middleware"></a><a class="link" href="#_named_middleware">Named Middleware</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Named middleware on the other hand are registered with a unique name and you are required to assign them manually on routes. For example: The <code>auth</code> middleware is used to protect routes from <strong>unauthenticated</strong> users.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const namedMiddleware = {
+  // ...
+  auth: 'Adonis/Middleware/Auth'
+  // ...
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Usage</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route
+  .get('accounts/:id', 'AccountsController.show')
+  .middleware('auth')
+
+// or
+
+Route.group('auth-routes', () =&gt; {
+  Route.get('accounts/:id', 'AccountsController.show')
+}).middleware('auth')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_a_middleware"><a class="anchor" href="#_creating_a_middleware"></a><a class="link" href="#_creating_a_middleware">Creating A Middleware</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Application middleware lives inside the <code>app/Http/Middleware</code> directory. Each middleware is a single dedicated <strong>ES2015 Class</strong> with a mandatory <code>handle</code> method.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s make use of ace to create a middleware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:middleware CountryDetector
+
+# create: app/Http/Middleware/CountryDetector.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Middleware/CountryDetector.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class CountryDetector {
+
+  * handle (request, response, next) {
+    yield next
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>The <code>handle</code> method is an ES2015 generator.</p>
+</li>
+<li>
+<p>Similar to your controller methods, it also receives <a href="request">request</a> and <a href="response">response</a> instances with an additional parameter <code>next</code>.</p>
+</li>
+<li>
+<p>Make sure to call <code>yield next</code> when you want your middleware to pass the request to the next middleware or route action.</p>
+</li>
+<li>
+<p>Also, you can end the request with the help of the <code>response</code> instance.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s build upon our <strong>CountryDetector</strong> middleware to detect the visitor country based upon their IP address.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Middleware/CountryDetector.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const geoip = use('geoip-lite') // npm module
+
+class CountryDetector {
+
+  * handle (request, response, next) {
+    const ip = request.ip()
+    request.country = geoip.lookup(ip).country
+    yield next
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to register this as a <strong>global or named</strong> middleware based upon the nature of the application. Let&#8217;s register it as a global middleware for now.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const globalMiddleware = [
+  // ...
+  'App/Http/Middleware/CountryDetector'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Congratulations! Now all Http requests will have the <code>country</code> property since we are decorating the <code>request</code> instance.</p>
+</div>
+</div>
+</div>

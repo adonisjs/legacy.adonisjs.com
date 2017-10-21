@@ -1,0 +1,879 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_about_ws_provider">About Ws Provider</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_channels">Channels</a></li>
+<li><a href="#_controllers">Controllers</a></li>
+<li><a href="#_rooms">Rooms</a></li>
+<li><a href="#_presence">Presence</a></li>
+<li><a href="#_presence_methods">Presence Methods</a></li>
+<li><a href="#_socket_methods">Socket Methods</a></li>
+<li><a href="#_channel_methods">Channel Methods</a></li>
+<li><a href="#_websocket_client">WebSocket Client</a></li>
+<li><a href="#_client_channel_methods">Client Channel Methods</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>WebSocket Provider makes it super easy to build real-time applications in AdonisJs. It comes with out of the box support for <strong>authentication</strong>, <strong>channels</strong> and <strong>rooms</strong> management.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_ws_provider"><a class="anchor" href="#_about_ws_provider"></a><a class="link" href="#_about_ws_provider">About Ws Provider</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>You are supposed to define channels to receive incoming WebSocket connections and same is done inside <code>app/Ws/socket.js</code> file.</p>
+</li>
+<li>
+<p>All incoming connections can be authenticated using the <code>auth</code> middleware.</p>
+</li>
+<li>
+<p>All web sockets actions supports <strong>ES2015</strong> generators. For example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Ws.channel('/chat', function (socket) {
+  socket.on('message', function * (payload) {
+  })
+})</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>You can attach controllers to your channels, the same as with routes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Ws.channel('/chat', 'ChatController')</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Feel free to skip the setup process if you are using AdonisJs <strong>3.2 or later</strong>. Since Web Sockets are pre-configured.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Install via npm</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save adonis-websocket</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to register the provider and setup alias inside <code>bootstrap/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const providers = [
+  'adonis-websocket/providers/WsProvider'
+]
+
+const aliases = {
+  Ws: 'Adonis/Addons/Ws'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to create required directories and files to organize our code.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">mkdir -p app/Ws/Controllers
+touch app/Ws/socket.js
+touch app/Ws/kernel.js</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>socket.js</code> file is used to define websocket channels, you can think of it as the Http routes file.</p>
+<div class="listingblock">
+<div class="title">app/Ws/socket.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Ws = use('Ws')
+
+Ws.channel('/chat', function (socket) {
+  // here you go
+})</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The <code>kernel.js</code> file is used to define global and named middleware just like your Http middleware but for Websocket connections.</p>
+<div class="listingblock">
+<div class="title">app/Ws/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Ws = use('Ws')
+
+const globalMiddleware = [
+  'Adonis/Middleware/AuthInit'
+]
+
+const namedMiddleware = {
+  auth: 'Adonis/Middleware/Auth'
+}
+
+Ws.global(globalMiddleware)
+Ws.named(namedMiddleware)</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Finally, we need to load <code>socket.js</code> and <code>kernel.js</code> file when booting the Http server and same can be done inside <code>bootstrap/http.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/http.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">use(Helpers.makeNameSpace('Ws', 'kernel'))
+use(Helpers.makeNameSpace('Ws', 'socket'))</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Check out the following video showing how to exchange messages between client and the server.</p>
+</div>
+<div class="videoblock">
+<div class="content">
+<iframe width="100%" height="480" src="https://www.youtube.com/embed/rQTIwBV_ZgY?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_channels"><a class="anchor" href="#_channels"></a><a class="link" href="#_channels">Channels</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Channels make it easier to distribute logic around exposing web socket endpoints. For each channel, you can follow different authentication process or bind different middleware to it.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Adonisjs makes use of <strong>multiplexing</strong> instead of creating a different connection for each channel.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">app/Ws/socket.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Ws = use('Ws')
+
+Ws.channel('chat', function (socket, request, presence) {
+  socket.on('news', function (message) {
+
+  })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above closure will be executed every time a new socket will join the <strong>chat</strong> channel and receives following.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">socket</dt>
+<dd>
+<p>User socket instance to emit and listen for events.</p>
+</dd>
+<dt class="hdlist1">request</dt>
+<dd>
+<p>Instance of <a href="request">request</a> instantiated at the time of handshake.</p>
+</dd>
+<dt class="hdlist1">presence</dt>
+<dd>
+<p>A special presence instance to track the socket. Read more on <a href="#_presence">presence</a>.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_controllers"><a class="anchor" href="#_controllers"></a><a class="link" href="#_controllers">Controllers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Apart from closures, you can also bind controllers to channels. All controllers are stored inside <code>app/Ws/Controllers</code> directory and can be referenced the same way as <strong>Route controllers</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Ws.channel('chat', 'ChatController')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now controllers can listen for new events just by creating appropriate methods on it.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Ws/Controllers/ChatController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class ChatController {
+
+  constructor (socket) {
+    this.socket = socket
+  }
+
+  onMessage (message) {
+    // listening for message event
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>onMessage</code> method will be invoked every time message event will be fired from the client. Also, you can make your listeners a generator method for doing async operations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">onMessage (message) {
+
+}
+
+// CAN BE
+
+* onMessage (message) {
+  const savedMessage = yield Message.create({ body: message })
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All events listeners must start with <code>on</code> and the <strong>camel case</strong> representation of the event name. For example <code>new:user</code> will invoke <code>onNewUser</code> method on the controller.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event Name</th>
+<th class="tableblock halign-left valign-top">Controller Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">message</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">onMessage</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">new:user</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">onNewUser</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user:left</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">onUserLeft</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rooms"><a class="anchor" href="#_rooms"></a><a class="link" href="#_rooms">Rooms</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Rooms make it easier to build multi-room chat systems. For example, Slack has public rooms that anyone can join and leave, whereas private rooms need further authorization.</p>
+</div>
+<div class="paragraph">
+<p>In the same manner, AdonisJs gives you hooks to authorize a socket before it can listen for events inside a room.</p>
+</div>
+<div class="sect2">
+<h3 id="_joining_a_room"><a class="anchor" href="#_joining_a_room"></a><a class="link" href="#_joining_a_room">Joining A Room</a></h3>
+<div class="paragraph">
+<p>The <code>joinRoom</code> method on the channel controller has invoked automatically every time a socket tries to join a room. You can make use of this method to authorize the join action or deny it by throwing an exception.</p>
+</div>
+<div class="sect3">
+<h4 id="_server"><a class="anchor" href="#_server"></a><a class="link" href="#_server">Server</a></h4>
+<div class="listingblock">
+<div class="title">app/Ws/socket.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Ws = use('Ws')
+
+Ws
+.channel('chat', 'ChatController')
+.middleware('auth')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Ws/Controllers/ChatController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class ChatController {
+  constructor (socket) {
+    this.socket = socket
+  }
+
+  * joinRoom (room) {
+    const user = this.socket.currentUser
+    // throw error to deny a socket from joining room
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_client"><a class="anchor" href="#_client"></a><a class="link" href="#_client">Client</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const io = ws('')
+const client = io.channel('chat').connect()
+
+client.joinRoom('lobby', {}, function (error, joined) {
+  // status
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_emitting_messages_to_a_room"><a class="anchor" href="#_emitting_messages_to_a_room"></a><a class="link" href="#_emitting_messages_to_a_room">Emitting Messages To A Room</a></h3>
+<div class="paragraph">
+<p>Once a socket has joined a room, it can listen for messages.</p>
+</div>
+<div class="sect3">
+<h4 id="_server_2"><a class="anchor" href="#_server_2"></a><a class="link" href="#_server_2">Server</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">this.socket.inRoom('lobby').emit('message', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_client_2"><a class="anchor" href="#_client_2"></a><a class="link" href="#_client_2">Client</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client.on('message', function (room, message) {
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_leaving_a_room"><a class="anchor" href="#_leaving_a_room"></a><a class="link" href="#_leaving_a_room">Leaving A Room</a></h3>
+<div class="paragraph">
+<p>In order to leave a room, the client can call <code>leaveRoom</code> method.</p>
+</div>
+<div class="sect3">
+<h4 id="_server_3"><a class="anchor" href="#_server_3"></a><a class="link" href="#_server_3">Server</a></h4>
+<div class="listingblock">
+<div class="title">app/Ws/Controllers/ChatController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class ChatController {
+  constructor (socket) {
+    this.socket = socket
+  }
+
+  * leaveRoom (room) {
+    // Do cleanup if required
+  }
+
+  * joinRoom (room) {
+    const user = this.socket.currentUser
+    // throw error to deny a socket from joining room
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_client_3"><a class="anchor" href="#_client_3"></a><a class="link" href="#_client_3">Client</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const io = ws('')
+const client = io.channel('chat').connect()
+client.leaveRoom('lobby', {}, function (error, left) {
+  // status
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_presence"><a class="anchor" href="#_presence"></a><a class="link" href="#_presence">Presence</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The presence feature allows you to track sockets for a given user. It is helpful in showing the list of online users and number of devices they are online from. Also when a user logouts, you can <strong>disconnect</strong> all of their related sockets to make sure they do not receive any realtime messages.</p>
+</div>
+<div class="paragraph">
+<p>Checkout this video to understand the presence in-depth.</p>
+</div>
+<div class="videoblock">
+<div class="content">
+<iframe width="100%" height="480" src="https://www.youtube.com/embed/p_QNEZdQt6Y?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_presence_methods"><a class="anchor" href="#_presence_methods"></a><a class="link" href="#_presence_methods">Presence Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of presence methods.</p>
+</div>
+<div class="sect2">
+<h3 id="_track_socket_userid_meta"><a class="anchor" href="#_track_socket_userid_meta"></a><a class="link" href="#_track_socket_userid_meta">track(socket, userId, [meta])</a></h3>
+<div class="paragraph">
+<p>The <code>track</code> method allows you to track a socket for a given user using their <strong>userId</strong>. Optionally you can pass meta data too.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class ChatController {
+
+  constructor (socket, request, presence) {
+    presence.track(socket, socket.currentUser.id, {
+      device: 'chrome'
+    })
+  }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pull_userid_callback"><a class="anchor" href="#_pull_userid_callback"></a><a class="link" href="#_pull_userid_callback">pull(userId, callback)</a></h3>
+<div class="paragraph">
+<p>Pull a list of sockets from the presence list for a given user. Pulled sockets will not be tracked anymore.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Ws = use('Ws')
+const chatChannel = Ws.channel('chat')
+const chromeOnlySockets = chatChannel.presence.pull(userId, function (payload) {
+  return payload.meta.device === 'chrome'
+})
+
+// disconnect user sockets from chrome
+chromeOnlySockets.forEach((payload) =&gt; {
+  payload.socket.disconnect()
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_socket_methods"><a class="anchor" href="#_socket_methods"></a><a class="link" href="#_socket_methods">Socket Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods you can call from the socket instance.</p>
+</div>
+<div class="sect3">
+<h4 id="_on_event_callback"><a class="anchor" href="#_on_event_callback"></a><a class="link" href="#_on_event_callback">on(event, callback)</a></h4>
+<div class="paragraph">
+<p>Listen for an event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.on('greet', function (greeting) {
+
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_once_event_callback"><a class="anchor" href="#_once_event_callback"></a><a class="link" href="#_once_event_callback">once(event, callback)</a></h4>
+<div class="paragraph">
+<p>Listen for an event only once.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.once('greet', function (greeting) {
+
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_emit_event_properties"><a class="anchor" href="#_emit_event_properties"></a><a class="link" href="#_emit_event_properties">emit(event, &#8230;&#8203;properties)</a></h4>
+<div class="paragraph">
+<p>Emit an event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_toeveryone"><a class="anchor" href="#_toeveryone"></a><a class="link" href="#_toeveryone">toEveryone()</a></h4>
+<div class="paragraph">
+<p>Emit a message to everyone including the originating socket itself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.toEveryone().emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tome"><a class="anchor" href="#_tome"></a><a class="link" href="#_tome">toMe()</a></h4>
+<div class="paragraph">
+<p>Emit a message to the originating socket only.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.toMe().emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_exceptme"><a class="anchor" href="#_exceptme"></a><a class="link" href="#_exceptme">exceptMe()</a></h4>
+<div class="paragraph">
+<p>Emit a message to everyone except the originating socket.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.exceptMe().emit('user:join', 'User joined!')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_to_ids"><a class="anchor" href="#_to_ids"></a><a class="link" href="#_to_ids">to(ids)</a></h4>
+<div class="paragraph">
+<p>Emit a message to specific socket ids only.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.to([]).emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inroom_room"><a class="anchor" href="#_inroom_room"></a><a class="link" href="#_inroom_room">inRoom(room)</a></h4>
+<div class="paragraph">
+<p>Emit a message a given room.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.inRoom('lobby').emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inrooms_rooms"><a class="anchor" href="#_inrooms_rooms"></a><a class="link" href="#_inrooms_rooms">inRooms(rooms)</a></h4>
+<div class="paragraph">
+<p>Emit a message to multiple rooms.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.inRoom(['lobby', 'watercooler']).emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_disconnect"><a class="anchor" href="#_disconnect"></a><a class="link" href="#_disconnect">disconnect</a></h4>
+<div class="paragraph">
+<p>Disconnect a socket from receiving/sending messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">socket.disconnect()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_channel_methods"><a class="anchor" href="#_channel_methods"></a><a class="link" href="#_channel_methods">Channel Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods can be used on the channel instance.</p>
+</div>
+<div class="sect3">
+<h4 id="_middleware_middleware"><a class="anchor" href="#_middleware_middleware"></a><a class="link" href="#_middleware_middleware">middleware(&#8230;&#8203;middleware)</a></h4>
+<div class="paragraph">
+<p>Apply an array of middleware on a given channel. Make sure to define middleware inside <code>app/Ws/kernel.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Ws
+  .channel('chat')
+  .middleware('auth')
+
+// OR
+
+Ws
+  .channel('chat')
+  .middleware('auth:jwt')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_emit_event_properties_2"><a class="anchor" href="#_emit_event_properties_2"></a><a class="link" href="#_emit_event_properties_2">emit(event, &#8230;&#8203;properties)</a></h4>
+<div class="paragraph">
+<p>Emit a message to all the sockets connected to a given channel.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const chatChannel = Ws.channel('chat')
+chatChannel.emit('message', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inroom_room_2"><a class="anchor" href="#_inroom_room_2"></a><a class="link" href="#_inroom_room_2">inRoom(room)</a></h4>
+<div class="paragraph">
+<p>Emit a message a given room.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const chatChannel = Ws.channel('chat')
+chatChannel.inRoom('lobby').emit('message', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inrooms_rooms_2"><a class="anchor" href="#_inrooms_rooms_2"></a><a class="link" href="#_inrooms_rooms_2">inRooms(rooms)</a></h4>
+<div class="paragraph">
+<p>Emit a message to all given rooms.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const chatChannel = Ws.channel('chat')
+chatChannel.inRooms(['lobby', 'watercooler']).emit('message', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_to_ids_2"><a class="anchor" href="#_to_ids_2"></a><a class="link" href="#_to_ids_2">to(ids)</a></h4>
+<div class="paragraph">
+<p>Emit a message to specific socket ids only.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const chatChannel = Ws.channel('chat')
+chatChannel.to([]).emit('greet', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_socketid"><a class="anchor" href="#_get_socketid"></a><a class="link" href="#_get_socketid">get(socketId)</a></h4>
+<div class="paragraph">
+<p>Get socket instance using the socket id.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const chatChannel = Ws.channel('chat')
+const socket = chatChannel.get(socketId)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_websocket_client"><a class="anchor" href="#_websocket_client"></a><a class="link" href="#_websocket_client">WebSocket Client</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The client library to be used with browser-based web apps can be installed as <strong>Common Js</strong> module from <a href="https://npmjs.org/package/adonis-websocket-client" target="_blank" rel="noopener">npm</a>, <strong>AMD</strong> module from bower or you can reference it from a <a href="https://unpkg.com/adonis-websocket-client/dist/ws.min.js" target="_blank" rel="noopener">CDN</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_commonjs_usage"><a class="anchor" href="#_commonjs_usage"></a><a class="link" href="#_commonjs_usage">CommonJs Usage</a></h3>
+<div class="paragraph">
+<p>After installation, you can require the module just like any other npm module.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save adonis-websocket-client</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const ws = require('adonis-websocket-client')
+const io = ws('http://localhost:3333', {})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_amd_usage"><a class="anchor" href="#_amd_usage"></a><a class="link" href="#_amd_usage">AMD Usage</a></h3>
+<div class="paragraph">
+<p>First, install the package from bower.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">bower i --save adonis-websocket-client</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">requirejs(['adonis-websocket-client'], function (ws) {
+  const io = ws('http://localhost:3333', {})
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cdn_usage"><a class="anchor" href="#_cdn_usage"></a><a class="link" href="#_cdn_usage">CDN Usage</a></h3>
+<div class="paragraph">
+<p>The CDN script file will create a <code>ws</code> global.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;script src="https://unpkg.com/adonis-websocket-client/dist/ws.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const io = ws('http://localhost:3333', {})
+&lt;/script&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_client_channel_methods"><a class="anchor" href="#_client_channel_methods"></a><a class="link" href="#_client_channel_methods">Client Channel Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods you can call using the client SDK.</p>
+</div>
+<div class="sect3">
+<h4 id="_connect_callback"><a class="anchor" href="#_connect_callback"></a><a class="link" href="#_connect_callback">connect(callback)</a></h4>
+<div class="paragraph">
+<p>Connect to a given channel.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const client = io.channel('chat')
+client.connect(function (error, connected) {
+  if (error) {
+    // do something
+    return
+  }
+  // all good
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_emit_event_properties_3"><a class="anchor" href="#_emit_event_properties_3"></a><a class="link" href="#_emit_event_properties_3">emit(event, &#8230;&#8203;properties)</a></h4>
+<div class="paragraph">
+<p>Emit an event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client.emit('message', 'Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_on_event_callback_2"><a class="anchor" href="#_on_event_callback_2"></a><a class="link" href="#_on_event_callback_2">on(event, callback)</a></h4>
+<div class="paragraph">
+<p>Listen for an event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client.on('message', function (message) {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_once_event_callback_2"><a class="anchor" href="#_once_event_callback_2"></a><a class="link" href="#_once_event_callback_2">once(event, callback)</a></h4>
+<div class="paragraph">
+<p>Listen for an event only once.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client.once('message', function (message) {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_joinroom_room_payload_callback"><a class="anchor" href="#_joinroom_room_payload_callback"></a><a class="link" href="#_joinroom_room_payload_callback">joinRoom(room, payload, callback)</a></h4>
+<div class="paragraph">
+<p>Notify server to join a room and send optional data object as <strong>payload</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client.joinRoom('lobby', {}, function (error, joined) {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_leaveroom_room_payload_callback"><a class="anchor" href="#_leaveroom_room_payload_callback"></a><a class="link" href="#_leaveroom_room_payload_callback">leaveRoom(room, payload, callback)</a></h4>
+<div class="paragraph">
+<p>Leave a room.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client.leaveRoom('lobby', {}, function (error, left) {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withbasicauth_username_password"><a class="anchor" href="#_withbasicauth_username_password"></a><a class="link" href="#_withbasicauth_username_password">withBasicAuth(username, password)</a></h4>
+<div class="paragraph">
+<p>Connect to the channel by passing the username and password to be used for basic auth.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client
+  .withBasicAuth('foo', 'secret')
+  .connect(function () {
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withjwt_token"><a class="anchor" href="#_withjwt_token"></a><a class="link" href="#_withjwt_token">withJwt(token)</a></h4>
+<div class="paragraph">
+<p>Connect to the channel by passing JWT token to be used for authentication.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client
+  .withJwt('token')
+  .connect(function () {
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withapikey_token"><a class="anchor" href="#_withapikey_token"></a><a class="link" href="#_withapikey_token">withApiKey(token)</a></h4>
+<div class="paragraph">
+<p>Connect to the channel by passing personal API token to be used for authentication.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">client
+  .withApiKey('personal_token')
+  .connect(function () {
+  })</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

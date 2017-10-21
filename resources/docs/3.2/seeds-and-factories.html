@@ -1,0 +1,368 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_about_seeds">About Seeds</a></li>
+<li><a href="#_about_factories">About Factories</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_factory_methods">Factory Methods</a></li>
+<li><a href="#_generating_fake_data">Generating Fake Data</a></li>
+<li><a href="#_password_hashing">Password Hashing</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As <a href="migrations">Migrations</a> helps you in automating the process of setting up database schema. Database <strong>Seeds &amp; Factories</strong> helps in seeding the database with dummy data. Dummy data can be used while running tests or setting up the initial state of an application.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_seeds"><a class="anchor" href="#_about_seeds"></a><a class="link" href="#_about_seeds">About Seeds</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Seeds are stored inside <code>database/seeds</code> directory.</p>
+</li>
+<li>
+<p>Each seed file is an <strong>ES2015</strong> class and must have a <code>run</code> method.</p>
+</li>
+<li>
+<p>A single seed file can be used to add the dummy for multiple database tables.</p>
+</li>
+<li>
+<p>Make use of <code>db:seed</code> command to execute all the seed files from the <code>database/seeds</code> directory.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_factories"><a class="anchor" href="#_about_factories"></a><a class="link" href="#_about_factories">About Factories</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Factories helps you in defining model blueprints using fake data.</p>
+</li>
+<li>
+<p>Each blueprint <strong>callback</strong> receives an instance of <a href="http://chancejs.com" target="_blank" rel="noopener">chancejs</a> to generate random/fake data.</p>
+</li>
+<li>
+<p>Factories can be used inside the seed file using the <code>use('Factory')</code> provider.</p>
+</li>
+<li>
+<p>You can also use factories when writing automated tests.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with an example of using both <strong>Factories</strong> and <strong>Seeds</strong> to add dummy data to the <code>users</code> table.</p>
+</div>
+<div class="listingblock">
+<div class="title">database/factory.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Factory = use('Factory')
+
+Factory.blueprint('App/Model/User', (fake) =&gt; {
+  return {
+    username: fake.username(),
+    email: fake.email(),
+    password: fake.password(),
+    firstName: fake.first(),
+    lastName: fake.last()
+  }
+})</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">database/seeds/Database.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Factory = use('Factory')
+
+class DatabaseSeeder {
+  * run () {
+    yield Factory.model('App/Model/User').create(5)
+  }
+}
+
+module.exports = DatabaseSeeder</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Running The Seed Command</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace db:seed</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We started by defining a blueprint for the <code>User</code> model inside <code>database/factory.js</code> file. Each blueprint method should return an object defining the fields to be inserted into the database table using the <strong>Model create</strong> method.</p>
+</div>
+<div class="paragraph">
+<p>Since factories blueprints are defined once and used everywhere, we need to import the <code>Factory</code> provider inside the <code>database/seeds/Database.js</code> file and execute the <code>create</code> method passing the number of rows(5) to it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_factory_methods"><a class="anchor" href="#_factory_methods"></a><a class="link" href="#_factory_methods">Factory Methods</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_when_using_lucid"><a class="anchor" href="#_when_using_lucid"></a><a class="link" href="#_when_using_lucid">When Using Lucid</a></h3>
+<div class="paragraph">
+<p>With lucid models, you can make use of the below methods to define and use blueprints in your application.</p>
+</div>
+<div class="sect3">
+<h4 id="_blueprint_modelnamespace_callback"><a class="anchor" href="#_blueprint_modelnamespace_callback"></a><a class="link" href="#_blueprint_modelnamespace_callback">blueprint(modelNamespace, callback)</a></h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure the corresponding model does exists.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Factory.blueprint('App/Model/User', (fake) =&gt; {
+  return {
+    username: fake.username()
+  }
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_rows_1"><a class="anchor" href="#_create_rows_1"></a><a class="link" href="#_create_rows_1">create([rows=1])</a></h4>
+<div class="paragraph">
+<p>The number of rows to create for a given model.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const users = yield Factory.model('App/Model/User').create(5)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_make_count_1"><a class="anchor" href="#_make_count_1"></a><a class="link" href="#_make_count_1">make([count=1])</a></h4>
+<div class="paragraph">
+<p>The <code>make</code> method will return the instance of the model with fake data as the attributes. You can change the <code>count</code> to get an array of multiple instances.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const User = use('App/Model/User') <i class="conum" data-value="1"></i><b>(1)</b>
+const user = yield User.find(1) <i class="conum" data-value="2"></i><b>(2)</b>
+
+const post = Factory.model('App/Model/Post').make() <i class="conum" data-value="3"></i><b>(3)</b>
+yield user.posts().create(post) <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Importing user model.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Find a single user using the id.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Creating an instance of <code>Post</code> model with dummy data.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Saving the post for a given user by using the relationship.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_each_callback"><a class="anchor" href="#_each_callback"></a><a class="link" href="#_each_callback">each(callback)</a></h4>
+<div class="paragraph">
+<p>The <code>each</code> method helps you in running an asynchronous loop over created instances of a model. It is helpful when you want to save relationship for each created instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const users = yield Factory.model('App/Model/User').create(5)
+
+users.each(function * (user) {
+  const post = Factory.model('App/Model/Post').make()
+  yield user.posts().save(post);
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reset"><a class="anchor" href="#_reset"></a><a class="link" href="#_reset">reset</a></h4>
+<div class="paragraph">
+<p>Truncate the table for a given model</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Factory.model('App/Model/User').reset()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_when_using_database_provider"><a class="anchor" href="#_when_using_database_provider"></a><a class="link" href="#_when_using_database_provider">When Using Database Provider</a></h3>
+<div class="sect3">
+<h4 id="_blueprint_tablename_callback"><a class="anchor" href="#_blueprint_tablename_callback"></a><a class="link" href="#_blueprint_tablename_callback">blueprint(tableName, callback)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Factory.blueprint('users', (fake) =&gt; {
+  return {
+    username: fake.username(),
+    email: fake.email(),
+    password: fake.password()
+  }
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_rows_1_2"><a class="anchor" href="#_create_rows_1_2"></a><a class="link" href="#_create_rows_1_2">create([rows=1])</a></h4>
+<div class="paragraph">
+<p>The create methods works same as the <a href="#_create_rows_1">Lucid blueprint create method</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Factory.get('users').create(5)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_table_tablename"><a class="anchor" href="#_table_tablename"></a><a class="link" href="#_table_tablename">table(tableName)</a></h4>
+<div class="paragraph">
+<p>The <code>table</code> method helps you in switching the table name for a given blueprint at runtime.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Factory.get('users').table('my_users').create(5)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_returning_column"><a class="anchor" href="#_returning_column"></a><a class="link" href="#_returning_column">returning(column)</a></h4>
+<div class="paragraph">
+<p>Defining returning column for <strong>PostgreSQL</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Factory.get('users').returning('id').create(5)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reset_2"><a class="anchor" href="#_reset_2"></a><a class="link" href="#_reset_2">reset</a></h4>
+<div class="paragraph">
+<p>Truncate database table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Factory.get('users').reset()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_fake_data"><a class="anchor" href="#_generating_fake_data"></a><a class="link" href="#_generating_fake_data">Generating Fake Data</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>fake</code> object passed to xref:[Factory.blueprint] method is an instance of <a href="http://chancejs.com" target="_blank" rel="noopener">chance.js</a>.</p>
+</div>
+<div class="paragraph">
+<p>All methods from chancejs are supported by AdonisJs, whereas AdonisJs also adds a bunch of new methods on top of it.</p>
+</div>
+<div class="sect3">
+<h4 id="_username_length_5"><a class="anchor" href="#_username_length_5"></a><a class="link" href="#_username_length_5">username([length=5])</a></h4>
+<div class="paragraph">
+<p>Returns a random username with the defined length.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Factory.blueprint('App/Model/User', (fake) =&gt; {
+  return {
+    username: fake.username()
+  }
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_password_length_20"><a class="anchor" href="#_password_length_20"></a><a class="link" href="#_password_length_20">password([length=20])</a></h4>
+<div class="paragraph">
+<p>Returns a random password.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Factory.blueprint('App/Model/User', (fake) =&gt; {
+  return {
+    password: fake.password()
+  }
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_password_hashing"><a class="anchor" href="#_password_hashing"></a><a class="link" href="#_password_hashing">Password Hashing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="authentication">Authentication</a> provider makes use of <a href="encryption-and-hashing">Hash</a> provider when verifying the user password. Make sure you are hashing your passwords before saving them to the database.</p>
+</div>
+<div class="paragraph">
+<p>The best place to hash the password is inside a Model <code>beforeCreate</code> hook. You can learn about hooks <a href="lucid-hooks">here</a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Generating A Hook</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:hook User</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Model/Hooks/User.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+const Hash = use('Hash')
+
+const User = exports = module.exports = {}
+
+User.encryptPassword = function * (next) {
+  this.password = yield Hash.make(this.password)
+  yield next
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Registering Hook To The Model</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Lucid = use('Lucid')
+
+class User extends Lucid {
+  static boot () {
+    super.boot()
+    this.addHook('beforeCreate', 'User.encryptPassword')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>

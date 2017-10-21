@@ -167,8 +167,39 @@ module.exports = {
   */
   docs: {
     versions: {
-      '4.0': 'Version 4.0 dev'
+      '4.0': 'Version 4.0',
+      '3.2': 'Version 3.2 ( legacy )',
     },
     latestVersion: Env.get('LATEST_VERSION')
+  },
+
+  logger: {
+    /*
+    |--------------------------------------------------------------------------
+    | Transport
+    |--------------------------------------------------------------------------
+    |
+    | Transport to be used for logging messages. You can have multiple
+    | transports using same driver.
+    |
+    | Available drivers are: `file` and `console`.
+    |
+    */
+    transport: 'console',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Console Transport
+    |--------------------------------------------------------------------------
+    |
+    | Using `console` driver for logging. This driver writes to `stdout`
+    | and `stderr`
+    |
+    */
+    console: {
+      driver: 'console',
+      name: 'adonisjs.com',
+      level: 'info'
+    }
   }
 }

@@ -1,0 +1,1062 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_drivers">Drivers</a></li>
+<li><a href="#_about_internationalization">About Internationalization</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_icu_messages">ICU Messages</a></li>
+<li><a href="#_antl_methods">Antl Methods</a></li>
+<li><a href="#_formatter_methods">Formatter Methods</a></li>
+<li><a href="#_locale_groups">Locale &amp; Groups</a></li>
+<li><a href="#_detecting_user_locale">Detecting User Locale</a></li>
+<li><a href="#_switching_drivers">Switching Drivers</a></li>
+<li><a href="#_adding_drivers">Adding Drivers</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Internationalization is a process of translating your web apps into multiple different languages. Since web apps reach all parts of the world, internationalization makes it easier for you to detect the user language and translate your web apps for localized experience.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drivers"><a class="anchor" href="#_drivers"></a><a class="link" href="#_drivers">Drivers</a></h2>
+<div class="sectionbody">
+<div class="ulist support-list">
+<ul class="support-list">
+<li>
+<p>File (file)</p>
+</li>
+<li>
+<p>Database (database)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_internationalization"><a class="anchor" href="#_about_internationalization"></a><a class="link" href="#_about_internationalization">About Internationalization</a></h2>
+<div class="sectionbody">
+<div class="ulist pretty-list">
+<ul class="pretty-list">
+<li>
+<p>It follows the conventions and libraries provided by <a href="http://formatjs.io/" target="_blank" rel="noopener">Format.js</a>.</p>
+</li>
+<li>
+<p>All locale strings are defined using <a href="http://userguide.icu-project.org/formatparse/messages" target="_blank" rel="noopener">ICU Message Syntax</a>.</p>
+</li>
+<li>
+<p>All locale strings are stored within <strong>.json</strong> files inside <code>resources/locales</code> directory or database table <code>locales</code> based upon the driver you are using.</p>
+</li>
+<li>
+<p>A middleware can be used to detect the user language in runtime.</p>
+</li>
+<li>
+<p>Generic messages (same for all languages) are saved inside <code>resources/locales/fallback</code> directory and <code>fallback</code> group when using database driver.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>adonis-antl</code> package is not installed/setup by default, and you are required to install it when needed.</p>
+</div>
+<div class="listingblock">
+<div class="title">Installing Via Npm</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save adonis-antl</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Registering Provider (bootstrap/app.js)</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const providers = [
+  // ...
+  'adonis-antl/providers/AntlProvider'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Registering Alias (bootstrap/app.js)</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const aliases = {
+  // ...
+  Antl: 'Adonis/Addons/Antl',
+  Formats: 'Adonis/Addons/AntlFormats'
+  // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Based upon the default driver you will have to store your locales inside the <code>resources/locales</code> directory or the <code>locales</code> database table. To make the setup process simple, you can run the following command.</p>
+</div>
+<div class="listingblock">
+<div class="title">Registering Command (bootstrap/app.js)</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const commands = [
+  // ...
+  'Adonis/Commands/Antl:Setup'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace antl:setup
+
+# for database driver
+./ace antl:setup --driver=database</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Above command will create the <code>resources/locales/*</code> directory or the migrations to create the database table.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration for <strong>Antl Provider</strong> is saved inside <code>config/app.js</code> file. Release version <em>3.1</em> includes the config by default but always make sure to keep it updated.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  locales: {
+    driver: 'file',
+    locale: 'en',
+    fallbackLocale: 'en'
+  }
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Possible Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">driver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">file, database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The driver to use for reading/writing and removing locale strings.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any valid locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default locale to be used when unable to detect user locale.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fallbackLocale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any valid locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The fallback locale when detected user locale is not supported.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with a basic example of formatting raw values and messages written using <a href="#_icu_messages">ICU Syntax</a>. This time, we will play with the <strong>Ace REPL</strong> within the command line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace repl</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>repl+&gt;</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formatting_values"><a class="anchor" href="#_formatting_values"></a><a class="link" href="#_formatting_values">Formatting Values</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatAmount(1000, 'usd')
+
+// or
+Antl
+  .for('fr') <i class="conum" data-value="1"></i><b>(1)</b>
+  .formatAmount(1000, 'usd')</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The method <code>for</code> will let you switch the language for a single operation.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/v1475061511/Adonis-Antl_hlpwxd.gif" alt="Adonis Antl hlpwxd"></span>!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formatting_messages"><a class="anchor" href="#_formatting_messages"></a><a class="link" href="#_formatting_messages">Formatting Messages</a></h3>
+<div class="paragraph">
+<p>Using the default <code>file</code> driver, we can define locales inside the <code>resources/locales</code> directory. Each language gets its own sub-directory.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/locales/en/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "product.cost": "{product} will cost {price, number, usd}"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Formatting Product Cost Message</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+Antl.formatMessage('messages.product.cost', { product: 'Chair', price: 29 })</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>Chair will cost $29.00</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_icu_messages"><a class="anchor" href="#_icu_messages"></a><a class="link" href="#_icu_messages">ICU Messages</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before you can start using the <strong>Antl</strong> provider, it is crucial to understand the <a href="http://userguide.icu-project.org/formatparse/messages">ICU message syntax</a> since it is a standard adopted by the web globally.</p>
+</div>
+<div class="sect2">
+<h3 id="_string_literals"><a class="anchor" href="#_string_literals"></a><a class="link" href="#_string_literals">String Literals</a></h3>
+<div class="paragraph">
+<p>A message can be just a string literal in multiple different languages.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/locales/en/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "greeting": "Hello!"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources/locales/fr/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "greeting": "Bonjour!"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_simple_arguments"><a class="anchor" href="#_simple_arguments"></a><a class="link" href="#_simple_arguments">Simple Arguments</a></h3>
+<div class="paragraph">
+<p>You can also define placeholders for simple arguments and pass dynamic data at runtime to replace them with their actual values.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/locales/en/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "greeting": "Hello {name}"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources/locales/fr/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "greeting": "Bonjour {name}"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Formatting</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">use('Antl').formatMessage('messages.greeting', { name: 'Virk' })
+
+// Returns - Hello Virk or Bonjour Virk</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formatted_arguments"><a class="anchor" href="#_formatted_arguments"></a><a class="link" href="#_formatted_arguments">Formatted Arguments</a></h3>
+<div class="paragraph">
+<p>Formatted arguments give you the functionality to define the argument key, type and format as <code>{ key, type, format }</code>.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key is used to define the placeholder name which is used in the data object.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the format type for the value. Internationalization has a set of defined types.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Format is an object of values defining how to format the type. For example: <code>number</code> type can be formatted as <strong>percentage</strong>, <strong>decimal</strong> or <strong>currency</strong>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">resource/locales/en/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "cart.total": "Your cart total is {total, number, curr}"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now when formatting the above message we need to pass <code>curr</code> format to the <strong>number type</strong>, so that the inbuilt formatter can format the total as a currency.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatMessage('messages.cart.total', { price: 59 }, (message) =&gt; {
+  message
+    .passFormat('curr')
+    .to('number')
+    .withValues({ currency: 'usd' })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can pass the format as an expression instead of attaching the callback.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatMessage('messages.cart.total', { price: 59 }, 'curr:number[currency=usd]')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also access antl directly in your views using the <code>antl</code> global.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ antl.formatMessage('messages.cart.total', { price: 59 }, 'curr:number[currency=usd]') }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_antl_methods"><a class="anchor" href="#_antl_methods"></a><a class="link" href="#_antl_methods">Antl Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of antl methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_for_locale"><a class="anchor" href="#_for_locale"></a><a class="link" href="#_for_locale">for(locale)</a></h4>
+<div class="paragraph">
+<p>Temporarily switch locale for a single method call.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.for('fr').formatNumber(1000)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getlocale"><a class="anchor" href="#_getlocale"></a><a class="link" href="#_getlocale">getLocale</a></h4>
+<div class="paragraph">
+<p>Returns the currently active locale</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.getLocale()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_setlocale_locale"><a class="anchor" href="#_setlocale_locale"></a><a class="link" href="#_setlocale_locale">setLocale(locale)</a></h4>
+<div class="paragraph">
+<p>Permanently switch locale for all future translations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.setLocale('fr')
+Antl.formatNumber(1000)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_islocale_locale"><a class="anchor" href="#_islocale_locale"></a><a class="link" href="#_islocale_locale">isLocale(locale)</a></h4>
+<div class="paragraph">
+<p>Detect if a given locale is the active locale.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.isLocale('en')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_locales"><a class="anchor" href="#_locales"></a><a class="link" href="#_locales">locales</a></h4>
+<div class="paragraph">
+<p>Return a list of registered locales as an array. It is based upon the messages saved inside a file/database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.locales()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_strings_group"><a class="anchor" href="#_strings_group"></a><a class="link" href="#_strings_group">strings([group])</a></h4>
+<div class="paragraph">
+<p>Return a list of registered strings for a given/default locale. An optional group can be passed to fetch strings for a given group only.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+This method can be helpful in populating a dropdown.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.strings()
+// or
+Antl.strings('messages')
+// or
+Antl.for('fr').strings()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pair_group"><a class="anchor" href="#_pair_group"></a><a class="link" href="#_pair_group">pair([group])</a></h4>
+<div class="paragraph">
+<p>This method is similar to <a href="#_strings_group">strings</a> but instead returns a flat object by joining nested objects with a (dot).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.pair()
+// or
+Antl.pair('messages')
+// or
+Antl.for('fr').pair()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_key"><a class="anchor" href="#_get_key"></a><a class="link" href="#_get_key">get(key)</a></h4>
+<div class="paragraph">
+<p>Get raw string for a given key</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Antl.get('messages.cart.total')
+// or
+Antl.for('fr').get('messages.cart.total')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_set_group_key_value"><a class="anchor" href="#_set_group_key_value"></a><a class="link" href="#_set_group_key_value">set(group, key, value)</a></h4>
+<div class="paragraph">
+<p>Update/Create value for a given key inside a group</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This method will update the underlying store for the currently active driver which means it will update the database row or update the file system.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Antl.set('messages', 'cart.total', 'You will be paying {total, number, curr}')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_remove_group_key"><a class="anchor" href="#_remove_group_key"></a><a class="link" href="#_remove_group_key">remove(group, key)</a></h4>
+<div class="paragraph">
+<p>Remove a given key for the currently active locale.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Antl.remove('messages', 'cart.total')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_load"><a class="anchor" href="#_load"></a><a class="link" href="#_load">load()</a></h4>
+<div class="paragraph">
+<p>This method is used to <code>load</code> the locales for the currently active driver. First time <strong>Antl Provider</strong> will load all the strings for the default driver defined inside <code>config/app.js</code> file whereas you are required to call this method manually whenever you switch the driver in runtime.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The <code>load</code> method smartly caches the values returned by a driver. Which means calling the method multiple time will have no side effects.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const db = Antl.driver('database')
+yield db.load()
+
+db.formatMessage('messages.cart.total', {total: 1000})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reload"><a class="anchor" href="#_reload"></a><a class="link" href="#_reload">reload</a></h4>
+<div class="paragraph">
+<p>Since the <code>load</code> method caches the values, you can make use of <code>reload</code> to forcefully reloads all the strings for a given driver.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const db = Antl.driver('database')
+yield db.reload()
+
+db.formatMessage('messages.cart.total', {total: 1000})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_formatter_methods"><a class="anchor" href="#_formatter_methods"></a><a class="link" href="#_formatter_methods">Formatter Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of formatter methods and available options you can pass to get desired output.</p>
+</div>
+<div class="sect3">
+<h4 id="_formatnumber_value_options"><a class="anchor" href="#_formatnumber_value_options"></a><a class="link" href="#_formatnumber_value_options">formatNumber(value, options)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatNumber(1000)
+// or
+Antl.formatNumber(1000, { style: 'percent' })</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ antl.formatNumber(1000) }}
+{# or #}
+{{ antl.formatNumber(1000, { style: 'percent' }) }}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Possible Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">style</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">decimal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">decimal, currency, percentage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The formatting style to be used for formatting the value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">currency</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A valid ISO 4217 currency code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <strong>style</strong> is currency, this option must pass a valid currency code to be used for formatting the value. <a href="https://en.wikipedia.org/wiki/ISO_4217#Active_codes" target="_blank" rel="noopener">Reference list of country code</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">currencyDisplay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">symbol</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">symbol, code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">How to display the currency. For example &dollar; is the <strong>symbol</strong> and USD is the <strong>code</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">useGrouping</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to use grouping separators like thousand/lakh/crore separators.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">minimumIntegerDigits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum number of integer digits to use.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">minimumFractionDigits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">floating</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum number of fraction digits to use. The default value is <strong>0</strong> for plain numbers and minor unit digits provided by the ISO 4217 for currency values.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maximumFractionDigits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">floating</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum number of fraction digits to use. The default value is greater than the <strong>minimumFractionDigits</strong> value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">minimumSignificantDigits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum number of significant digits to use.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maximumSignificantDigits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">minimumSignificantDigits</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum number of significant digits to use.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_formatamount_value_currency_options"><a class="anchor" href="#_formatamount_value_currency_options"></a><a class="link" href="#_formatamount_value_currency_options">formatAmount(value, currency, options)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatAmount(1000, 'usd')
+// or
+Antl.formatNumber(1000, { currencyDisplay: 'code' })</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ antl.formatAmount(1000, 'usd') }}
+{# or #}
+{{ antl.formatAmount(1000, 'usd', { currencyDisplay: 'code' }) }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The formatting options are similar to <a href="#_formatnumber_value_options">formatNumber</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formatdate_value_options"><a class="anchor" href="#_formatdate_value_options"></a><a class="link" href="#_formatdate_value_options">formatDate(value, options)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatDate(new Date())
+// or
+Antl.formatDate(new Date(), { hour12: false })</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ antl.formatDate(new Date()) }}
+{# or #}
+{{ antl.formatDate(new Date(), { hour12: false }) }}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Possible Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hour12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locale dependent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to show time in <strong>12 hours</strong> format or not.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">weekday</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">narrow, short, long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the weekday.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">era</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">narrow, short, long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the era.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">year</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric, 2-digit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the year.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">month</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric, 2-digit, narrow, short, long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the month.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">day</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric, 2-digit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the day.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hour</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric, 2-digit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the hour.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">minute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric, 2-digit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the minute.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">second</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric, 2-digit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the second.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">timeZoneName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">short, long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The representation of the time zone name.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_formatrelative_key_value_options"><a class="anchor" href="#_formatrelative_key_value_options"></a><a class="link" href="#_formatrelative_key_value_options">formatRelative(key, value, options)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+const threeHoursPrior = new Date().setHours(new Date().getHours() - 3)
+
+Antl.formatRelative(threeHoursPrior)
+// 3 hours ago</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ antl.formatRelative(threeHoursPrior) }}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Possible Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">units</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">best fit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">second, minute, hour, day, month, year</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The particular rendering unit. For example <strong>30 days ago</strong> instead of <strong>1 month ago</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">style</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">best fit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numeric</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The rendering style for the value. For example: <strong>numeric</strong> will force the output to <strong>1 day ago</strong> instead of <strong>yesterday</strong>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_formatmessage_key_values_callback_options"><a class="anchor" href="#_formatmessage_key_values_callback_options"></a><a class="link" href="#_formatmessage_key_values_callback_options">formatMessage(key, values, [callback|options])</a></h4>
+<div class="paragraph">
+<p>Formatting a message requires you first to save your strings inside the locales files or the database table called <code>locales</code> and it must follow the <a href="#_icu_messages">ICU Message Syntax</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Antl = use('Antl')
+
+Antl.formatMessage('messages.total', { total: 1000 })
+// or
+Antl.formatMessage('messages.total', { total: 1000 }, (message) =&gt; {
+  message.passFormat('curr').to.('number').withValues({ currency: 'usd' })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since views do not allow adding callbacks to a function, you are supposed to pass a string expression to the <code>formatMessage</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ antl.formatMessage('messages.total', { total: 1000 }) }}
+{# or #}
+{{ antl.formatMessage('messages.total', { total: 1000 }, 'curr:number[currency=usd]') }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_locale_groups"><a class="anchor" href="#_locale_groups"></a><a class="link" href="#_locale_groups">Locale &amp; Groups</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When working with <strong>Antl provider</strong> your messages are divided into segments of <code>locale</code> and <code>groups</code>. Locale refers to the language for which you have defined the message, and a group defines the category of the message. Take the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code>├── locales
+│   ├── en <i class="conum" data-value="1"></i><b>(1)</b>
+│   │   ├── messages.json <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>en</code> is the language for the message.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The file <code>messages.json</code> is the group called <strong>messages</strong> for all the strings defined inside this file.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When translating/formatting a message, you can are required to pass a string starting with the group. <code>messages.cart.total</code>. Also for generic messages which are same for all the languages can be defined next to the <code>fallback</code> folder/group.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/locales/fallback/messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "greeting": "I am available to all the languages."
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the same way, you can define a group when using the <code>database</code> driver.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. Database locales table</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id</th>
+<th class="tableblock halign-left valign-top">locale</th>
+<th class="tableblock halign-left valign-top">group</th>
+<th class="tableblock halign-left valign-top">item</th>
+<th class="tableblock halign-left valign-top">text</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">messages</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cart.total</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Your cart total is {total, number, curr}</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fallback</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">messages</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">greeting</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I am available to all the languages</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_detecting_user_locale"><a class="anchor" href="#_detecting_user_locale"></a><a class="link" href="#_detecting_user_locale">Detecting User Locale</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So far we have seen the ways of formatting messages and values using Antl provider. All values will be formatted for the <strong>default locale</strong> defined in <code>config/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/locale.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  locales: {
+    driver: 'file',
+    locale: 'en',
+    fallbackLocale: 'en'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can change the default locale value, and all values will be formatted accordingly. To make this process dynamic based upon the user language, you are required to make use of <code>Antl</code> middleware which will detect the user language and set it as the default language for all translations.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const globalMiddleware = [
+  // ...
+  'Adonis/Middleware/DetectLocale'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now all HTTP requests header <strong>Accept-Language</strong> or query string param <strong>lang</strong> will be used to detect the user language.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switching_drivers"><a class="anchor" href="#_switching_drivers"></a><a class="link" href="#_switching_drivers">Switching Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Antl Provider makes use of the default driver defined inside <code>config/app.js</code> file. Whereas you can switch the drivers in runtime to make use of a different driver.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const db = Antl.driver('db')
+yield db.load() <i class="conum" data-value="1"></i><b>(1)</b>
+
+db.formatNumber(1000, { format: 'curr' })</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <a href="#_load">load</a> method should be called after switching the driver since it will load and cache all the strings for a given driver.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_drivers"><a class="anchor" href="#_adding_drivers"></a><a class="link" href="#_adding_drivers">Adding Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can extend <strong>Antl Provider</strong> by adding your own custom drivers and register them inside <code>bootstrap/extend.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/extend.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Ioc = require('adonis-fold').Ioc
+
+Ioc.extend('Adonis/Addons/Antl', 'mongo', (app) =&gt; {
+  return new Mongo()
+})</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">The Mongo Driver</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class Mongo {
+  * load () { <i class="conum" data-value="1"></i><b>(1)</b>
+    // load all locales and return as a nested object
+  }
+
+  * set (locale, group, key, value) { <i class="conum" data-value="2"></i><b>(2)</b>
+    // save new/update value
+  }
+
+  * remove (locale, group, key) { <i class="conum" data-value="3"></i><b>(3)</b>
+    // remove value for a given group
+  }
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It should return all locale strings as a nested object of <code>language</code> and <code>group</code>. For example</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "en": {
+    "messages": {
+      "cart.total": "Your cart total is"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The <code>set</code> method should save the value for a given key, group and locale. It the value already exists, it should update it.</p>
+</li>
+<li>
+<p>The <code>remove</code> method should delete the value.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>

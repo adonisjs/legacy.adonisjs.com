@@ -1,0 +1,495 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_features">Features</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_redis_commands">Redis Commands</a></li>
+<li><a href="#_pub_sub">Pub/Sub</a></li>
+<li><a href="#_pub_sub_methods">Pub/Sub Methods</a></li>
+<li><a href="#_transactions">Transactions</a></li>
+<li><a href="#_pipelines">Pipelines</a></li>
+<li><a href="#_multiple_connections">Multiple Connections</a></li>
+<li><a href="#_lifecycle_events">LifeCycle Events</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes it so simple to work with <a href="http://redis.io/" target="_blank" rel="noopener">redis</a>. Internally it makes use of <a href="https://github.com/luin/ioredis" target="_blank" rel="noopener">ioredis</a> but the API is slightly different to keep your code maintainable and readable.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features"><a class="anchor" href="#_features"></a><a class="link" href="#_features">Features</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Support for multiple redis connections.</p>
+</li>
+<li>
+<p>Connect to redis cluster.</p>
+</li>
+<li>
+<p>Support for sentinel and transactions.</p>
+</li>
+<li>
+<p>Extensive support for Pub/Sub.</p>
+</li>
+<li>
+<p>ES2015 Generators friendly.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Redis provider is not shipped with the base installation of AdonisJs, which means you are required to install and set it up manually.</p>
+</div>
+<div class="listingblock">
+<div class="title">Installing From Npm</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save adonis-redis</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const providers = [
+  // ...
+  'adonis-redis/providers/RedisFactoryProvider',
+  'adonis-redis/providers/RedisProvider'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const aliases = {
+  // ...
+  Redis: 'Adonis/Addons/Redis'
+  // ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also, a configuration file needs to be saved as config/redis.js. You can download the sample configuration from <a href="https://raw.githubusercontent.com/adonisjs/adonis-redis/develop/examples/redis.js">github</a> or run the below bash command to save the file automatically.</p>
+</div>
+<div class="listingblock">
+<div class="title">Download using wget</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">wget https://raw.githubusercontent.com/adonisjs/adonis-redis/develop/examples/redis.js -O config/redis.js</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once everything is configured, you are good to make use of Redis inside your AdonisJs applications. Let&#8217;s start with a basic example of caching users inside redis.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Below example may not be the best way to cache users but does give you some idea on how to use the redis provider.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Redis = use('Redis')
+const User = use('App/Model/User')
+
+class UsersController {
+
+  * index (request, response) {
+    const cachedUsers = yield Redis.get('users')
+    if (cachedUsers) {
+      response.json(JSON.parse(cachedUsers))
+      return
+    }
+
+    const users = yield User.all()
+    yield Redis.set('users', JSON.stringify(users))
+    response.json(users)
+  }
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_redis_commands"><a class="anchor" href="#_redis_commands"></a><a class="link" href="#_redis_commands">Redis Commands</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All <a href="http://redis.io/commands" target="_blank" rel="noopener">redis</a> commands are supported as javascript functions. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Redis = use('Redis')
+const user = {
+  username: 'foo',
+  email: 'foo@bar.com'
+}
+
+yield Redis.hmset('users', user.username, JSON.stringify(user))
+const user = yield Redis.hmget('users', user.username) // returns stringified JSON</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pub_sub"><a class="anchor" href="#_pub_sub"></a><a class="link" href="#_pub_sub">Pub/Sub</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Redis has built-in support for Pub/Sub to share messages on same or across multiple servers. AdonisJs offers a clean API to subscribe and publish messages without any extra efforts.</p>
+</div>
+<div class="paragraph">
+<p>It is recommended to create a new file inside the <strong>bootstrap</strong> directory to register subscribers.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/redis.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Redis = use('Redis')
+
+Redis.subscribe('music', function * (track) {
+  console.log('received track', track)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, you need to require this file inside <code>bootstrap/http.js</code> file to make sure it is loaded when booting the HTTP server just after the <code>require('./events')</code> statement.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/http.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">require('./redis')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now anywhere inside your application, you can publish to the music channel and the registered listener will be called.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Route = use('Route')
+const Redis = use('Redis')
+
+Route.post('musics', function * (request, response) {
+  Redis.publish('music', request.all())
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pub_sub_methods"><a class="anchor" href="#_pub_sub_methods"></a><a class="link" href="#_pub_sub_methods">Pub/Sub Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of pub/sub methods exposed by the Redis Provider.</p>
+</div>
+<div class="sect3">
+<h4 id="_subscribe_channel_listener"><a class="anchor" href="#_subscribe_channel_listener"></a><a class="link" href="#_subscribe_channel_listener">subscribe(channel, listener)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Redis.subscribe('music', function * (track, channel) {
+  console.log(track)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, the <code>listener</code> can be a reference to a module inside <code>app/Listeners</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Redis.subscribe('music', 'Music.newTrack')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Listeners/Music.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Music = exports = module.exports = {}
+
+Music.newTrack = function * (track, channel) {
+  console.log(track)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_psubscribe_pattern_listener"><a class="anchor" href="#_psubscribe_pattern_listener"></a><a class="link" href="#_psubscribe_pattern_listener">psubscribe(pattern, listener)</a></h4>
+<div class="paragraph">
+<p>The <code>psubscribe</code> method will subscribe to a pattern, and matching messages will be sent to the listener.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Redis.psubscribe('h?llo', function * (message, channel, pattern) {
+})
+
+Redis.publish('hello')
+Redis.publish('hallo')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_publish"><a class="anchor" href="#_publish"></a><a class="link" href="#_publish">publish</a></h4>
+<div class="paragraph">
+<p>Publish message to a given channel.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Redis.publish('music', {id: 1, title: 'Love me like you do', artist: 'Ellie goulding'})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_unsubscribe_channel_callback"><a class="anchor" href="#_unsubscribe_channel_callback"></a><a class="link" href="#_unsubscribe_channel_callback">unsubscribe(channel, [callback])</a></h4>
+<div class="paragraph">
+<p>Unsubscribe from a given channel.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Redis.unsubscribe('music')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_punsubscribe_pattern_callback"><a class="anchor" href="#_punsubscribe_pattern_callback"></a><a class="link" href="#_punsubscribe_pattern_callback">punsubscribe(pattern, [callback])</a></h4>
+<div class="paragraph">
+<p>Unsubscribe from a given pattern.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Redis.punsubscribe('h?llo')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_transactions"><a class="anchor" href="#_transactions"></a><a class="link" href="#_transactions">Transactions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Transactions are helpful when you want to perform bulk operations at a given point of time. Let&#8217;s review an example of adding users to a list.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const User = use('App/Model/User')
+const Redis = use('Redis')
+
+class UsersController {
+
+  * index (request, response) {
+    const users = yield User.all()
+
+    // Creating a transaction
+    const multi = Redis.multi()
+    users.each((user) =&gt; {
+      multi.lpush('users-list', JSON.stringify(user))
+    })
+    yield multi.exec()
+
+    response.json(users)
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_multi"><a class="anchor" href="#_multi"></a><a class="link" href="#_multi">multi</a></h4>
+<div class="paragraph">
+<p>Creates a new transaction to call multiple commands and execute them together.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const multi = Redis.multi()
+multi
+  .set('foo', 'bar')
+  .set('bar', 'baz')
+
+const response = yield multi.exec()
+// [[null, 'OK'], [null, 'OK']]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pipelines"><a class="anchor" href="#_pipelines"></a><a class="link" href="#_pipelines">Pipelines</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Pipelines are quite similar to transactions, but they do not guarantee that all commands will be executed in a transaction. Pipelines are helpful in sending a batch of commands to save network round trips.</p>
+</div>
+<div class="sect3">
+<h4 id="_pipeline"><a class="anchor" href="#_pipeline"></a><a class="link" href="#_pipeline">pipeline</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const pipeline = Redis.pipeline()
+pipeline
+  .set('foo', 'bar')
+  .set('bar', 'baz')
+
+const response = yield pipeline.exec()
+// [[null, 'OK'], [null, 'OK']]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multiple_connections"><a class="anchor" href="#_multiple_connections"></a><a class="link" href="#_multiple_connections">Multiple Connections</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can define the configuration for multiple connections inside the <code>config/redis.js</code> file, and you can use those connections by calling the <code>connection</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/redis.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">module.exports = {
+  connection: 'local',
+
+  local: {
+    ...
+  },
+
+  secondary: {
+    host: 'myhost.com',
+    port: 6379
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_connection_name"><a class="anchor" href="#_connection_name"></a><a class="link" href="#_connection_name">connection(name)</a></h4>
+<div class="paragraph">
+<p>Switch to a different connection.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield Redis.connection('secondary').get('users')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_quit_name"><a class="anchor" href="#_quit_name"></a><a class="link" href="#_quit_name">quit([name])</a></h4>
+<div class="paragraph">
+<p>AdonisJs creates a connection pool to re-use the established connnection. Make use of the <code>quit</code> method to close a single/all redis connections.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const response = yield Redis.quit('secondary')
+// or
+const response = yield Redis.quit() // close all connections</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lifecycle_events"><a class="anchor" href="#_lifecycle_events"></a><a class="link" href="#_lifecycle_events">LifeCycle Events</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can register a listener for lifecycle events in the same way you will do for <a href="#_pub_sub_methods">Pub/Sub</a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/redis.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Redis = use('Redis')
+Redis.on('connect', function () {
+  // ...
+})
+
+Redis.on('error', function (error) {
+  // ...
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Below is the list of events emitted by the Redis provider.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">connect</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when a connection is established to the Redis server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ready</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when <code>CLUSTER INFO</code> reporting the cluster is able to receive commands (if <strong>enableReadyCheck=true</strong>) or immediately after <code>connect</code> event (if <strong>enableReadyCheck=false</strong>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when an error occurs while connecting with a property of <code>lastNodeError</code> representing the last node error received. This event is emitted silently (only emitting if there&#8217;s at least one listener).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">close</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when an established Redis server connection has closed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reconnecting</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits after <code>close</code> when a reconnection will be made. The argument of the event is the time (in ms) before reconnecting.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">end</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits after <code>close</code> when no more reconnections will be made.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+node</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when a new node is connected.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-node</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when a node is disconnected.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">node error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emits when an error occurs when connecting to a node</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

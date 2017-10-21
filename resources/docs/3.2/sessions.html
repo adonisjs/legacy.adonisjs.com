@@ -1,0 +1,365 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_drivers">Drivers</a></li>
+<li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_methods">Methods</a></li>
+<li><a href="#_flash_messages">Flash Messages</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs has out of the box support for saving long-lived sessions to a single request only sessions called <strong>Flash Messages</strong>. Also, you can choose between one of the available drivers to save the session data.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To keep your session cookie encrypted, make sure to define <code>APP_KEY</code> inside the <strong>.env</strong> file. Alternatively, you can make use of <code>./ace key:generate</code> command to generate the key for you.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drivers"><a class="anchor" href="#_drivers"></a><a class="link" href="#_drivers">Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available drivers.</p>
+</div>
+<div class="olist support-list">
+<ol class="support-list">
+<li>
+<p>Cookie (cookie).</p>
+</li>
+<li>
+<p>File (file).</p>
+</li>
+<li>
+<p>Redis (redis).</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure to setup <a href="redis">Redis provider</a> before making use of the redis driver.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Take a look at the example config file <a href="https://github.com/adonisjs/adonis-app/blob/develop/config/session.js">example config file</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Env = use('Env')
+
+module.exports = {
+  // available options are file, cookie, redis
+  driver: Env.get('SESSION_DRIVER', 'cookie'),
+  // configuration settings for whichever driver you choose
+  redis: Env.get('REDIS_URL', 'redis://localhost:6379'),
+  cookie: 'adonis-session',
+  file: {
+    directory: 'sessions'
+  }
+  // other settings
+  age: 120,
+  clearWithBrowser: false,
+  httpOnly: true,
+  sameSite: true,
+  domain: null,
+  path: '/',
+  secure: false,
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s walk through a basic example of saving/reading cart items for a given user from the session.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('carts', function * (request, response) {
+  const cartItems = []
+  yield request.session.put('cart-items', cartItems)
+  yield response.send('Items added to cart successfully')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_methods"><a class="anchor" href="#_methods"></a><a class="link" href="#_methods">Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available session methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_put_key_value"><a class="anchor" href="#_put_key_value"></a><a class="link" href="#_put_key_value">put(key, value)</a></h4>
+<div class="paragraph">
+<p>Add a value to the session store.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.post('users', function * (request, response) {
+  yield request.session.put('username', 'doe')
+  // or
+  yield request.session.put({ username: 'doe' })
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_key_defaultvalue"><a class="anchor" href="#_get_key_defaultvalue"></a><a class="link" href="#_get_key_defaultvalue">get(key, [defaultValue])</a></h4>
+<div class="paragraph">
+<p>Returns the value for a given key. It will return the <strong>defaultValue</strong> when actual value is <code>null</code> or <code>undefined</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('users/current', function * (request, response) {
+  const username = yield request.session.get('username')
+  // or
+  const userId = yield request.session.get('userId', 123)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_all"><a class="anchor" href="#_all"></a><a class="link" href="#_all">all</a></h4>
+<div class="paragraph">
+<p>Returns all session values as an object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const sessionValues = yield request.session.all()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_forget_key"><a class="anchor" href="#_forget_key"></a><a class="link" href="#_forget_key">forget(key)</a></h4>
+<div class="paragraph">
+<p>Remove value for a given key</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield request.session.forget('name')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pull_key_defaultvalue"><a class="anchor" href="#_pull_key_defaultvalue"></a><a class="link" href="#_pull_key_defaultvalue">pull(key, [defaultValue])</a></h4>
+<div class="paragraph">
+<p>Get and remove the value for a given key. Think of it as calling <a href="#_get_key_defaultvalue">get</a> and <a href="#_forget_key">forget</a> together.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const username = yield request.session.pull('username')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_flash_messages"><a class="anchor" href="#_flash_messages"></a><a class="link" href="#_flash_messages">Flash Messages</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Flash messages are used to set a short-lived session for a single request. It is helpful when you want to redirect the user back with the form errors and existing form values so that they won&#8217;t have to re-type everything and only correct the errors.</p>
+</div>
+<div class="paragraph">
+<p>Just make sure that <code>Flash</code> middleware is added to the list of global middleware.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const globalMiddleware = [
+  // ...
+  'Adonis/Middleware/Flash'
+  // ...
+]</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_basic_usage_of_flash_messages"><a class="anchor" href="#_basic_usage_of_flash_messages"></a><a class="link" href="#_basic_usage_of_flash_messages">Basic Usage Of Flash Messages</a></h3>
+<div class="paragraph">
+<p>Let&#8217;s work on the flow of flashing validation errors with the form input and see how we can catch them inside our view.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.on('users/create').render('users.create')
+Route.post('users', 'UsersController.store')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+class UsersController {
+
+  * store (request, response) {
+    const validation = yield Validator.validate(request.all(), rules)
+    if (validation.fails()) {
+      yield request
+        .withAll() <i class="conum" data-value="1"></i><b>(1)</b>
+        .andWith({errors: validation.messages()}) <i class="conum" data-value="2"></i><b>(2)</b>
+        .flash()
+      response.redirect('back')
+    }
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>withAll</code> method will add all the request values to the flash session store.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>andWith</code> method is a helper to flash custom data objects. Here we use it for flashing the validation errors.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/users/create.njk</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for error in old('errors') %} <i class="conum" data-value="1"></i><b>(1)</b>
+    &lt;li&gt; {{ error.message }} &lt;/li&gt;
+{% endfor %}
+
+{{ form.open({action: 'UsersController.store'}) }}
+
+  {{ form.text('email', old('email')) }}
+  {{ form.password('password', old('password')) }}
+
+  {{ form.submit('Create Account') }}
+
+{{ form.close() }}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>old</code> method inside the views is used to fetch values for a given key from the flash messages.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_flash_methods"><a class="anchor" href="#_flash_methods"></a><a class="link" href="#_flash_methods">Flash Methods</a></h3>
+<div class="paragraph">
+<p>Below is the list of methods to set flash messages.</p>
+</div>
+<div class="sect3">
+<h4 id="_withall"><a class="anchor" href="#_withall"></a><a class="link" href="#_withall">withAll</a></h4>
+<div class="paragraph">
+<p>Will flash everything from <code>request.all()</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield request.withAll().flash()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withonly_keys"><a class="anchor" href="#_withonly_keys"></a><a class="link" href="#_withonly_keys">withOnly(keys&#8230;&#8203;)</a></h4>
+<div class="paragraph">
+<p>Flash values only for defined keys.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield request.withOnly('email').flash()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_without_keys"><a class="anchor" href="#_without_keys"></a><a class="link" href="#_without_keys">withOut(keys&#8230;&#8203;)</a></h4>
+<div class="paragraph">
+<p>Flash all except defined keys.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield request.withOut('password').flash()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_with_values"><a class="anchor" href="#_with_values"></a><a class="link" href="#_with_values">with(values)</a></h4>
+<div class="paragraph">
+<p>Flash a custom object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield request.with({ error: 'Please fill in all details' }).flash()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_andwith_values"><a class="anchor" href="#_andwith_values"></a><a class="link" href="#_andwith_values">andWith(values)</a></h4>
+<div class="paragraph">
+<p>Chainable method to send custom object with request data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield request
+  .withAll()
+  .andWith({ error: 'Please fill in all details' })
+  .flash()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_accessing_flash_values"><a class="anchor" href="#_accessing_flash_values"></a><a class="link" href="#_accessing_flash_values">Accessing Flash Values</a></h3>
+<div class="paragraph">
+<p>You can access the values of flash messages inside your views using the defined helpers. If there&#8217;s nothing in the flash message at the requested key it will display the defaultValue.</p>
+</div>
+<div class="sect3">
+<h4 id="_old_key_defaultvalue"><a class="anchor" href="#_old_key_defaultvalue"></a><a class="link" href="#_old_key_defaultvalue">old(key, defaultValue)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ old('username', user.username) }}
+{# or #}
+{{ old('profile.username') }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flashmessages"><a class="anchor" href="#_flashmessages"></a><a class="link" href="#_flashmessages">flashMessages</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for key, message in flashMessages %}
+  {{ message }}
+{% endfor %}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

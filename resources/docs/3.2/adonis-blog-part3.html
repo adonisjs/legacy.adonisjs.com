@@ -1,0 +1,207 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_what_is_a_database_model">What is a Database Model?</a></li>
+<li><a href="#_creating_database_model">Creating Database Model</a></li>
+<li><a href="#_what_are_migrations">What are Migrations?</a></li>
+<li><a href="#_creating_migrations">Creating Migrations</a></li>
+<li><a href="#_sqlite_driver_running_migrations">SQLite Driver &amp; Running Migrations</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So far we have covered the basics of setting up a new AdonisJs application by creating Routes, Controllers and rendering Views. In this tutorial, we will take a step further by learning about <strong>Database Models</strong>.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs supports a majority of SQL databases. Here is a complete guide on <a href="database-setup">Database Setup</a>. We will start by creating migrations and Data models which are also known as Lucid models.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_a_database_model"><a class="anchor" href="#_what_is_a_database_model"></a><a class="link" href="#_what_is_a_database_model">What is a Database Model?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each Database model represents a single SQL table inside your database. For example:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Model</th>
+<th class="tableblock halign-left valign-top">Database Table</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">posts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Category</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">categories</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Hope it makes sense. Now to interact with posts, we need two things.</p>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>A Post Model.</p>
+</li>
+<li>
+<p>And a posts database table.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_database_model"><a class="anchor" href="#_creating_database_model"></a><a class="link" href="#_creating_database_model">Creating Database Model</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Models live inside a dedicated directory called <strong>app/Model</strong>. Let&#8217;s make use of ace to create the Post model.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:model Post</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>create: app/Model/Post.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/Post.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Lucid = use('Lucid')
+
+class Post extends Lucid {
+}
+
+module.exports = Post</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each model is a dedicated <strong>ES2015 Class</strong> just like our <a href="controllers">Controllers</a>, but each model will extend Lucid to make it different from an ordinary class.</p>
+</div>
+<div class="paragraph">
+<p>You never have to touch your models in most cases. So we will leave this file as it is and switch to another task.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_are_migrations"><a class="anchor" href="#_what_are_migrations"></a><a class="link" href="#_what_are_migrations">What are Migrations?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Our next step is to choose a database we want to work with and create the necessary database tables. For the sake of simplicity, we will stick to <strong>SQLite</strong>. However, you are free to use <strong>MYSQL</strong> or <strong>PostgreSQL</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Migration is a process of creating database tables using the Javascript code. Migrations have lots of benefits as compared to the standard workflow of creating database tables using SequelPro, Workbench, etc. Check out the <a href="migrations">Migrations</a> guide to learn more about them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_migrations"><a class="anchor" href="#_creating_migrations"></a><a class="link" href="#_creating_migrations">Creating Migrations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As always <strong>ace (our buddy)</strong> is going to create a migration for us.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:migration posts --create=posts</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>create: database/migrations/1464075245386_posts.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Quickly open this file and explore the options to create database table without touching the SQL interface.</p>
+</div>
+<div class="listingblock">
+<div class="title">database/migrations/1464075245386_posts.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Schema = use('Schema')
+
+class PostSchema extends Schema {
+
+  up () {
+    this.create('posts', (table) =&gt; {
+      table.increments()
+      table.string('title')
+      table.text('content')
+      table.timestamps()
+    })
+  }
+
+  down () {
+    this.drop('posts')
+  }
+
+}
+
+module.exports = PostSchema</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Wow! It is so simple to define a database table within your standard Js files. Just keep a note of the following points when working with migrations</p>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>The <code>up</code> method is used to create a table, or add new fields to the existing table, etc.</p>
+</li>
+<li>
+<p>The <code>down</code> is always opposite of up. It is used when you want to undo the changes you just made, also known as <strong>rollback</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sqlite_driver_running_migrations"><a class="anchor" href="#_sqlite_driver_running_migrations"></a><a class="link" href="#_sqlite_driver_running_migrations">SQLite Driver &amp; Running Migrations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Finally, we need to run this migration to execute SQL query and create the database table called <strong>posts</strong>. Before that, we need to make sure that SQLite is setup properly.</p>
+</div>
+<div class="listingblock">
+<div class="title">Installing SQLite3 driver</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save sqlite3</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Running Migrations</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace migration:run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>✔ Database migrated successfully.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We covered a lot in this tutorial, especially if you are new to these concepts. That&#8217;s the thing about frameworks you need to spend few days to get a solid grasp of available tools and options to make your development cycle a lot easier in future.</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,169 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_reading_cookies">Reading Cookies</a></li>
+<li><a href="#_writing_deleting_cookies">Writing/Deleting Cookies</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Reading/Writing cookies in AdonisJs is a breeze. You make use of <a href="request">request</a> and <a href="response">response</a> instances passed to all the controller methods and route closures to work with cookies.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To keep your cookies encrypted make sure to define <code>APP_KEY</code> inside the <strong>.env</strong> file. Alternatively, you can make use of <code>./ace generate:key</code> command to generate the key for you.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take a basic example of tracking page views for a given user by storing the count inside cookies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('/', function * (request, response) {
+  const pageViews = request.cookie('pageViews', 0) // reading
+  pageViews++
+  response.cookie('pageViews', pageViews) // writing
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reading_cookies"><a class="anchor" href="#_reading_cookies"></a><a class="link" href="#_reading_cookies">Reading Cookies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cookies are read using the <strong>request instance</strong>.</p>
+</div>
+<div class="sect3">
+<h4 id="_cookie_key_defaultvalue"><a class="anchor" href="#_cookie_key_defaultvalue"></a><a class="link" href="#_cookie_key_defaultvalue">cookie(key, [defaultValue])</a></h4>
+<div class="paragraph">
+<p>Returns the cookie value for a given key. The default value is returned when the existing value is <code>null</code> or <code>undefined</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('/', function * (request, response) {
+  const cartTotal = request.cookie('cartTotal')
+  // or
+  const cartTotal = request.cookie('cartTotal', 0)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cookies"><a class="anchor" href="#_cookies"></a><a class="link" href="#_cookies">cookies</a></h4>
+<div class="paragraph">
+<p>Get all cookies back as an object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('/', function * (request, response) {
+  const cookies = request.cookies()
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_writing_deleting_cookies"><a class="anchor" href="#_writing_deleting_cookies"></a><a class="link" href="#_writing_deleting_cookies">Writing/Deleting Cookies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To create/delete cookies you have to make use of the <strong>response instance</strong>.</p>
+</div>
+<div class="sect3">
+<h4 id="_cookie_key_value_options"><a class="anchor" href="#_cookie_key_value_options"></a><a class="link" href="#_cookie_key_value_options">cookie(key, value, [options])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('/', function * (request, response) {
+  response.cookie('cartValue', 210)
+
+  // or
+  response.cookie('cartValue', 210, {
+    httpOnly: true
+  })
+})</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Options</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">type</th>
+<th class="tableblock halign-left valign-top">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cookie path.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expires</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Absolute expiration date for the cookie. Must be a valid <strong>Date object</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maxAge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relative max age of the cookie from when the client receives it <strong>(in seconds)</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">domain</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Domain for the cookie.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">secure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Marks the cookie to be used with HTTPS only.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">httpOnly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flags the cookie to be accessible only by the web server. Cannot be accessed using <code>document.cookie</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">firstPartyOnly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines cookie to be used by the same domain only.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_clearcookie_key"><a class="anchor" href="#_clearcookie_key"></a><a class="link" href="#_clearcookie_key">clearCookie(key)</a></h4>
+<div class="paragraph">
+<p>Removes the existing cookie.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('checkout', function * (request, response) {
+  response.clearCookie('cartValue')
+  response.send('Order Confirmed')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

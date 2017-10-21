@@ -1,0 +1,905 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_tags">Tags</a></li>
+<li><a href="#_comments">Comments</a></li>
+<li><a href="#_whitespace_control">Whitespace Control</a></li>
+<li><a href="#_expressions">Expressions</a></li>
+<li><a href="#_mathematical_operators">Mathematical Operators</a></li>
+<li><a href="#_comparison_operators">Comparison Operators</a></li>
+<li><a href="#_logical_operators_shorthand">Logical Operators Shorthand</a></li>
+<li><a href="#_auto_escaping">Auto Escaping</a></li>
+<li><a href="#_globals">Globals</a></li>
+<li><a href="#_filters">Filters</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is a reference guide for AdonisJs template engine, covering topics on available <strong>tags</strong>, <strong>filters</strong>, and <strong>methods</strong> to be used inside your views. Read the <a href="views">views guide</a> to understanding how views work in AdonisJs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tags"><a class="anchor" href="#_tags"></a><a class="link" href="#_tags">Tags</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tags are blocks which define logic operations inside your views. Below is the list of available tags and their usages.</p>
+</div>
+<div class="sect2">
+<h3 id="_if"><a class="anchor" href="#_if"></a><a class="link" href="#_if">if</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if username %}
+  {{username}}
+{% endif %}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if not currentUser %}
+  &lt;p&gt; You're not logged in! &lt;/p&gt;
+{% endif %}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also perform comparison via <code>==</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if age == 18 %}
+  You are allowed to join
+{% endif %}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_else_elif"><a class="anchor" href="#_else_elif"></a><a class="link" href="#_else_elif">else, elif</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if hungry %}
+  I am hungry
+{% elif tired %}
+  I am tired
+{% else %}
+  I am good!
+{% endif %}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_if_as_an_expression"><a class="anchor" href="#_if_as_an_expression"></a><a class="link" href="#_if_as_an_expression">If As An Expression</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 'Party' if weekend else 'Do some work' }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_for_asynceach"><a class="anchor" href="#_for_asynceach"></a><a class="link" href="#_for_asynceach">for/asyncEach</a></h4>
+<div class="paragraph">
+<p>The <code>for</code> loop iterates over both arrays and objects.</p>
+</div>
+<div class="listingblock">
+<div class="title">Array</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for item in items %}
+  {{ item.text }}
+{% endfor %}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Object</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{#
+  var scores = {
+    Maths: 88,
+    English: 92,
+    Science: 94
+  }
+#}
+
+{% for subject, score in scores %}
+    You scored {{ score }} in {{ subject }}
+{% endfor %}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_asyncall"><a class="anchor" href="#_asyncall"></a><a class="link" href="#_asyncall">asyncAll</a></h3>
+<div class="paragraph">
+<p>The <code>asyncAll</code> tag will run an asynchronous loop in parallel. It is helpful when you perform an async operation within a loop.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Below is an example of fetching user profile inside a loop, which will cause multiple database queries. It is recommended to <strong>eagerLoad</strong> relationships using Lucid.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">&lt;ul&gt;
+{% asyncAll user in users.toJSON() %}
+  &lt;li&gt;{{ user.id | fetchProfile }}&lt;/li&gt;
+{% endall %}
+&lt;/ul&gt;</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_set"><a class="anchor" href="#_set"></a><a class="link" href="#_set">set</a></h4>
+<div class="paragraph">
+<p><code>set</code> creates a temporary variable inside your views. Think of it as <code>var</code> inside Javascript.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% set username = "John" %}
+{{ username }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can define multiple keys and their value at once.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% set x, y, z = 5 %}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_yield"><a class="anchor" href="#_yield"></a><a class="link" href="#_yield">yield</a></h4>
+<div class="paragraph">
+<p>Execute an <strong>ES2015 Generator</strong> or a <strong>Promise</strong> inside your views.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% yield users = User.all() %}
+{{ users | json }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raw"><a class="anchor" href="#_raw"></a><a class="link" href="#_raw">raw</a></h4>
+<div class="paragraph">
+<p>When building Front-End agnostic web apps, you are likely going to make use of <strong>VueJs</strong>, <strong>AngularJs</strong> or any similar framework. To stop your views from parsing your front-end templates, you should make use of <code>raw</code> tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% raw %}
+  &lt;p&gt;{{ message }}&lt;/p&gt;
+  &lt;input v-model="message"&gt;
+{% endraw %}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_filter"><a class="anchor" href="#_filter"></a><a class="link" href="#_filter">filter</a></h4>
+<div class="paragraph">
+<p>Instead of using filters with a <strong>pipe (|)</strong> symbol, you can also make use of filters as a tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% filter title %}
+  may the force be with you
+{% endfilter %}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">May The Force Be With You</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_call_caller"><a class="anchor" href="#_call_caller"></a><a class="link" href="#_call_caller">call/caller</a></h4>
+<div class="paragraph">
+<p>A <code>call</code> makes it easier to pass a lot of markup to your macros. A macro can access the passed content as <code>caller</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/macros/modal.nunjucks</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% macro modal(effect='fade') %}
+  &lt;div class="modal {{ effect }}"&gt;
+    &lt;div class="modal-dialog"&gt;
+    {{ caller() }}
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endmacro %}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s use the <strong>modal</strong> macro.</p>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/home.nunjucks</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% from 'macros.modal' import modal %}
+
+{% call modal() %}
+  &lt;div class="modal-header"&gt;&lt;/div&gt;
+  &lt;div class="modal-body"&gt;&lt;/div&gt;
+  &lt;div class="modal-footer"&gt;&lt;/div&gt;
+{% endcall %}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;div class="modal fade"&gt;
+  &lt;div class="modal-dialog"&gt;
+    &lt;div class="modal-header"&gt;&lt;/div&gt;
+    &lt;div class="modal-body"&gt;&lt;/div&gt;
+    &lt;div class="modal-footer"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments"><a class="anchor" href="#_comments"></a><a class="link" href="#_comments">Comments</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{# This is a comment #}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_whitespace_control"><a class="anchor" href="#_whitespace_control"></a><a class="link" href="#_whitespace_control">Whitespace Control</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Template engine will render all the white spaces between your tags. Use the following way if you want to remove all the white between the start and end of the tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for i in [1,2,3,4,5] -%}
+  {{ i }}
+{%- endfor %}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>-</code> symbol defines the whitespace control direction. Placing it on <strong>left</strong> will trim the whitespace from the left and setting it to the <strong>right</strong> will have the desired effect.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_expressions"><a class="anchor" href="#_expressions"></a><a class="link" href="#_expressions">Expressions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All given expressions are supported.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Strings</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code>"How are you?", 'How are you?'</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Numbers</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code>40, 30.123</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Arrays</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code>[1, 2, "array"]</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Objects</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code>{username: 'John', age: 28}</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Boolean</dt>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code>true, false</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mathematical_operators"><a class="anchor" href="#_mathematical_operators"></a><a class="link" href="#_mathematical_operators">Mathematical Operators</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of supported mathematical operators.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Addition: <code>+</code></p>
+</li>
+<li>
+<p>Subtraction: <code>-</code></p>
+</li>
+<li>
+<p>Division: <code>/</code></p>
+</li>
+<li>
+<p>Division and integer truncation: <code>//</code></p>
+</li>
+<li>
+<p>Division remainder: <code>%</code></p>
+</li>
+<li>
+<p>Multiplication: <code>*</code></p>
+</li>
+<li>
+<p>Power: <code>**</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Usage</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 10 + 2 }} {# 12 #}
+{{ 10 / 2 }} {# 5 #}
+{{ 10 % 2 }} {# 0 #}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comparison_operators"><a class="anchor" href="#_comparison_operators"></a><a class="link" href="#_comparison_operators">Comparison Operators</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of supported comparison operators.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Equals to <code>==</code></p>
+</li>
+<li>
+<p>Not equals to <code>!=</code></p>
+</li>
+<li>
+<p>Greater than <code>&gt;</code></p>
+</li>
+<li>
+<p>Greater than equals to <code>&gt;=</code></p>
+</li>
+<li>
+<p>Less than <code>&lt;</code></p>
+</li>
+<li>
+<p>Less than equals to <code>&#8656;</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Usage</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if numUsers &lt; 5 %}...{% endif %}
+{% if i == 0 %}...{% endif %}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logical_operators_shorthand"><a class="anchor" href="#_logical_operators_shorthand"></a><a class="link" href="#_logical_operators_shorthand">Logical Operators Shorthand</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of supported shorthand logical operators.</p>
+</div>
+<div class="sect3">
+<h4 id="_and"><a class="anchor" href="#_and"></a><a class="link" href="#_and">and</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if isLimit and count &gt; limit %}
+  You have crossed the limit of {{ limit }} users.
+{% endif %}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_or"><a class="anchor" href="#_or"></a><a class="link" href="#_or">or</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if isAdmin or hasPermission %}
+  Welcome!
+{% endif %}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_not"><a class="anchor" href="#_not"></a><a class="link" href="#_not">not</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% if not isAdmin %}
+  You are not allowed to access this record.
+{% endif %}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Make use of <strong>parentheses</strong> in order to group expressions. <code>if (x &lt; 5 or y &lt; 5) and foo</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_auto_escaping"><a class="anchor" href="#_auto_escaping"></a><a class="link" href="#_auto_escaping">Auto Escaping</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All values are auto escaped inside your views to keep them safe from HTML injection and XSS attacks. However, your application may have requirements of injecting HTML snippets inside your views and in that case you should make use of <code>safe</code> filter.</p>
+</div>
+<div class="listingblock">
+<div class="title">Without Filter</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% set title = '&lt;h1&gt; Title &lt;/h1&gt;' %}
+{{ title }}
+
+{# output &amp;lt;h1&amp;gt; Title &amp;lt;/h1&amp;gt; #}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">With Filter</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% set title = '&lt;h1&gt; Title &lt;/h1&gt;' %}
+{{ title | safe }}
+
+{# output &lt;h1&gt; Title &lt;/h1&gt; #}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_globals"><a class="anchor" href="#_globals"></a><a class="link" href="#_globals">Globals</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here we talk about predefined globals registered by the framework. Check out <a href="views#_working_with_globals">Working with globals</a> to know more about defining custom views globals.</p>
+</div>
+<div class="sect3">
+<h4 id="_linkto_route_text_data_target"><a class="anchor" href="#_linkto_route_text_data_target"></a><a class="link" href="#_linkto_route_text_data_target">linkTo(route, text, data, target)</a></h4>
+<div class="paragraph">
+<p>Returns link to a given registered route</p>
+</div>
+<div class="listingblock">
+<div class="title">Route</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route
+    .get('/users', 'UserController.index')
+    .as('listUsers')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">View</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ linkTo('listUsers', 'View All Users') }}
+{{ linkTo('listUsers', 'View All Users', {}, '_blank') }}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;a href="/users"&gt; View Profile &lt;/a&gt;
+&lt;a href="/users" target="_blank"&gt; View Profile &lt;/a&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_linktoaction_controlleraction_text_data_target"><a class="anchor" href="#_linktoaction_controlleraction_text_data_target"></a><a class="link" href="#_linktoaction_controlleraction_text_data_target">linkToAction(controllerAction, text, data, target)</a></h4>
+<div class="paragraph">
+<p>Returns link to registered route controller action.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ linkToAction('UserController.index', 'View All Users') }}
+{{ linkToAction('UserController.index', 'View All Users', {}, '_blank') }}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;a href="/users"&gt; View Profile &lt;/a&gt;
+&lt;a href="/users" target="_blank"&gt; View Profile &lt;/a&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_range_start_stop_step_1"><a class="anchor" href="#_range_start_stop_step_1"></a><a class="link" href="#_range_start_stop_step_1">range(start, stop, [step=1])</a></h4>
+<div class="paragraph">
+<p>Loop over a range of values. Think of it as calling a <code>for</code> loop.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for i in range(0, 5) -%}
+  {{ i }},
+{%- endfor %}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code>0,1,2,3,4</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filters"><a class="anchor" href="#_filters"></a><a class="link" href="#_filters">Filters</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of all the available filters. Check out <a href="views#_working_with_filters">Working with filters</a> to learn more about defining filters.</p>
+</div>
+<div class="sect3">
+<h4 id="_age"><a class="anchor" href="#_age"></a><a class="link" href="#_age">age</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ age | abs }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_action"><a class="anchor" href="#_action"></a><a class="link" href="#_action">action</a></h4>
+<div class="paragraph">
+<p>Returns URL for registered controller action.</p>
+</div>
+<div class="listingblock">
+<div class="title">Route</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.put('/user/:id', 'UserController.update')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">View</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">&lt;form method="POST" action="{{ 'UserController.update' | action({id: 1}) }}"&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;form method="POST" action="/user/1"&gt;&lt;/form&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_batch"><a class="anchor" href="#_batch"></a><a class="link" href="#_batch">batch</a></h4>
+<div class="paragraph">
+<p>Creates multiple chunks of an array. It is helpful when printing HTML grid.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for rows in users | batch(3) %}
+  &lt;div class='row'&gt;
+    {% for user in rows %}
+      &lt;div class='col-md-4'&gt;&lt;/div&gt;
+    {% endfor %}
+  &lt;/div&gt;
+{% endfor %}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_capitalize"><a class="anchor" href="#_capitalize"></a><a class="link" href="#_capitalize">capitalize</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ name | capitalize }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_default"><a class="anchor" href="#_default"></a><a class="link" href="#_default">default</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ title | default('Adonis') }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_first"><a class="anchor" href="#_first"></a><a class="link" href="#_first">first</a></h4>
+<div class="paragraph">
+<p>Returns first item from an array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ ['foo','bar'] | first }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groupby"><a class="anchor" href="#_groupby"></a><a class="link" href="#_groupby">groupby</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% set users = [{username:'doe', age:22}, {username:'dim', age:22}, {username:'dock', age:21}] %}
+{{ users | groupby('age') | json }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_indent_width_2_firstline_false"><a class="anchor" href="#_indent_width_2_firstline_false"></a><a class="link" href="#_indent_width_2_firstline_false">indent(width=2, firstLine=false)</a></h4>
+<div class="paragraph">
+<p>Indent each line of string with given spaces.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ text | indent(2, true) }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_join"><a class="anchor" href="#_join"></a><a class="link" href="#_join">join</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ ['hello', 'world'] | join(' ') }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_json_indentation_2"><a class="anchor" href="#_json_indentation_2"></a><a class="link" href="#_json_indentation_2">json(indentation=2)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ users | json }}
+{{ users | json(4) }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_last"><a class="anchor" href="#_last"></a><a class="link" href="#_last">last</a></h4>
+<div class="paragraph">
+<p>Returns last item from an array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ ['foo','bar'] | last }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_length"><a class="anchor" href="#_length"></a><a class="link" href="#_length">length</a></h4>
+<div class="paragraph">
+<p>Returns length of the array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ ['foo','bar'] | length }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_list"><a class="anchor" href="#_list"></a><a class="link" href="#_list">list</a></h4>
+<div class="paragraph">
+<p>Converts an array into a list, think of it as a replacement to <code>join</code>, but it also works with strings inside the array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ ['foo','bar'] | list }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_lower"><a class="anchor" href="#_lower"></a><a class="link" href="#_lower">lower</a></h4>
+<div class="paragraph">
+<p>Converts value to lowercase</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ "Hello World" | lower }}
+{# hello world #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_random"><a class="anchor" href="#_random"></a><a class="link" href="#_random">random</a></h4>
+<div class="paragraph">
+<p>Returns random item from an array</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ ['foo', 'bar', 'baz'] | random }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rejectattr"><a class="anchor" href="#_rejectattr"></a><a class="link" href="#_rejectattr">rejectattr</a></h4>
+<div class="paragraph">
+<p>Filters an array and remove objects containing defined attributes</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% set users = [{username: 'doe', admin: false}, {username: 'doe', admin: true}] %}
+{{ users | rejectattr('admin') | json }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_replace"><a class="anchor" href="#_replace"></a><a class="link" href="#_replace">replace</a></h4>
+<div class="paragraph">
+<p>Implementation of javascript native <code>replace</code> method, the first argument can be a regex.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 'Hello World' | replace('World', 'Everyone') }}
+{# Hello Everyone #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reverse"><a class="anchor" href="#_reverse"></a><a class="link" href="#_reverse">reverse</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 'Hello World' | reverse }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_round"><a class="anchor" href="#_round"></a><a class="link" href="#_round">round</a></h4>
+<div class="paragraph">
+<p>Round the number to a given precision using defined method</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 42.55 | round }}
+{# 43.0 #}
+
+{{ 42.55 | round(1, 'floor') }}
+{# 42.5 #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_route"><a class="anchor" href="#_route"></a><a class="link" href="#_route">route</a></h4>
+<div class="paragraph">
+<p>Resolves a registered route.</p>
+</div>
+<div class="listingblock">
+<div class="title">Route</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route
+    .put('/profile/:id', 'ProfileController.update')
+    .as('updateProfile')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">&lt;form method="POST" action="{{ 'updateProfile' | route({id: 1}) }}"&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_striptags"><a class="anchor" href="#_striptags"></a><a class="link" href="#_striptags">striptags</a></h4>
+<div class="paragraph">
+<p>Strip <strong>Html</strong>, <strong>XML</strong> tags from a string</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ '&lt;h2&gt; Hello World &lt;/h2&gt;' | striptags }}
+{# Hello World #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_title"><a class="anchor" href="#_title"></a><a class="link" href="#_title">title</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ "hello world" | title }}
+{# Hello World #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_trim"><a class="anchor" href="#_trim"></a><a class="link" href="#_trim">trim</a></h4>
+<div class="paragraph">
+<p>Trims white space.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ " Hello World " | trim }}
+{# Hello World #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_truncate"><a class="anchor" href="#_truncate"></a><a class="link" href="#_truncate">truncate</a></h4>
+<div class="paragraph">
+<p>Returns a truncated copy of the string.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ "Grumpy wizards make toxic brew for the evil Queen and Jack." | truncate(30) }}
+{# Grumpy wizards make toxic brew... #}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_upper"><a class="anchor" href="#_upper"></a><a class="link" href="#_upper">upper</a></h4>
+<div class="paragraph">
+<p>Makes string uppercase.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 'hello world' | upper }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_urlencode"><a class="anchor" href="#_urlencode"></a><a class="link" href="#_urlencode">urlencode</a></h4>
+<div class="paragraph">
+<p>Makes value URL friendly (uses UTF-8 encoding).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 'http://foo.com?bar=baz' | urlencode }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wordcount"><a class="anchor" href="#_wordcount"></a><a class="link" href="#_wordcount">wordcount</a></h4>
+<div class="paragraph">
+<p>Count words in a string.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ 'Grumpy wizards make toxic brew' | wordcount }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_float"><a class="anchor" href="#_float"></a><a class="link" href="#_float">float</a></h4>
+<div class="paragraph">
+<p>Converts value to a float value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ '1.2' | float }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_int"><a class="anchor" href="#_int"></a><a class="link" href="#_int">int</a></h4>
+<div class="paragraph">
+<p>Converts value to an integer value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{{ '1.2' | int }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

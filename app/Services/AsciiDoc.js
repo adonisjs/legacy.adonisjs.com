@@ -58,6 +58,7 @@ class AsciiDoc {
     const html = output.convert().replace(/<pre class="highlight">/g, () => '<pre class="highlight line-numbers">')
     const meta = this._getMetaFor(contents)
     meta.title = meta.title || output.getAttribute('doctitle')
+    meta.category = Array.isArray(meta.categories) ? meta.categories[0] : meta.category
 
     return {
       html,

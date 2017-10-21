@@ -17,7 +17,7 @@ class CompileDoc extends Command {
   static get signature () {
     return `
     compile:docs
-    { -v, --version?=@value : The version to compile }`
+    { --forVersion?=@value : The version to compile }`
   }
 
   /**
@@ -41,8 +41,8 @@ class CompileDoc extends Command {
    *
    * @return {void}
    */
-  async handle (args, { version }) {
-    const docs = new Docs(version || Docs.getLatestVersion())
+  async handle (args, { forVersion }) {
+    const docs = new Docs(forVersion || Docs.getLatestVersion())
     const stateJar = []
 
     docs.on('doc:reading', function (meta) {

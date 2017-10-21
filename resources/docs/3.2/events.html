@@ -1,0 +1,324 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_about_events">About Events</a></li>
+<li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_event_methods">Event Methods</a></li>
+<li><a href="#_emitter_instance">Emitter Instance</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs got a beautiful <a href="https://nodejs.org/docs/latest-v6.x/api/events.html" target="_blank" rel="noopener">Event Emitter</a> to emit and listen to events with support for <strong>ES2015 generators</strong>, <strong>wildcards</strong> and a <strong>dedicated directory</strong> to store/manage listeners.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_events"><a class="anchor" href="#_about_events"></a><a class="link" href="#_about_events">About Events</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Events are defined inside <code>bootstrap/events.js</code> file.</p>
+</li>
+<li>
+<p>Events listeners can be defined as <strong>Closures</strong> or you can bind an IoC container namespace.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.on('user.registered', function * (user) {
+})
+
+// OR
+Event.on('user.registered', 'User.registered')</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The <code>app/Listeners</code> directory is dedicated for storing Event listeners.</p>
+</li>
+<li>
+<p>When binding listeners to the events, you are not required to enter the entire namespace. For example A listener stored as <code>app/Listeners/User.js</code> will be referenced as <code>User.&lt;method&gt;</code>.</p>
+</li>
+<li>
+<p>Make use of <code>make:listener</code> command to create a new event listener.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:listener User
+
+# create: app/Listeners/User.js</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration for Events provider is stored inside <code>config/events.js</code> file. Under the hood AdonisJs makes use of <a href="https://github.com/asyncly/EventEmitter2" target="_blank" rel="noopener">EventEmitter 2</a> and implements all the available configuration options.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s walk through a basic example of sending a welcome email to a newly registered user using the <strong>Events provider</strong>. We will start by setting up a route and will use the <strong>UsersController</strong> to fire the event after creating a new user.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Route = use('Route')
+Route.post('users', 'UsersController.store')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap/events.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Event = use('Event')
+Event.when('user.registered', 'User.sendWelcomeEmail') <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Event = use('Event')
+const User = use('App/Model/User')
+
+class UsersController {
+  * store (request, response) {
+    const user = yield User.create(userDetails)
+    Event.fire('user.registered', user.toJSON()) <i class="conum" data-value="2"></i><b>(2)</b>
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Listeners/User.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Mail = use('Mail')
+const User = exports = module.exports = {}
+
+User.sendWelcomeEmail = function * (user) {
+  yield Mail.send('emails.welcome', user, message =&gt; {
+    message.to(user.email, user.firstname)
+    message.from('awesome@adonisjs.com')
+    message.subject('Welcome to the Kitten\'s World')
+  })
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>First we need to register a listener for the event.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>UsersController.store</code> method will fire the <strong>user.registered</strong> event and pass the newly created user.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_methods"><a class="anchor" href="#_event_methods"></a><a class="link" href="#_event_methods">Event Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available methods exposed by the Event Provider.</p>
+</div>
+<div class="sect3">
+<h4 id="_when_event_name_listener"><a class="anchor" href="#_when_event_name_listener"></a><a class="link" href="#_when_event_name_listener">when(event, [name], listener)</a></h4>
+<div class="paragraph">
+<p>Register a listener for a given event. You can also define an optional name for a listener, which can be used to remove it later.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.when('user.registered', 'Mail.sendWelcomeEmail')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.when('user.registered', function * () {
+  // ...
+})</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.when('user.registered', 'registration', 'User.sendWelcomeEmail')</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Aliases</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Alias</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">listen</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Event.listen('user.registered', function * () {})</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">on</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Event.on('user.registered', function * () {})</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_once_event_handler"><a class="anchor" href="#_once_event_handler"></a><a class="link" href="#_once_event_handler">once(event, handler)</a></h4>
+<div class="paragraph">
+<p>Works same as <code>when</code> but is executed only for one time.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.once('app.boot', function * () {
+  // ...
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_any_handler"><a class="anchor" href="#_any_handler"></a><a class="link" href="#_any_handler">any(handler)</a></h4>
+<div class="paragraph">
+<p>Attach a global event listener to listen for all the events.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.any(function (event) {
+  console.log(event)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_times_number"><a class="anchor" href="#_times_number"></a><a class="link" href="#_times_number">times(number)</a></h4>
+<div class="paragraph">
+<p>Set a limit for times an event listener will be executed and get removed after that.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.times(4).when('user.registered', function () {
+  // I will be executed 4 times only
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fire_event_data"><a class="anchor" href="#_fire_event_data"></a><a class="link" href="#_fire_event_data">fire(event, data)</a></h4>
+<div class="paragraph">
+<p>Fires an event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.fire('user.registered', user)</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Aliases</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Alias</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Event.emit('user.registered', user)</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_removelisteners_event"><a class="anchor" href="#_removelisteners_event"></a><a class="link" href="#_removelisteners_event">removeListeners([event])</a></h4>
+<div class="paragraph">
+<p>Remove all listeners from a given event or for all events.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.removeListeners() // will remove all listeners
+Event.removeListeners('user.registered') // will remove listeners for user.registered event only</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removelistener_event_name"><a class="anchor" href="#_removelistener_event_name"></a><a class="link" href="#_removelistener_event_name">removeListener(event, name)</a></h4>
+<div class="paragraph">
+<p>Remove a named listener for a given event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">// register multiple
+Event.when('user.registered', 'Logger.log')
+Event.when('user.registered', 'registration', 'Mail.sendWelcomeEmail')
+
+// remove a specific one
+Event.removeListener('user.registered', 'registration')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_haslisteners_event"><a class="anchor" href="#_haslisteners_event"></a><a class="link" href="#_haslisteners_event">hasListeners(event)</a></h4>
+<div class="paragraph">
+<p>Returns a boolean whether an event has listeners or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.hasListeners('user.registered')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getlisteners_event"><a class="anchor" href="#_getlisteners_event"></a><a class="link" href="#_getlisteners_event">getListeners(event)</a></h4>
+<div class="paragraph">
+<p>Returns an array of listeners for a specific event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.getListeners('user.registered')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_emitter_instance"><a class="anchor" href="#_emitter_instance"></a><a class="link" href="#_emitter_instance">Emitter Instance</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All of the event listeners has access to the emitter instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.when('user.registered', function () {
+  console.log(this.emitter)
+})</code></pre>
+</div>
+</div>
+</div>
+</div>

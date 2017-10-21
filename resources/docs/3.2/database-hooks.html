@@ -1,0 +1,263 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_about_hooks">About Hooks</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_defining_hooks">Defining Hooks</a></li>
+<li><a href="#_aborting_database_operations">Aborting Database Operations</a></li>
+<li><a href="#_hooks_events">Hooks Events</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Hooks are the actions you perform <strong>before</strong> or <strong>after</strong> a specified database operation. Hooks plays a major role in keeping your codebase DRY and easy to reason about For example: <strong>Hashing</strong> the user password before saving it to the database.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_hooks"><a class="anchor" href="#_about_hooks"></a><a class="link" href="#_about_hooks">About Hooks</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Model hooks are defined inside <code>app/Model/Hooks</code> directory.</p>
+</li>
+<li>
+<p>Each model hook is a <strong>ES2015</strong> generator method, making it simpler to run the asynchronous code.</p>
+</li>
+<li>
+<p>You have to define hooks on your models explicitly.</p>
+</li>
+<li>
+<p>Like other generator commands, you can use ace to make a hook for you.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:hook User
+
+# or with predefined method
+./ace make:hook User --method=encryptPassword</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Hooks are only executed for commands run via the model instance. For example: Calling the static <code>update</code> method will not execute the hooks.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const user = yield User.find(1)
+user.status = 'active'
+// Will execute the update hooks
+yield user.save()
+
+// Will not execute the update hooks
+yield User.query().where('id', 1).update('status', 'active')</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take the most basic example of encrypting the user password using a model hook.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/Hooks/User.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Hash = use('Hash')
+const User = exports = module.exports = {}
+
+User.encryptPassword = function * (next) {
+  this.password = yield Hash.make(this.password)
+  yield next
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to register this hook on the <strong>User model</strong> manually.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/User.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class User extends Lucid {
+
+  static boot () { <i class="conum" data-value="1"></i><b>(1)</b>
+    super.boot()
+    this.addHook('beforeCreate', 'User.encryptPassword') <i class="conum" data-value="2"></i><b>(2)</b>
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>All hooks should only be registered once and the <code>boot</code> method is perfect place since Lucid makes sure it is only executed once.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>addHook</code> method will before the hook for a given event which is <code>beforeCreate</code> in this case.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_hooks"><a class="anchor" href="#_defining_hooks"></a><a class="link" href="#_defining_hooks">Defining Hooks</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hooks are executed in the sequence they are registered. To execute the next hook, you must <code>yield next</code> from the existing hook. The process is quite similar to HTTP middleware layer.</p>
+</div>
+<div class="sect3">
+<h4 id="_addhook_event_name_action"><a class="anchor" href="#_addhook_event_name_action"></a><a class="link" href="#_addhook_event_name_action">addHook(event, [name], action)</a></h4>
+<div class="paragraph">
+<p>The <code>addHook</code> method will define a hook for a given event. Optionally you can give it a unique name, which can be used later to remove the hook.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">static boot () {
+  super.boot()
+  this.addHook('beforeCreate', 'User.encryptPassword')
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And for named hooks</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">static boot () {
+  super.boot()
+  this.addHook(
+    'beforeCreate', <i class="conum" data-value="1"></i><b>(1)</b>
+    'encryptingPassword', <i class="conum" data-value="2"></i><b>(2)</b>
+    'User.encryptPassword' <i class="conum" data-value="3"></i><b>(3)</b>
+  )
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Hook event</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Unique name</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Action to be executed. The action can be a reference to a plain javascript method, or a namespace to be resolved by the IoC container.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_definehooks_event_arrayofactions"><a class="anchor" href="#_definehooks_event_arrayofactions"></a><a class="link" href="#_definehooks_event_arrayofactions">defineHooks(event, arrayOfActions)</a></h4>
+<div class="paragraph">
+<p>The <code>defineHooks</code> method is quite similar to the <code>addHook</code> method, instead you can define multiple hooks in one go.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class User extends Lucid {
+
+  static boot () {
+    super.boot()
+    this.defineHooks('beforeCreate', ['UserHooks.validate', 'UserHook.encryptPassword'])
+  }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removehook_name"><a class="anchor" href="#_removehook_name"></a><a class="link" href="#_removehook_name">removeHook(name)</a></h4>
+<div class="paragraph">
+<p>As stated earlier, you can also remove <strong>named hooks</strong> anytime during in your application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">User.removeHook('encryptingPassword')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aborting_database_operations"><a class="anchor" href="#_aborting_database_operations"></a><a class="link" href="#_aborting_database_operations">Aborting Database Operations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hooks have the ability to abort the database operations by throwing exceptions.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/Hooks/User.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">UserHook.validate = function * (next) {
+  if (!this.username) {
+    throw new Error('Username is required')
+  }
+  yield next
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hooks_events"><a class="anchor" href="#_hooks_events"></a><a class="link" href="#_hooks_events">Hooks Events</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of hooks events.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeCreate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before a new record gets created.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeUpdate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before an existing record gets updated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeDelete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before you are about to a delete a given record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeRestore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This event is only triggered when you have enabled <a href="lucid#_deletetimestamp">soft deletes</a> and restoring a previously deleted record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterCreate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a new record has been successfully created.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterUpdate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After an existing record has been updated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterDelete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a record has been deleted successfully.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterRestore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a soft deleted record has been restored.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

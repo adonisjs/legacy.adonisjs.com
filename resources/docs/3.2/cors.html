@@ -1,0 +1,150 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_how_it_works">How It Works?</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Cross-Origin Resource Sharing(CORS) is a way to allow incoming HTTP requests from different domains. It is very common in AJAX applications where the browser will block all cross-domain requests if the server does not authorize them. Read more about CORS <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_it_works"><a class="anchor" href="#_how_it_works"></a><a class="link" href="#_how_it_works">How It Works?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AJAX Requests from different domains needs to be authorized before they perform desired actions. Browsers first make a <strong>preflight</strong> request with <strong>OPTIONS</strong> as the HTTP method to the server granting permission. The server can allow the request by returning <strong>200 OK</strong> and specifying the domains to be allowed via <strong>Access-Control-Allow-Origin</strong> header.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs ships with a <strong>CORS</strong> middleware to handle this flow for you via a configuration file.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For CORS rules to work properly make sure that <code>Adonis/Middleware/Cors</code> is registered as a global middleware inside <code>app/Http/kernel.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const globalMiddleware = [
+  // ...
+  'Adonis/Middleware/Cors'
+  // ...
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can manage the CORS rules by editing the <code>config/cors.js</code> configuration file.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/cors.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">module.exports = {
+  origin: false,
+  methods: 'GET, PUT, POST',
+  headers: true,
+  exposeHeaders: false,
+  credentials: false,
+  maxAge: 90
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_origin"><a class="anchor" href="#_origin"></a><a class="link" href="#_origin">origin</a></h4>
+<div class="paragraph">
+<p>Origin accepts multiple values.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To disallow all CORS requests, set it <code>false</code></p>
+</li>
+<li>
+<p>To allow the same origin requests, set it to <code>true</code>.</p>
+</li>
+<li>
+<p>You can define comma(,) separated origins.</p>
+</li>
+<li>
+<p>Setting the value to a wildcard *, will allow all origins.</p>
+</li>
+<li>
+<p>Finally, you can attach a callback and return one of the above values</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">origin: function (requestOrigin) {
+  return requestOrigin === 'foo'
+}</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_methods"><a class="anchor" href="#_methods"></a><a class="link" href="#_methods">methods</a></h4>
+<div class="paragraph">
+<p>Http methods/verbs to allow. Make sure it is a comma-separated value of one of the multiple methods.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers"><a class="anchor" href="#_headers"></a><a class="link" href="#_headers">headers</a></h4>
+<div class="paragraph">
+<p>As origin, <strong>headers</strong> also accept multiple values</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To disable all headers set to false.</p>
+</li>
+<li>
+<p>To allow all headers defined inside Access-Control-Request-Headers set it to true.</p>
+</li>
+<li>
+<p>Allow a string of comma(,) separated custom headers. For example, Content-Type, Accepts.</p>
+</li>
+<li>
+<p>Finally, a callback function.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">headers: function (requestedHeaders) {
+  // ...
+}</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_exposeheaders_optional"><a class="anchor" href="#_exposeheaders_optional"></a><a class="link" href="#_exposeheaders_optional">exposeHeaders(optional)</a></h4>
+<div class="paragraph">
+<p>Comma separated headers to expose via <strong>Access-Control-Expose-Headers</strong> header.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_credentials_optional"><a class="anchor" href="#_credentials_optional"></a><a class="link" href="#_credentials_optional">credentials(optional)</a></h4>
+<div class="paragraph">
+<p>Allow or disallow credentials exchanged by setting <strong>Access-Control-Allow-Credentials</strong> header to a boolean value.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_maxage_optional"><a class="anchor" href="#_maxage_optional"></a><a class="link" href="#_maxage_optional">maxAge(optional)</a></h4>
+<div class="paragraph">
+<p>Sets <strong>Access-Control-Allow-Max-Age</strong> header to defined value.</p>
+</div>
+</div>
+</div>
+</div>

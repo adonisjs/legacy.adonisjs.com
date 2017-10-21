@@ -1,0 +1,394 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_about_migrations">About Migrations</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_running_migrations">Running Migrations</a></li>
+<li><a href="#_list_of_commands">List Of Commands</a></li>
+<li><a href="#_interacting_with_tables">Interacting With Tables</a></li>
+<li><a href="#_schema_builder">Schema Builder</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Database Migrations is a process of creating, altering and dropping database tables from code, instead of writing SQL queries. AdonisJs has out of the box support for database migrations so that you can set up your database tables within the application codebase.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_naive_way"><a class="anchor" href="#_naive_way"></a><a class="link" href="#_naive_way">Naive Way</a></h3>
+<div class="paragraph">
+<p>The <strong>naive</strong> approach of database management is to create the SQL database tables manually. Which work, but it is not great as it requires a lot of manual re-work.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s take an example of a standard procedure of creating database tables.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to SequelPro(or similar) and create database tables.</p>
+</li>
+<li>
+<p>Now when someone wants to work on the same application, you need to share the database schema or dump with them.</p>
+</li>
+<li>
+<p>When they make some changes in the database, they have to re-share the new database dump with you.</p>
+</li>
+<li>
+<p>You cannot run automated tests on TravisCI(or similar) as you need access to the server to create the database tables.</p>
+</li>
+<li>
+<p>Finally, when deploying the app in production, you need to make a remote connection to your server database to create those tables manually.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_migrations"><a class="anchor" href="#_migrations"></a><a class="link" href="#_migrations">Migrations</a></h3>
+<div class="paragraph">
+<p>With migrations <strong>SQL schema</strong> is part of your code base which means once your co-workers will check out the code from a git client, they will get the database schema with it, and any progressive changes made by them are available to you.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_migrations"><a class="anchor" href="#_about_migrations"></a><a class="link" href="#_about_migrations">About Migrations</a></h2>
+<div class="sectionbody">
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Migrations are stored inside <code>database/migrations</code> folder.</p>
+</li>
+<li>
+<p>Each schema file is an ES2015 class with two required methods called <code>up</code> and <code>down</code>.</p>
+</li>
+<li>
+<p>The <code>up</code> method get executed when running the migrations.</p>
+</li>
+<li>
+<p>The <code>down</code> method get called during migrations rollback.</p>
+</li>
+<li>
+<p>Migrations are executed in a batch and give you the flexibility to rollback to a given batch.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now as you know about the benefits of migrations, let&#8217;s take a closer look on how to create SQL database tables using Javascript.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:migration users --create=users</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">create: database/migrations/1464437815620_users.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">database/migrations/1464437815620_users.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Schema = use('Schema')
+
+class UsersSchema extends Schema {
+  up () {
+    this.create('users', (table) =&gt; {
+      table.increments()
+      table.timestamps()
+    })
+  }
+
+  down () {
+    this.drop('users')
+  }
+}
+
+module.exports = UsersSchema</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_running_migrations"><a class="anchor" href="#_running_migrations"></a><a class="link" href="#_running_migrations">Running Migrations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>migration:run</code> command is used to execute all the migrations stored inside <code>database/migrations</code> directory. AdonisJs will smartly skip the migrations which have been executed already and no executes the new ones.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace migration:run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It is recommended to work with incremental migrations, instead of modifying the same schema file every time. For example</p>
+</div>
+<div class="olist pretty-list">
+<ol class="pretty-list">
+<li>
+<p>Create a new schema file when you want to create a new table.</p>
+</li>
+<li>
+<p>Down the line, you realized that you need two extra fields in the same table. Create a new schema file to alter the existing table and add those two new fields.</p>
+</li>
+<li>
+<p>Again after few days, you have a requirement to rename an existing field. Create a new schema file for that also.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Incremental migrations help you in tracking changes like Version control. When writing code, it is a good practice to make small code commits, so that you have cleaner code history. You must treat your migrations the same way.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_list_of_commands"><a class="anchor" href="#_list_of_commands"></a><a class="link" href="#_list_of_commands">List Of Commands</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of ace commands specific to migrations only.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Command</th>
+<th class="tableblock halign-left valign-top">Options</th>
+<th class="tableblock halign-left valign-top">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run all pending migrations by executing up method of all schema files.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:rollback</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[batch=last]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rollback migrations to a given batch or default to last batch.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:refresh</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Refresh migrations by dropping and re-running all migrations</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:reset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rollback to the initial state.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Check the current status of migrations.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_interacting_with_tables"><a class="anchor" href="#_interacting_with_tables"></a><a class="link" href="#_interacting_with_tables">Interacting With Tables</a></h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="_create_tablename_callback"><a class="anchor" href="#_create_tablename_callback"></a><a class="link" href="#_create_tablename_callback">create(tableName, callback)</a></h4>
+<div class="paragraph">
+<p>Create a new database table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.create('users', (table) =&gt; {
+      ...
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_createifnotexists_tablename_callback"><a class="anchor" href="#_createifnotexists_tablename_callback"></a><a class="link" href="#_createifnotexists_tablename_callback">createIfNotExists(tableName, callback)</a></h4>
+<div class="paragraph">
+<p>Only creates the table if it does not exists, otherwise silently ignores the <strong>create</strong> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.createIfNotExists('users', (table) =&gt; {
+      ...
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rename_from_to"><a class="anchor" href="#_rename_from_to"></a><a class="link" href="#_rename_from_to">rename(from, to)</a></h4>
+<div class="paragraph">
+<p>Rename an existing database table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.rename('users', 'my_users')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_drop_tablename"><a class="anchor" href="#_drop_tablename"></a><a class="link" href="#_drop_tablename">drop(tableName)</a></h4>
+<div class="paragraph">
+<p>Drop an existing database table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  down () {
+    this.drop('users')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dropifexists_tablename"><a class="anchor" href="#_dropifexists_tablename"></a><a class="link" href="#_dropifexists_tablename">dropIfExists(tableName)</a></h4>
+<div class="paragraph">
+<p>Drop database table only if it exists, otherwise silently ignores the <strong>drop</strong> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  down () {
+    this.dropIfExists('users')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_has_tablename"><a class="anchor" href="#_has_tablename"></a><a class="link" href="#_has_tablename">has(tableName)</a></h4>
+<div class="paragraph">
+<p>Resolves with a <strong>boolean</strong> indicating whether a database table exists or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.has('users').then((exists) =&gt; {
+      if (!exists) {
+        // do something
+      }
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_table_tablename_callback"><a class="anchor" href="#_table_tablename_callback"></a><a class="link" href="#_table_tablename_callback">table(tableName, callback)</a></h4>
+<div class="paragraph">
+<p>Select a table for <strong>alter</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.table('users', (table) =&gt; {
+      table.dropColumn('deleted_at')
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raw_statement"><a class="anchor" href="#_raw_statement"></a><a class="link" href="#_raw_statement">raw(statement)</a></h4>
+<div class="paragraph">
+<p>Run an arbitrary SQL query in the schema builder chain.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.raw('SET sql_mode="TRADITIONAL"')
+    .create('users', (table) =&gt; {
+      table.increments()
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_db_closure"><a class="anchor" href="#_db_closure"></a><a class="link" href="#_db_closure">db(closure)</a></h4>
+<div class="paragraph">
+<p>The <code>db</code> method will give you the access to the <a href="query-builder">Database query builder</a> within your migrations. It is helpful if you want to migrate data while altering the database tables.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.db(function * (database) {
+      const names = yield database.from('users').pluck('name')
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_schema_builder"><a class="anchor" href="#_schema_builder"></a><a class="link" href="#_schema_builder">Schema Builder</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Please refer to the docs of <a href="http://knexjs.org/#Schema-Building" target="_blank" rel="noopener">Knex Schema Building</a>, everything from knex is fully supported. Below is the example making use of schema builder to create the <strong>users</strong> table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Schema = use('Schema')
+
+class UsersSchema extends Schema {
+  up () {
+    this.create('users', (table) =&gt; {
+      table.increments()
+      table.string('username').unique()
+      table.string('email').unique()
+      table.string('password', 60)
+      table.timestamps()
+      table.softDeletes()
+    })
+  }
+
+  down () {
+    this.drop('users')
+  }
+}
+
+module.exports = UsersSchema</code></pre>
+</div>
+</div>
+</div>
+</div>

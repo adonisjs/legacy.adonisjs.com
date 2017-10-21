@@ -1,0 +1,178 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_how_controllers_work">How Controllers Work?</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_dependency_injection">Dependency Injection</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Controllers are attached to routes and are the common point of interaction between your models and views.</p>
+</div>
+<div class="paragraph">
+<p>In typical web applications, you will begin by binding a controller method to a route, make use of models to fetch data and send that data to the view to render HTML.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_controllers_work"><a class="anchor" href="#_how_controllers_work"></a><a class="link" href="#_how_controllers_work">How Controllers Work?</a></h2>
+<div class="sectionbody">
+<div class="ulist pretty-list">
+<ul class="pretty-list">
+<li>
+<p>Controllers are defined inside <code>app/Http/Controllers</code> directory. To keep your code maintainable, you are free to create nested directories inside the <strong>Controllers</strong> directory.</p>
+</li>
+<li>
+<p>Make use of <code>make:controller</code> command to create a new controller.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./ace make:controller Home
+# or
+./ace make:controller User --resource
+
+# create: app/Http/Controllers/HomeController.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>--resource</code> flag will create a controller with predefined <a href="routing#_resourceful_routes">resourceful</a> methods.</p>
+</div>
+</li>
+<li>
+<p>Controllers are defined as ES2015 classes, which makes it easier to test them since you can inject runtime dependencies to the constructor and mock them(if required) during tests.</p>
+</li>
+<li>
+<p>Controllers methods are referenced as a <strong>String</strong> to the routes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('users', 'UsersController.index')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first part before the <strong>dot(.)</strong> is a reference to the controller file that is <strong>UserController</strong> and the second part is the controller method.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take a basic example of rendering all the users using the route, controller, model, and view.</p>
+</div>
+<div class="listingblock">
+<div class="title">Route</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.get('users', 'UsersController.index')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Controller</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const User = use('App/Model/User')
+
+class UsersController {
+
+  * index (request, response) {
+    const users = yield User.all()
+    yield response.sendView('users', { users: users.toJSON() })
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">View</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-twig" data-lang="twig">{% for user in users %}
+  &lt;h2&gt;{{ user.username }}&lt;/h2&gt;
+{% endfor %}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dependency_injection"><a class="anchor" href="#_dependency_injection"></a><a class="link" href="#_dependency_injection">Dependency Injection</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since controllers are ES2015 classes, you can easily inject dependencies to the constructor, instead of manually requiring them. The benefit of injecting dependencies is that you can mock them at the time of testing.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Mocking dependencies is very subjective and is not always required. Still, AdonisJs does not limit you if you want to mock dependencies.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_defining_controller"><a class="anchor" href="#_defining_controller"></a><a class="link" href="#_defining_controller">Defining Controller</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UsersController {
+
+  static get inject () {
+    return ['App/Model/User'] <i class="conum" data-value="1"></i><b>(1)</b>
+  }
+
+  constructor (User) { <i class="conum" data-value="2"></i><b>(2)</b>
+    this.User = User
+  }
+
+  * index () {
+    const users = yield this.User.all()
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Getter <code>inject</code> returns an array of namespaces to be injected to the constructor. They are passed in the order they are defined.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Class <code>constructor</code> will receive the injections as parameters.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_writing_test"><a class="anchor" href="#_writing_test"></a><a class="link" href="#_writing_test">Writing Test</a></h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Below test example is written to give you an idea on how to mock dependencies and may not be the best way of writing tests.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const UsersController = use('App/Http/Controllers/User')
+
+class FakeUser {
+  static * all () {
+    return {} // dummy users
+  }
+}
+
+const user = new UsersController(FakeUser)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

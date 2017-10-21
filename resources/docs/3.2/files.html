@@ -1,0 +1,343 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_file_instance">File Instance</a></li>
+<li><a href="#_validation">Validation</a></li>
+<li><a href="#_file_instance_methods">File Instance Methods</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs has out of the box support for handling file uploads. You can easily manage <strong>bulk uploads</strong>, <strong>file size/extension validation</strong> and add global checks to deny requests containing more than expected payload.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take an example of uploading user avatar. We will consider this as a <strong>PUT</strong> request to upload the user profile avatar and run necessary validations to make sure the user is uploading the right file.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route.put('/users/:id/avatar', 'UsersController.updateAvatar')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, you need to create the <code>updateAvatar</code> method in <code>UsersController</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Http/Controllers/UsersController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">'use strict'
+
+const Helpers = use('Helpers')
+const User = use('App/Model/User')
+
+class UserController {
+
+  * updateAvatar (request, response) {
+
+    const avatar = request.file('avatar', { <i class="conum" data-value="1"></i><b>(1)</b>
+      maxSize: '2mb',
+      allowedExtensions: ['jpg', 'png', 'jpeg']
+    })
+
+    const userId = request.param('id')
+    const user = yield User.findOrFail(userId)
+
+    const fileName = `${new Date().getTime()}.${avatar.extension()}` <i class="conum" data-value="2"></i><b>(2)</b>
+    yield avatar.move(Helpers.storagePath(), fileName) <i class="conum" data-value="3"></i><b>(3)</b>
+
+    if (!avatar.moved()) {
+      response.badRequest(avatar.errors())
+      return
+    }
+
+    user.avatar = avatar.uploadPath() <i class="conum" data-value="4"></i><b>(4)</b>
+    yield user.save()
+    response.ok('Avatar updated successfully')
+  }
+}
+module.exports = UsersController</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>First we get a file object from the <code>request</code> object. Additionally we can define <code>maxSize</code> and <code>allowedExtensions</code> to validate the file.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>It is important to rename the file, same is done by grabbing the current date time and appending the file extension to it.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Next, we call the move operation on the file instance. Any validation errors will be returned using <code>errors()</code> method.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>If all went fine, we set the path of avatar next to the user model object and persist it to the database.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration for the file uploads is stored inside <code>config/bodyParser.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/bodyParser.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">uploads: {
+  multiple: true,
+  hash: false,
+  maxSize: '2mb'
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>maxSize</code> is calculated on all the uploaded files, which means uploading two files of <code>1.5mb</code> each will exceed this limit.</p>
+</li>
+<li>
+<p>The <code>maxSize</code> check is performed right at the beginning. This makes sure that attackers are not choking your servers by sending <strong>Gigabytes</strong> of data.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_instance"><a class="anchor" href="#_file_instance"></a><a class="link" href="#_file_instance">File Instance</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>request.file</code> method returns an instance of the <code>File</code> class, which has a handful of methods to retrieve uploaded file information and move it to a given path.</p>
+</div>
+<div class="paragraph">
+<p>Uploading multiple files return an array of <code>File</code> class instances. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const profilePics = request.file('profile[]')
+// profilePics will be an array</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation"><a class="anchor" href="#_validation"></a><a class="link" href="#_validation">Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>File instance</strong> can manage validation on file size and extensions for you. You just need to pass the options when accessing the instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const avatar = request.file('avatar', {
+  maxSize: '2mb',
+  allowedExtensions: ['jpg', 'png']
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now when you will call the <code>move</code> method, the validations will fire based on the defined configuration. In case, if above validations are not enough for you, you can implement your own <code>validate</code> method.</p>
+</div>
+<div class="sect2">
+<h3 id="_manual_validation"><a class="anchor" href="#_manual_validation"></a><a class="link" href="#_manual_validation">Manual Validation</a></h3>
+<div class="paragraph">
+<p>Returning <strong>true</strong> or <strong>false</strong> from the <code>validate</code> method will define whether the validation has been passed or not. Also, you will be responsible for setting the error message on the file instance manually.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const avatar = request.file('avatar')
+
+avatar.validate = function () {
+  if (avatar.extension() !== 'foo') {
+    avatar._setError('We support foo files only')
+    return false
+  }
+  return true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_instance_methods"><a class="anchor" href="#_file_instance_methods"></a><a class="link" href="#_file_instance_methods">File Instance Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available methods on File instance.</p>
+</div>
+<div class="sect3">
+<h4 id="_clientname"><a class="anchor" href="#_clientname"></a><a class="link" href="#_clientname">clientName</a></h4>
+<div class="paragraph">
+<p>Returns the name of the uploaded file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.clientName()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clientsize"><a class="anchor" href="#_clientsize"></a><a class="link" href="#_clientsize">clientSize</a></h4>
+<div class="paragraph">
+<p>Returns the size of the file (in bytes).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.clientSize()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mimetype"><a class="anchor" href="#_mimetype"></a><a class="link" href="#_mimetype">mimeType</a></h4>
+<div class="paragraph">
+<p>Returns file mime-type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.mimeType()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_extension"><a class="anchor" href="#_extension"></a><a class="link" href="#_extension">extension</a></h4>
+<div class="paragraph">
+<p>Returns file extension.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.extension()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tmppath"><a class="anchor" href="#_tmppath"></a><a class="link" href="#_tmppath">tmpPath</a></h4>
+<div class="paragraph">
+<p>The path to the temporary folder, where the file was uploaded.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.tmpPath()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_exists"><a class="anchor" href="#_exists"></a><a class="link" href="#_exists">exists</a></h4>
+<div class="paragraph">
+<p>Tells whether the file exists inside the temporary folder or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.exists()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_move_topath_newname"><a class="anchor" href="#_move_topath_newname"></a><a class="link" href="#_move_topath_newname">move(toPath, [newName])</a></h4>
+<div class="paragraph">
+<p>Move the file to a given location with an optional name. If <code>newName</code> is not defined, it will make use of <code>clientName()</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield avatar.move(Helpers.storagePath())</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete"><a class="anchor" href="#_delete"></a><a class="link" href="#_delete">delete()</a></h4>
+<div class="paragraph">
+<p>Delete file from the <code>tmp</code> directory after the file has been moved.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield avatar.delete()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_moved"><a class="anchor" href="#_moved"></a><a class="link" href="#_moved">moved</a></h4>
+<div class="paragraph">
+<p>Tells whether the move operation was successful or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield avatar.move(Helpers.storagePath())
+
+if (avatar.moved()) {
+    // moved successfully
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_errors"><a class="anchor" href="#_errors"></a><a class="link" href="#_errors">errors</a></h4>
+<div class="paragraph">
+<p>Returns errors occurred during the <code>move</code> process.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield avatar.move(Helpers.storagePath())
+
+if (!avatar.moved()) {
+  response.send(avatar.errors())
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_uploadpath"><a class="anchor" href="#_uploadpath"></a><a class="link" href="#_uploadpath">uploadPath</a></h4>
+<div class="paragraph">
+<p>Full path to the upload directory with the file name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield avatar.move(Helpers.storagePath())
+
+avatar.uploadPath()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_uploadname"><a class="anchor" href="#_uploadname"></a><a class="link" href="#_uploadname">uploadName</a></h4>
+<div class="paragraph">
+<p>Name of the uploaded file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">yield avatar.move(Helpers.storagePath(), 'selfie.jpg')
+avatar.uploadName()</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">NOTE</dt>
+<dd>
+<p><code>uploadPath</code> and <code>uploadName</code> will only be available after the move operation.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tojson"><a class="anchor" href="#_tojson"></a><a class="link" href="#_tojson">toJSON</a></h4>
+<div class="paragraph">
+<p>Returns <strong>JSON</strong> representation of the file properties.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">avatar.toJSON()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
