@@ -1,228 +1,117 @@
-.grid-container {
-  max-width: 1080px;
-  margin: auto;
-}
+.hero {
+  .splash {
+    background-image: url(/images/pyramid.png);
+    background-position: right;
+    padding: 90px 0 145px 0;
+    background-repeat: no-repeat;
 
-.splash-container {
-  background: $primary-color;
-}
+    .title {
+      font-size: 3.4rem;
+      color: #fff;
+      font-weight: 900;
+      margin: 0 0 50px 0;
+    }
 
-.subtitle {
-  color: $primary-color;
-  font-size: 34px;
-  line-height: 40px;
-  font-weight: 900;
-  margin-bottom: 25px;
-  position: relative;
-  display: inline-block;
+  .subtitle {
+      font-family: $family-primary;
+      color: #fff;
+      margin-bottom: 50px;
+      line-height: 1.5;
+      font-size: 1.15rem;
+    }
 
-  &:before, &:after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
+    @include until($desktop) {
+      padding: 50px 0 95px 0;
+    }
   }
-
-  &:before {
-    background: url('/images/arrow-yellow.png') no-repeat;
-    right: 16px;
-    bottom: -8px;
-  }
-
-  &:after {
-    background: url('/images/arrow-green.png') no-repeat;
-    left: 30px;
-    top: -14px;
-  }
-}
-
-.splash {
-  background: url('/images/pyramid.png') right no-repeat;
-  padding: 90px 0 145px 0;
 
   .splash-content {
-    width: 500px;
+    max-width: 500px;
   }
 
-  h1.title {
-    font-size: 62px;
-    color: #fff;
-    font-weight: 900;
-    margin: 0 0 20px 0;
-    line-height: 65px;
-  }
-
-  p {
-    font-size: 18px;
-    line-height: 28px;
-    color: #fff;
-    margin-bottom: 35px;
+  @include until($desktop) {
+    padding-left: $responsive-side-gap;
+    padding-right: $responsive-side-gap;
   }
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
 
-  .navbar {
-    display: flex;
-    a {
-      margin-right: 15px;
-      color: #fff;
-      transition: color 300ms ease;
-      text-decoration: none;
-      &:hover {
-        color: $linkColour;
+.shrinked-container {
+  max-width: 780px;
+  margin: auto;
+  position: relative;
+}
+
+///////////////////////////////
+// About Adonis on home page //
+///////////////////////////////
+.about-adonis, .enjoy-adonis {
+  padding-top: 106px;
+  background: #fff;
+
+  .about-text, .enjoy-text {
+    text-align: center;
+    margin: 0 auto 50px auto;
+
+    p {
+      width: 80%;
+      margin: auto;
+    }
+
+    @include until($tablet) {
+      padding-left: $responsive-side-gap;
+      padding-right: $responsive-side-gap;
+      text-align: left;
+
+      p {
+        width: 100%;
       }
     }
   }
 }
 
-.apps-container {
-  background: $gray4;
-  padding: 106px 0;
-}
-
-.apps-content {
-  display: flex;
-  justify-content: space-between;
-
-  .about-apps {
-    width: 30%;
-  }
-
-  .apps-list {
-    width: 70%;
-    margin-left: 100px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-
-  .app {
-    width: 47%;
-    margin-right: 3%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 60px;
-    text-align: center;
-    background: #FFFFFF;
-    margin-bottom: 30px;
-    box-shadow: 0 0 0 1px rgba(63,63,68,0.05), 0 1px 6px 0 rgba(69,79,91,0.18);
+/////////////////////////
+// Quick install modal //
+/////////////////////////
+.for-quick-install {
+  .box {
+    border-radius: 0;
+    padding: 40px 60px;
 
     h3 {
-      color: $linkColour;
-      position: relative;
-      padding-bottom: 15px;
-      &:after {
-        content: '';
-        height: 3px;
-        background: $gray3;
-        position: absolute;
-        width: 30px;
-        top: 75%;
-        left: 50%;
-        margin-left: -15px;
-      }
+      margin-bottom: 10px;
+    }
+  }
+
+  .modal-content {
+    transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    transition: transform .3s ease-out,-webkit-transform .3s ease-out;
+    -webkit-transform: translate(0,-25%);
+    transform: translate(0,-25%);
+  }
+
+  &.is-active {
+    .modal-content {
+      transform: translate(0,0);
     }
   }
 }
 
-.patreon-container {
-  padding: 80px 0;
-  text-align: center;
-}
-
-.patreon-content {
-  max-width: 670px;
-  margin: auto;
-
-  p {
-    margin-bottom: 40px;
-    font-size: 17px;
-  }
-}
-
-.features-container {
-  padding: 106px 0 0 0;
-  background: #fff;
-}
-
-.features-content {
-  text-align: center;
-  width: 780px;
-  margin: auto;
-  height: 600px;
-  position: relative;
-  overflow: hidden;
-
-  p {
-    width: 80%;
-    font-size: 18px;
-    line-height: 30px;
-    margin: auto;
-    margin-bottom: 20px;
-  }
-}
-
+///////////////
+// Codeshell //
+///////////////
 .codeshell {
   background: #fff;
   border-radius: 5px;
   position: absolute;
-  height: 400px;
+  height: 320px;
   left: 0;
   right: 0;
-  margin-top: 50px;
-  cursor: pointer;
 
-  // &:after, &:before {
-  //   top: 50%;
-  //   left: 50%;
-  //   transform: translate(-50%,-50%);
-  //   position: absolute;
-  // }
-
-  // &:before {
-  //   content: "";
-  //   display: block;
-  //   width: 82px;
-  //   height: 82px;
-  //   background: rgba($linkColour, 0.9);
-  //   border-radius: 50%;
-  //   transition: all 200ms cubic-bezier(.23,1,.32,1);
-  // }
-
-  // &:after {
-  //   content: "";
-  //   display: block;
-  //   width: 0;
-  //   height: 0;
-  //   border-style: solid;
-  //   border-width: 13px 0 13px 22px;
-  //   border-color: transparent transparent transparent #fff;
-  //   margin-left: 4px;
-  // }
-
-  &:hover {
-    &:before {
-      background: $linkColour;
-      width: 90px;
-      height: 90px;
-    }
+  @include until($tablet) {
+    border-radius: 0;
   }
-}
-
-.codeshell-header {
-  border-top-right-radius: 3px;
-  border-top-left-radius: 4px;
-  display: flex;
-  align-items: center;
-  padding-left: 4px;
-  background: hsl(232, 14%, 31%);
-  height: 27px;
 
   .disc {
     width: 11px;
@@ -231,45 +120,135 @@
     background: #1e282e;
     margin: 0 2px;
   }
-}
 
-.codeshell-body {
-  color: hsl(60, 30%, 96%);
-  font-family: $code-font-family;
-  background: hsl(231, 15%, 18%);
-  padding: 20px 20px 30px;
-  height: 100%;
-  text-align: left;
-  line-height: 22px;
-  font-size: 15px;
+  .codeshell-header {
+    border-top-right-radius: 3px;
+    border-top-left-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+    background: #44475a;
+    height: 27px;
 
-  .codeshell-action {
-    color: hsl(135, 94%, 65%);
-    font-weight: 600;
+    @include until($tablet) {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
   }
 
-  .codeshell-title {
-    color: hsl(191, 97%, 77%);
-    font-weight: 600;
-    margin-top: 20px;
-    position: relative;
-    display: inline-block;
-  }
+  .codeshell-body {
+    color: #f8f8f2;
+    font-family: $family-code;
+    background: #272935;
+    padding: 20px 20px 30px;
+    height: 100%;
+    font-size: 0.9rem;
 
-  .purple {
-    color: hsl(65, 92%, 76%);
-  }
+    .codeshell-action {
+      color: #52fa7c;
+      font-weight: 600;
+    }
 
-  ul {
-    padding-left: 20px;
-    li {
+    .info {
+      color: #f1fa89;
+    }
+
+    .codeshell-title {
+      color: #8be8fd;
+      font-weight: 600;
+      margin-top: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style: inherit;
     }
   }
 }
 
-@media only screen and (max-width: 1140px) {
-  .grid-container {
-    max-width: 100%;
-    padding: 0 30px;
+/////////////////
+// Adonis Apps //
+/////////////////
+.adonis-apps {
+  padding-top: 106px;
+  padding-bottom: 106px;
+  background: $light-gray;
+
+  .home-section-title {
+    width: 80%;
+  }
+
+  @include until($tablet) {
+    .column {
+      padding-left: 0;
+      padding-right: 0
+    }
+
+    padding-left: $responsive-side-gap;
+    padding-right: $responsive-side-gap;
+  }
+}
+
+/////////////////////////////////
+// Card to display sample apps //
+/////////////////////////////////
+.app-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(63,63,68,.05),0 1px 6px 0 rgba(69,79,91,.18);
+
+  h3 {
+    padding-bottom: 20px;
+    position: relative;
+
+    a {
+      color: $danger;
+    }
+
+    &:after {
+      content: '';
+      height: 3px;
+      background: #dfe3e8;
+      position: absolute;
+      width: 40px;
+      top: 60%;
+      left: 50%;
+      margin-left: -20px;
+    }
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+///////////////////
+// Enjoy section //
+///////////////////
+.enjoy-adonis {
+  padding-bottom: 106px;
+  .enjoy-text {
+    max-width: 670px;
+    margin-bottom: 40px;
+
+    p {
+      width: 100%;
+    }
+  }
+
+  .enjoy-cta {
+    text-align: center;
+    margin-bottom: 40px;
+
+    @include until($tablet) {
+      text-align: left;
+      padding-left: $responsive-side-gap;
+    }
   }
 }

@@ -1,36 +1,13 @@
 @layout('layouts.master')
 
 @section('body')
-<div class="docs-container">
-  <div class="grid-container">
-    <div class="docs-content">
-      <div class="left-bar">
-        <div class="version-switch pure-css-select-style">
-          <select name="docs-version" id="docs-version">
-            @each((name, version) in versions)
-              <option value="{{ version }}" {{ version === currentVersion ? 'selected' : '' }}>
-              {{ name }}
-              </option>
-            @endeach
-          </select>
-        </div>
-        @include('partials.menu')
-      </div>
-      <div class="document typeset">
-        <h1> {{ doc.title }} </h1>
-        @adoc(doc.path)
+  @super()
+  <div class="docs-container">
+    <div class="container">
+      <div class="columns">
+        @include('partials.sidebar')
+        @include('partials.content')
       </div>
     </div>
   </div>
-</div>
-@endsection
-
-@section('scripts')
-  @super()
-  <script>
-    window.AD = {
-      permalink: '{{ doc.permalink }}',
-      version: '{{ currentVersion }}'
-    }
-  </script>
 @endsection

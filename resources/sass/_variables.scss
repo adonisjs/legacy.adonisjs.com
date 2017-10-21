@@ -1,12 +1,26 @@
-$base-font-family: 'filson pro', sans-serif;
-$headings-font-family: 'effra', sans-serif;
-$code-font-family: 'source-code-pro', monospace;
+@import "~bulma/sass/utilities/initial-variables";
 
-$bodyColour: #454F5B;
-$headingColour: #001728;
-$primary-color: #220052;
-$linkColour: #FB2F51;
-$gray3: #DFE3E8;
-$gray4: #F9FAFB;
-$gray2: #919EAB;
-
+$primary: #220052;
+$danger: #fb2f51;
+$family-primary: 'filson pro', sans-serif;
+$text: #454F5B;
+$dark: #001728;
+$family-code: 'Operator Mono', Consolas, Monaco, 'Andale Mono', monospace;
+$border: #919EAB;
+$text-strong: $text;
+$link: $danger;
+$link-hover: $link;
+$code-background: #fff;
+$code: $text;
+$widescreen: 1080 + (2 * $gap);
+$fullhd: $widescreen;
+$family-headings: 'effra', sans-serif;
+$green: #00c79b;
+$gray: #f4f5f6;
+$light-gray: #f9fafb;
+$weight-normal: 500;
+$modal-content-width: 600px;
+$footer-background-color: $primary;
+$responsive-side-gap: 40px;
+$body-size: 16px;
+$body-line-height: 1.6;

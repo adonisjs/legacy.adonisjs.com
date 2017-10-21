@@ -1,0 +1,437 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_request_information">Request information</a></li>
+<li><a href="#_globals">Globals</a></li>
+<li><a href="#_tags">Tags</a></li>
+<li><a href="#_templating">Templating</a></li>
+<li><a href="#_extending_views">Extending views</a></li>
+<li><a href="#_syntax_highlighting">Syntax highlighting</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes use <a href="http://edge.adonisjs.com/" target="_blank" rel="noopener">Edge.js</a> as the templating engine, which is blazing fast and comes with an elegant API to create dynamic views.</p>
+</div>
+<div class="paragraph">
+<p>Under the hood, Edge supports.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>Layouts &amp; partials</p>
+</li>
+<li>
+<p>Components</p>
+</li>
+<li>
+<p>Runtime debugging using chrome dev tools</p>
+</li>
+<li>
+<p>Logical tags and everything in between.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with the basic example of saying <strong>Hello world</strong> by rendering an edge template. All of the views are stored inside <code>resources/views</code> directory and ends with <code>.edge</code> extension.</p>
+</div>
+<div class="paragraph">
+<p>As always you can use the <code>adonis</code> command to create the view.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:view home</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  resources/views/home.edge</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So let&#8217;s create a route to render the <code>home.edge</code> view.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ view }) =&gt; {
+  return view.render('home')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>view.render</code> method takes the relative path to the view file. There is no need to type <code>.edge</code> extension, since that is obvious.</p>
+</div>
+<div class="paragraph">
+<p>Also, you can render views from the sub folders with dot notation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// file path - users/list.edge
+
+view.render('users.list')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request_information"><a class="anchor" href="#_request_information"></a><a class="link" href="#_request_information">Request information</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All views have access to the current <code>request</code> object, and you can call request methods inside your templates as well.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">The request URL is {{ request.url() }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, there is a helper to get the URL.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">The request URL is {{ url }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_globals"><a class="anchor" href="#_globals"></a><a class="link" href="#_globals">Globals</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All of the edge.js <a href="http://edge.adonisjs.com/docs/globals">globals</a> are supported as it is. Here is the list of globals specific to AdonisJs only.</p>
+</div>
+<div class="sect3">
+<h4 id="_css"><a class="anchor" href="#_css"></a><a class="link" href="#_css">css</a></h4>
+<div class="paragraph">
+<p>Add <code>link</code> tag to a CSS file. The file name should be relative from the <code>public</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ css('style') }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ css('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css') }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_script"><a class="anchor" href="#_script"></a><a class="link" href="#_script">script</a></h4>
+<div class="paragraph">
+<p>Adds a script tag to the document</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ script('app') }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assetsurl"><a class="anchor" href="#_assetsurl"></a><a class="link" href="#_assetsurl">assetsUrl</a></h4>
+<div class="paragraph">
+<p>Returns path of a file relative from the <code>public</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;img src="{{ assetsUrl('logo.png') }}" /&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_route"><a class="anchor" href="#_route"></a><a class="link" href="#_route">route</a></h4>
+<div class="paragraph">
+<p>Get actual URL for a route</p>
+</div>
+<div class="paragraph">
+<p>Expecting the route to be registered as following</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('users/:id', 'UserController.show').as('profile')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;a href="{{ route('profile', { id: 1 }) }}"&gt;
+  View profile
+&lt;/a&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can use the controller method name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;a href="{{ route('UserController.show', { id: 1 }) }}"&gt;
+  View profile
+&lt;/a&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_url"><a class="anchor" href="#_url"></a><a class="link" href="#_url">url</a></h4>
+<div class="paragraph">
+<p>The current request url</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">The request URL is {{ url }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_auth"><a class="anchor" href="#_auth"></a><a class="link" href="#_auth">auth</a></h4>
+<div class="paragraph">
+<p>If you are using the auth provider, then you can access the current logged in user using the <code>auth</code> object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ auth.user }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_csrffield"><a class="anchor" href="#_csrffield"></a><a class="link" href="#_csrffield">csrfField</a></h4>
+<div class="paragraph">
+<p>If you are using the <code>shield</code> middleware, you can access the csrfToken and field using one of the following methods.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ csrfToken }}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ csrfField() }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Outputs</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;input type="hidden" name="_csrf" value="..." /&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cspmeta"><a class="anchor" href="#_cspmeta"></a><a class="link" href="#_cspmeta">cspMeta</a></h4>
+<div class="paragraph">
+<p>When using shield middleware, the CSP headers are set automatically. However can also set them using HTML meta tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;head&gt;
+  {{ cspMeta() }}
+&lt;/head&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tags"><a class="anchor" href="#_tags"></a><a class="link" href="#_tags">Tags</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://edge.adonisjs.com/docs/tags" target="_blank" rel="noopener">Tags</a> are building blocks for edge templates. For example: <code>@if</code>, <code>@each</code> all are the tags shipped with the edge by default.</p>
+</div>
+<div class="paragraph">
+<p>Also, edge exposes a very powerful API to add new tags to it. Here is a list of the <code>tags</code> specific to AdonisJs only.</p>
+</div>
+<div class="sect3">
+<h4 id="_loggedin"><a class="anchor" href="#_loggedin"></a><a class="link" href="#_loggedin">loggedIn</a></h4>
+<div class="paragraph">
+<p>The <code>loggedIn</code> tag allows you to write <code>if/else</code> clause around the logged in user. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@loggedIn
+  &lt;h2&gt; You are logged in &lt;/h2&gt;
+@else
+  &lt;p&gt; &lt;a href="/login"&gt;Click here&lt;/a&gt; to login &lt;/p&gt;
+@endloggedIn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Everything inside <code>@loggedIn</code> tag gets executed when the user is logged in.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inlinesvg"><a class="anchor" href="#_inlinesvg"></a><a class="link" href="#_inlinesvg">inlineSvg</a></h4>
+<div class="paragraph">
+<p>Render an SVG file inline inside the HTML. The tag expects the relative path to the file from the <code>public</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;a href="/login"&gt;
+  @inlineSvg('lock')
+  Login
+&lt;/a&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_templating"><a class="anchor" href="#_templating"></a><a class="link" href="#_templating">Templating</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The templating syntax is same as the Edge. So make sure to read the <a href="http://edge.adonisjs.com/docs/syntax-guide" target="_blank" rel="noopener">edge documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_views"><a class="anchor" href="#_extending_views"></a><a class="link" href="#_extending_views">Extending views</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can also extend views by adding your view globals or tags. Globals and tags should only be added once, so make sure to use the <code>start/hooks.js</code> file to extend views.</p>
+</div>
+<div class="sect2">
+<h3 id="_globals_2"><a class="anchor" href="#_globals_2"></a><a class="link" href="#_globals_2">Globals</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersBooted(() =&gt; {
+  const View = use('View')
+
+  View.global('currentTime', function () {
+    return new Date().getTime()
+  })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Above global returns the current time when you reference it inside the views.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ currentTime() }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, you can extract the code inside <code>providersBooted</code> to a different file and require it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_globals_scope"><a class="anchor" href="#_globals_scope"></a><a class="link" href="#_globals_scope">Globals scope</a></h3>
+<div class="paragraph">
+<p>The value of <code>this</code> inside globals closure is bound to the view context so that you can access runtime values from it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">View.global('button', function (text) {
+  return this.safe(`&lt;button type="submit"&gt; ${text} &lt;/button&gt;`)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>safe</code> method makes sure that returned HTML is not escaped.</p>
+</div>
+<div class="paragraph">
+<p>To use other global methods or values, make use of the <code>this.resolve</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">View.global('messages', {
+  success: 'This is a success message',
+  warning: 'This is a warning message'
+})
+
+View.global('getMessage', function (type) {
+  const message = this.resolve('messages')
+  return messages[type]
+})</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ getMessage('success') }}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tags_2"><a class="anchor" href="#_tags_2"></a><a class="link" href="#_tags_2">Tags</a></h3>
+<div class="paragraph">
+<p>The tags are registered the same way as globals inside <code>start/hooks.js</code> file. Learn more about tags from the <a href="http://edge.adonisjs.com/docs/tags" target="_blank" rel="noopener">Edge docs</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersBooted(() =&gt; {
+  const View = use('View')
+
+  class MyTag extends View.engine.BaseTag {
+  }
+
+  View.engine.tag(new MyTag())
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_runtime_values"><a class="anchor" href="#_runtime_values"></a><a class="link" href="#_runtime_values">Runtime values</a></h3>
+<div class="paragraph">
+<p>Quite often you want to share request specific values with your views, and same can be done by creating a middleware and sharing locals.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class SomeMiddleware {
+
+  async handle ({ view }, next) {
+    view.share({
+      apiVersion: request.input('version')
+    })
+
+    await next()
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moreover, inside your views, you can access it like any other value</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ apiVersion }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_syntax_highlighting"><a class="anchor" href="#_syntax_highlighting"></a><a class="link" href="#_syntax_highlighting">Syntax highlighting</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The plugins for the following editors are available to get syntax highlighting support for Edge.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>For <a href="https://github.com/poppinss/edge-sublime-syntax" target="_blank" rel="noopener">Sublime text</a>.</p>
+</li>
+<li>
+<p>For <a href="https://github.com/poppinss/edge-atom-syntax" target="_blank" rel="noopener">Atom</a>.</p>
+</li>
+<li>
+<p>For <a href="https://github.com/duyluonglc/vscode-edge" target="_blank" rel="noopener">Vscode</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>

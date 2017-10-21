@@ -11,10 +11,7 @@ const Server = use('Server')
 | match.
 |
 */
-const globalMiddleware = [
-  'Adonis/Middleware/Session',
-  'Adonis/Middleware/Shield'
-]
+const globalMiddleware = []
 
 /*
 |--------------------------------------------------------------------------

@@ -1,0 +1,163 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_getters">Getters</a></li>
+<li><a href="#_setters">Setters</a></li>
+<li><a href="#_computed_properties">Computed properties</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As the name suggests, getters and setters help you transform data before saving or after fetching it from the database.</p>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn about <strong>getters</strong>, <strong>setters</strong> and <strong>computed properties</strong>, with the uses case of where and when to use them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getters"><a class="anchor" href="#_getters"></a><a class="link" href="#_getters">Getters</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Defining <strong>getters</strong> can be helpful if you want to format the data for display only. For example: Converting the post title to title case.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Model = use('Model')
+
+class Post extends Model {
+  getTitle (title) {
+    return title.replace(/^(.)|\s(.)/g, ($1) =&gt; {
+      return $1.toUpperCase()
+    })
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const post = await Post.find(postId)
+
+// getters are called automatically
+return post.toJSON()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Assuming the post title is saved as <code>title</code> field inside the database. AdonisJs executes the <code>getTitle</code> method and uses the return value.</p>
+</div>
+<div class="ulist ul-spaced">
+<ul class="ul-spaced">
+<li>
+<p>Getters always start with the <code>get</code> keyword followed by the <strong>camel case</strong> version of the field name.</p>
+</li>
+<li>
+<p>Getters are synchronous, which means you cannot run asynchronous code inside them. You must use <a href="database-hooks">hooks</a> for that.</p>
+</li>
+<li>
+<p>The return value is used instead of the actual value.</p>
+</li>
+<li>
+<p>Getters are evaluated when you call <code>toJSON</code> on the model instance or the serializer instance.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setters"><a class="anchor" href="#_setters"></a><a class="link" href="#_setters">Setters</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Setters are called when you set a value to a model instance. It can be helpful in normalizing data before saving it to the database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Model = use('Model')
+
+class User extends Model {
+  setAccess (access) {
+    return access === 'admin' ? 1 : 0
+  }
+}
+
+const user = new User()
+user.access = 'admin'
+
+console.log(user.access) // will return 1
+await user.save()</code></pre>
+</div>
+</div>
+<div class="ulist ul-spaced">
+<ul class="ul-spaced">
+<li>
+<p>Setters always starts with the <code>set</code> keyword followed by the <strong>camel case</strong> version of the field name.</p>
+</li>
+<li>
+<p>Setters are synchronous, which means you cannot run asynchronous code inside them. You must use <a href="database-hooks">hooks</a> for that.</p>
+</li>
+<li>
+<p>Setters receives the current value of a given field.</p>
+</li>
+<li>
+<p>They are executed when you <strong>set/update</strong> value of a given field on the model instance.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_computed_properties"><a class="anchor" href="#_computed_properties"></a><a class="link" href="#_computed_properties">Computed properties</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Computed properties are virtual properties which don&#8217;t exist in your database but instead set in the JSON representation.</p>
+</div>
+<div class="paragraph">
+<p><strong>For example:</strong> Creating a full name property from the user first and the last name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Model = use('Model')
+
+class User extends Model {
+  static get computed () {
+    return ['fullname']
+  }
+
+  getFullname ({ firstname, lastname }) {
+    return `${firstname} ${lastname}`
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now whenever you call <code>toJSON</code> on the user instance, a <code>fullname</code> property gets added to the return value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+
+const json = user.toJSON()
+console.log(json.fullname) // firstname + lastname</code></pre>
+</div>
+</div>
+<div class="ulist ul-spaced">
+<ul class="ul-spaced">
+<li>
+<p>Computed properties must be returned as an array from the <code>computed</code> getter.</p>
+</li>
+<li>
+<p>Computed methods are defined same as the <code>getters</code>.</p>
+</li>
+<li>
+<p>They receive the existing attributes as an object.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>

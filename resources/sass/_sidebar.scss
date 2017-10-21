@@ -1,0 +1,38 @@
+.sidebar {
+  padding-top: 80px;
+
+  @include until($desktop) {
+    padding: 30px $responsive-side-gap;
+  }
+}
+
+.menu {
+  margin-top: 40px;
+}
+
+.menu-label {
+  font-family: $family-headings;
+  font-weight: 600;
+  color: #919eab;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.menu-list {
+  margin-bottom: 1.8em;
+  a {
+    padding: 0.2em 0;
+    font-size: 0.9rem;
+
+    &:hover, &.is-active {
+      background: transparent;
+      color: $red;
+    }
+  }
+}
+
+.select.is-block {
+  select {
+    width: 100%;
+  }
+}

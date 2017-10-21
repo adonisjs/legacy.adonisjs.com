@@ -14,10 +14,7 @@ const path = require('path')
 */
 const providers = [
   '@adonisjs/framework/providers/AppProvider',
-  '@adonisjs/framework/providers/ViewProvider',
-  '@adonisjs/session/providers/SessionProvider',
-  '@adonisjs/shield/providers/ShieldProvider',
-  path.join(__dirname, '../providers/AsciiDoc/AsciiDocProvider')
+  '@adonisjs/framework/providers/ViewProvider'
 ]
 
 /*

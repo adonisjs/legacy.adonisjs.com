@@ -1,0 +1,173 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_switching_transports">Switching transports</a></li>
+<li><a href="#_logging_level">Logging level</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs comes with a fully featured logger built on top of <a href="https://github.com/winstonjs/winston">winston</a>. It follows <a href="https://tools.ietf.org/html/rfc5424#page-11">RFC5424</a> logging levels.</p>
+</div>
+<div class="paragraph">
+<p>Logger ships with following <strong>drivers</strong>. However, you free to add your drivers built on top of Winston transports.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>Console ( console )</p>
+</li>
+<li>
+<p>File ( file )</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration for logger is saved inside <code>config/app.js</code> file under <code>logger</code> object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">logger: {
+  transport: 'console',
+  console: {
+    driver: 'console'
+  },
+  file: {
+    driver: 'file',
+    filename: 'adonis.log'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>file</code> driver saves the file inside <code>tmp</code> directory. However, you can define an absolute path to a different location.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with a basic example of logging data within your app. Also, all logging methods support <a href="http://www.diveintojavascript.com/projects/javascript-sprintf">sprintf</a> syntax.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Logger = use('Logger')
+
+Logger.info('request url is %s', request.url())
+
+Logger.info('request details %j', {
+  url: request.url(),
+  user: auth.user.username()
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The logger follows <a href="https://tools.ietf.org/html/rfc5424#page-11">RFC5424</a> levels to log messages. Also, it exposes readable methods for each level.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Level</th>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">emerg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.emerg(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">alert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.alert(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">crit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.crit(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.error(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">warning</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.warning(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">notice</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.notice(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">info</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.info(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">debug</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Logger.debug(msg, &#8230;&#8203;data)</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switching_transports"><a class="anchor" href="#_switching_transports"></a><a class="link" href="#_switching_transports">Switching transports</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can switch transports on the fly using the <code>transport</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Logger
+  .transport('file')
+  .info('request url is %s', request.url())</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logging_level"><a class="anchor" href="#_logging_level"></a><a class="link" href="#_logging_level">Logging level</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Logger always has a certain logging level set via config file, which can be updated at runtime too. Any messages above the defined logging level are not logged. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Logger = use('Logger')
+Logger.level = 'info'
+
+// not logged
+Logger.debug('Some debugging info')
+
+Logger.level = 'debug'
+
+// now logged
+Logger.debug('Some debugging info')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This approach makes it easier to turn off debugging messages when your server is under high load.</p>
+</div>
+</div>
+</div>

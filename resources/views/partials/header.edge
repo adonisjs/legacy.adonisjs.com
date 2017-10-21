@@ -1,0 +1,33 @@
+<header>
+  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="{{ assetsUrl('images/header-logo.svg') }}" width="120" height="33">
+        </a>
+        <button class="button navbar-burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button><!-- end burger menu icon -->
+      </div><!-- end navbar-brand -->
+
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <a href="#" class="navbar-item is-hidden-touch" id="show-quick-i-modal"> Quick Start </a>
+          <a href="/docs" class="navbar-item {{ url.startsWith('/docs') ? 'is-active' : '' }}"> Guides </a>
+          <a href="https://adonisjs.svbtle.com/" class="navbar-item" target="_blank"> Blog </a>
+          <a href="https://www.patreon.com/adonisframework" class="navbar-item" target="_blank"> Donate </a>
+          <div class="navbar-item has-dropdown">
+            <a class="navbar-link"> Community </a>
+            <div class="navbar-dropdown">
+              <a href="https://github.com/adonisjs" class="navbar-item" target="_blank"> Github </a>
+              <a href="https://forum.adonisjs.com/" class="navbar-item" target="_blank"> Forum </a>
+              <a href="https://gitter.im/adonisjs/adonis-framework" class="navbar-item" target="_blank"> Gitter </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

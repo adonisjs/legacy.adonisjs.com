@@ -1,0 +1,22 @@
+.footer {
+  padding: 3rem 0;
+  .logo {
+    width: 32px;
+    margin: auto;
+  }
+
+  .columns {
+    align-items: center;
+  }
+
+  p {
+    color: #bdb3cb;
+    a {
+      color: #bdb3cb;
+      background-image: linear-gradient(to bottom,transparent 50%,#bdb3cb 50%);
+      background-position: 0 93%;
+      background-repeat: repeat-x;
+      background-size: 100% .15rem;
+    }
+  }
+}

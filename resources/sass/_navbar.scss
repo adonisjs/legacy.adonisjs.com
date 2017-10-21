@@ -1,0 +1,103 @@
+//////////////////////
+// Header nav items //
+//////////////////////
+
+.navbar-brand .navbar-item {
+  padding: 23px 0.6rem;
+
+  img {
+    max-height: 100%;
+  }
+}
+
+.navbar-menu {
+  @include from($desktop) {
+    .navbar-link {
+      padding-left: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  > div > .navbar-item {
+    @include from($desktop) {
+      padding: 23px 0.6rem;
+    }
+
+    img {
+      max-height: inherit;
+    }
+  }
+}
+
+///////////////
+// OVERRIDES //
+///////////////
+.navbar.is-primary .navbar-brand > a.navbar-item {
+  padding-left: 0;
+  &:hover {
+    background: inherit;
+  }
+
+  @include until($desktop) {
+    padding-left: ($responsive-side-gap - 10px);
+  }
+}
+
+@include from($desktop) {
+  .navbar.is-primary .navbar-end > a.navbar-item, .navbar.is-primary .navbar-item.has-dropdown .navbar-link, .navbar.is-primary .navbar-item.has-dropdown {
+    transition: color .3s ease;
+    color: #a993cb;
+    &:hover {
+      color: #fff;
+      background: inherit;
+
+      .navbar-link {
+        color: #fff;
+        background: inherit;
+      }
+    }
+  }
+
+  .navbar.is-primary .navbar-item.has-dropdown.is-active .navbar-link, .navbar.is-primary .navbar-end > a.navbar-item.is-active {
+    color: #fff;
+    background: inherit;
+  }
+}
+
+.navbar-dropdown {
+  border: 1px solid rgba(0,0,0,.15);
+  margin-top: -15px;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+
+  @include until($desktop) {
+    box-shadow: none;
+    border: none;
+    margin: 0;
+  }
+}
+
+/////////////////
+// Burger menu //
+/////////////////
+.navbar-burger {
+  background: transparent;
+  border: none;
+  padding-top: 26px;
+  padding-bottom: 26px;
+  height: auto;
+  width: 5.25rem;
+
+  &.is-active {
+    span:nth-child(1) {
+      margin-top: -9px;
+    }
+  }
+
+  span {
+    color: #fff;
+    width: 19px;
+    height: 2px;
+  }
+}

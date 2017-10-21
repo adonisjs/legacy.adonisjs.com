@@ -157,7 +157,18 @@ module.exports = {
     fallbackLocale: 'en'
   },
 
+  /*
+  |--------------------------------------------------------------------------
+  | Docs
+  |--------------------------------------------------------------------------
+  |
+  | Storing config related to docs
+  |
+  */
   docs: {
-    versions: { '4.0': 'Version 4.0 dev' }
+    versions: {
+      '4.0': 'Version 4.0 dev'
+    },
+    latestVersion: Env.get('LATEST_VERSION')
   }
 }

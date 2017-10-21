@@ -1,64 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> {{ doc.title || 'AdonisJs - Node.js web framework' }} </title>
-  <meta name="description" content="{{ getMetaDescription(doc) }}">
-  <meta name="author" content="AdonisJs">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title || 'AdonisJs - MVC framework for Node.js' }}</title>
 
-  {{-- Typekit --}}
-  <script src="https://use.typekit.net/dpd2zbd.js"></script>
-  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    {{-- Typekit --}}
+    <script src="https://use.typekit.net/dpd2zbd.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
-  {{-- Styles --}}
-  {{ css('css/app.min') }}
+    {{-- Styles --}}
+    {{ css('adonis') }}
+  </head>
+  <body>
+    <section class="app">
+      @section('header')
+        @include('partials.header')
+      @endsection
 
-  {{-- Favicon --}}
-  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/favicons/apple-touch-icon-57x57.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152.png" />
-  <link rel="icon" type="image/png" href="/images/favicons/favicon-196x196.png" sizes="196x196" />
-  <link rel="icon" type="image/png" href="/images/favicons/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/png" href="/images/favicons/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="/images/favicons/favicon-16x16.png" sizes="16x16" />
-  <link rel="icon" type="image/png" href="/images/favicons/favicon-128.png" sizes="128x128" />
-  <meta name="application-name" content="&nbsp;"/>
-  <meta name="msapplication-TileColor" content="#FFFFFF" />
-  <meta name="msapplication-TileImage" content="images/favions/mstile-144x144.png" />
-  <meta name="msapplication-square70x70logo" content="images/favions/mstile-70x70.png" />
-  <meta name="msapplication-square150x150logo" content="images/favions/mstile-150x150.png" />
-  <meta name="msapplication-wide310x150logo" content="images/favions/mstile-310x150.png" />
-  <meta name="msapplication-square310x310logo" content="images/favions/mstile-310x310.png" />
-</head>
-<body>
-  <section class="body-container">
-    <div class="splash-container">
-      <div class="grid-container">
-        @section('header')
-        <header class="header">
-          <a href="/" class="logo"> <img src="/images/header-logo.svg" /> </a>
-          @include('partials.nav')
-        </header>
-        @endsection
-      </div>
-    </div>
+      @section('body')
+        @include('modals.installation')
+      @endsection
 
-    @!section('body')
+      @section('footer')
+        @include('partials.footer')
+      @endsection
+    </section>
 
-    @section('footer')
-      @include('partials.footer')
-    @endsection
-  </section>
-
-  {{-- Scripts --}}
-  @section('scripts')
-    {{ script('js/app') }}
-  @endsection
-</body>
+    {{-- scripts --}}
+    {{ script('adonis') }}
+  </body>
 </html>
