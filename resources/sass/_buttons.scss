@@ -1,0 +1,36 @@
+.button.is-custom {
+  padding: 9px 52px 9px 28px;
+  cursor: pointer;
+  height: auto;
+  font-size: 1rem;
+  position: relative;
+  display: inline-block;
+  border-radius: 0;
+  transition: background .2s ease;
+
+  svg {
+    position: absolute;
+    right: 20px;
+    top: 14px;
+
+    .fill__group {
+      fill: #fff;
+    }
+  }
+
+  &.is-outlined {
+    svg {
+      .fill__group {
+        fill: $danger;
+      }
+    }
+
+    &:hover {
+      svg {
+        .fill__group {
+          fill: #fff;
+        }
+      }
+    }
+  }
+}

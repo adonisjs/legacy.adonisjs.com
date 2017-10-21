@@ -1,0 +1,253 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_content_security_policy">Content Security Policy</a></li>
+<li><a href="#_malware_protection">Malware Protection</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Apart from <a href="cors">Cors</a> and <a href="csrf">CSRF</a>, AdonisJs also prevents your web applications from other malware attacks like <strong>XSS</strong>, <strong>Content Sniffing</strong>, <strong>Script Injection</strong> and so on.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+There is no silver bullet to secure your websites completely. AdonisJs as a framework gives you a handful of ways to prevent common web attacks.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Make sure to install the <code>shield</code> provider and register the appropriate middleware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/shield</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/shield/providers/ShieldProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And, finally register the global middleware inside <code>start/kernel.js</code> file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Shield middleware relies on <a href="sessions">sessions</a>, so make sure they are setup correctly.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const globalMiddleware = [
+  'Adonis/Middleware/Shield'
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_content_security_policy"><a class="anchor" href="#_content_security_policy"></a><a class="link" href="#_content_security_policy">Content Security Policy</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Content Security Policy(CSP) helps you in defining the trusted sources for loading and executing <strong>scripts</strong>, <strong>styles</strong>, <strong>fonts</strong> and various other resources.</p>
+</div>
+<div class="paragraph">
+<p>It is a good practice to be strict when allowing the execution of scripts from different sources. You must read this interesting article by <a href="http://www.html5rocks.com/en/tutorials/security/content-security-policy" target="_blank" rel="noopener">HTML5 rocks</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h3>
+<div class="paragraph">
+<p><code>csp</code> block inside the shield configuration file defines the rule for content security policy.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">csp: {
+  directives: {
+    defaultSrc: ['self', 'http://getcdn.com'],
+    scriptSrc: ['self', '@nonce'],
+    styleSrc: ['http://getbootstrap.com'],
+    imgSrc: ['http://dropbox.com']
+  },
+  reportOnly: false,
+  setAllHeaders: false,
+  disableAndroid: true
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 15%;">
+<col style="width: 20%;">
+<col style="width: 65%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">directives</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directives helps you in defining policies to be applied on different resource types. You can get the list of all directives from <a href="http://content-security-policy.com" target="_blank" rel="noopener">http://content-security-policy.com</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reportOnly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Do not stop the execution of the page, instead, log a warning that some rules are violated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">setAllHeaders</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shield sets different HTTP headers for different browsers. Set the value to <code>true</code> to set all fallback headers, regardless of the browser.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">disableAndroid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android is buggy with CSP you can disable it for Android in case you face any troubles.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_browser_support"><a class="anchor" href="#_browser_support"></a><a class="link" href="#_browser_support">Browser support</a></h3>
+<div class="paragraph">
+<p>Almost all modern browsers widely support CSP, but here is the most accurate <a href="http://caniuse.com/#feat=contentsecuritypolicy" target="_blank" rel="noopener">list</a> of supported browsers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_csp_policy_via_meta_tags"><a class="anchor" href="#_csp_policy_via_meta_tags"></a><a class="link" href="#_csp_policy_via_meta_tags">CSP policy via meta tags</a></h3>
+<div class="paragraph">
+<p>The <code>shield</code> middleware automatically sets the required HTTP headers for CSP to work but also gives you a view helper to set the meta tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ cspMeta() }}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;meta http-equiv="Content-Security-Policy" content="xxx"&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_csp_nonce"><a class="anchor" href="#_csp_nonce"></a><a class="link" href="#_csp_nonce">CSP Nonce</a></h3>
+<div class="paragraph">
+<p>Script tags with inline javascript code are automatically trusted and executed by the browser. To stop this behavior, you must only allow the trusted inline script blocks by adding <code>@nonce</code> to the`scriptSrc` array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">csp: {
+  directives: {
+    scriptSrc: ['self', '@nonce']
+  },
+  // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you have to tell the browser that your selected inline script blocks should be executed, and that selection is made with the help of a view global.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;script nonce="{{ cspNonce }}"&gt;
+  // ...
+&lt;/script&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_malware_protection"><a class="anchor" href="#_malware_protection"></a><a class="link" href="#_malware_protection">Malware Protection</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Malware protection helps in protecting your website from <strong>XSS</strong> attacks, unwanted <strong>iframe embeds</strong>, <strong>content-type sniffing</strong> and stopping IE from executing unsolicited scripts in the context of your web page.</p>
+</div>
+<div class="sect2">
+<h3 id="_xss"><a class="anchor" href="#_xss"></a><a class="link" href="#_xss">XSS</a></h3>
+<div class="paragraph">
+<p>Make use of the below defined configuration to enable/disable XSS protection. It is done by setting <code>X-XSS-Protection=1; mode=block</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">xss: {
+  enabled: true,
+  enableOnOldIE: false
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_no_sniff"><a class="anchor" href="#_no_sniff"></a><a class="link" href="#_no_sniff">No Sniff</a></h3>
+<div class="paragraph">
+<p>The majority of modern browsers attempts to detect the <strong>Content-Type</strong> of a request by sniffing its content. Which means a file ending in <strong>.txt</strong> can be executed as a javascript file if it contains javascript code. To disable this behavior set <code>nosniff=false</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  nosniff: true
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_no_open"><a class="anchor" href="#_no_open"></a><a class="link" href="#_no_open">No Open</a></h3>
+<div class="paragraph">
+<p>Stop IE from executing unknown script in the context of your website by setting the value of <code>X-Download-Options</code> to <strong>noopen</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  noopen: true
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_xframe"><a class="anchor" href="#_xframe"></a><a class="link" href="#_xframe">XFrame</a></h3>
+<div class="paragraph">
+<p>The <code>xframe</code> option within the <code>config/shield.js</code> file makes it easier for you to control the embed behavior of your website inside an iframe.</p>
+</div>
+<div class="paragraph">
+<p>You can choose from <code>DENY</code>, <code>ALLOW</code> or <code>ALLOW-FROM <a href="http://mywebsite.com" class="bare">http://mywebsite.com</a></code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  xframe: 'DENY'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

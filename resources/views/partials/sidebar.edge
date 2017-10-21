@@ -1,0 +1,33 @@
+<div class="column sidebar is-one-quarter is-hidden-mobile">
+  <div class="select">
+    <select>
+      <option>Version 4.0</option>
+    </select>
+  </div>
+
+  <aside class="menu">
+    @each((items, group) in menu)
+      <p class="menu-label">
+        {{ humanize(group) }}
+      </p>
+      <ul class="menu-list">
+        @each(item in items)
+          {{ el('<li><a href="$permalink" class="$class">$title</a></li>', getProps(item, doc)) }}
+        @endeach
+      </ul>
+    @endeach
+  </aside>
+</div>
+
+<div class="column sidebar is-one-quarter is-hidden-tablet">
+  <div class="select is-block">
+    <select>
+      <option value=""> Select A Topic </option>
+      @each((items, group) in menu)
+        @each(item in items)
+          <option value="{{ item.permalink }}"> {{ item.title }} </option>
+        @endeach
+      @endeach
+    </select>
+  </div>
+</div>

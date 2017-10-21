@@ -1,22 +1,12 @@
 'use strict'
 
-const ace = use('@adonisjs/ace')
-const path = use('path')
-const klaw = use('klaw')
-const through2 = use('through2')
-const Helpers = use('Helpers')
-const Env = use('Env')
-const matter = use('gray-matter')
-const watchFn = use('node-watch')
-const _ = use('lodash')
-const bs = require('browser-sync').create()
-const { Command } = ace
+const { Command } = use('@adonisjs/ace')
+const Docs = use('App/Services/Docs')
+const chalk = use('chalk')
+const DraftLog = use('draftlog')
+DraftLog(console)
 
 class CompileDoc extends Command {
-  constructor () {
-    super()
-  }
-
   /**
    * The command signature
    *
@@ -27,9 +17,7 @@ class CompileDoc extends Command {
   static get signature () {
     return `
     compile:docs
-    {-v, --version=@value : The version to compile}
-    {-w, --watch : Watch files}
-    `
+    { -v, --version?=@value : The version to compile }`
   }
 
   /**
@@ -44,139 +32,6 @@ class CompileDoc extends Command {
   }
 
   /**
-   * Returns an array of all the paths for the docs
-   * file.
-   *
-   * @method _getPathsForDocs
-   *
-   * @return {Array}
-   *
-   * @private
-   */
-  _getPathsForDocs () {
-    return new Promise((resolve, reject) => {
-      const files = []
-      klaw(this.contentDir)
-      .pipe(through2.obj(function (item, enc, next) {
-        if (!item.stats.isDirectory() && item.path.endsWith('.adoc')) {
-          this.push(item)
-        }
-        next()
-      }))
-      .on('data', (item) => (files.push(item.path)))
-      .on('end', () => resolve(files))
-      .on('error', reject)
-    })
-  }
-
-  /**
-   * Returns the meta data for a doc file by parsing
-   * the yaml front matter
-   *
-   * @method _getMetaFor
-   *
-   * @param  {String}    forFile
-   *
-   * @return {Object}
-   *
-   * @private
-   */
-  async _getMetaFor (forFile) {
-    const content = await this.readFile(forFile, 'utf-8')
-    const frontMatter = matter(content).data
-    frontMatter.path = forFile
-    return frontMatter
-  }
-
-  /**
-   * Save the menu file with changes
-   *
-   * @method _saveMenuFile
-   *
-   * @param  {Array}      docsMeta
-   *
-   * @return {void}
-   *
-   * @private
-   */
-  async _saveMenuFile (docsMeta) {
-    const orderedMeta = _.orderBy(docsMeta, 'path', 'asc')
-    await this.writeFile(this.menuFile, JSON.stringify(docsMeta, null, 2))
-  }
-
-  /**
-   * Returns the relative path of the file
-   *
-   * @method _getFilePath
-   *
-   * @param  {String}     absPath
-   *
-   * @return {String}
-   *
-   * @private
-   */
-  _getFilePath (absPath) {
-    return absPath.replace(this.contentDir, '')
-  }
-
-  /**
-   * Watch for changes and update the menu file
-   *
-   * @method watch
-   *
-   * @return {void}
-   */
-  watch () {
-    console.log('Watching files for changes ...  \n')
-    const menuJson = require(this.menuFile)
-
-    /**
-     * Initiate browser sync
-     */
-    bs.init({
-      proxy: `http://${Env.get('HOST')}:${Env.get('PORT')}`
-    })
-
-    watchFn(this.contentDir, { recursive: true }, async (evt, name) => {
-      if (evt == 'update') {
-        console.log(`${this.chalk.magenta('changed:   ')} ${this._getFilePath(name)}`)
-        const updatedMeta = await this._getMetaFor(name)
-
-        /**
-         * find a patch existing menu if file was
-         * updated
-         */
-        const menuItem = _.find(menuJson, (item) => {
-          if (item.path === name) {
-            _.each(updatedMeta, (val, key) => {
-              item[key] = updatedMeta[key]
-            })
-            return true
-          }
-        })
-
-        /**
-         * Push to menu array if a new file
-         */
-        if (!menuItem) {
-          menuJson.push(updatedMeta)
-        }
-
-        await this._saveMenuFile(menuJson)
-        bs.reload()
-        return
-      }
-
-      if (evt === 'remove') {
-        this.error(`${this._getFilePath(name)} file removed`)
-        _.remove(menuJson, (item) => item.path === name)
-        await this._saveMenuFile(menuJson)
-        bs.reload()
-      }
-    })
-  }
-
-  /**
    * The method executed when command is called
    *
    * @method handle
@@ -186,24 +41,33 @@ class CompileDoc extends Command {
    *
    * @return {void}
    */
-  async handle (args, { watch, version }) {
-    version = parseFloat(version).toFixed(1)
-    if (!version || isNaN(version)) {
-      this.error('Specify a version to compile')
-      return
-    }
+  async handle (args, { version }) {
+    const docs = new Docs(version || Docs.getLatestVersion())
+    const stateJar = []
 
-    this.contentDir = path.join(Helpers.appRoot(), 'content', version)
-    this.menuFile = Helpers.resourcesPath(`docs/menu/${version}.json`)
+    docs.on('doc:reading', function (meta) {
+      const update = console.draft()
+      const state = { id: meta.id, update }
+      stateJar.push(state)
+      update(chalk `Reading {dim ${meta.path}}`)
+    })
 
-    const docs = await this._getPathsForDocs()
-    const docsMeta = await Promise.all(docs.map((doc) => this._getMetaFor(doc)))
-    await this._saveMenuFile(docsMeta)
-    this.success(`${this.icon('success')} Generated menu file`)
+    docs.on('doc:saving', function (meta) {
+      const state = stateJar.find((doc) => doc.id === meta.id)
+      state.update(chalk `Converted {yellow ${meta.path}}`)
+    })
 
-    if (watch) {
-      this.watch()
-    }
+    docs.on('doc:saved', function (meta) {
+      const state = stateJar.find((doc) => doc.id === meta.id)
+      state.update(chalk `Saved {green ${meta.savePath}}`)
+    })
+
+    docs.on('saving:menu', (menuPath) => {
+      console.log()
+      this.completed('menu', menuPath)
+    })
+
+    await docs.compile()
   }
 }
 

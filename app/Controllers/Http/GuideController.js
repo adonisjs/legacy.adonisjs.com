@@ -1,57 +1,66 @@
 'use strict'
 
 const _ = use('lodash')
+const Docs = use('App/Services/Docs')
+const fs = use('fs-extra')
+const path = use('path')
 const Helpers = use('Helpers')
-const GE = use('@adonisjs/generic-exceptions')
-const Env = use('Env')
-const Config = use('Config')
-const versions = Config.get('app.docs.versions')
+
+const latestVersion = Docs.getLatestVersion()
+const versions = Docs.getVersionsList()
 
 class GuideController {
-  render ({ params, view, response }) {
+  async render ({ params, view, response }) {
     /**
      * When Version and permalink both are not defined, then
      * redirect user to the latest version of docs.
      */
     if (!params.permalink && !params.version) {
-      return response.route('guides', { version: Env.get('LATEST_VERSION') })
+      return response.route('guides', { version: latestVersion, permalink: 'installation' })
     }
 
+    /**
+     * Version defined && exists but permalink is missing. We should
+     * redirect to the installation of that version
+     */
+    if (!params.permalink && params.version && _.includes(_.keys(versions), params.version)) {
+      return response.route('guides', { version: params.version, permalink: 'installation' })
+    }
+
+    /**
+     * No pemalink, also defined version doesn't exists, we should consider
+     * version as permalink and fallback version to the latest version
+     */
     if (!params.permalink && params.version) {
-      if (_.includes(_.keys(versions), params.version)) {
-        /**
-         * When version exists but no permalink, then redirect to installation path
-         */
-        return response.route('guides', { version: params.version, permalink: 'installation' })
-      } else {
-        /**
-         * Otherwise the first URL param is the permalink and not the version.
-         * So we need to redirect the user to the latest version of that
-         * permalink
-         */
-        return response.route('guides', { version: Env.get('LATEST_VERSION'), permalink: params.version })
-      }
+      return response.route('guides', { version: latestVersion, permalink: params.version })
     }
 
+    /**
+     * Finally we have everything
+     */
     const { version, permalink } = params
 
-    try {
-      if (Env.get('NODE_ENV') === 'development') {
-        require('clear-require')(Helpers.resourcesPath(`docs/menu/${version}.json`))
-      }
-      const menu = require(Helpers.resourcesPath(`docs/menu/${version}.json`))
-      const menuForPermalink = menu.find((item) => item.permalink === permalink)
-      const menuGroup = _.groupBy(menu, 'category')
+    const docs = new Docs(version)
+    const menu = docs.getMenu()
+    const menuGroup = _.groupBy(menu, 'category')
+    const menuForPermalink = menu.find((item) => item.permalink === permalink)
 
-      return view.render('docs', {
-        doc: menuForPermalink,
-        menu: menuGroup,
-        versions: versions,
-        currentVersion: version
-      })
-    } catch (error) {
-      throw new GE.HttpException('Page not found', 404)
+    /**
+     * Doc for permalink doesn't exists
+     */
+    if (!menuForPermalink) {
+      return response.route('404')
     }
+
+    const htmlContents = await fs.readFile(path.join(Helpers.appRoot(), menuForPermalink.savePath), 'utf-8')
+
+    return view.render('docs', {
+      doc: menuForPermalink,
+      menu: menuGroup,
+      versions: versions,
+      currentVersion: version,
+      htmlContents: htmlContents
+    })
   }
 }
 

@@ -4,13 +4,9 @@
   "description": "Smallest possible application for adonisjs",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "node ace test",
-    "minify:styles": "cleancss node_modules/normalize.css/normalize.css resources/css/prism.css resources/css/style.css -o public/css/app.min.css",
-    "compile:styles": "node-sass resources/sass/app.scss > resources/css/style.css && npm run minify:styles",
-    "compile:scripts": "webpack",
-    "styles": "watch 'npm run compile:styles' resources/sass",
-    "scripts": "watch 'npm run compile:scripts' resources/scripts"
+    "build": "webpack",
+    "compile:docs": "watch 'adonis compile:docs' 'content'",
+    "dev": "START_SERVER=true webpack --watch"
   },
   "keywords": [
     "adonisjs",
@@ -20,30 +16,34 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@adonisjs/ace": "^4.0.5",
-    "@adonisjs/fold": "^4.0.2",
-    "@adonisjs/framework": "^4.0.14",
-    "@adonisjs/generic-exceptions": "^1.0.0",
-    "@adonisjs/ignitor": "^1.0.10",
-    "@adonisjs/session": "^1.0.10",
-    "@adonisjs/shield": "^1.0.2",
-    "asciidoctor.js": "^1.5.6-preview.3",
-    "clear-require": "^2.0.0"
+    "@adonisjs/ace": "^4.0.6",
+    "@adonisjs/fold": "^4.0.4",
+    "@adonisjs/framework": "^4.0.24",
+    "@adonisjs/ignitor": "^1.0.12",
+    "fs-extra": "^4.0.2",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "browser-sync": "^2.18.13",
-    "clean-css-cli": "^4.1.6",
-    "gray-matter": "^3.0.3",
+    "asciidoctor.js": "^1.5.6-preview.4",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "bulma": "^0.6.0",
+    "bulma-timeline": "0.0.3",
+    "chalk": "^2.2.0",
+    "css-loader": "^0.28.7",
+    "draftlog": "^1.0.12",
+    "extract-text-webpack-plugin": "^3.0.1",
+    "gray-matter": "^3.1.0",
     "imports-loader": "^0.7.1",
     "klaw": "^2.1.0",
+    "mute": "^2.0.6",
     "node-sass": "^4.5.3",
-    "node-watch": "^0.5.5",
-    "normalize.css": "^7.0.0",
-    "sassline": "^2.1.2",
+    "sass-loader": "^6.0.6",
     "through2": "^2.0.3",
-    "uglifyjs-webpack-plugin": "^0.4.6",
     "watch": "^1.0.2",
-    "webpack": "^3.5.5",
+    "webpack": "^3.8.1",
+    "webpack-shell-plugin": "^0.5.0",
     "zepto": "^1.2.0"
   }
 }

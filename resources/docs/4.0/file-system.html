@@ -1,0 +1,253 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_available_drivers">Available drivers</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_drive_api">Drive API</a></li>
+<li><a href="#_s3_specific_methods">S3 specific methods</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs has a 1st party provider built on top of <a href="https://github.com/Slynova-Org/node-flydrive">Flydrive</a> to interact with local disk and remote file systems like <strong>s3</strong>. In this guide, we learn about setting up the provider and making use of it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since the drive provider is not installed by default, we need to pull it from npm.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Installing the provider via <code>adonis</code> command will setup the config file for you automatically.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/drive</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/drive/providers/DriveProvider'
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_available_drivers"><a class="anchor" href="#_available_drivers"></a><a class="link" href="#_available_drivers">Available drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The only available drivers shipped by default are:</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>S3 ( s3 )</p>
+</li>
+<li>
+<p>Local ( local )</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with the basic example of interacting the local file system using the Adonis repl.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1505719793/Drive_dlcc3v.gif" alt="Drive dlcc3v"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drive_api"><a class="anchor" href="#_drive_api"></a><a class="link" href="#_drive_api">Drive API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The API of the drive is majorly based upon driver you are using to interact with the file system. However, for common operations like <code>write</code> and <code>read</code>, it remains the same.</p>
+</div>
+<div class="sect3">
+<h4 id="_exists_relativepath"><a class="anchor" href="#_exists_relativepath"></a><a class="link" href="#_exists_relativepath">exists(relativePath)</a></h4>
+<div class="paragraph">
+<p>Find if a file/directory exists or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const exists = await Drive.exists('unicorn.jpg')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_relativepath_encoding_utf_8"><a class="anchor" href="#_get_relativepath_encoding_utf_8"></a><a class="link" href="#_get_relativepath_encoding_utf_8">get(relativePath, encoding = utf-8)</a></h4>
+<div class="paragraph">
+<p>Get file contents as a buffer or a string.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const unicorn = await Drive.get('unicorn.jpg')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getstream_relativepath"><a class="anchor" href="#_getstream_relativepath"></a><a class="link" href="#_getstream_relativepath">getStream(relativePath)</a></h4>
+<div class="paragraph">
+<p>Get file as a stream</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Drive.getStream('hello.txt')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_put_relativepath_content_options"><a class="anchor" href="#_put_relativepath_content_options"></a><a class="link" href="#_put_relativepath_content_options">put(relativePath, content, options = {})</a></h4>
+<div class="paragraph">
+<p>Create a new file with given contents. This method will create the missing directories.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.put('hello.txt', Buffer.from('Hello world!'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_prepend_relativepath_content_options"><a class="anchor" href="#_prepend_relativepath_content_options"></a><a class="link" href="#_prepend_relativepath_content_options">prepend(relativePath, content, options = {})</a></h4>
+<div class="paragraph">
+<p>Prepend content to an exisiting file. If file is missing, this method will create a new file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Only works with local driver
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.prepend('hello.txt', Buffer.from('Hello everyone!'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_append_relativepath_content_options"><a class="anchor" href="#_append_relativepath_content_options"></a><a class="link" href="#_append_relativepath_content_options">append(relativePath, content, options = {})</a></h4>
+<div class="paragraph">
+<p>Append content to an exisiting file. If file is missing, this method will create a new file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Only works with local driver
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.append('hello.txt', Buffer.from('Hello everyone!'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_relativepath"><a class="anchor" href="#_delete_relativepath"></a><a class="link" href="#_delete_relativepath">delete(relativePath)</a></h4>
+<div class="paragraph">
+<p>Remove existing file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.delete('hello.txt')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_move_src_dest_options"><a class="anchor" href="#_move_src_dest_options"></a><a class="link" href="#_move_src_dest_options">move(src, dest, options = {})</a></h4>
+<div class="paragraph">
+<p>Move file from one directory to another.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.move('hello.txt', 'hi.txt')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_copy_src_dest_options"><a class="anchor" href="#_copy_src_dest_options"></a><a class="link" href="#_copy_src_dest_options">copy(src, dest, options = {})</a></h4>
+<div class="paragraph">
+<p>Copy file from one directory to another.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.copy('hi.txt', 'hello.txt')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_s3_specific_methods"><a class="anchor" href="#_s3_specific_methods"></a><a class="link" href="#_s3_specific_methods">S3 specific methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods that works for <code>s3</code> driver only.</p>
+</div>
+<div class="sect3">
+<h4 id="_getobject_location_params"><a class="anchor" href="#_getobject_location_params"></a><a class="link" href="#_getobject_location_params">getObject(location, params)</a></h4>
+<div class="paragraph">
+<p>Get s3 object for a given file. Params is the list of <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getObject-property">S3 params</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Drive.disk('s3').getObject('unicorn.jpg')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_geturl_location_bucket"><a class="anchor" href="#_geturl_location_bucket"></a><a class="link" href="#_geturl_location_bucket">getUrl(location, [bucket])</a></h4>
+<div class="paragraph">
+<p>Get URL to a file from the s3 bucket. Optionally you can define a different bucket too.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const url = Drive.disk('s3').getUrl('unicorn.jpg')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsignedurl_location_expiry_900_params"><a class="anchor" href="#_getsignedurl_location_expiry_900_params"></a><a class="link" href="#_getsignedurl_location_expiry_900_params">getSignedUrl(location, expiry = 900, params)</a></h4>
+<div class="paragraph">
+<p>Get signed url to a given file. By default the expiry is set to <code>15mins</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const url = await Drive.disk('s3').getSignedUrl('unicorn.jpg')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

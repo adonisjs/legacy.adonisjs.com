@@ -1,0 +1,308 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_supported_databases">Supported databases</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_multiple_connections">Multiple connections</a></li>
+<li><a href="#_table_prefixing">Table prefixing</a></li>
+<li><a href="#_debugging">Debugging</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Creating data driven apps is AdonisJs is comparatively simple with the help of rich Database query builder, <a href="lucid">Lucid ORM</a>, <a href="migrations">migrations</a> and <a href="seeds-and-factories">database seeder</a>.</p>
+</div>
+<div class="paragraph">
+<p>In this guide, we understand the basics of Database provider.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+AdonisJs makes use of <a href="http://knexjs.org" target="_blank" rel="noopener">Knex.js</a> internally, so make sure to read the knex docs whenever required.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supported_databases"><a class="anchor" href="#_supported_databases"></a><a class="link" href="#_supported_databases">Supported databases</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following is the list of supported database and their equivalent drivers.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Database</th>
+<th class="tableblock halign-left valign-top">Npm driver</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PostgreSQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>npm i pg</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MySQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>npm i mysql</code> or<br>
+<code>npm i mysql2</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SQLite3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>npm i sqlite3</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MariaDB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>npm i mariasql</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Oracle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>npm i oracledb</code> or<br>
+<code>npm i strong-oracle</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MSSQL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>npm i mssql</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Certain project boilerplates have lucid pre-configured by default. If not, here are the setup instructions.</p>
+</div>
+<div class="sect2">
+<h3 id="_installation"><a class="anchor" href="#_installation"></a><a class="link" href="#_installation">Installation</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/lucid</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the installation has been done, register the providers inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/lucid/providers/LucidProvider'
+]
+
+const aceProviders = [
+  '@adonisjs/lucid/providers/MigrationsProvider'
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h3>
+<div class="paragraph">
+<p>Lucid makes use of <code>sqlite</code> by default. However, you can change the configuration from <code>config/database.js</code> file and choose from one of the available databases.</p>
+</div>
+<div class="paragraph">
+<p>All of the <a href="http://knexjs.org/#Installation-client" target="_blank" rel="noopener">knex configuration</a> options are supported as it is.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Database query builder has fluent API, which means you can chain Javascript methods to create SQL queries.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see an example of selecting all users and returning them as JSON.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Database = use('Database')
+
+Route.get('/', async () =&gt; {
+  return await Database.table('users').select('*')
+})</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_where_clause"><a class="anchor" href="#_where_clause"></a><a class="link" href="#_where_clause">Where clause</a></h3>
+<div class="paragraph">
+<p>Adding a where clause is as simple as calling a method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database
+  .table('users')
+  .where('age', '&gt;', 18)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An <code>orWhere</code> clause</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database
+  .table('users')
+  .where('age', '&gt;', 18)
+  .orWhere('vip', true)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Checkout the <a href="query-builder">query builder docs</a> for complete API reference.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multiple_connections"><a class="anchor" href="#_multiple_connections"></a><a class="link" href="#_multiple_connections">Multiple connections</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, AdonisJs makes use of the connection defined inside <code>config/database.js</code> file for making all database queries.</p>
+</div>
+<div class="paragraph">
+<p>However, you can set multiple database connections inside <code>config/database.js</code> file, and at runtime, you can select any of the defined connections to make the queries.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database
+  .connection('mysql')
+  .table('users')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since AdonisJs creates a pool of connections and reuses them, all used connections are maintained unless the process dies.</p>
+</div>
+<div class="paragraph">
+<p>To close a connection manually, simply call the <code>close</code> method with connection name(s).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const users = await Database
+  .connection('mysql')
+  .table('users')
+
+// later close the connection
+Database.close(['mysql'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_table_prefixing"><a class="anchor" href="#_table_prefixing"></a><a class="link" href="#_table_prefixing">Table prefixing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The database provider allows transparent table prefixing for all queries by defining a <code>prefix</code> inside the config file.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/database.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">module.exports = {
+  connection: 'sqlite',
+
+  sqlite: {
+    client: 'sqlite3',
+    prefix: 'my_'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now all queries on the <code>sqlite</code> connection have <code>my_</code> as the table prefix.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .table('users')
+  .select('*')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-sql" data-lang="sql">select * from `my_users`</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withoutprefix"><a class="anchor" href="#_withoutprefix"></a><a class="link" href="#_withoutprefix">withOutPrefix</a></h4>
+<div class="paragraph">
+<p>Optionally you can skip the <strong>prefixing</strong> by calling <code>withOutPrefix</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .withOutPrefix()
+  .table('users')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_debugging"><a class="anchor" href="#_debugging"></a><a class="link" href="#_debugging">Debugging</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Debugging database queries can be handy in development as well as in production. Let&#8217;s go through the available strategies on debugging queries.</p>
+</div>
+<div class="sect2">
+<h3 id="_globally"><a class="anchor" href="#_globally"></a><a class="link" href="#_globally">Globally</a></h3>
+<div class="paragraph">
+<p>By setting <code>debug: true</code> inside the config file enables debugging for all queries globally.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/database.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">module.exports = {
+  connection: 'sqlite',
+
+  sqlite: {
+    client: 'sqlite3',
+    connection: {},
+    debug: true
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can turn on debugging by listening for the <code>query</code> event on Database provider. The best place to register a listener is under the <code>start/hooks.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersBooted(() =&gt; {
+  const Database = use('Database')
+  Database.on('query', console.log)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_individually"><a class="anchor" href="#_individually"></a><a class="link" href="#_individually">Individually</a></h3>
+<div class="paragraph">
+<p>Also, you can listen for <code>query</code> event on a single query at runtime.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .table('users')
+  .select('*')
+  .on('query', console.log)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

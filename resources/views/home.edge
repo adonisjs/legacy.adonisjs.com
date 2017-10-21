@@ -1,12 +1,9 @@
 @layout('layouts.master')
 
-@section('header')
+@section('body')
   @super()
   @include('partials.splash')
-@endsection
-
-@section('body')
-  @include('partials.features')
+  @include('partials.about')
   @include('partials.apps')
   @include('partials.patreon')
 @endsection

@@ -1,0 +1,393 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_validating_user_input">Validating user input</a></li>
+<li><a href="#_validator_methods">Validator methods</a></li>
+<li><a href="#_route_validator">Route validator</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes it so simple to validate the user&#8217;s input with the help of dedicated validation provider. In this guide you learn how to validate the data <strong>manually</strong> or via <strong>route validators</strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Adonisjs validator using <a href="http://indicative.adonisjs.com/" target="_blank" rel="noopener">indicative</a> under the hood, so make sure to read the official documentation whenever required.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Follow the below instructions to setup the validation provider.</p>
+</div>
+<div class="sect2">
+<h3 id="_install"><a class="anchor" href="#_install"></a><a class="link" href="#_install">Install</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/validator</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registering_provider"><a class="anchor" href="#_registering_provider"></a><a class="link" href="#_registering_provider">Registering provider</a></h3>
+<div class="paragraph">
+<p>Next, you need to register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">const providers = [
+  '@adonisjs/validator/providers/ValidatorProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That is all 🎉</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validating_user_input"><a class="anchor" href="#_validating_user_input"></a><a class="link" href="#_validating_user_input">Validating user input</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with the example of validating user input received via HTML form.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;form method="POST" action="{{ route('UserController.store') }}"&gt;
+  &lt;div&gt;
+    &lt;input type="text" name="email" /&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;input type="text" name="password" /&gt;
+  &lt;/div&gt;
+
+  &lt;button type="submit"&gt; Submit &lt;/button&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the route and controller to handle the form submission and use the validator to validate the data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.post('users', 'UserController.store')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validate } = use('Validator')
+
+class UserController {
+
+  async store ({ request, session, response }) {
+    const rules = {
+      email: 'required|email|unique',
+      password: 'required'
+    }
+
+    const validation = await validate(request.all(), rules)
+
+    if (validation.fails()) {
+      session
+        .withErrors(validation.messages())
+        .flashExcept(['password'])
+
+      return response.redirect('back')
+    }
+
+    return 'Validation passed'
+  }
+}
+
+module.exports = UserController</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s understand the above piece of code in small steps.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First, we have defined the <code>rules</code> schema.</p>
+</li>
+<li>
+<p>Next, we make use of the <code>validate</code> method to validate the request data with our defined rules.</p>
+</li>
+<li>
+<p>If validation fails, we flash all the errors and redirect the user back to the form.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_showing_flash_errors"><a class="anchor" href="#_showing_flash_errors"></a><a class="link" href="#_showing_flash_errors">Showing flash errors</a></h3>
+<div class="paragraph">
+<p>Quickly modify the HTML form to display the flash messages, which are set when validation fails.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;form method="POST" action="{{ route('UserController.store') }}"&gt;
+  &lt;div&gt;
+    &lt;input type="text" name="email" value="{{ old('email', '') }}" /&gt;
+    {{ elIf('&lt;span&gt;$self&lt;/span&gt;', getErrorFor('email'), hasErrorFor('email')) }}
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;input type="text" name="password" /&gt;
+    {{ elIf('&lt;span&gt;$self&lt;/span&gt;', getErrorFor('password'), hasErrorFor('password')) }}
+  &lt;/div&gt;
+
+  &lt;button type="submit"&gt; Submit &lt;/button&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validator_methods"><a class="anchor" href="#_validator_methods"></a><a class="link" href="#_validator_methods">Validator methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_validate_data_rules_message"><a class="anchor" href="#_validate_data_rules_message"></a><a class="link" href="#_validate_data_rules_message">validate(data, rules, [message])</a></h4>
+<div class="paragraph">
+<p>Validate data with defined rules. Optionally, you can define custom <a href="http://indicative.adonisjs.com/#indicative-basics-custom-messages" target="_blank" rel="noopener">error messages</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validate } = use('Validator')
+
+const validation = await validate(data, rules)
+if (!validation.fails()) {
+  return validation.messages()
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_validateall"><a class="anchor" href="#_validateall"></a><a class="link" href="#_validateall">validateAll</a></h4>
+<div class="paragraph">
+<p>Same as <code>validate</code> but validate&#8217;s all the fields, whereas the validate method stops on first error.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validateAll } = use('Validator')
+const validation = await validateAll(data, rules)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sanitize_data_rules"><a class="anchor" href="#_sanitize_data_rules"></a><a class="link" href="#_sanitize_data_rules">sanitize(data, rules)</a></h4>
+<div class="paragraph">
+<p>This method returns a new object with sanitized data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { sanitize } = use('Validator')
+const data = sanitize(request.all(), rules)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_is"><a class="anchor" href="#_is"></a><a class="link" href="#_is">is</a></h4>
+<div class="paragraph">
+<p>Returns a reference to <a href="http://indicative.adonisjs.com/#indicative-raw-validations" target="_blank" rel="noopener">indicative raw validator</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { is } = use('Validator')
+
+if (is.email('foo@bar.com')) {
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sanitizor"><a class="anchor" href="#_sanitizor"></a><a class="link" href="#_sanitizor">sanitizor</a></h4>
+<div class="paragraph">
+<p>Returns a reference to <a href="http://indicative.adonisjs.com/#indicative-sanitizor-raw-sanitizor" target="_blank" rel="noopener">indicative raw sanitizor</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { sanitizor } = use('Validator')
+const slug = sanitizor.slug('My first blog post')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_validator"><a class="anchor" href="#_route_validator"></a><a class="link" href="#_route_validator">Route validator</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Majority of times the data validation happens during the normal HTTP request/response lifecycle, where you end up writing the same amount of code inside each controller.</p>
+</div>
+<div class="paragraph">
+<p>The route validator makes the process of manual validation a bit easier, by defining <strong>Route validator</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .post('users', 'UserController.store')
+  .validator('StoreUser')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All validators live inside <code>app/Validators</code> directory. Let&#8217;s create the <code>StoreUser</code> validator by using the <code>adonis</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:validator StoreUser</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">create: app/Validators/StoreUser.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All we need to do is, define the rules on the validator</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class StoreUser {
+  get rules () {
+    return {
+      email: 'required|email|unique',
+      password: 'required'
+    }
+  }
+}
+
+module.exports = StoreUser</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That is all! If the validation fails, the validator automatically set the errors as flash messages and redirects the user to the form.</p>
+</div>
+<div class="paragraph">
+<p>Whereas, it sends back the JSON response if request has <code>Accept: application/json</code> header set</p>
+</div>
+<div class="sect2">
+<h3 id="_sanitizing_user_input"><a class="anchor" href="#_sanitizing_user_input"></a><a class="link" href="#_sanitizing_user_input">Sanitizing user input</a></h3>
+<div class="paragraph">
+<p>Also, you can sanitize the user input by defining the <code>sanitizationRules</code>. The sanitization happens before the validation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
+  get sanitizationRules () {
+    email: 'normalize_email',
+    age: 'to_int'
+  }
+}
+
+module.exports = StoreUser</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_handling_validation_failure"><a class="anchor" href="#_handling_validation_failure"></a><a class="link" href="#_handling_validation_failure">Handling validation failure</a></h3>
+<div class="paragraph">
+<p>Since every application is structured differently, automatic failure handling may be not something you want. You can handle failures yourself by defining <code>fails</code> method on validator class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
+  await fails (errorMessages) {
+    return this.ctx.response(errorMessages)
+  }
+}
+
+module.exports = StoreUser</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_data_object"><a class="anchor" href="#_custom_data_object"></a><a class="link" href="#_custom_data_object">Custom data object</a></h3>
+<div class="paragraph">
+<p>At times you want to validate custom properties, which are not part of request body. For example validating some headers. Same can be done by defining <code>data</code> property on the validator instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
+  get rules () {
+    return {
+      sessionId: 'required'
+    }
+  }
+
+  get data () {
+    const requestBody = request.all()
+    const sessionId = request.header('X-Session-Id')
+
+    return Object.assign({}, requestBody, { sessionId })
+  }
+}
+
+module.exports = StoreUser</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_authorization"><a class="anchor" href="#_authorization"></a><a class="link" href="#_authorization">Authorization</a></h3>
+<div class="paragraph">
+<p>Quite often you want to perform a couple of checks to make sure that the user is authorized to take the desired action. Same can be done by defining <code>authorize</code> method on validator class.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is important to return a <code>boolean</code> from the authorize method to tell the validator whether or not to forward the request to the controller.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
+  await authorize () {
+    if (!isAdmin) {
+      this.ctx.response.unauthorized('Not authorized')
+      return false
+    }
+
+    return true
+  }
+}
+
+module.exports = StoreUser</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_request_context"><a class="anchor" href="#_request_context"></a><a class="link" href="#_request_context">Request context</a></h3>
+<div class="paragraph">
+<p>All route validators can access the current request context via <code>this.ctx</code>.</p>
+</div>
+</div>
+</div>
+</div>

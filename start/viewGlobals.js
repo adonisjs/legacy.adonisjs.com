@@ -13,7 +13,7 @@ module.exports = function registerViewGlobals () {
   View.global('getProps', (item, doc) => {
     return {
       permalink: item.permalink,
-      class: doc.permalink === item.permalink ? 'active' : '',
+      class: doc.permalink === item.permalink ? 'is-active' : '',
       title: item.title
     }
   })
@@ -24,6 +24,4 @@ module.exports = function registerViewGlobals () {
     }
     return doc.description
   })
-
-  View.global('json', (input) => JSON.stringify(input))
 }

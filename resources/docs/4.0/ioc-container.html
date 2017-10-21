@@ -1,0 +1,359 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_binding_dependencies">Binding dependencies</a></li>
+<li><a href="#_resolving_dependencies">Resolving dependencies</a></li>
+<li><a href="#_faq_s">FAQ&#8217;s</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So far you have seen a bunch of examples using the IoC container and registering providers. In this guide, we take a step further and understand how exactly the IoC container works.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before understanding the IoC container usage and benefits, we need to step back a bit and understand the dependency management issues faced by large code bases.</p>
+</div>
+<div class="sect2">
+<h3 id="_useless_abstractions"><a class="anchor" href="#_useless_abstractions"></a><a class="link" href="#_useless_abstractions">Useless abstractions</a></h3>
+<div class="paragraph">
+<p>Quite often you run into a situation, where you have to create useless abstractions for a library to manage its lifecycle.</p>
+</div>
+<div class="paragraph">
+<p>For example: To make sure database is only connected once, you move all database setup code to its file and <code>require</code> it everywhere inside your application.</p>
+</div>
+<div class="listingblock">
+<div class="title">lib/database.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const knex = require('knex')
+const connection = knex({
+  client: 'mysql',
+  connection: {}
+})
+
+module.exports = connection</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moreover, now instead of requiring <code>knex</code> directly, you require <code>lib/database.js</code> file.</p>
+</div>
+<div class="paragraph">
+<p>It is fine for a single dependency, but as the application grows, you find a bunch of these files inside your code base.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependency_management"><a class="anchor" href="#_dependency_management"></a><a class="link" href="#_dependency_management">Dependency management</a></h3>
+<div class="paragraph">
+<p>The biggest problem large codebase suffers from is the management of dependencies. Since each dependency does not know about each other, the developer using them has to link them together.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s take an example of using <strong>sessions</strong> which are stored in a <strong>redis database</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Session {
+  constructor (redis) {
+    // needs redis
+  }
+}
+
+class Redis {
+  constructor (config) {
+    // needs config
+  }
+}
+
+class Config {
+  constructor (configDirectory) {
+    // needs config directory
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, each class is dependent on the other class. When using the <code>Session</code> class, we have to build them properly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const config = new Config(configDirectory)
+const redis = new Redis(config)
+const session = new Session(redis)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The dependencies list may increase, based on the requirements of the project.</p>
+</div>
+<div class="paragraph">
+<p>On the other hand, the IoC container makes itself responsible for dependencies.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_painful_testing"><a class="anchor" href="#_painful_testing"></a><a class="link" href="#_painful_testing">Painful testing</a></h3>
+<div class="paragraph">
+<p>When not using an IoC container, you have to come up with different ways to mock dependencies or rely on libraries like <a href="http://sinonjs.org/" target="_blank" rel="noopener">sinonjs</a>.</p>
+</div>
+<div class="paragraph">
+<p>Whereas, when using the IoC container, it is so simple to <a href="testing-fakes#_self_implementing_fakes">create fakes</a>, since all dependencies are resolved from the IoC container and not the file-system directly.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_binding_dependencies"><a class="anchor" href="#_binding_dependencies"></a><a class="link" href="#_binding_dependencies">Binding dependencies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s say we want to bind the <code>Redis</code> library inside the IoC container, making sure that it knows how to compose itself.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+There is no secret sauce to the IoC container. It is a pretty simple idea that controls the composition and resolution of a module, which opens a whole new world of possibilities.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The first step is to create the actual implementation and define all dependencies as <code>constructor</code> parameters.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Redis {
+  constructor (Config) {
+    const redisConfig = Config.get('redis')
+    // connect to redis server
+  }
+}
+
+module.exports = Redis</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>Config</code> is a constructor dependency and not an hardcoded <code>require</code> statement. It makes sure that our <code>Redis</code> class works fine until the <code>Config</code> object passed to the class has the same interface and output.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s bind our class to the IoC container</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Redis = require('./Redis')
+const { ioc } = require('@adonisjs/fold')
+
+ioc.bind('My/Redis', function (app) {
+  const Config = app.use('Adonis/Src/Config')
+  return new Redis(Config)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So use it as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const redis = ioc.use('My/Redis')</code></pre>
+</div>
+</div>
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p>The <code>ioc.bind</code> method takes two parameters.<br></p>
+<div class="ulist">
+<ul>
+<li>
+<p>First is the name of the binding.</p>
+</li>
+<li>
+<p>Other is a <strong>factory</strong> function, which is executed everytime you access the binding and should return the final value for the binding.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Since we are using the IoC container, we can pull the existing bindings ( which is <strong>Config</strong> ) and pass it to the <code>Redis</code> class.</p>
+</li>
+<li>
+<p>Finally, we return a new instance of <code>Redis</code>, which is all configured and ready to be used.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_singletons"><a class="anchor" href="#_singletons"></a><a class="link" href="#_singletons">Singletons</a></h3>
+<div class="paragraph">
+<p>There&#8217;s a problem with the <strong>Redis binding</strong> we just created. Now every time we fetch it from the IoC container, it gives us a new instance of it, which in turn creates a new connection to the redis server.</p>
+</div>
+<div class="paragraph">
+<p>To overcome this problem, IoC container let you define singletons.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ioc.singleton('My/Redis', function (app) {
+  const Config = app.use('Adonis/Src/Config')
+  return new Redis(Config)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Instead of using <code>ioc.bind</code>, We make use of <code>ioc.singleton</code> method, which caches the first time return value and re-uses it for future returns.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resolving_dependencies"><a class="anchor" href="#_resolving_dependencies"></a><a class="link" href="#_resolving_dependencies">Resolving dependencies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Resolving dependencies are pretty straightforward. You make use of <code>use</code> method and give it a namespace to resolve.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const redis = ioc.use('My/Redis')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can use the global <code>use</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const redis = use('My/Redis')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here are the steps performed ( ordered top to bottom ) when resolving a dependency from the IoC container.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Look a registered fake.</p>
+</li>
+<li>
+<p>Next, find the actual binding.</p>
+</li>
+<li>
+<p>Look for an alias, and if found, repeat the entire process with the actual binding name.</p>
+</li>
+<li>
+<p>Resolve as an autoloaded path.</p>
+</li>
+<li>
+<p>Fallback to Node.js native <code>require</code> method.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_aliases"><a class="anchor" href="#_aliases"></a><a class="link" href="#_aliases">Aliases</a></h3>
+<div class="paragraph">
+<p>Since Ioc container bindings have to be unique, we follow a pattern for binding names. <code>ProjectName/Scope/Module</code>. For example <code>Adonis/Src/Config</code>.</p>
+</div>
+<div class="ulist ul-spaced">
+<ul class="ul-spaced">
+<li>
+<p><code>Adonis</code> is the project name ( Can be your company name too ).</p>
+</li>
+<li>
+<p><code>Src</code> is the scope, since this binding is part of the core. For 1st party packages, we use <code>Addon</code> keyword.</p>
+</li>
+<li>
+<p><code>Config</code> is the actual module name.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It is quite hard to remember and type big namespaces. Instead, IoC container allows you to define <strong>aliases</strong> for them. The aliases are defined inside <code>start/app.js</code> file under the <code>aliases</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+AdonisJs pre-register aliases for inbuilt modules like <code>Route</code>, <code>View</code>, <code>Model</code> and so on. However, you can always override them as shown below.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">aliases: {
+  MyRoute: 'Adonis/Src/Route'
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Route = use('MyRoute')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_autoloading"><a class="anchor" href="#_autoloading"></a><a class="link" href="#_autoloading">Autoloading</a></h3>
+<div class="paragraph">
+<p>Instead of only binding dependencies to the IoC container, you can also define a directory to be autoloaded by the IoC container.</p>
+</div>
+<div class="paragraph">
+<p><strong>Don&#8217;t worry</strong>, it does not load all the files from the directory but instead considers the directory paths as part of the resolving dependencies process.</p>
+</div>
+<div class="paragraph">
+<p>For example, the <code>app</code> directory of AdonisJs is autoloaded under <code>App</code> namespace, which means you can require all files from the <code>app</code> directory without typing relative paths.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Services/Foo.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class FooService {
+}
+
+module.exports = FooService</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Can be required as</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Controllers/Http/UserController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Foo = use('App/Services/Foo')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we require it normally, it has to be <code>require('../../Services/Foo')</code></p>
+</div>
+<div class="paragraph">
+<p>So think of autoloading as a more readable and consistent way to require files. Also, you get a chance to define <code>fakes</code> for them too.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_faq_s"><a class="anchor" href="#_faq_s"></a><a class="link" href="#_faq_s">FAQ&#8217;s</a></h2>
+<div class="sectionbody">
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p><strong>Do I have to bind everything inside IoC container?</strong><br>
+No, IoC container bindings should only be used, when you want to abstract the setup of a library/module to its own thing.<br>
+Also consider using <a href="service-providers">service providers</a> when you want to distribute dependencies and want them to play nice with AdonisJs eco-system.</p>
+</li>
+<li>
+<p><strong>How do I mock bindings?</strong><br>
+There&#8217;s no need to mock bindings since AdonisJs allows you to implement <strong>fakes</strong>. Learn more about fakes <a href="testing-fakes#_events_fake">here</a></p>
+</li>
+<li>
+<p><strong>How do I wrap an npm module as a service provider?</strong><br>
+<a href="service-providers">Here&#8217;s</a> the complete guide for that.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>

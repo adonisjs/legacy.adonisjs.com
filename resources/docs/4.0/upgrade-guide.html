@@ -1,0 +1,691 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_javascript_movement">Javascript movement</a></li>
+<li><a href="#_language_changes">Language changes</a></li>
+<li><a href="#_directory_structure">Directory structure</a></li>
+<li><a href="#_routing">Routing</a></li>
+<li><a href="#_request">Request</a></li>
+<li><a href="#_views">Views</a></li>
+<li><a href="#_auth">Auth</a></li>
+<li><a href="#_models_2">Models</a></li>
+<li><a href="#_factories">Factories</a></li>
+<li><a href="#_sessions">Sessions</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs 4.0, known as <strong>(dawn)</strong>, is a major release of the framework after more than a year. Each major release comes with a handful of breaking changes, which is required to keep the framework fresh and address all issues reported during the year.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_javascript_movement"><a class="anchor" href="#_javascript_movement"></a><a class="link" href="#_javascript_movement">Javascript movement</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This release is very special since much movement has happened in the ES6 world, and Node.js 8.0 has implemented 99% of the <a href="http://node.green/" target="_blank" rel="noopener">language features</a>. Also, the <a href="https://v8project.blogspot.in/2017/08/v8-release-61.html" target="_blank" rel="noopener">V8 engine</a> has received lots of speed improvements.</p>
+</div>
+<div class="paragraph">
+<p>The time has finally come to update the code base and start supporting the latest features so that we can all write simpler and more expressive code while taking advantage of all the performance benefits.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_language_changes"><a class="anchor" href="#_language_changes"></a><a class="link" href="#_language_changes">Language changes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of changes made due to the availability of ES6 features.</p>
+</div>
+<div class="sect3">
+<h4 id="_using_async_await"><a class="anchor" href="#_using_async_await"></a><a class="link" href="#_using_async_await">Using async/await</a></h4>
+<div class="paragraph">
+<p>Generator functions using the <code>yield</code> keyword are no longer supported, and instead, we make use of <code>async/await</code>.</p>
+</div>
+<div class="paragraph">
+<p>This means all functions starting with <code>*</code> need to be replaced with <code>async</code>, and <code>yield</code> keywords need to be replaced with <code>await</code>.</p>
+</div>
+<div class="paragraph">
+<p>Old way</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">* index () {
+  yield User.all()
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>New way</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">async index () {
+  await User.all()
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_destructuring"><a class="anchor" href="#_destructuring"></a><a class="link" href="#_destructuring">Destructuring</a></h4>
+<div class="paragraph">
+<p>ES6 allows <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring" target="_blank" rel="noopener">object destructuring</a> which can be used to pull selected values from an object.</p>
+</div>
+<div class="paragraph">
+<p>In the newer version of AdonisJs, all route handlers and controller actions receive an object of values instead of receiving multiple parameters with <code>request</code> and <code>response</code>.</p>
+</div>
+<div class="paragraph">
+<p>Old Way</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', function * (request, response) {
+
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>New Way</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async ({ request, response }) =&gt; {
+
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_directory_structure"><a class="anchor" href="#_directory_structure"></a><a class="link" href="#_directory_structure">Directory structure</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The directory structure has been tweaked a bit to keep it as flat as possible and also to make the upgrade path easier in upcoming versions.</p>
+</div>
+<div class="sect3">
+<h4 id="_bootstrap_start"><a class="anchor" href="#_bootstrap_start"></a><a class="link" href="#_bootstrap_start">bootstrap &#8594; start</a></h4>
+<div class="paragraph">
+<p>The <code>bootstrap</code> directory has been renamed to <code>start</code>, which performs the same function but is easier to understand.</p>
+</div>
+<div class="paragraph">
+<p>Also, a bunch of files like <code>http.js</code> and <code>kernel.js</code> have been removed since they contained the code to wire the app and boot the server. All this has been moved to a separate package called <a href="https://npmjs.org/package/@adonisjs/ignitor">@adonisjs/ignitor</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_controllers"><a class="anchor" href="#_controllers"></a><a class="link" href="#_controllers">Controllers</a></h4>
+<div class="paragraph">
+<p>The location of <strong>Controllers</strong> have been changed as follows</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">app/Http/Controllers → app/Controllers/Http</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Having a top level <code>Http</code> directory does not make sense, since the only thing we store inside it is the <code>Controllers</code>, so it is better to have <code>Controllers</code> as the top-level directory and keep WebSocket and Http controllers inside it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_models"><a class="anchor" href="#_models"></a><a class="link" href="#_models">Models</a></h4>
+<div class="paragraph">
+<p>The models' directory has been pluralized.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">app/Model → app/Models</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_routes_js"><a class="anchor" href="#_routes_js"></a><a class="link" href="#_routes_js">routes.js</a></h4>
+<div class="paragraph">
+<p>The <code>routes.js</code> file has been moved from <code>app/Http/routes.js</code> to <code>start/routes.js</code>. Since routes are the starting point to your app, they should be in the start directory.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_kernel_js"><a class="anchor" href="#_kernel_js"></a><a class="link" href="#_kernel_js">kernel.js</a></h4>
+<div class="paragraph">
+<p>The <code>kernel.js</code> file, which stores the list of Middleware, has been moved from <code>app/Http/kernel.js</code> to <code>start/kernel.js</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_storage_tmp"><a class="anchor" href="#_storage_tmp"></a><a class="link" href="#_storage_tmp">storage &#8594; tmp</a></h4>
+<div class="paragraph">
+<p>The job of the <code>storage</code> directory was to hold files which are never committed to version control like Github. However, the name itself did not make it clear that the directory holds temporary files. The rename to <code>tmp</code> makes it more clear.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_routing"><a class="anchor" href="#_routing"></a><a class="link" href="#_routing">Routing</a></h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="_addcollection_addmember"><a class="anchor" href="#_addcollection_addmember"></a><a class="link" href="#_addcollection_addmember">addCollection, addMember</a></h4>
+<div class="paragraph">
+<p>The <code>addCollection</code> and <code>addMember</code> methods have been removed from the resource routing. This is done in favor of keeping routes straightforward since it was never clear in which sequence a new <strong>member</strong> was added via the <code>addMember</code> method. For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UserController')
+  .addMember('active')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resource creates a route called <code>users/:id</code> as part of the resourceful routes and adding a new member adds the <code>users/active</code> route.</p>
+</div>
+<div class="paragraph">
+<p>It is unclear which action gets called first, since <code>users/:id</code> will catch all the routes including <code>users/active</code>.</p>
+</div>
+<div class="paragraph">
+<p>Instead, you should manually define the other routes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('users/active', 'UserController.getActive')
+Route.resource('users', 'UserController')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_group"><a class="anchor" href="#_group"></a><a class="link" href="#_group">group</a></h4>
+<div class="paragraph">
+<p>The group method signature has been changed, and now it is optional to pass the name.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.group('auth', () =&gt; {
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.group(() =&gt; {
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>1st</code> param is the group name, which is optional now. If you give a group name, then all route names are prefixed with that.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_route_route"><a class="anchor" href="#_route_route"></a><a class="link" href="#_route_route">Route.route</a></h4>
+<div class="paragraph">
+<p>The <code>Route.route</code> method signature has been tweaked a bit.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.route('/', ['GET', 'POST'], () =&gt; {
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.route('/', () =&gt; {
+}, ['GET', 'POST'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request"><a class="anchor" href="#_request"></a><a class="link" href="#_request">Request</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of breaking API changes in the <a href="request">Request</a> object.</p>
+</div>
+<div class="sect3">
+<h4 id="_param_params"><a class="anchor" href="#_param_params"></a><a class="link" href="#_param_params">param/params</a></h4>
+<div class="paragraph">
+<p>The <code>param/params</code> methods have been removed in 4.0, and instead, a separate object is passed with all the route params.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('users/:id', function (request) {
+  const id = request.param('id')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('users/:id', function ({ params }) {
+  const id = params.id
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_views"><a class="anchor" href="#_views"></a><a class="link" href="#_views">Views</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The view layer of AdonisJs now uses <a href="http://edge.adonisjs.com" target="_blank" rel="noopener">Edge</a> over <a href="https://mozilla.github.io/nunjucks/" target="_blank" rel="noopener">nunjucks</a> which is a home-grown template engine written for AdonisJs itself.</p>
+</div>
+<div class="paragraph">
+<p>Extending the core of nunjucks was so painful that adding new <strong>tags</strong> and <strong>helpers</strong> was becoming hard. Edge has a very minimal developer API, and it is pretty straightforward to extend.</p>
+</div>
+<div class="paragraph">
+<p>Make sure to check <a href="http://edge.adonisjs.com/docs/getting-started" target="_blank" rel="noopener">edge guides</a> to learn more about it.</p>
+</div>
+<div class="sect3">
+<h4 id="_response_sendview"><a class="anchor" href="#_response_sendview"></a><a class="link" href="#_response_sendview">response.sendView</a></h4>
+<div class="paragraph">
+<p>The <code>response.sendView</code> function has been removed and instead a <code>view</code> instance is passed to all the HTTP requests.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', function * (request, response) {
+  yield response.sendView('home')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/',  ({ view }) =&gt; {
+  return view.render('home')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_auth"><a class="anchor" href="#_auth"></a><a class="link" href="#_auth">Auth</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The authentication engine has remained about the same. This section outlines some of the breaking changes.</p>
+</div>
+<div class="sect3">
+<h4 id="_request_auth"><a class="anchor" href="#_request_auth"></a><a class="link" href="#_request_auth">request.auth</a></h4>
+<div class="paragraph">
+<p>The <code>request.auth</code> method has been removed and instead a dedicated <code>auth</code> instance is passed to all HTTP requests.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', function * (request) {
+  const auth = request.auth
+  console.log(auth.currentUser)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ auth }) =&gt; {
+  console.log(auth.user)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_revoketoken_s"><a class="anchor" href="#_revoketoken_s"></a><a class="link" href="#_revoketoken_s">revokeToken(s)</a></h4>
+<div class="paragraph">
+<p>The <code>api</code> authenticator used to have <code>revokeToken</code> and <code>revokeTokens</code> methods, which have been removed and instead you can use the <code>User</code> model directly to revoke tokens.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', function (request) {
+  yield request.auth.revokeTokens(request.currentUser)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async ({ auth }) =&gt; {
+  await auth.user
+    .tokens()
+    .where('type', 'api_token')
+    .update({ is_revoked: true })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the <code>tokens</code> table now keep all sort of tokens like <strong>remember tokens</strong> and <strong>jwt refresh tokens</strong>, it is more convenient to use the <code>User</code> model directly and revoke the required tokens.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_models_2"><a class="anchor" href="#_models_2"></a><a class="link" href="#_models_2">Models</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A bunch of changes had been made to <a href="https://github.com/adonisjs/adonis-lucid/blob/develop/CHANGELOG.md#400-2017-07-16" target="_blank" rel="noopener">lucid</a>, the majority of which are improvements, bug fixes, and much-awaited features.</p>
+</div>
+<div class="paragraph">
+<p>Here is the list of breaking changes.</p>
+</div>
+<div class="sect3">
+<h4 id="_extend"><a class="anchor" href="#_extend"></a><a class="link" href="#_extend">extend</a></h4>
+<div class="paragraph">
+<p>All models used to fetch the <code>Lucid</code> namespace to extend themselves. Going forward, you need to pull the <code>Model</code> namespace.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Lucid = use('Lucid')
+
+class User extends Lucid {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Model = use('Model')
+
+class User extends Model {
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dateformat"><a class="anchor" href="#_dateformat"></a><a class="link" href="#_dateformat">dateFormat</a></h4>
+<div class="paragraph">
+<p>The <code>dateFormat</code> getter has been removed in favor of the alternate approach to handling dates. Read <a href="https://adonisjs.svbtle.com/curious-case-of-date-formats-in-data-models" target="_blank" rel="noopener">this blog post</a> to learn more about it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_usetransaction"><a class="anchor" href="#_usetransaction"></a><a class="link" href="#_usetransaction">useTransaction</a></h4>
+<div class="paragraph">
+<p>To run model operations inside a transaction, the <code>useTransaction</code> method was used. In 4.0, you pass the transaction object directly to the <code>save</code> and <code>create</code> methods.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const trx = yield Database.beginTransaction()
+
+const user = new User()
+user.username = 'virk'
+user.useTransaction(trx)
+
+yield user.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const trx = await Database.beginTransaction()
+
+const user = new User()
+user.username = 'virk'
+
+await user.save(trx)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_belongstomany"><a class="anchor" href="#_belongstomany"></a><a class="link" href="#_belongstomany">belongsToMany</a></h4>
+<div class="paragraph">
+<p>The <code>belongsToMany</code> method used to receive the <strong>pivot table name</strong> as part of the method call which has been changed in 4.0.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Lucid {
+  cars () {
+    return this.belongsToMany('App/Model/Car', 'my_cars')
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  cars () {
+    return this
+      .belongsToMany('App/Models/Car')
+      .pivotTable('my_cars')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_with"><a class="anchor" href="#_with"></a><a class="link" href="#_with">with</a></h4>
+<div class="paragraph">
+<p>The <code>with</code> method is used to eagerload relationships, and the signature has been changed quite a bit.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">User
+  .query()
+  .with('profiles', 'posts')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">User
+  .query()
+  .with('profiles')
+  .with('posts')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you have to call <code>with</code> multiple times to eagerload multiple relations. This is done since the <code>2nd param</code> to the <code>with</code> method is a callback to add query constraints on the relationship.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">User
+  .query()
+  .with('profiles')
+  .scope('profiles', (builder) =&gt; {
+    builder.where('is_latest', true)
+  })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">User
+  .query()
+  .with('profiles', (builder) =&gt; {
+    builder.where('is_latest', true)
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attach"><a class="anchor" href="#_attach"></a><a class="link" href="#_attach">attach</a></h4>
+<div class="paragraph">
+<p>The <code>attach</code> method of <strong>Belongs To Many</strong> relationship has been changed in how it receives the values for pivot tables.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await user.cars().attach([1], { current_owner: true })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await user.cars().attach([1], (pivotModel) =&gt; {
+  pivotModel.current_owner = true
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The new signature makes it easier to add conditional attributes. For example: When calling <code>attach</code> with 3 cars and wanting to set a different <code>current_owner</code> attribute for each car. The callback approach makes it easier to do that since the callback is invoked for <code>cars.length</code> number of times.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_factories"><a class="anchor" href="#_factories"></a><a class="link" href="#_factories">Factories</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The database factories API is tweaked a little to make it more explicit.</p>
+</div>
+<div class="sect3">
+<h4 id="_create"><a class="anchor" href="#_create"></a><a class="link" href="#_create">create</a></h4>
+<div class="paragraph">
+<p>Earlier, the <code>create</code> method could create one or many rows based upon the number passed to it. Now you have to call <code>createMany</code> to create multiple rows.</p>
+</div>
+<div class="paragraph">
+<p>It makes sure that the <code>create</code> method always returns the created model instance and <code>createMany</code> always returns an array of created model instances.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// create one
+Factory.model('App/Models/User').create()
+
+// create many
+Factory.model('App/Models/User').create(3)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// create one
+Factory.model('App/Models/User').create()
+
+// create many
+Factory.model('App/Models/User').createMany(3)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_make"><a class="anchor" href="#_make"></a><a class="link" href="#_make">make</a></h4>
+<div class="paragraph">
+<p>The <code>make</code> method has been changed accordingly, and the <code>makeMany</code> method has been introduced.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessions"><a class="anchor" href="#_sessions"></a><a class="link" href="#_sessions">Sessions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The way to interact with sessions has been changed too. All of the sessions related code has been extracted from core to an individual repo. Now API only servers can easily remove sessions from their app.</p>
+</div>
+<div class="sect3">
+<h4 id="_using_sessions"><a class="anchor" href="#_using_sessions"></a><a class="link" href="#_using_sessions">Using sessions</a></h4>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', function * (request) {
+  yield request.session.put('username', 'virk')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ session }) =&gt; {
+  session.put('username', 'virk')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flash_messages"><a class="anchor" href="#_flash_messages"></a><a class="link" href="#_flash_messages">Flash messages</a></h4>
+<div class="paragraph">
+<p>The flash messages signature has also been changed</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', function * (request) {
+  yield request.withAll().flash()
+
+  // errors
+  yield request
+    .withAll()
+    .andWith({ error: { message: 'Some error' } })
+    .flash()
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ session }) =&gt; {
+  session.flashAll()
+
+  // errors
+  await session
+    .withErrors({ message: 'Some error' })
+    .flashAll()
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
