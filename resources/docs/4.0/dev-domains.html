@@ -1,0 +1,153 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup_hotel">Setup hotel</a></li>
+<li><a href="#_setup_proxy">Setup proxy</a></li>
+<li><a href="#_integrate_with_adonisjs">Integrate with AdonisJs</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We all love to use pretty <code>.dev</code> domains when developing our apps in development. In this recipe, we learn how to bind custom domains to your app instead of accessing them via <code>localhost</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This technique has no technical advantage or disadvantage and instead used as a personal preference towards pretty domains.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup_hotel"><a class="anchor" href="#_setup_hotel"></a><a class="link" href="#_setup_hotel">Setup hotel</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The first step is to set up an external tool called <a href="https://www.npmjs.com/package/hotel" target="_blank" rel="noopener">hotel</a>. It allows you to register domains for an app or a URL.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm install -g hotel</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to start it as a daemon on <code>port=2000</code> using the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">hotel start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once it is running, you can run <code>hotel ls</code> command to see the list of registered apps/domains. Which is empty with the new installation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup_proxy"><a class="anchor" href="#_setup_proxy"></a><a class="link" href="#_setup_proxy">Setup proxy</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s understand how this works in theory. We need to tell our <strong>browser</strong> or <strong>system network</strong> to pass through a proxy, which serves our <code>.dev</code> apps or pass the request to the actual URL.</p>
+</div>
+<div class="paragraph">
+<p>The entire process of proxy is very lightweight and doesn&#8217;t impact your system performance or speed.</p>
+</div>
+<div class="paragraph">
+<p>Now as we know, that all magic is done via the proxy, let&#8217;s update the settings of the browser/system to pass via <a href="https://github.com/typicode/hotel/blob/master/docs/README.md#browser-configuration" target="_blank" rel="noopener">hotel proxy</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_system_configuration"><a class="anchor" href="#_system_configuration"></a><a class="link" href="#_system_configuration">System configuration</a></h3>
+<div class="paragraph">
+<p>We need to point the network to <a href="http://localhost:2000/proxy.pac">http://localhost:2000/proxy.pac</a> file.</p>
+</div>
+<div class="sect3">
+<h4 id="_osx"><a class="anchor" href="#_osx"></a><a class="link" href="#_osx">Osx</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Network Preferences &gt; Advanced &gt; Proxies &gt; Automatic Proxy Configuration</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_windows"><a class="anchor" href="#_windows"></a><a class="link" href="#_windows">Windows</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Settings &gt; Network and Internet &gt; Proxy &gt; Use setup script</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_linux_ubuntu"><a class="anchor" href="#_linux_ubuntu"></a><a class="link" href="#_linux_ubuntu">Linux ( ubuntu )</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">System Settings &gt; Network &gt; Network Proxy &gt; Automatic</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_browser_configuration"><a class="anchor" href="#_browser_configuration"></a><a class="link" href="#_browser_configuration">Browser configuration</a></h3>
+<div class="paragraph">
+<p>Browser configuration just proxy the request for that browser only and not for the entire system.</p>
+</div>
+<div class="sect3">
+<h4 id="_chrome_exit_chrome_first"><a class="anchor" href="#_chrome_exit_chrome_first"></a><a class="link" href="#_chrome_exit_chrome_first">Chrome ( exit chrome first )</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash"># Linux
+google-chrome --proxy-pac-url=http://localhost:2000/proxy.pac
+
+# OS X
+open -a "Google Chrome" --args --proxy-pac-url=http://localhost:2000/proxy.pac</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_firefox"><a class="anchor" href="#_firefox"></a><a class="link" href="#_firefox">Firefox</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Preferences &gt; Advanced &gt; Network &gt; Connection &gt; Settings &gt; Automatic proxy URL configuration</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integrate_with_adonisjs"><a class="anchor" href="#_integrate_with_adonisjs"></a><a class="link" href="#_integrate_with_adonisjs">Integrate with AdonisJs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that hotel is configured, we can use it independently of AdonisJs for any application. However, the problem is all apps registered with <code>hotel</code> are mapped forever unless you remove them manually.</p>
+</div>
+<div class="paragraph">
+<p>This behavior can cause issues, where you want your <strong>disposable domains</strong> which lives till your app is running.</p>
+</div>
+<div class="paragraph">
+<p>Adonis cli <code>adonis serve</code> command accepts a flag which registers a disposable domain with the <strong>hotel</strong> and removes it when you stop your app.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis serve --domain=yardstick@http://localhost:3333</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>--domain</code> flag takes the <strong>domain</strong> and the <strong>URL</strong>. In this case</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>domain=yardstick</code></p>
+</li>
+<li>
+<p><code>url=http://localhost:3333</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>

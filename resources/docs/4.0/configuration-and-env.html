@@ -95,15 +95,38 @@ DB_HOST=
 DB_USER=</code></pre>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>The <code>.env</code> file is never committed to the source control system like Git or Svn.</p>
-</li>
-<li>
-<p>On production server, you keep a separate <code>.env</code> file.</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>Now you can access those variable by using the <code>get()</code> method on the <code>Env</code> class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Env = use('Env')
+Env.get('APP_SECRET')</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Env.get()</code> always returns a string. If you want to get a boolean value you&#8217;ll need to test it yourself with <code>Env.get('&#8230;&#8203;') === 'true'</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The <code>.env</code> file should never be committed to a source control system like Git or Svn.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_different_env_file"><a class="anchor" href="#_different_env_file"></a><a class="link" href="#_different_env_file">Different .env file</a></h3>

@@ -5,19 +5,33 @@ const Docs = use('App/Services/Docs')
 const fs = use('fs-extra')
 const path = use('path')
 const Helpers = use('Helpers')
-const Logger = use('Logger')
+const RouteNotFoundException = use('App/Exceptions/RouteNotFoundException')
 
 const latestVersion = Docs.getLatestVersion()
 const versions = Docs.getVersionsList()
 
 class GuideController {
-  async render ({ params, view, response }) {
+  /**
+   * Returns an object to be used for redirecting
+   * the request. The redirect only happens
+   * when URL is incomplete
+   *
+   * @method _getRedirectProps
+   *
+   * @param  {Object}          params
+   * @param  {String}          defaultPermalink
+   *
+   * @return {Object|Null}
+   *
+   * @private
+   */
+  _getRedirectProps (params, defaultPermalink) {
     /**
      * When Version and permalink both are not defined, then
      * redirect user to the latest version of docs.
      */
     if (!params.permalink && !params.version) {
-      return response.route('guides', { version: latestVersion, permalink: 'installation' })
+      return { version: latestVersion, permalink: defaultPermalink }
     }
 
     /**
@@ -26,9 +40,9 @@ class GuideController {
      */
     if (!params.permalink && params.version) {
       if (_.includes(_.keys(versions), params.version)) {
-        return response.route('guides', { version: params.version, permalink: 'installation' })
+        return { version: params.version, permalink: defaultPermalink }
       }
-      return response.route('guides', { version: latestVersion, permalink: params.version })
+      return { version: latestVersion, permalink: params.version }
     }
 
     /**
@@ -36,40 +50,101 @@ class GuideController {
      * redirect to the installation of that version
      */
     if (!_.includes(_.keys(versions), params.version)) {
-      return response.route('guides', { version: latestVersion, permalink: params.permalink })
+      return { version: latestVersion, permalink: params.permalink }
     }
 
-    /**
-     * Finally we have everything
-     */
-    const { version, permalink } = params
+    return null
+  }
 
-    const docs = new Docs(version)
-    const menu = docs.getMenu()
-    const menuGroup = _.groupBy(menu, 'category')
-    const menuForPermalink = menu.find((item) => item.permalink === permalink)
-
-    /**
-     * Doc for permalink doesn't exists
-     */
-    if (!menuForPermalink) {
-      return response.route('/404')
-    }
-
+  /**
+   * Returns the HTTP file contents
+   *
+   * @method _getDocContent
+   * @async
+   *
+   * @param  {String}              docFilePath
+   *
+   * @return {String}
+   *
+   * @private
+   */
+  async _getDocContent (docFilePath) {
     try {
-      const htmlContents = await fs.readFile(path.join(Helpers.appRoot(), menuForPermalink.savePath), 'utf-8')
-      return view.render('docs', {
-        doc: menuForPermalink,
-        menu: menuGroup,
-        versions: versions,
-        currentVersion: version,
-        htmlContents: htmlContents
-      })
+      return await fs.readFile(path.join(Helpers.appRoot(), docFilePath), 'utf-8')
     } catch (error) {
-      Logger.warning('Unexpected 404 on %s url', request.url())
-      Logger.warning(error)
+      throw new RouteNotFoundException(error.message)
+    }
+  }
+
+  /**
+   * Render docs
+   *
+   * @method render
+   *
+   * @param  {Object} options.params
+   * @param  {Object} options.view
+   * @param  {Object} options.response
+   *
+   * @return {Html}
+   */
+  async render ({ params, view, response }) {
+    const redirectProps = this._getRedirectProps(params, 'installation')
+    if (redirectProps) {
+      return response.route('guides', redirectProps)
+    }
+
+    const docs = new Docs(params.version)
+    const menu = docs.getMenu().filter((item) => item.category !== 'recipes')
+    const doc = menu.find((item) => item.permalink === params.permalink)
+
+    if (!doc) {
       return response.route('/404')
     }
+
+    const htmlContents = await this._getDocContent(doc.savePath)
+    return view.render('docs', {
+      doc,
+      menu: _.groupBy(menu, 'category'),
+      versions,
+      currentVersion: params.version,
+      htmlContents
+    })
+  }
+
+  /**
+   * Renders recipes view
+   *
+   * @method renderRecipes
+   *
+   * @param  {Object}      options.params
+   * @param  {Object}      options.view
+   * @param  {Object}      options.response
+   *
+   * @return {Html}
+   */
+  async renderRecipes ({ params, view, response }) {
+    const redirectProps = this._getRedirectProps(params, 'nginx-proxy')
+
+    if (redirectProps) {
+      return response.route('recipes', redirectProps)
+    }
+
+    const docs = new Docs(params.version)
+    const menu = docs.getMenu().filter((item) => item.category === 'recipes')
+    const doc = menu.find((item) => item.permalink === params.permalink)
+
+    if (!doc) {
+      return response.route('/404')
+    }
+
+    const htmlContents = await this._getDocContent(doc.savePath)
+    return view.render('docs', {
+      doc,
+      menu: _.groupBy(menu, 'category'),
+      versions: _.filter(versions, (d, version) => version === '4.0'),
+      currentVersion: params.version,
+      htmlContents
+    })
   }
 }
 

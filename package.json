@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "compile:docs": "watch 'adonis compile:docs' 'content'",
+    "compile:docs": "adonis compile:docs",
+    "watch:docs": "adonis compile:docs --watch",
     "dev": "START_SERVER=true webpack --watch"
   },
   "keywords": [
@@ -19,6 +20,7 @@
     "@adonisjs/ace": "^4.0.6",
     "@adonisjs/fold": "^4.0.4",
     "@adonisjs/framework": "^4.0.24",
+    "@adonisjs/generic-exceptions": "^1.0.0",
     "@adonisjs/ignitor": "^1.0.12",
     "fs-extra": "^4.0.2",
     "lodash": "^4.17.4"
@@ -31,8 +33,8 @@
     "bulma": "^0.6.0",
     "bulma-timeline": "0.0.3",
     "chalk": "^2.2.0",
+    "cli-progress": "^1.6.0",
     "css-loader": "^0.28.7",
-    "draftlog": "^1.0.12",
     "extract-text-webpack-plugin": "^3.0.1",
     "gray-matter": "^3.1.0",
     "imports-loader": "^0.7.1",

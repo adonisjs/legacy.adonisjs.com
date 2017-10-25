@@ -627,6 +627,44 @@ await user.save()</code></pre>
 <div class="paragraph">
 <p>The <code>update</code> query only takes place if something has been changed. Calling <code>save</code> for multiple times, without updating the model attributes does not perform any queries.</p>
 </div>
+<div class="paragraph">
+<p>Rather than setting attributes manually, the <code>fill</code> or <code>merge</code> methods may be used.</p>
+</div>
+<div class="paragraph">
+<p>The <code>fill</code> method will override all existing key/pair values of the model instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+user.username = 'virk'
+user.age = 22
+
+user.fill({ age: 23 }) // remove existing values, only set age.
+
+await user.save()
+
+// returns { age: 23, username: null }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>merge</code> method only modifies the specified attributes</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+user.fill({ username: 'virk', age: 22 })
+
+user.merge({ age: 23 })
+
+await user.save()
+
+// returns { age: 23, username: 'virk' }</code></pre>
+</div>
+</div>
 <div class="sect3">
 <h4 id="_create"><a class="anchor" href="#_create"></a><a class="link" href="#_create">create</a></h4>
 <div class="paragraph">

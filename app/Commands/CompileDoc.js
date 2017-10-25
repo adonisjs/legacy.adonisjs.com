@@ -3,8 +3,9 @@
 const { Command } = use('@adonisjs/ace')
 const Docs = use('App/Services/Docs')
 const chalk = use('chalk')
-const DraftLog = use('draftlog')
-DraftLog(console)
+const watcher = use('watch')
+const progressBar = use('cli-progress')
+const _ = use('lodash')
 
 class CompileDoc extends Command {
   /**
@@ -17,7 +18,9 @@ class CompileDoc extends Command {
   static get signature () {
     return `
     compile:docs
-    { --forVersion?=@value : The version to compile }`
+    { --forVersion?=@value : The version to compile }
+    { --watch: Watch docs for future changes }
+    `
   }
 
   /**
@@ -32,6 +35,40 @@ class CompileDoc extends Command {
   }
 
   /**
+   * Enables the watcher to start watching for file changes.
+   *
+   * @method enableWatcher
+   *
+   * @param  {Object}      docs
+   *
+   * @return {void}
+   */
+  enableWatcher (docs) {
+    watcher.watchTree(docs.contentDir, {
+      ignoreDotFiles: true,
+      interval: 1,
+      filter: (file, stats) => {
+        return stats.isDirectory() || file.endsWith('.adoc')
+      }
+    }, async (file, curr, prev) => {
+      if (typeof (file) === 'object' && prev === null && curr === null) {
+        return
+      }
+
+      if (prev === null) {
+        await docs.addDoc(file, 'single:doc')
+        return
+      }
+
+      if (curr.nlink === 0) {
+        await docs.removeDoc(file, 'single:doc')
+      }
+
+      await docs.updateDoc(file, 'single:doc')
+    })
+  }
+
+  /**
    * The method executed when command is called
    *
    * @method handle
@@ -41,33 +78,38 @@ class CompileDoc extends Command {
    *
    * @return {void}
    */
-  async handle (args, { forVersion }) {
+  async handle (args, { forVersion, watch }) {
     const docs = new Docs(forVersion || Docs.getLatestVersion())
-    const stateJar = []
+    const bar = new progressBar.Bar({
+      format: 'progress [{bar}] {percentage}% | {doc}'
+    }, progressBar.Presets.shades_classic)
+    let counter = 0
 
-    docs.on('doc:reading', function (meta) {
-      const update = console.draft()
-      const state = { id: meta.id, update }
-      stateJar.push(state)
-      update(chalk `Reading {dim ${meta.path}}`)
+    docs.on('docs:list', (list) => {
+      bar.start(list.length, 0)
     })
 
-    docs.on('doc:saving', function (meta) {
-      const state = stateJar.find((doc) => doc.id === meta.id)
-      state.update(chalk `Converted {yellow ${meta.path}}`)
-    })
-
-    docs.on('doc:saved', function (meta) {
-      const state = stateJar.find((doc) => doc.id === meta.id)
-      state.update(chalk `Saved {green ${meta.savePath}}`)
+    docs.on('doc:saved', (meta)  => {
+      counter++
+      bar.update(counter, {
+        doc: meta.path
+      })
     })
 
     docs.on('saving:menu', (menuPath) => {
-      console.log()
-      this.completed('menu', menuPath)
+      bar.stop()
+      this.completed('menu      ', menuPath)
+    })
+
+    docs.on('single:doc:saved', (meta) => {
+      this.completed('compiled  ', meta.path)
     })
 
     await docs.compile()
+
+    if (watch) {
+      this.enableWatcher(docs)
+    }
   }
 }
 

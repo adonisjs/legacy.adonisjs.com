@@ -21,7 +21,7 @@ const plugins = [
  */
 if (process.env.START_SERVER) {
   plugins.push(new WebpackShellPlugin({
-    onBuildStart: ['npm run compile:docs', 'adonis serve --dev']
+    onBuildStart: ['npm run watch:docs', 'adonis serve --dev']
   }))
 }
 

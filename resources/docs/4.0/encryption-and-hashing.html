@@ -64,10 +64,10 @@ const decrypted = Encryption.decrypt('encrypted value')</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Hash = use('Hash')
-const safePassword = yield Hash.make(request.input('password'))
+const safePassword = await Hash.make(request.input('password'))
 
 // or
-const safePassword = yield Hash.make(request.input('password'), 20)</code></pre>
+const safePassword = await Hash.make(request.input('password'), 20)</code></pre>
 </div>
 </div>
 </div>
@@ -79,7 +79,7 @@ const safePassword = yield Hash.make(request.input('password'), 20)</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Hash = use('Hash')
-const isSame = yield Hash.verify('plain-value', 'hashed-value')
+const isSame = await Hash.verify('plain-value', 'hashed-value')
 
 if (isSame) {
   // ...

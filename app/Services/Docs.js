@@ -20,7 +20,7 @@ class Docs extends EventEmitter {
 
     this._doc = new AsciiDoc()
     this._metaData = []
-    this._counter = 0
+    this._bulkCompile = false
 
     this.setVersion(version)
     this.setContentDir(contentDir || 'content')
@@ -55,20 +55,6 @@ class Docs extends EventEmitter {
   }
 
   /**
-   * Save the menu file with changes
-   *
-   * @method _saveMenuFile
-   *
-   * @return {void}
-   *
-   * @private
-   */
-  async _saveMenuFile () {
-    this.emit('saving:menu', `${this.menuFile.replace(Helpers.appRoot(), '').replace(path.sep, '')}`)
-    await fs.outputFile(this.menuFile, JSON.stringify(this._metaData, null, 2))
-  }
-
-  /**
    * Saves the html to the disk
    *
    * @method _saveHtml
@@ -87,30 +73,93 @@ class Docs extends EventEmitter {
   }
 
   /**
-   * Process a single doc file from reading, converting
-   * and saving it
+   * Save the menu file with changes
    *
-   * @method _processDoc
-   *
-   * @param  {String}    docPath
+   * @method saveMenuFile
    *
    * @return {void}
    */
-  async _processDoc (docPath) {
+  async saveMenuFile () {
     /**
-     * Since we need docs to be in right
-     * order, we need to push the object
-     * as soon as we started reading
-     * the doc and later update it.
-     *
-     * @type {Object}
+     * Do not save the file when bulk compile flag is
+     * on. We should wait for compile to finish
+     * finish first
      */
+    if (this._bulkCompile) {
+      return
+    }
+    this.emit('saving:menu', `${this.menuFile.replace(Helpers.appRoot(), '').replace(path.sep, '')}`)
+    await fs.outputFile(this.menuFile, JSON.stringify(_.orderBy(this._metaData, 'path'), null, 2))
+  }
+
+  /**
+   * Process a single doc file from reading, converting
+   * and saving it
+   *
+   * @method addDoc
+   *
+   * @param  {String}    docPath
+   * @param  {String}   [eventPrefix = 'doc']
+   *
+   * @return {void}
+   */
+  async addDoc (docPath, eventPrefix = 'doc') {
     const preMeta = {
-      id: ++this._counter,
       path: docPath.replace(Helpers.appRoot(), '').replace(path.sep, '')
     }
+
     this._metaData.push(preMeta)
-    this.emit('doc:reading', preMeta)
+    await this.compileDoc(docPath, preMeta, eventPrefix)
+    await this.saveMenuFile()
+  }
+
+  /**
+   * Removes a doc from the menu list
+   *
+   * @method removeDoc
+   *
+   * @param  {String}  docPath
+   * @param  {String}  [eventPrefix = 'doc']
+   *
+   * @return {void}
+   */
+  async removeDoc (docPath, eventPrefix = 'doc') {
+    const meta = _.remove(this._metaData, (doc) => docPath.endsWith(doc.path))
+    this.emit(`${eventPrefix}:removed`, meta)
+    await this.saveMenuFile()
+  }
+
+  /**
+   * Updates an existing doc
+   *
+   * @method updateDoc
+   *
+   * @param  {String}  docPath
+   * @param  {String}  [eventPrefix = 'doc']
+   *
+   * @return {void}
+   */
+  async updateDoc (docPath, eventPrefix = 'doc') {
+    const meta = _.find(this._metaData, (doc) => docPath.endsWith(doc.path))
+    await this.compileDoc(docPath, meta, eventPrefix)
+    await this.saveMenuFile()
+  }
+
+  /**
+   * Compiles a single doc using it's path. Also
+   * you need to provide the meta object to be
+   * mutated on the go.
+   *
+   * @method compileDoc
+   *
+   * @param  {String}   docPath
+   * @param  {Object}   preMeta
+   * @param  {String}   [eventPrefix = 'doc']
+   *
+   * @return {void}
+   */
+  async compileDoc (docPath, preMeta, eventPrefix = 'doc') {
+    this.emit(`${eventPrefix}:reading`, preMeta)
 
     /**
      * Reading the file contents
@@ -128,14 +177,14 @@ class Docs extends EventEmitter {
      * Updating premeta
      */
     _.assign(preMeta, meta)
-    this.emit('doc:saving', preMeta)
+    this.emit(`${eventPrefix}:saving`, preMeta)
 
     /**
      * Saving html
      */
     const htmlPath = await this._saveHtml(html, preMeta.permalink)
     preMeta.savePath = htmlPath.replace(Helpers.appRoot(), '').replace(path.sep, '')
-    this.emit('doc:saved', preMeta)
+    this.emit(`${eventPrefix}:saved`, preMeta)
   }
 
   /**
@@ -253,15 +302,19 @@ class Docs extends EventEmitter {
    */
   async compile () {
     const docsPaths = await this._getPathsForDocs()
-    const chunks = _.chunk(docsPaths, 10)
+    this.emit('docs:list', docsPaths)
+    this._bulkCompile = true
 
-    for (let chunk of chunks) {
-      await Promise.all(chunk.map((docPath) => {
-        return this._processDoc(docPath)
-      }))
+    /**
+     * Doing sequentially to keep fs out of load
+     * and we can have nice animations too
+     */
+    for (let docPath of docsPaths) {
+      await this.addDoc(docPath)
     }
 
-    await this._saveMenuFile()
+    this._bulkCompile = false
+    await this.saveMenuFile()
   }
 }
 
