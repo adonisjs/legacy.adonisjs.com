@@ -126,7 +126,7 @@ Shield middleware relies on <a href="sessions">sessions</a>, so make sure they a
 <p>AdonisJs creates a <strong>CSRF secret</strong> for each user visiting your website.</p>
 </li>
 <li>
-<p>A corresponding token for the secret is generated for each request and passed to all views as <code>csrfToken</code> and <code>csrfField()</code>.</p>
+<p>A corresponding token for the secret is generated for each request and passed to all views as <code>csrfToken</code> and <code>csrfField()</code> globals.</p>
 </li>
 <li>
 <p>Also, the same token is set to a cookie with key <code>XSRF-TOKEN</code>. Frontend Frameworks like <strong>AngularJs</strong> automatically reads this cookie and send it along with each Ajax request.</p>
@@ -135,6 +135,18 @@ Shield middleware relies on <a href="sessions">sessions</a>, so make sure they a
 <p>Whenever a <strong>POST</strong>, <strong>PUT</strong> or <strong>DELETE</strong> requests comes, the middleware verifies the token with the secret to make sure it is valid.</p>
 </li>
 </ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are using the <code>XSRF-TOKEN</code> cookie value, then do make sure the header key is <code>X-XSRT-TOKEN</code>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

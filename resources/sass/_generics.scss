@@ -63,3 +63,10 @@ h1, h2, h3, h4, h5 {
     margin-right: 0;
   }
 }
+
+pre .tag:not(body) {
+  background-color: transparent;
+  height: auto;
+  padding: 0;
+  font-size: inherit;
+}

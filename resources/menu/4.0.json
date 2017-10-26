@@ -254,9 +254,9 @@
   {
     "path": "content/4.0/08-cookbooks/05-events.adoc",
     "title": "Events",
+    "permalink": "events",
     "category": "cookbooks",
-    "savePath": "resources/docs/4.0/events.html",
-    "permalink": "events"
+    "savePath": "resources/docs/4.0/events.html"
   },
   {
     "path": "content/4.0/08-cookbooks/06-file-system.adoc",
@@ -348,5 +348,19 @@
     "title": "Using .dev domains",
     "category": "recipes",
     "savePath": "resources/docs/4.0/dev-domains.html"
+  },
+  {
+    "path": "content/4.0/recipes/03-frontend-assets.adoc",
+    "title": "Managing frontend assets",
+    "category": "recipes",
+    "savePath": "resources/docs/4.0/frontend-assets.html",
+    "permalink": "frontend-assets"
+  },
+  {
+    "path": "content/4.0/recipes/04-why-adonis-install.adoc",
+    "title": "Why Adonis install?",
+    "category": "recipes",
+    "savePath": "resources/docs/4.0/why-adonis-install.html",
+    "permalink": "why-adonis-install"
   }
 ]
