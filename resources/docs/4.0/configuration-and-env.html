@@ -38,7 +38,7 @@
 <h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a><a class="link" href="#_getting_started">Getting started</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In AdonisJs, we store all the configuration inside a separate directory called <code>config</code>. All of the configuration files are loaded at boot time, and nested values can be accessed using the <strong>Config provider</strong>.</p>
+<p>In AdonisJs, we store all the configuration inside a separate directory called <code>config</code>. All of the configuration files are loaded at boot time, and values can be accessed using the <strong>Config provider</strong>.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s say we want to read the <code>appSecret</code> from <code>config/app.js</code> file.</p>
@@ -63,7 +63,7 @@ const appSecret = Config.get('app.appSecret')</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Moreover, access it as</p>
+<p>Now, access it as</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -82,10 +82,10 @@ Config.get('database.mysql.host', '127.0.0.1')</code></pre>
 <p>Quite often you want to have a different configuration based upon the environment your code is running in. For example: Using <strong>sandbox secrets</strong> for a 3rd party service in development.</p>
 </div>
 <div class="paragraph">
-<p>Also from the data integrity point of view, you should never share your production credentials with all of the developers working on a codebase. Instead, these credentials are stored as environment variables, which gets replaced with the actual values on the production server.</p>
+<p>Also from the data integrity point of view, you should never share your production credentials with all of the developers working on a codebase.</p>
 </div>
 <div class="paragraph">
-<p>AdonisJs creates <code>.env</code> file in the root of all the applications, this file stores key/value pairs which are subjected to get changed across environments.</p>
+<p>Instead, these credentials are stored as environment variables on your production server and defined inside <code>.env</code> file when developing the app locally.</p>
 </div>
 <div class="listingblock">
 <div class="title">env</div>
@@ -96,7 +96,7 @@ DB_USER=</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now you can access those variable by using the <code>get()</code> method on the <code>Env</code> class.</p>
+<p>Now you can access those variable by using the <code>Env</code> provider.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -116,20 +116,8 @@ Env.get('APP_SECRET')</code></pre>
 </tr>
 </table>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-The <code>.env</code> file should never be committed to a source control system like Git or Svn.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_different_env_file"><a class="anchor" href="#_different_env_file"></a><a class="link" href="#_different_env_file">Different .env file</a></h3>
+<div class="sect3">
+<h4 id="_different_env_file"><a class="anchor" href="#_different_env_file"></a><a class="link" href="#_different_env_file">Different .env file</a></h4>
 <div class="paragraph">
 <p>At times you may want to load a different <code>.env</code> file stored on your server at a different location. Same can be done as follows.</p>
 </div>
@@ -139,8 +127,8 @@ The <code>.env</code> file should never be committed to a source control system 
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_disabling_env_file"><a class="anchor" href="#_disabling_env_file"></a><a class="link" href="#_disabling_env_file">Disabling .env file</a></h3>
+<div class="sect3">
+<h4 id="_disabling_env_file"><a class="anchor" href="#_disabling_env_file"></a><a class="link" href="#_disabling_env_file">Disabling .env file</a></h4>
 <div class="paragraph">
 <p>If <code>.env</code> file is missing, AdonisJs throws an exception by default. However, you turn off the exception as follows.</p>
 </div>
@@ -150,8 +138,8 @@ The <code>.env</code> file should never be committed to a source control system 
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_testing_variables"><a class="anchor" href="#_testing_variables"></a><a class="link" href="#_testing_variables">Testing variables</a></h3>
+<div class="sect3">
+<h4 id="_testing_variables"><a class="anchor" href="#_testing_variables"></a><a class="link" href="#_testing_variables">Testing variables</a></h4>
 <div class="paragraph">
 <p>If your application is started with <code>NODE_ENV=testing</code>, AdonisJs attempts to load <code>.env.testing</code> file from the root of your application.</p>
 </div>
