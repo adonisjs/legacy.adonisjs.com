@@ -14,19 +14,40 @@
 
       <div class="navbar-menu">
         <div class="navbar-end">
-          <a href="#" class="navbar-item is-hidden-touch" id="show-quick-i-modal"> Quick Start </a>
-          <a href="/docs" class="navbar-item {{ url.startsWith('/docs') ? 'is-active' : '' }}"> Guides </a>
-          <a href="/recipes" class="navbar-item {{ url.startsWith('/recipes') ? 'is-active' : '' }}"> Recipes </a>
-          <a href="https://adonisjs.svbtle.com/" class="navbar-item" target="_blank"> Blog </a>
-          <a href="https://www.patreon.com/adonisframework" class="navbar-item" target="_blank"> Donate </a>
-          <div class="navbar-item has-dropdown">
-            <a class="navbar-link"> Community </a>
-            <div class="navbar-dropdown">
-              <a href="https://github.com/adonisjs" class="navbar-item" target="_blank"> Github </a>
-              <a href="https://forum.adonisjs.com/" class="navbar-item" target="_blank"> Forum </a>
-              <a href="https://gitter.im/adonisjs/adonis-framework" class="navbar-item" target="_blank"> Gitter </a>
-            </div>
-          </div>
+          {{ navbarAnchor({ id: 'show-quick-i-modal', href: '#', title: 'Quick Start' }) }}
+          {{ navbarAnchor({ href: '/docs', title: 'Guides' }) }}
+          {{ navbarAnchor({ href: '/recipes', title: 'Recipes' }) }}
+
+          {{-- Since we need to type in multiple lines, we used @mustache tag over curly braces --}}
+          @mustache(navbarAnchor({
+            title: 'Community',
+            childs: [
+              {
+                title: 'Official packages', href: '/packages'
+              },
+              {
+                title: 'Twitter', href: 'https://twitter.com/adonisframework'
+              },
+              {
+                title: 'Github', href: 'https://github.com/adonisjs'
+              },
+              {
+                title: 'Forum', href: 'https://forum.adonisjs.com'
+              },
+              {
+                title: 'Blog', href: 'https://adonisjs.svbtle.com'
+              },
+              {
+                title: 'Gitter', href: 'https://gitter.im/adonisjs/adonis-framework'
+              }
+            ]
+          }))
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <a href="https://www.patreon.com/adonisframework" class="button on-header" target="_blank"> Donate </a>
         </div>
       </div>
     </div>

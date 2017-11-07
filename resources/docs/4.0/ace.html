@@ -10,6 +10,7 @@
 <li><a href="#_questions">Questions</a></li>
 <li><a href="#_colorful_logs">Colorful logs</a></li>
 <li><a href="#_file_management">File management</a></li>
+<li><a href="#_database_connection_management">Database connection management</a></li>
 </ul>
 </div>
 <div class="paragraph">
@@ -702,6 +703,45 @@ if (exists) {
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.move(src, dest)</code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_connection_management"><a class="anchor" href="#_database_connection_management"></a><a class="link" href="#_database_connection_management">Database connection management</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you use database access (Lucid or directly), you must remember to manually close the database connection.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database.close()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A more complete example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Database = use('Database')
+
+class Quote extends Command {
+  static get signature () {
+    return 'quote'
+  }
+
+  static get description () {
+    return 'Shows inspirational quote from Paul Graham'
+  }
+
+  async handle (args, options) {
+    let quote = await Quote.query().orderByRaw('rand()').first()
+    console.log(quote.content)
+
+    // This is the important line. Without it, the command runner will not exit.
+    Database.close()
+  }
+}</code></pre>
 </div>
 </div>
 </div>

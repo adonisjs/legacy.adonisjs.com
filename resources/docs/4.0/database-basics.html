@@ -217,7 +217,7 @@ Route.get('/posts', async () =&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">await ('Database').table('blog_posts').insert({ title: 'Adonis 101', body: 'some description' })</code></pre>
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">await use('Database').table('blog_posts').insert({ title: 'Adonis 101', body: 'some description' })</code></pre>
 </div>
 </div>
 <div class="dlist">

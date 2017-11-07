@@ -47,7 +47,7 @@
 @include from($desktop) {
   .navbar.is-primary .navbar-end > a.navbar-item, .navbar.is-primary .navbar-item.has-dropdown .navbar-link, .navbar.is-primary .navbar-item.has-dropdown {
     transition: color .3s ease;
-    color: #a993cb;
+    color: rgba(255, 255, 255, 0.7);
     &:hover {
       color: #fff;
       background: inherit;
@@ -55,6 +55,12 @@
       .navbar-link {
         color: #fff;
         background: inherit;
+      }
+    }
+
+    &.is-child-active {
+      .navbar-link {
+        color: #fff;
       }
     }
   }

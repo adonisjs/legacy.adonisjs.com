@@ -9,6 +9,7 @@
 <li><a href="#_dates">Dates</a></li>
 <li><a href="#_query_builder">Query builder</a></li>
 <li><a href="#_static_methods">Static methods</a></li>
+<li><a href="#_aggregate_helpers">Aggregate helpers</a></li>
 <li><a href="#_query_scopes">Query scopes</a></li>
 <li><a href="#_pagination">Pagination</a></li>
 <li><a href="#_inserts_updates">Inserts &amp; Updates</a></li>
@@ -375,7 +376,7 @@ const adults = await User
 <p>All of the query builder methods are fully supported.</p>
 </li>
 <li>
-<p>With lucid models, you are supposed to call <code>fetch</code> method to execute the query. It is required to get results back within an instance of <code>serializer</code> ( learn more about <a href="serializers">serializers</a> ).</p>
+<p>With Lucid models, you are supposed to call <code>fetch</code> method to execute the query. It is required to get results back within an instance of <code>serializer</code> ( learn more about <a href="serializers">serializers</a> ).</p>
 </li>
 </ol>
 </div>
@@ -503,6 +504,192 @@ const users = await User.pair('id', 'country')
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
 const users = await User.all()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reset"><a class="anchor" href="#_reset"></a><a class="link" href="#_reset">reset</a></h4>
+<div class="paragraph">
+<p>Delete all rows (truncate table)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const users = await User.reset()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aggregate_helpers"><a class="anchor" href="#_aggregate_helpers"></a><a class="link" href="#_aggregate_helpers">Aggregate helpers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="query-builder#_aggregate_helpers">Query Builder aggregate helpers</a> provide shortcut access to common aggregate queries. Static model methods can be used when you wish to aggregate the entire table.</p>
+</div>
+<div class="paragraph">
+<p>These methods end the query builder chaining and return a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.</p>
+</div>
+<div class="paragraph">
+<p>All helpers accept a column name to be used for aggregation. When possible Lucid will choose a default for the column name. Some methods, such as <code>sum()</code>, require a column name.</p>
+</div>
+<div class="sect3">
+<h4 id="_getcount_columnname"><a class="anchor" href="#_getcount_columnname"></a><a class="link" href="#_getcount_columnname">getCount(columnName = '*')</a></h4>
+<div class="paragraph">
+<p>Return a count of records in a given result set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return count of all records in table
+await User.getCount()
+
+// Return count of selected records (active users, for example)
+await User.query().where('is_active', '=', 1).getCount()
+
+// Return count of selected records (long form)
+(await User.query().where('is_active', '=', 1).count('* as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getcountdistinct_columnname"><a class="anchor" href="#_getcountdistinct_columnname"></a><a class="link" href="#_getcountdistinct_columnname">getCountDistinct(columnName)</a></h4>
+<div class="paragraph">
+<p>Return a count of distinct values for a given attribute.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return count of all unique status values
+await User.getCountDistinct('status')
+
+// Return count of selected status values (status values for active users, for example)
+await User.query().where('is_active', '=', 1).getCountDistinct('status')
+
+// Return count of selected status values (long form)
+(await User.query().where('is_active', '=', 1).countDistinct('status as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsum_columnname"><a class="anchor" href="#_getsum_columnname"></a><a class="link" href="#_getsum_columnname">getSum(columnName)</a></h4>
+<div class="paragraph">
+<p>Return a sum of records in a given result set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return sum of all records in table
+await User.getSum('friends_count')
+
+// Return sum of selected records
+await User.query().where('is_active', '=', 1).getSum('friends_count')
+
+// Return sum of selected records (long form)
+(await User.query().where('is_active', '=', 1).sum('friends_count as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsumdistinct_columnname"><a class="anchor" href="#_getsumdistinct_columnname"></a><a class="link" href="#_getsumdistinct_columnname">getSumDistinct(columnName)</a></h4>
+<div class="paragraph">
+<p>Return a sum of distinct values for a given attribute.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return count of all unique status values
+await User.getSumDistinct('login_count')
+
+// Return count of selected status values (status values for active users, for example)
+await User.query().where('is_active', '=', 1).getSumDistinct('login_count')
+
+// Return count of selected status values (long form)
+(await User.query().where('is_active', '=', 1).sumDistinct('login_count as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getmin_columnname"><a class="anchor" href="#_getmin_columnname"></a><a class="link" href="#_getmin_columnname">getMin(columnName)</a></h4>
+<div class="paragraph">
+<p>Return the minimum value of <code>columnName</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return sum of all records in table
+await User.getMin('friends_count')
+
+// Return sum of selected records
+await User.query().where('is_active', '=', 1).getMin('friends_count')
+
+// Return sum of selected records (long form)
+(await User.query().where('is_active', '=', 1).min('friends_count as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getmax_columnname"><a class="anchor" href="#_getmax_columnname"></a><a class="link" href="#_getmax_columnname">getMax(columnName)</a></h4>
+<div class="paragraph">
+<p>Return the maximum value of <code>columnName</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return sum of all records in table
+await User.getMax('friends_count')
+
+// Return sum of selected records
+await User.query().where('is_active', '=', 1).getMax('friends_count')
+
+// Return sum of selected records (long form)
+(await User.query().where('is_active', '=', 1).max('friends_count as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavg_columnname"><a class="anchor" href="#_getavg_columnname"></a><a class="link" href="#_getavg_columnname">getAvg(columnName)</a></h4>
+<div class="paragraph">
+<p>Return the average (mean) value of <code>columnName</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return sum of all records in table
+await User.getAvg('friends_count')
+
+// Return sum of selected records
+await User.query().where('is_active', '=', 1).getAvg('friends_count')
+
+// Return sum of selected records (long form)
+(await User.query().where('is_active', '=', 1).avg('friends_count as total'))[0].total</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavgdistinct_columnname"><a class="anchor" href="#_getavgdistinct_columnname"></a><a class="link" href="#_getavgdistinct_columnname">getAvgDistinct(columnName)</a></h4>
+<div class="paragraph">
+<p>Return the average (mean) of distinct values of <code>columnName</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// Return sum of all records in table
+await User.getAvgDistinct('friends_count')
+
+// Return sum of selected records
+await User.query().where('is_active', '=', 1).getAvgDistinct('friends_count')
+
+// Return sum of selected records (long form)
+(await User.query().where('is_active', '=', 1).avgDistinct('friends_count as total'))[0].total</code></pre>
 </div>
 </div>
 </div>

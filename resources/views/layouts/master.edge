@@ -9,6 +9,8 @@
     <script src="https://use.typekit.net/dpd2zbd.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
+    {{ script('adonis') }}
+
     {{-- Styles --}}
     {{ css('adonis') }}
   </head>
@@ -26,8 +28,5 @@
         @include('partials.footer')
       @endsection
     </section>
-
-    {{-- scripts --}}
-    {{ script('adonis') }}
   </body>
 </html>

@@ -390,9 +390,22 @@ Route.post('users', ({ request, session, response }) =&gt; {
   .flashAll()</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_flashmessage_key_defaultvalue"><a class="anchor" href="#_flashmessage_key_defaultvalue"></a><a class="link" href="#_flashmessage_key_defaultvalue">flashMessage(key, defaultValue)</a></h4>
+<div class="paragraph">
+<p>Returns the flash message for a given key</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;span&gt; {{ getErrorFor('username') }} &lt;/span&gt;</code></pre>
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flash({ notification: 'Update successful!' })</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@if(flashMessage('notification'))
+  &lt;span&gt; {{ flashMessage('notification') }} &lt;/span&gt;
+@endif</code></pre>
 </div>
 </div>
 </div>

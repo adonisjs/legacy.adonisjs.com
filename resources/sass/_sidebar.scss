@@ -7,7 +7,7 @@
 }
 
 .menu {
-  margin-top: 40px;
+  margin-top: 15px;
 }
 
 .menu-label {
@@ -21,7 +21,7 @@
 .menu-list {
   margin-bottom: 1.8em;
   a {
-    padding: 0.2em 0;
+    padding: 0.3em 0;
     font-size: 0.9rem;
 
     &:hover, &.is-active {
@@ -32,6 +32,7 @@
 }
 
 .select.is-block {
+  margin-bottom: 40px;
   select {
     width: 100%;
   }

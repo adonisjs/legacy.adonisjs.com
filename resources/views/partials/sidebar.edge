@@ -1,11 +1,13 @@
 <div class="column sidebar is-one-quarter is-hidden-mobile">
-  <div class="select">
-    <select id="version-switch">
-      @each((name, version) in versions)
-        <option value="{{ version }}" {{ currentVersion === version ? 'selected': '' }}>{{ name }}</option>
-      @endeach
-    </select>
-  </div>
+  @if(versions)
+    <div class="select version-switch">
+      <select id="version-switch">
+        @each((name, version) in versions)
+          <option value="{{ version }}" {{ currentVersion === version ? 'selected': '' }}>{{ name }}</option>
+        @endeach
+      </select>
+    </div>
+  @endif
 
   <aside class="menu">
     @each((items, group) in menu)

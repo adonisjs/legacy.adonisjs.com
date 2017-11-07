@@ -1,0 +1,50 @@
+/////////////////////////////////
+// Card to display sample apps //
+/////////////////////////////////
+.app-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(63,63,68,.05),0 1px 6px 0 rgba(69,79,91,.18);
+
+  h3 {
+    padding-bottom: 20px;
+    position: relative;
+
+    a {
+      color: $danger;
+    }
+
+    &:after {
+      content: '';
+      height: 3px;
+      background: #dfe3e8;
+      position: absolute;
+      width: 40px;
+      top: 60%;
+      left: 50%;
+      margin-left: -20px;
+    }
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  &.is-row {
+    padding: 0 0 14px 0;
+    text-align: left;
+    box-shadow: none;
+
+    h3 {
+      padding-bottom: 10px;
+      &:after {
+        left: 20px;
+        top: 75%;
+      }
+    }
+  }
+}

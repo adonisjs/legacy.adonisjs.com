@@ -1,5 +1,9 @@
 .footer {
-  padding: 3rem 0;
+  padding: 1.2rem 0;
+  font-size: 0.85rem;
+  color: #888;
+  border-top: 1px solid darken(#f9fafb, 5);
+
   .logo {
     width: 32px;
     margin: auto;
@@ -10,10 +14,8 @@
   }
 
   p {
-    color: #bdb3cb;
     a {
-      color: #bdb3cb;
-      background-image: linear-gradient(to bottom,transparent 50%,#bdb3cb 50%);
+      background-image: linear-gradient(to bottom,transparent 50%, rgba(255, 255, 255, 0.7) 50%);
       background-position: 0 93%;
       background-repeat: repeat-x;
       background-size: 100% .15rem;

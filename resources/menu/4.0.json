@@ -351,16 +351,16 @@
   },
   {
     "path": "content/4.0/recipes/03-frontend-assets.adoc",
+    "permalink": "frontend-assets",
     "title": "Managing frontend assets",
     "category": "recipes",
-    "savePath": "resources/docs/4.0/frontend-assets.html",
-    "permalink": "frontend-assets"
+    "savePath": "resources/docs/4.0/frontend-assets.html"
   },
   {
     "path": "content/4.0/recipes/04-why-adonis-install.adoc",
+    "permalink": "why-adonis-install",
     "title": "Why Adonis install?",
     "category": "recipes",
-    "savePath": "resources/docs/4.0/why-adonis-install.html",
-    "permalink": "why-adonis-install"
+    "savePath": "resources/docs/4.0/why-adonis-install.html"
   }
 ]

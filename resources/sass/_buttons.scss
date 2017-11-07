@@ -34,3 +34,18 @@
     }
   }
 }
+
+.button.on-header {
+  &.on-header {
+    background-color: transparent;
+    border-radius: 0;
+    border-color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.7);
+    transition: 300ms color ease, 300ms border-color ease;
+
+    &:hover {
+      color: #fff;
+      border-color: #fff;
+    }
+  }
+}

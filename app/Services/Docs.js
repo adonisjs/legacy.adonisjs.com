@@ -255,6 +255,9 @@ class Docs extends EventEmitter {
    * @return {Object}
    */
   getMenu () {
+    if (process.env.NODE_ENV === 'development') {
+      require('clear-require')(this.menuFile)
+    }
     return require(this.menuFile)
   }
 

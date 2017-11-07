@@ -144,17 +144,16 @@ module.exports = UserController</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_raw_string_data_callback"><a class="anchor" href="#_raw_string_data_callback"></a><a class="link" href="#_raw_string_data_callback">raw(string, data, callback)</a></h4>
+<h4 id="_raw_body_callback"><a class="anchor" href="#_raw_body_callback"></a><a class="link" href="#_raw_body_callback">raw(body, callback)</a></h4>
 <div class="paragraph">
-<p>Use raw string to send the mail. The string value is considered as the <code>plain text</code> email.</p>
+<p>Use raw string to send the mail. The body value is considered as the <code>plain text</code> email.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.raw('Hello {{ username }}', user.toJSON(), (message) =&gt; {
-  message
-    .to(user.email)
-    .from('&lt;from-email&gt;')
-    .subject('Welcome to yardstick')
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.raw('... everyone who got this message.', (message) =&gt; {
+  message.subject('Hello ...')
+  message.from('foo@bar.com')
+  message.to('baz@bar.com')
 })</code></pre>
 </div>
 </div>

@@ -22,6 +22,7 @@
     "@adonisjs/framework": "^4.0.24",
     "@adonisjs/generic-exceptions": "^1.0.0",
     "@adonisjs/ignitor": "^1.0.12",
+    "clear-require": "^2.0.0",
     "fs-extra": "^4.0.2",
     "lodash": "^4.17.4"
   },

@@ -12,9 +12,15 @@
     padding: 10px 0;
   }
 
-  #preamble p {
-    font-size: 1.1rem;
-    line-height: 1.7;
+  #preamble {
+    p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    li {
+      line-height: 1.9;
+    }
   }
 
   p > a, .admonitionblock a {
@@ -95,8 +101,8 @@
     &.ol-shrinked {
       margin-bottom: 2em;
       ol > li {
-        padding-top: 0;
-        padding-bottom: 0;
+        padding-top: 2px;
+        padding-bottom: 2px;
       }
     }
 
@@ -151,8 +157,8 @@
     &.ul-shrinked {
       margin-bottom: 2em;
       ul > li {
-        padding-top: 0;
-        padding-bottom: 0;
+        padding-top: 2px;
+        padding-bottom: 2px;
       }
     }
 
@@ -160,6 +166,12 @@
       ul > li {
         padding-top: 12px;
         padding-bottom: 12px;
+      }
+    }
+
+    &.emojified {
+      ul {
+        list-style: none;
       }
     }
 
@@ -188,8 +200,21 @@
     }
   }
 
-  .paragraph + .listingblock pre, .paragraph + .dlist {
+  .paragraph + .listingblock pre, .paragraph + .dlist, .paragraph  + .try-on-replit + .listingblock pre {
     margin-top: -21px;
+  }
+
+  .try-on-replit {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    right: 0;
+    margin-right: 130px;
+    margin-top: -8px;
+  }
+
+  .admonitionblock + .try-on-replit {
+    margin-top: 10px;
   }
 
   .listingblock {
@@ -320,10 +345,14 @@
   }
 
   .toc {
-    padding: 35px 25px 35px 35px;
-    border: 1px solid #dfe3e8;
+    padding: 30px 25px 30px 25px;
+    border: 1px solid $grey-lighter;
     display: inline-block;
     margin: 40px 0;
+
+    a {
+      color: $danger;
+    }
 
     #toctitle {
       display: none;
@@ -333,7 +362,11 @@
   .sect1 {
     padding-top: 56px;
     margin-bottom: 32px;
-    border-top: 1px solid #dfe3e8;
+    border-top: 1px solid $grey-lighter;
+  }
+
+  iframe {
+    margin-bottom: 2.5em;
   }
 
   pre.highlight {

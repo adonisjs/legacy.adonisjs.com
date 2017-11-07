@@ -7,6 +7,8 @@
 <li><a href="#_validating_user_input">Validating user input</a></li>
 <li><a href="#_validator_methods">Validator methods</a></li>
 <li><a href="#_route_validator">Route validator</a></li>
+<li><a href="#_custom_rules">Custom Rules</a></li>
+<li><a href="#_extending_validator">Extending Validator</a></li>
 </ul>
 </div>
 <div class="paragraph">
@@ -19,7 +21,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Adonisjs validator using <a href="http://indicative.adonisjs.com/" target="_blank" rel="noopener">indicative</a> under the hood, so make sure to read the official documentation whenever required.
+Adonisjs validator using <a href="http://indicative.adonisjs.com/">indicative</a> under the hood, so make sure to read the official documentation whenever required.
 </td>
 </tr>
 </table>
@@ -387,6 +389,145 @@ module.exports = StoreUser</code></pre>
 <h3 id="_request_context"><a class="anchor" href="#_request_context"></a><a class="link" href="#_request_context">Request context</a></h3>
 <div class="paragraph">
 <p>All route validators can access the current request context via <code>this.ctx</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_custom_rules"><a class="anchor" href="#_custom_rules"></a><a class="link" href="#_custom_rules">Custom Rules</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs supports all the validation rules by Indicative, but also adds a few who are specific to AdonisJs only. Below is the list of custom rules.</p>
+</div>
+<div class="sect3">
+<h4 id="_unique_tablename_fieldname"><a class="anchor" href="#_unique_tablename_fieldname"></a><a class="link" href="#_unique_tablename_fieldname">unique(tableName, [fieldName])</a></h4>
+<div class="paragraph">
+<p>Makes sure a given value is unique in a given database table.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Model/User</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class StoreUser {
+
+  static get rules () {
+    return {
+      email: 'unique:users,email'
+    }
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now when trying to update a user, you would never want to run the unique validation for the same user. Same can be achieved by defining a <code>whereNot</code> clause.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validate } = use('Validator')
+
+class UserController {
+
+  async update ({ request, session, response, params }) {
+    const userId = params.id
+
+    const rules = {
+      email: `unique:users,email,id,${userId}` <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+    const validation = await validate(request.all(), rules)
+
+    if (validation.fails()) {
+      session
+        .withErrors(validation.messages())
+        .flashAll()
+
+      return response.redirect('back')
+    }
+
+    return 'Validation passed'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>When fetching the rules from the <strong>User Model</strong>, we pass along the user id which gets ignored when checking the email uniqueness.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_validator"><a class="anchor" href="#_extending_validator"></a><a class="link" href="#_extending_validator">Extending Validator</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you have the requirement of extending the <strong>Validator Provider</strong> by adding new validation rules. You can make use of the <code>extend</code> method provided by <a href="http://indicative.adonisjs.com/#indicative-extending">Indicative</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_application_specific"><a class="anchor" href="#_application_specific"></a><a class="link" href="#_application_specific">Application Specific</a></h4>
+<div class="paragraph">
+<p>For application specific rules you can make use of <code>app/hooks.js</code> file to listen for the <strong>providersBooted</strong> event and register your custom rules.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/hooks.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">import { hooks } from '@adonisjs/ignitor'
+
+const adult = async function(data, field, message, args, get) {
+  const fieldValue = get(data, field)
+  if (fieldValue &lt; 18) {
+    throw message
+  }
+}
+
+hooks.after.providersBooted(() =&gt; {
+  const Validator = use('Validator')
+  Validator.extend('adult', adult, 'You must be an adult')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_via_provider"><a class="anchor" href="#_via_provider"></a><a class="link" href="#_via_provider">Via Provider</a></h4>
+<div class="paragraph">
+<p>If you are writing a module/addon for AdonisJs, you can add your custom rules inside the <code>boot</code> method of your service provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const { ServiceProvider } = require('@adonisjs/fold')
+
+class ExtendsValidatorProvider extends ServiceProvider {
+  async exists (data, field, message, args, get) {
+    const Database = use('Database')
+
+    const value = get(data, field)
+    const [table, column] = args
+
+    const result = await Database.table(table).where(column, value).first()
+    if (!result) {
+      throw message
+    }
+  }
+
+  async boot () {
+    // register bindings
+    const Validator = use('Validator')
+    Validator.extend('exists', this.exists, '{{field}} does not exist in database')
+  }
+}
+
+module.exports = ExtendsValidatorProvider</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget register your provider in <code>app/start.js</code> then you can make use of the above defined <code>exists</code> like any other validation rule.</p>
 </div>
 </div>
 </div>

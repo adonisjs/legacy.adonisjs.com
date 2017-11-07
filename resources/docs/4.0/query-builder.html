@@ -452,7 +452,7 @@ await Database
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
   .table('users')
-  .orderBy('col NULLS LAST DESC')</code></pre>
+  .orderByRaw('col NULLS LAST DESC')</code></pre>
 </div>
 </div>
 </div>
@@ -696,29 +696,32 @@ rolls back automatically. Otherwise, it is committed.</p>
 <div class="sect1">
 <h2 id="_aggregates"><a class="anchor" href="#_aggregates"></a><a class="link" href="#_aggregates">Aggregates</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The Lucid Query Builder exposes the full power of <a href="http://knexjs.org/#Builder-count">knex&#8217;s aggregate methods</a>.</p>
+</div>
 <div class="sect3">
 <h4 id="_count"><a class="anchor" href="#_count"></a><a class="link" href="#_count">count()</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const count = await Database
   .from('users')
-  .count() // returns array
+  .count()                                      // returns array
 
-const total = count[0]['count(*)'] // returns number
+const total = count[0]['count(*)']              // returns number
 
 // COUNT A COLUMN
 const count = await Database
   .from('users')
-  .count('id') // returns array
+  .count('id')                                  // returns array
 
-const total = count[0]['count("id")'] // returns number
+const total = count[0]['count("id")']           // returns number
 
 // COUNT COLUMN AS NAME
 const count = await Database
   .from('users')
-  .count('* as total') // returns array
+  .count('* as total')                          // returns array
 
-const total = count[0].total // returns number</code></pre>
+const total = count[0].total                    // returns number</code></pre>
 </div>
 </div>
 </div>
@@ -731,9 +734,9 @@ const total = count[0].total // returns number</code></pre>
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const count = await Database
   .from('users')
-  .countDistinct('id')
+  .countDistinct('id')                          // Returns array
 
-const total = count[0]['count(distinct "id")'] // returns number</code></pre>
+const total = count[0]['count(distinct "id")']  // returns number</code></pre>
 </div>
 </div>
 </div>
@@ -741,8 +744,8 @@ const total = count[0]['count(distinct "id")'] // returns number</code></pre>
 <h4 id="_min"><a class="anchor" href="#_min"></a><a class="link" href="#_min">min</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').min('age')
-await Database.from('users').min('age as a')</code></pre>
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').min('age')         // returns array
+await Database.from('users').min('age as a')    // returns array</code></pre>
 </div>
 </div>
 </div>
@@ -750,8 +753,8 @@ await Database.from('users').min('age as a')</code></pre>
 <h4 id="_max"><a class="anchor" href="#_max"></a><a class="link" href="#_max">max</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').max('age')
-await Database.from('users').max('age as a')</code></pre>
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').max('age')         // returns array
+await Database.from('users').max('age as a')    // returns array</code></pre>
 </div>
 </div>
 </div>
@@ -759,8 +762,8 @@ await Database.from('users').max('age as a')</code></pre>
 <h4 id="_sum"><a class="anchor" href="#_sum"></a><a class="link" href="#_sum">sum</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').sum('total')
-await Database.from('cart').sum('total as t')</code></pre>
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').sum('total')        // returns array
+await Database.from('cart').sum('total as t')   // returns array</code></pre>
 </div>
 </div>
 </div>
@@ -768,8 +771,8 @@ await Database.from('cart').sum('total as t')</code></pre>
 <h4 id="_sumdistinct"><a class="anchor" href="#_sumdistinct"></a><a class="link" href="#_sumdistinct">sumDistinct</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').sumDistinct('total')
-await Database.from('cart').sumDistinct('total as t')</code></pre>
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').sumDistinct('total')      // returns array
+await Database.from('cart').sumDistinct('total as t') // returns array</code></pre>
 </div>
 </div>
 </div>
@@ -777,8 +780,8 @@ await Database.from('cart').sumDistinct('total as t')</code></pre>
 <h4 id="_avg"><a class="anchor" href="#_avg"></a><a class="link" href="#_avg">avg</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').avg('age')
-await Database.from('users').avg('age as age')</code></pre>
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').avg('age')         // returns array
+await Database.from('users').avg('age as age')  // returns array</code></pre>
 </div>
 </div>
 </div>
@@ -786,8 +789,8 @@ await Database.from('users').avg('age as age')</code></pre>
 <h4 id="_avgdistinct"><a class="anchor" href="#_avgdistinct"></a><a class="link" href="#_avgdistinct">avgDistinct</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').avgDistinct('age')
-await Database.from('users').avgDistinct('age as age')</code></pre>
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').avgDistinct('age')         // returns array
+await Database.from('users').avgDistinct('age as age')  // returns array</code></pre>
 </div>
 </div>
 </div>
@@ -816,6 +819,86 @@ await Database.from('users').avgDistinct('age as age')</code></pre>
   .table('credits')
   .where('id', 1)
   .decrement('balance', 10)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aggregate_helpers"><a class="anchor" href="#_aggregate_helpers"></a><a class="link" href="#_aggregate_helpers">Aggregate Helpers</a></h3>
+<div class="paragraph">
+<p>Query Builder also extends knex&#8217;s query aggregates with helpful shortcut methods for common aggregate queries.</p>
+</div>
+<div class="paragraph">
+<p>Helper methods end the query builder chaining and return a value. All helpers accept a column name to be used for aggregation. When possible Lucid will choose a default for the column name. Some methods, such as <code>sum()</code>, require a column name.</p>
+</div>
+<div class="paragraph">
+<p>The knex query builder underlying Lucid defines methods <code>count()</code>, <code>countDistinct()</code>, <code>avg()</code>, <code>avgDistinct()</code>, <code>sum()</code>, <code>sumDistinct()</code>, <code>min()</code>, and <code>max()</code>. To avoid confusion and naming collisions, Lucid prefixes its aggregate helper methods with <code>get</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_getcount_columnname"><a class="anchor" href="#_getcount_columnname"></a><a class="link" href="#_getcount_columnname">getCount(columnName = '*')</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const total = await Database
+  .from('users')
+  .getCount()                                   // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getcountdistinct_columnname"><a class="anchor" href="#_getcountdistinct_columnname"></a><a class="link" href="#_getcountdistinct_columnname">getCountDistinct(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const total = await Database
+  .from('users')
+  .countDistinct('id')                          // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getmin_columnname"><a class="anchor" href="#_getmin_columnname"></a><a class="link" href="#_getmin_columnname">getMin(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getMin('age')      // returns a number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getmax_columnname"><a class="anchor" href="#_getmax_columnname"></a><a class="link" href="#_getmax_columnname">getMax(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getMax('age')      // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsum_columnname"><a class="anchor" href="#_getsum_columnname"></a><a class="link" href="#_getsum_columnname">getSum(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').getSum('total')     // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsumdistinct_columnname"><a class="anchor" href="#_getsumdistinct_columnname"></a><a class="link" href="#_getsumdistinct_columnname">getSumDistinct(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').getSumDistinct('total')   // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavg_columnname"><a class="anchor" href="#_getavg_columnname"></a><a class="link" href="#_getavg_columnname">getAvg(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getAvg('age')      // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavgdistinct_columnname"><a class="anchor" href="#_getavgdistinct_columnname"></a><a class="link" href="#_getavgdistinct_columnname">getAvgDistinct(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getAvgDistinct('age')      // returns number</code></pre>
+</div>
 </div>
 </div>
 </div>

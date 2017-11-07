@@ -69,4 +69,11 @@ pre .tag:not(body) {
   height: auto;
   padding: 0;
   font-size: inherit;
+  display: inherit;
+  white-space: inherit;
+}
+
+hr {
+  margin: 2.5rem 0;
+  background-color: $grey-lighter;
 }
