@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "path": "content/3.2/01-prologue/01-adonisjs-at-a-glance.adoc",
     "permalink": "overview",
     "categories": [
@@ -11,7 +10,6 @@
     "savePath": "resources/docs/3.2/overview.html"
   },
   {
-    "id": 2,
     "path": "content/3.2/01-prologue/02-contribution-guide.adoc",
     "permalink": "contributing",
     "categories": [
@@ -22,7 +20,6 @@
     "savePath": "resources/docs/3.2/contributing.html"
   },
   {
-    "id": 3,
     "path": "content/3.2/01-prologue/03-release-notes.adoc",
     "permalink": "release-notes",
     "categories": [
@@ -33,7 +30,6 @@
     "savePath": "resources/docs/3.2/release-notes.html"
   },
   {
-    "id": 4,
     "path": "content/3.2/02-core-concepts/01-mvc-pattern.adoc",
     "permalink": "mvc-pattern",
     "categories": [
@@ -44,7 +40,6 @@
     "savePath": "resources/docs/3.2/mvc-pattern.html"
   },
   {
-    "id": 5,
     "path": "content/3.2/02-core-concepts/02-ioc-container.adoc",
     "permalink": "ioc-container",
     "categories": [
@@ -55,7 +50,6 @@
     "savePath": "resources/docs/3.2/ioc-container.html"
   },
   {
-    "id": 6,
     "path": "content/3.2/02-core-concepts/04-application-lifecycle.adoc",
     "permalink": "app-lifecycle",
     "categories": [
@@ -66,7 +60,6 @@
     "savePath": "resources/docs/3.2/app-lifecycle.html"
   },
   {
-    "id": 7,
     "path": "content/3.2/03-getting-started/01-installation.adoc",
     "permalink": "installation",
     "categories": [
@@ -77,7 +70,6 @@
     "savePath": "resources/docs/3.2/installation.html"
   },
   {
-    "id": 8,
     "path": "content/3.2/03-getting-started/02-directory-structure.adoc",
     "permalink": "directory-structure",
     "categories": [
@@ -88,7 +80,6 @@
     "savePath": "resources/docs/3.2/directory-structure.html"
   },
   {
-    "id": 9,
     "path": "content/3.2/03-getting-started/03-configuration.adoc",
     "permalink": "config",
     "categories": [
@@ -99,7 +90,6 @@
     "savePath": "resources/docs/3.2/config.html"
   },
   {
-    "id": 10,
     "path": "content/3.2/03-getting-started/04-env.adoc",
     "permalink": "env",
     "categories": [
@@ -110,7 +100,6 @@
     "savePath": "resources/docs/3.2/env.html"
   },
   {
-    "id": 11,
     "path": "content/3.2/03-getting-started/05-routing.adoc",
     "permalink": "routing",
     "categories": [
@@ -121,7 +110,6 @@
     "savePath": "resources/docs/3.2/routing.html"
   },
   {
-    "id": 12,
     "path": "content/3.2/03-getting-started/06-request.adoc",
     "permalink": "request",
     "categories": [
@@ -132,7 +120,6 @@
     "savePath": "resources/docs/3.2/request.html"
   },
   {
-    "id": 13,
     "path": "content/3.2/03-getting-started/07-response.adoc",
     "permalink": "response",
     "categories": [
@@ -143,7 +130,6 @@
     "savePath": "resources/docs/3.2/response.html"
   },
   {
-    "id": 14,
     "path": "content/3.2/03-getting-started/08-middleware.adoc",
     "permalink": "middleware",
     "categories": [
@@ -154,7 +140,6 @@
     "savePath": "resources/docs/3.2/middleware.html"
   },
   {
-    "id": 15,
     "path": "content/3.2/03-getting-started/09-controllers.adoc",
     "permalink": "controllers",
     "categories": [
@@ -165,7 +150,6 @@
     "savePath": "resources/docs/3.2/controllers.html"
   },
   {
-    "id": 16,
     "path": "content/3.2/03-getting-started/10-files.adoc",
     "permalink": "files",
     "categories": [
@@ -176,7 +160,6 @@
     "savePath": "resources/docs/3.2/files.html"
   },
   {
-    "id": 17,
     "path": "content/3.2/04-views/01-views.adoc",
     "permalink": "views",
     "categories": [
@@ -187,7 +170,6 @@
     "savePath": "resources/docs/3.2/views.html"
   },
   {
-    "id": 18,
     "path": "content/3.2/04-views/02-templating.adoc",
     "permalink": "templating",
     "categories": [
@@ -198,7 +180,6 @@
     "savePath": "resources/docs/3.2/templating.html"
   },
   {
-    "id": 19,
     "path": "content/3.2/04-views/03-form-builder.adoc",
     "permalink": "form-builder",
     "categories": [
@@ -209,7 +190,6 @@
     "savePath": "resources/docs/3.2/form-builder.html"
   },
   {
-    "id": 20,
     "path": "content/3.2/05-database/01-database-setup.adoc",
     "permalink": "database-setup",
     "categories": [
@@ -220,7 +200,6 @@
     "savePath": "resources/docs/3.2/database-setup.html"
   },
   {
-    "id": 21,
     "path": "content/3.2/05-database/02-query-builder.adoc",
     "permalink": "query-builder",
     "categories": [
@@ -231,7 +210,6 @@
     "savePath": "resources/docs/3.2/query-builder.html"
   },
   {
-    "id": 22,
     "path": "content/3.2/05-database/03-migrations.adoc",
     "permalink": "migrations",
     "categories": [
@@ -242,7 +220,6 @@
     "savePath": "resources/docs/3.2/migrations.html"
   },
   {
-    "id": 23,
     "path": "content/3.2/05-database/04-seeds-and-factories.adoc",
     "permalink": "seeds-and-factories",
     "categories": [
@@ -253,7 +230,6 @@
     "savePath": "resources/docs/3.2/seeds-and-factories.html"
   },
   {
-    "id": 24,
     "path": "content/3.2/06-lucid/01-lucid.adoc",
     "permalink": "lucid",
     "categories": [
@@ -264,7 +240,6 @@
     "savePath": "resources/docs/3.2/lucid.html"
   },
   {
-    "id": 25,
     "path": "content/3.2/06-lucid/02-relationships.adoc",
     "permalink": "relationships",
     "categories": [
@@ -275,7 +250,6 @@
     "savePath": "resources/docs/3.2/relationships.html"
   },
   {
-    "id": 26,
     "path": "content/3.2/06-lucid/03-hooks.adoc",
     "permalink": "database-hooks",
     "categories": [
@@ -286,7 +260,6 @@
     "savePath": "resources/docs/3.2/database-hooks.html"
   },
   {
-    "id": 27,
     "path": "content/3.2/06-lucid/04-getters-setters.adoc",
     "permalink": "database-getters-setters",
     "categories": [
@@ -297,7 +270,6 @@
     "savePath": "resources/docs/3.2/database-getters-setters.html"
   },
   {
-    "id": 28,
     "path": "content/3.2/07-common-web-tools/01-interactive-shell.adoc",
     "permalink": "interactive-shell",
     "categories": [
@@ -308,7 +280,6 @@
     "savePath": "resources/docs/3.2/interactive-shell.html"
   },
   {
-    "id": 29,
     "path": "content/3.2/07-common-web-tools/02-authentication.adoc",
     "permalink": "authentication",
     "categories": [
@@ -319,7 +290,6 @@
     "savePath": "resources/docs/3.2/authentication.html"
   },
   {
-    "id": 30,
     "path": "content/3.2/07-common-web-tools/03-cookies.adoc",
     "permalink": "cookies",
     "categories": [
@@ -330,7 +300,6 @@
     "savePath": "resources/docs/3.2/cookies.html"
   },
   {
-    "id": 31,
     "path": "content/3.2/07-common-web-tools/04-mail.adoc",
     "permalink": "mail",
     "categories": [
@@ -341,7 +310,6 @@
     "savePath": "resources/docs/3.2/mail.html"
   },
   {
-    "id": 32,
     "path": "content/3.2/07-common-web-tools/07-exceptions.adoc",
     "permalink": "error-and-exceptions",
     "categories": [
@@ -352,7 +320,6 @@
     "savePath": "resources/docs/3.2/error-and-exceptions.html"
   },
   {
-    "id": 33,
     "path": "content/3.2/07-common-web-tools/08-events.adoc",
     "permalink": "events",
     "categories": [
@@ -363,7 +330,6 @@
     "savePath": "resources/docs/3.2/events.html"
   },
   {
-    "id": 34,
     "path": "content/3.2/07-common-web-tools/09-helpers.adoc",
     "permalink": "helpers",
     "categories": [
@@ -374,7 +340,6 @@
     "savePath": "resources/docs/3.2/helpers.html"
   },
   {
-    "id": 35,
     "path": "content/3.2/07-common-web-tools/10-sessions.adoc",
     "permalink": "sessions",
     "categories": [
@@ -385,7 +350,6 @@
     "savePath": "resources/docs/3.2/sessions.html"
   },
   {
-    "id": 36,
     "path": "content/3.2/07-common-web-tools/11-validator.adoc",
     "permalink": "validator",
     "categories": [
@@ -396,7 +360,6 @@
     "savePath": "resources/docs/3.2/validator.html"
   },
   {
-    "id": 37,
     "path": "content/3.2/07-common-web-tools/12-redis.adoc",
     "permalink": "redis",
     "categories": [
@@ -407,7 +370,6 @@
     "savePath": "resources/docs/3.2/redis.html"
   },
   {
-    "id": 38,
     "path": "content/3.2/07-common-web-tools/13-internationalization.adoc",
     "permalink": "internationalization",
     "categories": [
@@ -418,7 +380,6 @@
     "savePath": "resources/docs/3.2/internationalization.html"
   },
   {
-    "id": 39,
     "path": "content/3.2/07-common-web-tools/14-social-auth.adoc",
     "permalink": "social-auth",
     "categories": [
@@ -429,7 +390,6 @@
     "savePath": "resources/docs/3.2/social-auth.html"
   },
   {
-    "id": 40,
     "path": "content/3.2/07-common-web-tools/15-ws.adoc",
     "permalink": "websocket",
     "categories": [
@@ -440,7 +400,6 @@
     "savePath": "resources/docs/3.2/websocket.html"
   },
   {
-    "id": 41,
     "path": "content/3.2/08-tutorial/01-getting-started.adoc",
     "permalink": "adonis-blog-part1",
     "categories": [
@@ -451,7 +410,6 @@
     "savePath": "resources/docs/3.2/adonis-blog-part1.html"
   },
   {
-    "id": 42,
     "path": "content/3.2/08-tutorial/02-routes-and-controllers.adoc",
     "permalink": "adonis-blog-part2",
     "categories": [
@@ -462,7 +420,6 @@
     "savePath": "resources/docs/3.2/adonis-blog-part2.html"
   },
   {
-    "id": 43,
     "path": "content/3.2/08-tutorial/03-database-models.adoc",
     "permalink": "adonis-blog-part3",
     "categories": [
@@ -473,7 +430,6 @@
     "savePath": "resources/docs/3.2/adonis-blog-part3.html"
   },
   {
-    "id": 44,
     "path": "content/3.2/08-tutorial/04-list-blog-posts.adoc",
     "permalink": "adonis-blog-part4",
     "categories": [
@@ -484,7 +440,6 @@
     "savePath": "resources/docs/3.2/adonis-blog-part4.html"
   },
   {
-    "id": 45,
     "path": "content/3.2/08-tutorial/05-creating-blog-posts.adoc",
     "permalink": "adonis-blog-part5",
     "categories": [
@@ -495,7 +450,6 @@
     "savePath": "resources/docs/3.2/adonis-blog-part5.html"
   },
   {
-    "id": 46,
     "path": "content/3.2/08-tutorial/06-finishing-up.adoc",
     "permalink": "adonis-blog-part6",
     "categories": [
@@ -506,7 +460,6 @@
     "savePath": "resources/docs/3.2/adonis-blog-part6.html"
   },
   {
-    "id": 47,
     "path": "content/3.2/09-security/01-security-intro.adoc",
     "permalink": "security-introduction",
     "categories": [
@@ -517,7 +470,6 @@
     "savePath": "resources/docs/3.2/security-introduction.html"
   },
   {
-    "id": 48,
     "path": "content/3.2/09-security/02-cors.adoc",
     "permalink": "cors",
     "categories": [
@@ -528,7 +480,6 @@
     "savePath": "resources/docs/3.2/cors.html"
   },
   {
-    "id": 49,
     "path": "content/3.2/09-security/03-csrf-protection.adoc",
     "permalink": "csrf-protection",
     "categories": [
@@ -539,7 +490,6 @@
     "savePath": "resources/docs/3.2/csrf-protection.html"
   },
   {
-    "id": 50,
     "path": "content/3.2/09-security/04-encryption-and-hashing.adoc",
     "permalink": "encryption-and-hashing",
     "categories": [
@@ -550,7 +500,6 @@
     "savePath": "resources/docs/3.2/encryption-and-hashing.html"
   },
   {
-    "id": 51,
     "path": "content/3.2/09-security/05-shield.adoc",
     "permalink": "shield",
     "categories": [
@@ -561,7 +510,6 @@
     "savePath": "resources/docs/3.2/shield.html"
   },
   {
-    "id": 52,
     "path": "content/3.2/09-security/06-data-sanitization.adoc",
     "permalink": "data-sanitization",
     "categories": [
