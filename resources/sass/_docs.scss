@@ -3,6 +3,7 @@
 /////////////////////////
 .docs-container {
   margin: 12px 0;
+  position: relative;
 
   @include from($tablet) {
     background: linear-gradient(90deg, #f9fafb 60%, #fff 61%);

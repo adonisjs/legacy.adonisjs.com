@@ -40,12 +40,18 @@
 
 #sponsor {
   z-index: 99;
-  padding: 15px;
+  padding: 10px;
   background: #fff;
-  width: 160px;
-  margin-bottom: 20px;
-  min-height: 253px;
+  width: 145px;
   box-shadow: 0px 0px 3px #e8e8e8;
+  right: 20px;
+  position: absolute;
+  display: none;
+  top: 20px;
+
+  @include from($desktop) {
+    display: block;
+  }
 
   span {
     display: inline-block;
@@ -56,10 +62,14 @@
     color: $text;
     font-size: 12px;
     line-height: 18px;
+    margin-bottom: 5px;
   }
 
   .carbon-img {
     display: block;
+    img {
+      width: 125px;
+    }
   }
 
   .carbon-poweredby {

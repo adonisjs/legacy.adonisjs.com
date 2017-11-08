@@ -3,8 +3,10 @@
 <div id="toc" class="toc">
 <div id="toctitle" class="title">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_traits_signature">Traits signature</a></li>
-<li><a href="#_extending_query_builder">Extending query builder</a></li>
+<li><a href="#_creating_a_trait">Creating a Trait</a></li>
+<li><a href="#_registering_a_trait">Registering a Trait</a></li>
+<li><a href="#_registering_a_trait_with_options">Registering a Trait with Options</a></li>
+<li><a href="#_extending_querybuilder">Extending QueryBuilder</a></li>
 </ul>
 </div>
 <div class="paragraph">
@@ -29,17 +31,17 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_traits_signature"><a class="anchor" href="#_traits_signature"></a><a class="link" href="#_traits_signature">Traits signature</a></h2>
+<h2 id="_creating_a_trait"><a class="anchor" href="#_creating_a_trait"></a><a class="link" href="#_creating_a_trait">Creating a Trait</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Traits are saved inside <code>app/Models/Traits</code> directory. Each trait must have a <code>register</code> method which receives the model class as the only parameter.</p>
+<p>Traits are saved inside <code>app/Models/Traits</code>. Each trait must have a <code>register</code> method which receives the model class and an <code>options</code> object as its parameters.</p>
 </div>
 <div class="listingblock">
 <div class="title">app/Models/Traits/Slugify.js</div>
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Slugify {
 
-  register (Model) {
+  register (Model, options) {
     Model.addHook('beforeCreate', function () {
       // create slug
     })
@@ -49,8 +51,13 @@
 module.exports = Slugify</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registering_a_trait"><a class="anchor" href="#_registering_a_trait"></a><a class="link" href="#_registering_a_trait">Registering a Trait</a></h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Now, you can register the trait as following.</p>
+<p>Register your trait with a Lucid model as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -67,7 +74,52 @@ class User extends Model {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_extending_query_builder"><a class="anchor" href="#_extending_query_builder"></a><a class="link" href="#_extending_query_builder">Extending query builder</a></h2>
+<h2 id="_registering_a_trait_with_options"><a class="anchor" href="#_registering_a_trait_with_options"></a><a class="link" href="#_registering_a_trait_with_options">Registering a Trait with Options</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sometimes, it may be useful to pass initialization options to your trait. The options you supply will be passed
+directly to the <code>register()</code> method. If you do not supply options, and empty <code>options = {}</code> will be passed
+for you.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Model = use('Model')
+
+class User extends Model {
+  static boot () {
+    super.boot()
+    this.addTrait('Slugify', {useCamelCase: true})
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you supply options, it is strongly recommended that you also supply default options in your trait:</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Models/Traits/Slugify.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const _ = require('lodash')
+
+class Slugify {
+
+  register (Model, options) {
+    let defaultOptions = {useCamelCase: false}
+    _.extend(defaultOptions, options)
+
+    Model.addHook('beforeCreate', function () {
+      // create slug
+    })
+  }
+}
+
+module.exports = Slugify</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_querybuilder"><a class="anchor" href="#_extending_querybuilder"></a><a class="link" href="#_extending_querybuilder">Extending QueryBuilder</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Also, you can add macros to the <code>QueryBuilder</code> for a given model.</p>
@@ -76,7 +128,7 @@ class User extends Model {
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Slugify {
 
-  register (Model) {
+  register (Model, options) {
     Model.queryMacro('whereSlug', function (value) =&gt; {
       this.where('slug', value)
       return this

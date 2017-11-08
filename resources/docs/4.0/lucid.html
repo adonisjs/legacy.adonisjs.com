@@ -527,11 +527,17 @@ const users = await User.reset()</code></pre>
 <div class="paragraph">
 <p><a href="query-builder#_aggregate_helpers">Query Builder aggregate helpers</a> provide shortcut access to common aggregate queries. Static model methods can be used when you wish to aggregate the entire table.</p>
 </div>
-<div class="paragraph">
-<p>These methods end the query builder chaining and return a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.</p>
-</div>
-<div class="paragraph">
-<p>All helpers accept a column name to be used for aggregation. When possible Lucid will choose a default for the column name. Some methods, such as <code>sum()</code>, require a column name.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+These methods end the query builder chaining and return a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_getcount_columnname"><a class="anchor" href="#_getcount_columnname"></a><a class="link" href="#_getcount_columnname">getCount(columnName = '*')</a></h4>
