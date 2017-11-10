@@ -4,8 +4,11 @@
 <div id="toctitle" class="title">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_creating_a_trait">Creating a Trait</a></li>
+<li><a href="#_manually_creating_a_trait">Manually Creating a Trait</a></li>
 <li><a href="#_registering_a_trait">Registering a Trait</a></li>
 <li><a href="#_registering_a_trait_with_options">Registering a Trait with Options</a></li>
+<li><a href="#_extending_a_model_s_methods">Extending a Model&#8217;s Methods</a></li>
+<li><a href="#_using_model_hooks">Using Model Hooks</a></li>
 <li><a href="#_extending_querybuilder">Extending QueryBuilder</a></li>
 </ul>
 </div>
@@ -34,6 +37,22 @@
 <h2 id="_creating_a_trait"><a class="anchor" href="#_creating_a_trait"></a><a class="link" href="#_creating_a_trait">Creating a Trait</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>Create a new file inside <code>app/Models/Traits</code> directory or use the following ace command to do it for you.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:trait Slugify</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will find your new trait in <code>app/Models/Traits/Slugify.js</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_manually_creating_a_trait"><a class="anchor" href="#_manually_creating_a_trait"></a><a class="link" href="#_manually_creating_a_trait">Manually Creating a Trait</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>Traits are saved inside <code>app/Models/Traits</code>. Each trait must have a <code>register</code> method which receives the model class and an <code>options</code> object as its parameters.</p>
 </div>
 <div class="listingblock">
@@ -42,9 +61,6 @@
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Slugify {
 
   register (Model, options) {
-    Model.addHook('beforeCreate', function () {
-      // create slug
-    })
   }
 }
 
@@ -103,11 +119,53 @@ class User extends Model {
 
 class Slugify {
 
-  register (Model, options) {
-    let defaultOptions = {useCamelCase: false}
-    _.extend(defaultOptions, options)
+  register (Model, customOptions) {
+    const defaultOptions = {useCamelCase: false}
+    const options = _.extend({}, defaultOptions, customOptions)
+  }
+}
 
-    Model.addHook('beforeCreate', function () {
+module.exports = Slugify</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_a_model_s_methods"><a class="anchor" href="#_extending_a_model_s_methods"></a><a class="link" href="#_extending_a_model_s_methods">Extending a Model&#8217;s Methods</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Slugify {
+
+  register (Model, options) {
+    // Add an instance method
+    Model.prototype.printUsername = function () {
+      console.log(this.username)
+    }
+
+    // Add a static method
+    Model.newAdminUser = function () {
+      let m = new Model()
+      m.isAdmin = true
+      return m
+    }
+  }
+}
+
+module.exports = Slugify</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_model_hooks"><a class="anchor" href="#_using_model_hooks"></a><a class="link" href="#_using_model_hooks">Using Model Hooks</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Slugify {
+
+  register (Model, options) {
+    Model.addHook('beforeCreate', function (modelInstance) {
       // create slug
     })
   }
@@ -140,7 +198,7 @@ module.exports = Slugify</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Moreover, then use it as</p>
+<p>Then use it as:</p>
 </div>
 <div class="listingblock">
 <div class="content">

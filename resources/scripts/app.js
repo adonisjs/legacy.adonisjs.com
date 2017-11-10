@@ -57,7 +57,6 @@ Zepto(function () {
     }
   })
 
-
   if ($('#version-switch')) {
     $('#version-switch').on('change', function () {
       const currentUrl = window.location.pathname
@@ -66,4 +65,11 @@ Zepto(function () {
     })
   }
 
+  if ($('#docs-switch')) {
+    $('#docs-switch').on('change', function () {
+      const currentUrl = window.location.pathname
+      const selectedDoc = $(this).val()
+      window.location = selectedDoc
+    })
+  }
 })

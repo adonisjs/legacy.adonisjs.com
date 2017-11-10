@@ -147,7 +147,7 @@ const namedMiddleware = {
   session: {
     serializer: 'Lucid',
     scheme: 'session',
-    model: 'App/Model/User',
+    model: 'App/Models/User',
     uid: 'email',
     password: 'password'
   }
@@ -401,7 +401,7 @@ The <code>remember</code> method creates a token for the user inside the <code>t
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Set the <code>Authorization = Bearer &lt;credentials&gt;</code>  header to authenticate the request.
+Set the <code>Authorization = Basic &lt;credentials&gt;</code>  header to authenticate the request. The credentials are a <code>base64</code> encoded string of <code>uid:password</code> where <code>uid</code> is the <code>uid</code> database field designated in the auth config.
 </td>
 </tr>
 </table>
@@ -411,7 +411,7 @@ Set the <code>Authorization = Bearer &lt;credentials&gt;</code>  header to authe
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
   await auth.check()
 } catch (error) {
-  response.send('Credentials missing')
+  response.send(error.message)
 }</code></pre>
 </div>
 </div>
