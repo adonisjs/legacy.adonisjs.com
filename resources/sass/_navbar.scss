@@ -107,3 +107,29 @@
     height: 2px;
   }
 }
+
+
+#notifications-handle {
+  position: relative;
+  width: 25px;
+  display: block;
+  height: 30px;
+  margin-top: 33px;
+
+  img {
+    position: absolute;
+    max-width: 17px;
+  }
+
+  #HW_badge_cont {
+    position: absolute;
+    top: -11px;
+    right: -7px;
+  }
+
+  #HW_badge {
+    height: 17px;
+    width: 17px;
+    line-height: 19px;
+  }
+}
