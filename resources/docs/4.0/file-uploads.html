@@ -6,6 +6,7 @@
 <li><a href="#_basic_example">Basic example</a></li>
 <li><a href="#_multiple_file_uploads">Multiple file uploads</a></li>
 <li><a href="#_errors">Errors</a></li>
+<li><a href="#_file_properties">File properties</a></li>
 <li><a href="#_streaming_files">Streaming files</a></li>
 </ul>
 </div>
@@ -41,7 +42,9 @@ Route.post('upload', async ({ request }) =&gt; {
     size: '2mb'
   })
 
-  await profilePic.move(Helpers.tmpPath('uploads'))
+  await profilePic.move(Helpers.tmpPath('uploads'), {
+    name: 'custom-name.jpg'
+  })
 
   if (!profilePic.moved()) {
     return profilePic.error()
@@ -56,7 +59,7 @@ Route.post('upload', async ({ request }) =&gt; {
 <p>The <code>request.file</code> method accepts two arguments, a <strong>field name</strong> and <strong>an object of validations</strong> to be performed, before moving the file.</p>
 </li>
 <li>
-<p>Next, we call <code>profilePic.move</code> method, which attempts to move the file to the defined directory.</p>
+<p>Next, we call <code>profilePic.move</code> method, which attempts to move the file to the defined directory. You can call it with options to save file with new name.</p>
 </li>
 <li>
 <p>Finally, we check whether the move operation was successful or not using <code>profilePic.moved()</code> method and return errors (if any).</p>
@@ -139,6 +142,18 @@ if (!profilePics.movedAll()) {
 <div class="paragraph">
 <p>Following is the list of formats in which error(s) are returned.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When using <a href="https://github.com/adonisjs/adonis-bodyparser/blob/develop/src/Multipart/FileJar.js" target="_blank" rel="noopener">FileJar</a> the <code>errors</code> method returns an array of following errors.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="title">Type error</div>
 <div class="content">
@@ -164,6 +179,80 @@ if (!profilePics.movedAll()) {
 <div class="paragraph">
 <p>Also, multiple file uploads <code>errors</code> method returns an array of errors in the same format.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_properties"><a class="anchor" href="#_file_properties"></a><a class="link" href="#_file_properties">File properties</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of file properties you can access on the file instance.</p>
+</div>
+<table class="tableblock frame-all grid-all spread resource-table">
+<colgroup>
+<col style="width: 45%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 15%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Unprocessed</th>
+<th class="tableblock halign-left valign-top">Inside tmp</th>
+<th class="tableblock halign-left valign-top">Moved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">clientName <span class="description">File name on client machine</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fileName <span class="description">File name after move operation</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fieldName <span class="description">Form field name</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tmpPath <span class="description">Temporary path</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size <span class="description">File size in bytes</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">type <span class="description">File primary type</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subtype <span class="description">File sub type</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status <span class="description">File status. Set to <code>error</code> when fails</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pending</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>consumed</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>moved</code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">

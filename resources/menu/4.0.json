@@ -280,6 +280,13 @@
     "savePath": "resources/docs/4.0/internationalization.html"
   },
   {
+    "path": "content/4.0/08-cookbooks/09-helpers.adoc",
+    "title": "helpers",
+    "permalink": "helpers",
+    "category": "cookbooks",
+    "savePath": "resources/docs/4.0/helpers.html"
+  },
+  {
     "path": "content/4.0/09-web-security/01-introduction.adoc",
     "permalink": "security-introduction",
     "title": "Introduction",
@@ -362,5 +369,12 @@
     "title": "Why Adonis install?",
     "category": "recipes",
     "savePath": "resources/docs/4.0/why-adonis-install.html"
+  },
+  {
+    "path": "content/4.0/recipes/05-https.adoc",
+    "permalink": "using-https",
+    "title": "Using Https",
+    "category": "recipes",
+    "savePath": "resources/docs/4.0/using-https.html"
   }
 ]

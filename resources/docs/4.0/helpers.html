@@ -1,0 +1,189 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_helper_methods">Helper Methods</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Helpers Provider gives a handful of convenient methods to get <strong>absolute paths</strong> to certain directories of your application. It is helpful for the 3rd party <strong>Service providers</strong> since relying on relative paths is not very useful.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Anywhere inside your application, you can make use of Helper&#8217;s provider to get paths to different directories.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Helpers = use('Helpers')
+const welcomeView = Helpers.viewsPath('welcome.edge')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_helper_methods"><a class="anchor" href="#_helper_methods"></a><a class="link" href="#_helper_methods">Helper Methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available methods on the Helpers provider.</p>
+</div>
+<div class="sect3">
+<h4 id="_approot"><a class="anchor" href="#_approot"></a><a class="link" href="#_approot">appRoot</a></h4>
+<div class="paragraph">
+<p>Returns path to the application root.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Helpers.appRoot()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_publicpath_tofile"><a class="anchor" href="#_publicpath_tofile"></a><a class="link" href="#_publicpath_tofile">publicPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the public directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const publicPath = Helpers.publicPath()
+// or
+const cssFile = Helpers.publicPath('style.css')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configpath_tofile"><a class="anchor" href="#_configpath_tofile"></a><a class="link" href="#_configpath_tofile">configPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the config directory or path to a file inside the directory.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is recommended to make use of the <a href="/03-getting-started/03-configuration-and-env.adoc">Config Provider</a> to read the values from the config files.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const configPath = Helpers.configPath()
+// or
+const appConfig = Helpers.configPath('app.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_resourcespath_tofile"><a class="anchor" href="#_resourcespath_tofile"></a><a class="link" href="#_resourcespath_tofile">resourcesPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the resources directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const resourcesPath = Helpers.resourcesPath()
+// or
+const appSass = Helpers.resourcesPath('assets/sass/app.scss')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_migrationspath_tofile"><a class="anchor" href="#_migrationspath_tofile"></a><a class="link" href="#_migrationspath_tofile">migrationsPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the migrations directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const migrationsPath = Helpers.migrationsPath()
+// or
+const UserSchema = Helpers.migrationsPath('UserSchema.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_seedspath_tofile"><a class="anchor" href="#_seedspath_tofile"></a><a class="link" href="#_seedspath_tofile">seedsPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the seeds directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const seedsPath = Helpers.seedsPath()
+// or
+const DatabaseSeed = Helpers.seedsPath('Database.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_databasepath_tofile"><a class="anchor" href="#_databasepath_tofile"></a><a class="link" href="#_databasepath_tofile">databasePath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the database directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const databasePath = Helpers.databasePath()
+// or
+const factoryFile = Helpers.databasePath('factory.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_viewspath_tofile"><a class="anchor" href="#_viewspath_tofile"></a><a class="link" href="#_viewspath_tofile">viewsPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the views directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const viewsPath = Helpers.viewsPath()
+// or
+const welcomeView = Helpers.viewsPath('welcome.edge')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_tmppath_tofile"><a class="anchor" href="#_tmppath_tofile"></a><a class="link" href="#_tmppath_tofile">tmpPath([toFile])</a></h4>
+<div class="paragraph">
+<p>Returns path to the tmp directory or path to a file inside the directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const tmpPath = Helpers.tmpPath()
+// or
+const resized = Helpers.tmpPath('resized.jpg')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_promisify"><a class="anchor" href="#_promisify"></a><a class="link" href="#_promisify">promisify</a></h4>
+<div class="paragraph">
+<p>Returns Promisify callback style functions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const exists = Helpers.promisify(require('fs').exists)
+const isExist = await exists(Helpers.tmpPath('image.jpg'))
+// or
+const fs = Helpers.promisify(require('fs'))
+await fs.unlink(Helpers.tmpPath('image.jpg'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_isacecommand"><a class="anchor" href="#_isacecommand"></a><a class="link" href="#_isacecommand">isAceCommand</a></h4>
+<div class="paragraph">
+<p>Returns whether the process was started as the ace command or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Helpers.isAceCommand()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
