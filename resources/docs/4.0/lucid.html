@@ -14,6 +14,7 @@
 <li><a href="#_pagination">Pagination</a></li>
 <li><a href="#_inserts_updates">Inserts &amp; Updates</a></li>
 <li><a href="#_deletes">Deletes</a></li>
+<li><a href="#_transactions">Transactions</a></li>
 <li><a href="#_boot_cycle">Boot cycle</a></li>
 </ul>
 </div>
@@ -965,6 +966,47 @@ await User
   .where('role', 'guest')
   .delete()</code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_transactions"><a class="anchor" href="#_transactions"></a><a class="link" href="#_transactions">Transactions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Majority of Lucid methods has support for transactions. The first step is always to obtain the <code>trx</code> object using the Database provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const trx = await Database.beginTransaction()
+
+const user = new User()
+
+// pass the trx object and lucid will use it
+await user.save(trx)
+
+// once done commit the transaction
+trx.commit()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like with <code>save</code>, you can pass the <code>trx</code> object to the <code>create</code> method as well.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const trx = await Database.beginTransaction()
+
+await User.create({ username: 'virk' }, trx)
+
+// once done commit the transaction
+trx.commit()</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await User.createMany([
+  { username: 'virk' }
+], trx)</code></pre>
 </div>
 </div>
 </div>
