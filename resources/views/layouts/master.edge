@@ -33,7 +33,9 @@
     <script src="https://use.typekit.net/dpd2zbd.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
-    {{ script('adonis') }}
+    {{-- Algolia Instant Search --}}
+    {{ css('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css') }}
+    {{ script('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js') }}
 
     {{-- Styles --}}
     {{ css('adonis') }}
@@ -49,6 +51,8 @@
       @endsection
 
       @section('footer')
+        @include('partials.js-globals')
+        @include('partials.scripts')
         @include('partials.footer')
         @include('partials.ga')
         @include('partials.headway')

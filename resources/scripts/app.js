@@ -23,6 +23,13 @@ function hideMobileMenu (ham) {
 }
 
 Zepto(function () {
+  docsearch({
+    appId: adonis.algoliaAppId,
+    apiKey: adonis.algoliaApiKey,
+    indexName: 'adonisjs',
+    inputSelector: '#search'
+  })
+
   $('#show-quick-i-modal').click(function (e) {
     e.preventDefault()
     showQuickStartModal()

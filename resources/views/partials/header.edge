@@ -5,6 +5,7 @@
         <a class="navbar-item" href="/">
           <img src="{{ assetsUrl('images/header-logo.svg') }}" width="120" height="33">
         </a>
+
         <button class="button navbar-burger">
           <span></span>
           <span></span>
@@ -14,6 +15,12 @@
 
       <div class="navbar-menu">
         <div class="navbar-end">
+          <div class="field for-search">
+            <div class="control">
+              <input class="input is-primary" type="search" id="search" placeholder="Search docs" />
+            </div>
+          </div>
+
           {{ navbarAnchor({ id: 'show-quick-i-modal', href: '#', title: 'Quick Start' }) }}
           {{ navbarAnchor({ href: '/docs', title: 'Guides' }) }}
           {{ navbarAnchor({ href: '/recipes', title: 'Recipes' }) }}
@@ -39,14 +46,15 @@
               },
               {
                 title: 'Gitter', href: 'https://gitter.im/adonisjs/adonis-framework'
+              },
+              {
+                title: 'Donate', href: 'https://www.patreon.com/adonisframework'
               }
             ]
           }))
         </div>
-        <div class="navbar-item">
-          <a href="https://www.patreon.com/adonisframework" class="button on-header" target="_blank"> Donate </a>
-        </div>
-        <div>
+
+        <div class="is-hidden-touch">
           <a id="notifications-handle">
             <img src="/images/bell.svg" />
           </a>

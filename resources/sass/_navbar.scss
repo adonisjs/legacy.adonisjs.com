@@ -2,11 +2,15 @@
 // Header nav items //
 //////////////////////
 
-.navbar-brand .navbar-item {
-  padding: 23px 0.6rem;
+.navbar>.container .navbar-brand {
+  margin-left: 0;
 
-  img {
-    max-height: 100%;
+  .navbar-item {
+    padding: 23px 0.5rem;
+
+    img {
+      max-height: 100%;
+    }
   }
 }
 
@@ -19,9 +23,13 @@
     }
   }
 
+  .navbar-item.for-donate {
+    padding-left: 0;
+  }
+
   > div > .navbar-item {
     @include from($desktop) {
-      padding: 23px 0.6rem;
+      padding: 23px 0.5rem;
     }
 
     img {
@@ -76,6 +84,7 @@
   margin-top: -15px;
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  z-index: 200;
 
   @include until($desktop) {
     box-shadow: none;
@@ -97,7 +106,6 @@
 
   &.is-active {
     span:nth-child(1) {
-      margin-top: -9px;
     }
   }
 
@@ -106,15 +114,19 @@
     width: 19px;
     height: 2px;
   }
+
+  &:focus:not(:active) {
+    box-shadow: none;
+  }
 }
 
 
 #notifications-handle {
   position: relative;
-  width: 25px;
+  width: 39px;
   display: block;
   height: 30px;
-  margin-top: 33px;
+  margin-top: 30px;
 
   img {
     position: absolute;
@@ -124,12 +136,70 @@
   #HW_badge_cont {
     position: absolute;
     top: -11px;
-    right: -7px;
+    right: 9px;
   }
 
   #HW_badge {
     height: 17px;
     width: 17px;
     line-height: 19px;
+  }
+}
+
+.for-search {
+  padding: 0.5rem 1rem;
+
+  @include from($desktop) {
+    padding: 22px 112px 0 0;
+  }
+
+  pre {
+    margin: 0;
+    padding: 0;
+  }
+
+  .input {
+    @include from($desktop) {
+      border-radius: 290486px;
+    }
+
+    background: rgba(255, 255, 255, 0.8);
+    transition: background 300ms ease;
+    border-radius: 4px;
+    padding: 6px 21px 4px 15px;
+    font-size: 0.9rem;
+    height: auto;
+    line-height: 25px;
+
+    &:focus {
+      background: #fff;
+    }
+  }
+
+  .algolia-docsearch-suggestion--highlight {
+    color: $danger;
+  }
+
+  .algolia-docsearch-suggestion--content {
+    color: $text;
+  }
+
+  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: $light-gray;
+  }
+
+  @include until($desktop) {
+    .algolia-autocomplete .ds-dropdown-menu {
+      min-width: 100vw;
+      margin-left: -1rem;
+      box-shadow: initial;
+      border-radius: 0;
+    }
+
+    .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
   }
 }
