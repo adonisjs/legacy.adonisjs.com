@@ -528,7 +528,7 @@ It is required to bind a <strong>Controller</strong> to the resource. Binding a 
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
   .resource('users', 'UsersController')
   .middleware(new Map([
-    ['auth']: ['users.store', 'users.update', 'users.delete']
+    ['auth'], ['users.store', 'users.update', 'users.delete']
   ]))</code></pre>
 </div>
 </div>

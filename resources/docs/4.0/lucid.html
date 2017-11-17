@@ -6,6 +6,7 @@
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_basic_example">Basic Example</a></li>
 <li><a href="#_convention_over_configuration">Convention over configuration</a></li>
+<li><a href="#_hidding_fields">Hidding Fields</a></li>
 <li><a href="#_dates">Dates</a></li>
 <li><a href="#_query_builder">Query builder</a></li>
 <li><a href="#_static_methods">Static methods</a></li>
@@ -262,6 +263,45 @@ await user.save()</code></pre>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_hidding_fields"><a class="anchor" href="#_hidding_fields"></a><a class="link" href="#_hidding_fields">Hidding Fields</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you will find yourself omitting fields from the database results. For example: Hiding the user’s password from the JSON output. Doing this manually can be tedious in many ways.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You will have manually loop over the rows and delete the key/value pair.</p>
+</li>
+<li>
+<p>When you fetch relationships, you will have to loop through all the parent records and then their child records to delete the key/value pair.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes it simpler by defining the visible or hidden (one at a time) on your model.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get hidden () {
+    return ['password']
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Post extends Model {
+  static get visible () {
+    return ['title', 'body']
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_dates"><a class="anchor" href="#_dates"></a><a class="link" href="#_dates">Dates</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -509,14 +549,14 @@ const users = await User.all()</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_reset"><a class="anchor" href="#_reset"></a><a class="link" href="#_reset">reset</a></h4>
+<h4 id="_truncate"><a class="anchor" href="#_truncate"></a><a class="link" href="#_truncate">truncate</a></h4>
 <div class="paragraph">
 <p>Delete all rows (truncate table)</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-const users = await User.reset()</code></pre>
+const users = await User.truncate()</code></pre>
 </div>
 </div>
 </div>

@@ -232,6 +232,21 @@ const slug = sanitizor.slug('My first blog post')</code></pre>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_formatters"><a class="anchor" href="#_formatters"></a><a class="link" href="#_formatters">formatters</a></h4>
+<div class="paragraph">
+<p>Returns a reference to <a href="http://indicative.adonisjs.com/#indicative-formatters" target="_blank" rel="noopener">formatters</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { formatters } = use('Validator')
+formatters.default('jsonapi')
+
+// adding new formatter
+formatters.register('custom', CustomImplementation)</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -358,6 +373,21 @@ module.exports = StoreUser</code></pre>
 }
 
 module.exports = StoreUser</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formatter"><a class="anchor" href="#_formatter"></a><a class="link" href="#_formatter">Formatter</a></h3>
+<div class="paragraph">
+<p>Just like any other property, you can also define the <a href="http://indicative.adonisjs.com/#indicative-formatters" target="_blank" rel="noopener">indicative formatter</a> as a property on the validator class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
+  get formatter () {
+    return 'jsonapi'
+  }
+}</code></pre>
 </div>
 </div>
 </div>
