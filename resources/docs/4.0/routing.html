@@ -170,7 +170,7 @@ Route.patch('/', async () =&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>If you have any other specific routes, they are be defined before the wildcard route. For example:</p>
+<p>If you have any other specific routes, they should be defined before the wildcard route. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -528,7 +528,7 @@ It is required to bind a <strong>Controller</strong> to the resource. Binding a 
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
   .resource('users', 'UsersController')
   .middleware(new Map([
-    ['auth'], ['users.store', 'users.update', 'users.delete']
+    [['users.store', 'users.update', 'users.delete'], ['auth']]
   ]))</code></pre>
 </div>
 </div>

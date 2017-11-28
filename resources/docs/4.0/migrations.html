@@ -5,6 +5,7 @@
 <ul class="sectlevel1">
 <li><a href="#_creating_migrations">Creating migrations</a></li>
 <li><a href="#_defining_schema">Defining schema</a></li>
+<li><a href="#_multiple_connections">Multiple connections</a></li>
 <li><a href="#_run_migrations">Run migrations</a></li>
 <li><a href="#_migrations_status">Migrations status</a></li>
 <li><a href="#_migrations_commands">Migrations commands</a></li>
@@ -106,6 +107,45 @@ module.exports = UsersSchema</code></pre>
 <p>The <code>down</code> method is the reverse of the up action. When <code>up</code> method creates a table, you simply drop it inside the down method.</p>
 </dd>
 </dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multiple_connections"><a class="anchor" href="#_multiple_connections"></a><a class="link" href="#_multiple_connections">Multiple connections</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The schema files can also make use of a different connection by defining a <code>connection</code> property on them. Also make sure that the same connection is defined inside <code>config/database.js</code> file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+A table <code>adonis_schema</code> is created to manage the lifecycle of migrations. This table will always be created inside the primary connection database and there is no option to override it.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Schema = use('Schema')
+
+class UsersSchema extends Schema {
+  static get connection () {
+    return 'mysql'
+  }
+
+  up () {
+  }
+
+  down () {
+  }
+}
+
+module.exports = UsersSchema</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -238,8 +278,9 @@ Do not create all tables in a single schema file, instead create a new file for 
   migration:run [options]
 
 Options:
-  -f, --force Forcefully run migrations in production
-  --log       Log SQL queries instead of executing them
+  -f, --force   Forcefully run migrations in production
+  -s, --silent  Silent the migrations output
+  --log         Log SQL queries instead of executing them
 
 About:
   Run all pending migrations</code></pre>

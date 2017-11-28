@@ -6,7 +6,7 @@
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_basic_example">Basic Example</a></li>
 <li><a href="#_convention_over_configuration">Convention over configuration</a></li>
-<li><a href="#_hidding_fields">Hidding Fields</a></li>
+<li><a href="#_hiding_fields">Hiding Fields</a></li>
 <li><a href="#_dates">Dates</a></li>
 <li><a href="#_query_builder">Query builder</a></li>
 <li><a href="#_static_methods">Static methods</a></li>
@@ -77,7 +77,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Lucid models are not tied to your database schema and instead manages everything of their own.<br>
+Lucid models are not tied to your database schema and instead manages everything on their own.<br>
 <strong>For example</strong>: There is no need to define associations in SQL when using lucid relationships.
 </td>
 </tr>
@@ -233,7 +233,7 @@ await user.save()</code></pre>
 <div class="sect3">
 <h4 id="_createdatcolumn"><a class="anchor" href="#_createdatcolumn"></a><a class="link" href="#_createdatcolumn">createdAtColumn</a></h4>
 <div class="paragraph">
-<p>The field name to be used for setting created at the time stamp.</p>
+<p>The field name to be used for setting the created at time stamp. You can return <code>null</code> to disable it.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -248,7 +248,7 @@ await user.save()</code></pre>
 <div class="sect3">
 <h4 id="_updatedatcolumn"><a class="anchor" href="#_updatedatcolumn"></a><a class="link" href="#_updatedatcolumn">updatedAtColumn</a></h4>
 <div class="paragraph">
-<p>The field name to be used for setting updated at the time stamp.</p>
+<p>The field name to be used for setting the updated at time stamp. You can return <code>null</code> to disable it.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -260,10 +260,52 @@ await user.save()</code></pre>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_incrementing"><a class="anchor" href="#_incrementing"></a><a class="link" href="#_incrementing">incrementing</a></h4>
+<div class="paragraph">
+<p>Lucid assumes that each table associated with a Model has an auto incrementing primary key. You can disable this flag by return <code>false</code> from the incrementing getter.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When you set <code>incrementing = false</code>, you have to make sure to set the <code>primaryKeyValue</code> manually.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get incrementing () {
+    return false
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_primarykeyvalue"><a class="anchor" href="#_primarykeyvalue"></a><a class="link" href="#_primarykeyvalue">primaryKeyValue</a></h4>
+<div class="paragraph">
+<p>The value of the primary key. You only update this key when <code>incrementing</code> is set to false.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+console.log(user.primaryKeyValue)
+
+// when incrementing is false
+user.primaryKeyValue = uuid.v4()</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hidding_fields"><a class="anchor" href="#_hidding_fields"></a><a class="link" href="#_hidding_fields">Hidding Fields</a></h2>
+<h2 id="_hiding_fields"><a class="anchor" href="#_hiding_fields"></a><a class="link" href="#_hiding_fields">Hiding Fields</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Quite often you will find yourself omitting fields from the database results. For example: Hiding the user’s password from the JSON output. Doing this manually can be tedious in many ways.</p>
@@ -281,6 +323,8 @@ await user.save()</code></pre>
 <div class="paragraph">
 <p>AdonisJs makes it simpler by defining the visible or hidden (one at a time) on your model.</p>
 </div>
+<div class="sect3">
+<h4 id="_hidden"><a class="anchor" href="#_hidden"></a><a class="link" href="#_hidden">hidden</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
@@ -290,6 +334,9 @@ await user.save()</code></pre>
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_visible"><a class="anchor" href="#_visible"></a><a class="link" href="#_visible">visible</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Post extends Model {
@@ -297,6 +344,7 @@ await user.save()</code></pre>
     return ['title', 'body']
   }
 }</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -313,7 +361,7 @@ await user.save()</code></pre>
 <div class="sect2">
 <h3 id="_defining_date_fields"><a class="anchor" href="#_defining_date_fields"></a><a class="link" href="#_defining_date_fields">Defining date fields</a></h3>
 <div class="paragraph">
-<p>The first step is to tell Lucid, which all fields are supposed to be treated as dates. By default, the timestamps <code>created_at</code> and <code>updated_at</code> are marked as dates.</p>
+<p>The first step is to tell Lucid, which fields are supposed to be treated as dates. By default, the timestamps <code>created_at</code> and <code>updated_at</code> are marked as dates.</p>
 </div>
 <div class="paragraph">
 <p>However, you can define your own too.</p>
@@ -328,7 +376,7 @@ await user.save()</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>So here we pull the fields which are marked as dates by default and push a new date field to it and finally returns it.</p>
+<p>So here we pull the fields which are marked as dates by default and push a new date field to it and finally return it.</p>
 </div>
 </div>
 <div class="sect2">
@@ -575,7 +623,7 @@ const users = await User.truncate()</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-These methods end the query builder chaining and return a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.
+These methods end the query builder chaining and returns a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.
 </td>
 </tr>
 </table>
@@ -589,155 +637,23 @@ These methods end the query builder chaining and return a value. There is no nee
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
 
-// Return count of all records in table
-await User.getCount()
-
-// Return count of selected records (active users, for example)
-await User.query().where('is_active', '=', 1).getCount()
-
-// Return count of selected records (long form)
-(await User.query().where('is_active', '=', 1).count('* as total'))[0].total</code></pre>
+// returns number
+await User.getCount()</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_getcountdistinct_columnname"><a class="anchor" href="#_getcountdistinct_columnname"></a><a class="link" href="#_getcountdistinct_columnname">getCountDistinct(columnName)</a></h4>
 <div class="paragraph">
-<p>Return a count of distinct values for a given attribute.</p>
+<p>Also you can add query constraints before calling <code>getCount</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return count of all unique status values
-await User.getCountDistinct('status')
-
-// Return count of selected status values (status values for active users, for example)
-await User.query().where('is_active', '=', 1).getCountDistinct('status')
-
-// Return count of selected status values (long form)
-(await User.query().where('is_active', '=', 1).countDistinct('status as total'))[0].total</code></pre>
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await User
+  .query()
+  .where('is_active', 1)
+  .getCount()</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_getsum_columnname"><a class="anchor" href="#_getsum_columnname"></a><a class="link" href="#_getsum_columnname">getSum(columnName)</a></h4>
 <div class="paragraph">
-<p>Return a sum of records in a given result set.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return sum of all records in table
-await User.getSum('friends_count')
-
-// Return sum of selected records
-await User.query().where('is_active', '=', 1).getSum('friends_count')
-
-// Return sum of selected records (long form)
-(await User.query().where('is_active', '=', 1).sum('friends_count as total'))[0].total</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getsumdistinct_columnname"><a class="anchor" href="#_getsumdistinct_columnname"></a><a class="link" href="#_getsumdistinct_columnname">getSumDistinct(columnName)</a></h4>
-<div class="paragraph">
-<p>Return a sum of distinct values for a given attribute.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return count of all unique status values
-await User.getSumDistinct('login_count')
-
-// Return count of selected status values (status values for active users, for example)
-await User.query().where('is_active', '=', 1).getSumDistinct('login_count')
-
-// Return count of selected status values (long form)
-(await User.query().where('is_active', '=', 1).sumDistinct('login_count as total'))[0].total</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getmin_columnname"><a class="anchor" href="#_getmin_columnname"></a><a class="link" href="#_getmin_columnname">getMin(columnName)</a></h4>
-<div class="paragraph">
-<p>Return the minimum value of <code>columnName</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return sum of all records in table
-await User.getMin('friends_count')
-
-// Return sum of selected records
-await User.query().where('is_active', '=', 1).getMin('friends_count')
-
-// Return sum of selected records (long form)
-(await User.query().where('is_active', '=', 1).min('friends_count as total'))[0].total</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getmax_columnname"><a class="anchor" href="#_getmax_columnname"></a><a class="link" href="#_getmax_columnname">getMax(columnName)</a></h4>
-<div class="paragraph">
-<p>Return the maximum value of <code>columnName</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return sum of all records in table
-await User.getMax('friends_count')
-
-// Return sum of selected records
-await User.query().where('is_active', '=', 1).getMax('friends_count')
-
-// Return sum of selected records (long form)
-(await User.query().where('is_active', '=', 1).max('friends_count as total'))[0].total</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getavg_columnname"><a class="anchor" href="#_getavg_columnname"></a><a class="link" href="#_getavg_columnname">getAvg(columnName)</a></h4>
-<div class="paragraph">
-<p>Return the average (mean) value of <code>columnName</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return sum of all records in table
-await User.getAvg('friends_count')
-
-// Return sum of selected records
-await User.query().where('is_active', '=', 1).getAvg('friends_count')
-
-// Return sum of selected records (long form)
-(await User.query().where('is_active', '=', 1).avg('friends_count as total'))[0].total</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getavgdistinct_columnname"><a class="anchor" href="#_getavgdistinct_columnname"></a><a class="link" href="#_getavgdistinct_columnname">getAvgDistinct(columnName)</a></h4>
-<div class="paragraph">
-<p>Return the average (mean) of distinct values of <code>columnName</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
-
-// Return sum of all records in table
-await User.getAvgDistinct('friends_count')
-
-// Return sum of selected records
-await User.query().where('is_active', '=', 1).getAvgDistinct('friends_count')
-
-// Return sum of selected records (long form)
-(await User.query().where('is_active', '=', 1).avgDistinct('friends_count as total'))[0].total</code></pre>
-</div>
+<p>Just like <code>getCount</code> you can call all of the aggregate methods available on the <a href="query-builder#_aggregate_helpers">query builder</a></p>
 </div>
 </div>
 </div>
@@ -859,7 +775,7 @@ await user.save()</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>update</code> query only takes place if something has been changed. Calling <code>save</code> for multiple times, without updating the model attributes does not perform any queries.</p>
+<p>The <code>update</code> query only takes place if something has been changed. Calling <code>save</code> multiple times, without updating the model attributes does not perform any queries.</p>
 </div>
 <div class="paragraph">
 <p>Rather than setting attributes manually, the <code>fill</code> or <code>merge</code> methods may be used.</p>
@@ -946,7 +862,7 @@ const users = await User.createMany(usersData)</code></pre>
 <p>The bulk updates can be done with the help of query builder. Lucid makes sure to format dates accordingly when doing bulk updates.</p>
 </div>
 <div class="paragraph">
-<p><strong>Bulk updates never executes any model hooks</strong>.</p>
+<p><strong>Bulk updates never execute any model hooks</strong>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -995,7 +911,7 @@ user.id = 1 // throws exception</code></pre>
 <p>Bulk deletes can be done with the help of query builder.</p>
 </div>
 <div class="paragraph">
-<p><strong>Bulk deletes never executes any model hooks.</strong></p>
+<p><strong>Bulk deletes never execute any model hooks.</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1055,7 +971,7 @@ trx.commit()</code></pre>
 <h2 id="_boot_cycle"><a class="anchor" href="#_boot_cycle"></a><a class="link" href="#_boot_cycle">Boot cycle</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Each model has a boot cycle where it gets booted, and that happens only for once. So if you want to perform something that should occur only once, consider writing it inside the <code>boot</code> method.</p>
+<p>Each model has a boot cycle where it gets booted, and that happens only once. So if you want to perform something that should occur only once, consider writing it inside the <code>boot</code> method.</p>
 </div>
 <div class="listingblock">
 <div class="content">

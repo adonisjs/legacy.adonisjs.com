@@ -269,8 +269,8 @@ Route
 Route
   .resource('users', 'UserController')
   .validator(new Map([
-    ['users.store', 'StoreUser'],
-    ['users.update', 'UpdateUser']
+    [['users.store'], ['StoreUser'],
+    [['users.update'], ['UpdateUser']
   ]))</code></pre>
 </div>
 </div>
@@ -365,8 +365,8 @@ module.exports = StoreUser</code></pre>
   }
 
   get data () {
-    const requestBody = request.all()
-    const sessionId = request.header('X-Session-Id')
+    const requestBody = this.ctx.request.all()
+    const sessionId = this.ctx.request.header('X-Session-Id')
 
     return Object.assign({}, requestBody, { sessionId })
   }

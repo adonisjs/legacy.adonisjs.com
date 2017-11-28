@@ -114,9 +114,30 @@ Route.post('upload', async ({ request }) =&gt; {
 </ol>
 </div>
 <div class="sect2">
+<h3 id="_changing_file_names"><a class="anchor" href="#_changing_file_names"></a><a class="link" href="#_changing_file_names">Changing file names</a></h3>
+<div class="paragraph">
+<p>When moving a single file, you can pass an object with <code>name</code> property on it. However, it can get tricky with multiple files.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs allows you to pass a callback to <code>moveAll</code> method, which is executed for each file inside the <code>fileJar</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">profilePics.moveAll(Helpers.tmpPath('uploads'), (file) =&gt; {
+  return {
+    name: `${new Date().getTime()}.${file.subtype}`
+  }
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_moved_list"><a class="anchor" href="#_moved_list"></a><a class="link" href="#_moved_list">Moved list</a></h3>
 <div class="paragraph">
-<p>Since some files have been moved successfully, we can optimize our workflow by processing those file or deleting them, so that there are no duplicate files.</p>
+<p>In case of multiple file uploads, it&#8217;s possible that only few files are successfully moved and other are rejected due to validation failures.</p>
+</div>
+<div class="paragraph">
+<p>In that case you can make use of <code>movedAll()</code> and <code>movedList()</code> methods, to optimize your workflow.</p>
 </div>
 <div class="listingblock">
 <div class="content">
