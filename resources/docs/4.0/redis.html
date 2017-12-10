@@ -206,11 +206,11 @@ Redis.publish('hallo')</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Redis.publish('music', {
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Redis.publish('music', JSON.stringify({
   id: 1,
   title: 'Love me like you do',
   artist: 'Ellie goulding'
-})</code></pre>
+}))</code></pre>
 </div>
 </div>
 </div>

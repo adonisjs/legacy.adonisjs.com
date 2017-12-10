@@ -769,6 +769,33 @@ const auth
 <div class="paragraph">
 <p>After revoking the tokens, some users may logout unexpectedly, but that is better than giving bad access to a hacker.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure the route that revokes the user token is protected with the <code>auth</code> middleware. Otherwise, you will not get the token in the request header.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class UserController {
+  async revokeUserToken ({ auth }) {
+    const user = auth.current.user
+    const token = auth.getAuthHeader()
+
+    await user
+      .tokens()
+      .where('token', token)
+      .update({ is_revoked: true })
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
