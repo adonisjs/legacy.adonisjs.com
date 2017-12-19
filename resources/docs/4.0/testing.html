@@ -23,7 +23,7 @@
 <h2 id="_test_cases"><a class="anchor" href="#_test_cases"></a><a class="link" href="#_test_cases">Test cases</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you are new to testing, you may find it hard to discover the benefits of testing, but once you get into the habit of writing test, your code quality and confidence over code improve drastically.</p>
+<p>If you are new to testing, you may find it hard to discover the benefits of testing. But once you get into the habit of writing tests, your code quality and confidence over code improve drastically.</p>
 </div>
 <div class="paragraph">
 <p>To build a better mental model, testing is divided into multiple categories, so that you can write different types of test cases with a clear boundary.</p>
@@ -31,7 +31,7 @@
 <div class="sect2">
 <h3 id="_unit_tests"><a class="anchor" href="#_unit_tests"></a><a class="link" href="#_unit_tests">Unit tests</a></h3>
 <div class="paragraph">
-<p>Unit tests are written to test a small piece of code in isolation. For example: Testing a service directly, without worrying about how that service is used in real world.</p>
+<p>Unit tests are written to test small pieces of code in isolation. For example: Testing a service directly, without worrying about how that service is used in real world.</p>
 </div>
 <div class="paragraph">
 <p>Unit tests ensure that each part of the application works fine on its own and also it is easier to write them since you do not need the whole application to work before you can test it.</p>
@@ -66,7 +66,7 @@ test('validate user details', async ({ assert }) =&gt; {
 <div class="listingblock">
 <div class="title">Example</div>
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Example unit test')
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Example functional test')
 trait('Test/Browser')
 
 test('validate user details', async ({ browser }) =&gt; {
@@ -82,7 +82,7 @@ test('validate user details', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>Both the above examples, validate the email address for a given user, but the approach is different based on the type of test you are writing.</p>
+<p>Both the above examples validate the email address for a given user, but the approach is different based on the type of test you are writing.</p>
 </div>
 </div>
 </div>

@@ -535,6 +535,21 @@ await User.firstOrFail()</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="_findorcreate_whereattributes_values"><a class="anchor" href="#_findorcreate_whereattributes_values"></a><a class="link" href="#_findorcreate_whereattributes_values">findOrCreate (whereAttributes, values)</a></h4>
+<div class="paragraph">
+<p>Find a record, if not found a new record will be created and returned back on the fly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const user = await User.findOrCreate(
+  { username: 'virk' },
+  { username: 'virk', email: 'virk@adonisjs.com' }
+)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_pick_rows_1"><a class="anchor" href="#_pick_rows_1"></a><a class="link" href="#_pick_rows_1">pick(rows = 1)</a></h4>
 <div class="paragraph">
 <p>Pick <code>x</code> number of rows from the database table. By default it only selects <code>1</code> row.</p>

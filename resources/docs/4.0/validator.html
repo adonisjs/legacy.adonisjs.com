@@ -324,8 +324,10 @@ module.exports = StoreUser</code></pre>
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
   get sanitizationRules () {
-    email: 'normalize_email',
-    age: 'to_int'
+    return {
+      email: 'normalize_email',
+      age: 'to_int'
+    }
   }
 }
 
