@@ -451,6 +451,80 @@ Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticat
 </tr>
 </table>
 </div>
+<div class="listingblock">
+<div class="title">config/auth.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  authenticator: 'jwt',
+  jwt: {
+    serializer: 'Lucid',
+    model: 'App/Model/User',
+    scheme: 'jwt',
+    uid: 'email',
+    password: 'password',
+    options: {
+      secret: Config.get('app.appKey'),
+      // Options to be used while generating token
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Additional Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Available Values</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">algorithm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HS256, HS384</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HS256</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Algorithm to be used for generating token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expiresIn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">valid time in seconds or <a href="https://github.com/rauchg/ms.js">ms string</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When to expire the token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">notBefore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">valid time in seconds or <a href="https://github.com/rauchg/ms.js">ms string</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Till when at least to keep the token valid</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">audience</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A value to be checked against the <code>aud</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">issuer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array or String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value to be used for <code>iss</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subject</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A value to be checked against the <code>sub</code>.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sect3">
 <h4 id="_attempt_uid_password_jwtpayload"><a class="anchor" href="#_attempt_uid_password_jwtpayload"></a><a class="link" href="#_attempt_uid_password_jwtpayload">attempt(uid, password, [jwtPayload])</a></h4>
 <div class="paragraph">

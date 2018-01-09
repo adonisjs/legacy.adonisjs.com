@@ -623,6 +623,17 @@ Route.get('/', ({ locale }) =&gt; {
 })</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>For example, you can switch locale for renderer view as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ antl, view }) =&gt; {
+  antl.switchLocale('fr')
+  return view.render('some-view')
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>

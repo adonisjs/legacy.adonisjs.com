@@ -14,7 +14,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Once you have got your database schema ready with <a href="migrations">migrations</a>, the next step is to add some data to get started. It is where <strong>database seeds</strong> and <strong>factories</strong> comes into the picture.</p>
+<p>Once you have your database schema ready with <a href="migrations">migrations</a>, the next step is to add some data. This is where <strong>database seeds</strong> and <strong>factories</strong> come into the picture.</p>
 </div>
 </div>
 </div>
@@ -60,7 +60,7 @@ module.exports = UserSeeder</code></pre>
 <p>Run the seed file by calling <code>adonis seed</code>. It executes the <code>run</code> method on all the seed files.</p>
 </div>
 <div class="paragraph">
-<p>Since you can write any database related code inside your seed files and execute them from the command line is helpful in off loading some tasks from your actual application code.</p>
+<p>Since you can write any database related code inside your seed files and execute them from the command line, they are helpful in offloading some tasks from your actual application code.</p>
 </div>
 <div class="paragraph">
 <p>However, the real power of seeds is unlocked when you combine them with <strong>Factories</strong>.</p>
@@ -163,7 +163,7 @@ await user.posts().save(post)</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If you would have noticed, we used the <code>make</code> method on the <code>Post</code> blueprint, this method does not persist the post inside the database and instead gives us an instance of <code>Post</code> model with pre-filled dummy data.</p>
+<p>You may have noticed that we used the <code>make</code> method on the <code>Post</code> blueprint. This method does not persist the post inside the database and instead gives us an instance of the <code>Post</code> model with pre-filled dummy data.</p>
 </div>
 </div>
 </div>

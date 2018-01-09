@@ -11,6 +11,7 @@
 <li><a href="#_migrations_commands">Migrations commands</a></li>
 <li><a href="#_table_s_api">Table&#8217;s API</a></li>
 <li><a href="#_extensions">Extensions</a></li>
+<li><a href="#_executing_arbitrary_code">Executing arbitrary code</a></li>
 <li><a href="#_schema_builder_api">Schema builder API</a></li>
 </ul>
 </div>
@@ -492,6 +493,46 @@ Extension only works with PostgreSQL database.
   }
 }</code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_executing_arbitrary_code"><a class="anchor" href="#_executing_arbitrary_code"></a><a class="link" href="#_executing_arbitrary_code">Executing arbitrary code</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Commands written inside <code>up</code> and <code>down</code> methods are scheduled to be executed later inside a migration. In case you want to execute <strong>arbitrary</strong> database commands, you can wrap them inside the <code>schedule</code> function.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>schedule</code> method receives the <strong>transaction object</strong> and it is important to run all database commands inside the same transaction, otherwise queries will hang forever.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    // create new table
+    this.create('new_users', (table) =&gt; {
+    })
+
+    // copy data
+    this.schedule(async (trx) =&gt; {
+      const users = await Database.table('users').transacting(trx)
+      await Database.table('new_users').transacting(trx).insert(users)
+    })
+
+    // copy old table
+    this.drop('users')
+  }
+}</code></pre>
 </div>
 </div>
 </div>
