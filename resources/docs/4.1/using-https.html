@@ -1,0 +1,72 @@
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_self_signed_certificate">Self-signed certificate</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTPs server of Node.js can be used with AdonisJs as follows. The idea is use the Node.js <code>https</code> module inside <code>server.js</code> file.<br>
+&nbsp;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { Ignitor } = require('@adonisjs/ignitor')
+const path = require('path')
+const https = require('https')
+const fs = require('fs')
+
+// Certificate
+const options = {
+  key: fs.readFileSync(path.join(__dirname, './server.key')),
+  cert: fs.readFileSync(path.join(__dirname, './server.crt'))
+}
+
+new Ignitor(require('@adonisjs/fold'))
+  .appRoot(__dirname)
+  .fireHttpServer((handler) =&gt; {
+    return https.createServer(options, handler)
+  })
+  .catch(console.error)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The real work happens inside <code>fireHttpServer</code> method. This function takes a single argument as the callback, and the return value must be the instance of Node.js server.</p>
+</div>
+<div class="sect1">
+<h2 id="_self_signed_certificate"><a class="anchor" href="#_self_signed_certificate"></a><a class="link" href="#_self_signed_certificate">Self-signed certificate</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In development, you can also make use of the self-signed certificate. It requires an additional dependency from npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i pem</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { Ignitor } = require('@adonisjs/ignitor')
+const https = require('https')
+const pem = require('pem')
+
+pem.createCertificate({ days: 1, selfSigned: true }, (error, keys) =&gt; {
+  if (error) {
+    return console.log(error)
+  }
+
+  const options = {
+    key: keys.serviceKey,
+    cert: keys.certificate
+  }
+
+  new Ignitor(require('@adonisjs/fold'))
+    .appRoot(__dirname)
+    .fireHttpServer((handler) =&gt; {
+      return https.createServer(options, handler)
+    })
+    .catch(console.error)
+})</code></pre>
+</div>
+</div>
+</div>
+</div>

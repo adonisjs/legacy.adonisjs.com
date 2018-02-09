@@ -1,0 +1,218 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_slim_structure">Slim structure</a></li>
+<li><a href="#_the_app_directory">The app directory</a></li>
+<li><a href="#_views">Views</a></li>
+<li><a href="#_static_assets">Static assets</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_tests">Tests</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn how AdonisJs apps are structured and how gracefully it scales as your project grows.</p>
+</div>
+<div class="paragraph">
+<p>The philosophy of AdonisJs is always to start lean and grow big on demand. The <code>adonis</code> command-line comes with a bunch of <strong>commands</strong> to create new directories/files whenever you need them.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Run <code>adonis --help</code> to see list of available commands
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_slim_structure"><a class="anchor" href="#_slim_structure"></a><a class="link" href="#_slim_structure">Slim structure</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Slim structure is the bare minimum you need in order to work with AdonisJs.</p>
+</div>
+<pre class="highlight line-numbers language-bash" data-line="2,5">
+<code>.
+├── ace
+├── package.json
+├── public
+├── server.js
+└── start
+    ├── app.js
+    ├── kernel.js
+    └── routes.js
+</code>
+</pre>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 5%;">
+<col style="width: 95%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">File/Directory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The ace file bootstraps the command line tool for your project-specific commands. Running <code>node ace &lt;commandName&gt;</code> executes the command.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">package.json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The standard Node.js packages file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">public</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The public directory is used to store static assets like <strong>Css, Javascript files or images</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">server.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This file bootstraps the HTTP server. Running <code>node server.js</code> starts the HTTP server on the port defined inside the .env file.<br>
+Whereas in development it is recommended to use <code>adonis serve --dev</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">start/app.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This file is required to register the providers, commands, and aliases. You can ignore this file for now especially if you are not familiar with providers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">start/kernel.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP Middleware are registered inside this file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">start/routes.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This file is used to define HTTP routes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_app_directory"><a class="anchor" href="#_the_app_directory"></a><a class="link" href="#_the_app_directory">The app directory</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>app</code> directory stores all of your application code such as <strong>Controllers</strong>, <strong>Models</strong>, <strong>Commands</strong>.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs has the concept of autoloading the <code>app</code> directory. This means that instead of requiring files with the relative path, you can require files with a namespace. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">├── app
+│   └── Services
+│       └── User.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Normally you would require the above file as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const UserService = require('../app/Services/User')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With autoloading in place, it can be imported as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const UserService = use('App/Services/User')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The benefit of the latter approach is that the <strong>namespace</strong> always remains same and you never have to deal with relative paths by typing <code>../</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The autoloading namespace is defined inside the <a href="https://github.com/adonisjs/adonis-slim-app/blob/master/package.json#L24" target="_blank" rel="noopener">package.json</a> file. You are free to define more/unique namespaces.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_views"><a class="anchor" href="#_views"></a><a class="link" href="#_views">Views</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The application views are stored inside <code>resources/views</code> directory. Each view file ends with <code>.edge</code> and uses <a href="http://edge.adonisjs.com/" target="_blank" rel="noopener">edge</a> as the templating engine.</p>
+</div>
+<div class="paragraph">
+<p>You can create new views using the <code>adonis make:view</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:view welcome</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For nested views running the following command</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:view users.list</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_static_assets"><a class="anchor" href="#_static_assets"></a><a class="link" href="#_static_assets">Static assets</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>public</code> directory in your app is dedicated to store all of the frontend related assets like <strong>css</strong>, <strong>images</strong> or <strong>javascript files</strong>.</p>
+</div>
+<div class="paragraph">
+<p>You access these files without adding <code>/public</code> to the URL. For example:</p>
+</div>
+<div class="paragraph">
+<p>The <code>public/style.css</code> file can be accessed by visiting <a href="http://127.0.0.1:3333/style.css">127.0.0.1:3333/style.css</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To keep your applications away from configuration debt, AdonisJs gives you a dedicated directory <code>/config</code> to store all of the application configuration.</p>
+</div>
+<div class="paragraph">
+<p>It is recommended to keep configuration at one place and make use of <strong>Environment</strong> variables for manging secrets. <a href="configuration-and-env">Learn more</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tests"><a class="anchor" href="#_tests"></a><a class="link" href="#_tests">Tests</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All of the application tests are stored inside in the <code>test</code> directory. The testing package is not included by default and hence you can install it as defined <a href="testing#_setup">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>Once the package has been setup, you can run the following command(s).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:test user</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And run tests as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis test</code></pre>
+</div>
+</div>
+</div>
+</div>

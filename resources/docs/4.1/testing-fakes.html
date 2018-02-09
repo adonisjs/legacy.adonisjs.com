@@ -1,0 +1,299 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_self_implementing_fakes">Self-implementing fakes</a></li>
+<li><a href="#_mail_fake">Mail fake</a></li>
+<li><a href="#_events_fake">Events fake</a></li>
+<li><a href="#_database_transactions">Database transactions</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Quite often you want to fake out the original implementation of certain parts of your application when writing tests. Since AdonisJs leverages an IoC container to manage dependencies, it becomes so easy to create <code>fake</code> implementations when writing tests</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_self_implementing_fakes"><a class="anchor" href="#_self_implementing_fakes"></a><a class="link" href="#_self_implementing_fakes">Self-implementing fakes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with a basic example of faking out a service which sends an email to a given user.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Creating too many fakes in testing may lead to false tests, where all your are testing is the syntax and not the implementation.
+ <br>
+  Always make sure to keep <strong>fakes</strong> as the last option when writing tests.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">app/Services/UserRegistration</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class UserRegistration {
+
+  async sendVerificationEmail (user) {
+    await Mail.send('emails.verify', user, (message) =&gt; {
+      message.to(user.email)
+      message.subject('Verify account')
+    })
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s say this service is used by the <strong>UserController</strong>, when testing the user registration, a bunch of false emails is sent to some email address.</p>
+</div>
+<div class="paragraph">
+<p>To avoid this behavior, it makes sense to fake out the <code>UserRegistration</code> service.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ioc } = use('@adonisjs/fold')
+const { test } = use('Test/Suite')('User registration')
+
+test('register user', async () =&gt; {
+  ioc.fake('App/Services/UserRegistration', () =&gt; {
+    return {
+      sendVerificationEmail () {}
+    }
+  })
+
+  // code to test user registration
+  // ....
+
+  ioc.restore('App/Services/UserRegistration')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>ioc.fake</code> method let you bind a value to the IoC container, and when any part of the application tries to resolve the namespace, the fake value is return over the actual value.</p>
+</div>
+<div class="paragraph">
+<p>In the same way, we need to call <code>ioc.restore</code> to remove the fake.</p>
+</div>
+<div class="paragraph">
+<p>This approach works great for a majority of use cases until you can create a fake which is similar to the actual implementation. For greater control, you can make use of external libraries like <a href="http://sinonjs.org/">sinonjs</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mail_fake"><a class="anchor" href="#_mail_fake"></a><a class="link" href="#_mail_fake">Mail fake</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs mail provider comes with a fake, which can be used when writing tests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Mail = use('Mail')
+const { test } = use('Test/Suite')('User registration')
+
+test('register user', async ({ assert }) =&gt; {
+  Mail.fake()
+
+  // write your test
+
+  const recentEmail = Mail.pullRecent()
+  assert.equal(recentEmail.to.address, 'joe@example.com')
+  assert.equal(recentEmail.to.name, 'Joe')
+
+  Mail.restore()
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Calling <code>Mail.fake</code> method binds a fake to the IoC container. From this point, all emails are stored in memory as an array of objects, which can later be used for running assertions.</p>
+</div>
+<div class="paragraph">
+<p>Below is the list of available methods on a fake mailer.</p>
+</div>
+<div class="sect3">
+<h4 id="_recent"><a class="anchor" href="#_recent"></a><a class="link" href="#_recent">recent()</a></h4>
+<div class="paragraph">
+<p>Returns the recent email object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Mail.recent()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pullrecent"><a class="anchor" href="#_pullrecent"></a><a class="link" href="#_pullrecent">pullRecent()</a></h4>
+<div class="paragraph">
+<p>Returns the recent email object and removes it from the in-memory array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Mail.pullRecent()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_all"><a class="anchor" href="#_all"></a><a class="link" href="#_all">all()</a></h4>
+<div class="paragraph">
+<p>Returns all emails</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">assert.lengthof(Mail.all(), 1)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clear"><a class="anchor" href="#_clear"></a><a class="link" href="#_clear">clear()</a></h4>
+<div class="paragraph">
+<p>Clear the in-memory emails array</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Mail.clear()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_restore"><a class="anchor" href="#_restore"></a><a class="link" href="#_restore">restore()</a></h4>
+<div class="paragraph">
+<p>Restore the original emailer class</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Mail.restore()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_events_fake"><a class="anchor" href="#_events_fake"></a><a class="link" href="#_events_fake">Events fake</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Just like <code>Mail</code> provider, <code>Event</code> provider also comes with an in-built faker object to store events inside an in-memory array and use them later for assertions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Event = use('Event')
+const { test } = use('Test/Suite')('User registration')
+
+test('register user', async ({ assert }) =&gt; {
+  Event.fake()
+
+  // write your test
+  ....
+
+  const recentEvent = Event.pullRecent()
+  assert.equal(recentEvent.event, 'register:user')
+
+  Event.restore()
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can <code>trap</code> an event inline and run assertions inside the callback.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">test('register user', async ({ assert }) =&gt; {
+  assert.plan(2)
+  Event.fake()
+
+  Event.trap('register:user', function (data) {
+    assert.equal(data.username, 'joe')
+    assert.equal(data.email, 'joe@example.com')
+  })
+
+  // write your test
+  ....
+
+  Event.restore()
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here is the list of all available methods</p>
+</div>
+<div class="sect3">
+<h4 id="_recent_2"><a class="anchor" href="#_recent_2"></a><a class="link" href="#_recent_2">recent()</a></h4>
+<div class="paragraph">
+<p>Returns the recent event object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.recent()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pullrecent_2"><a class="anchor" href="#_pullrecent_2"></a><a class="link" href="#_pullrecent_2">pullRecent()</a></h4>
+<div class="paragraph">
+<p>Returns the recent event object and removes it from the in-memory array.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.pullRecent()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_all_2"><a class="anchor" href="#_all_2"></a><a class="link" href="#_all_2">all()</a></h4>
+<div class="paragraph">
+<p>Returns all events</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.all()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clear_2"><a class="anchor" href="#_clear_2"></a><a class="link" href="#_clear_2">clear()</a></h4>
+<div class="paragraph">
+<p>Clear in-memory array of events</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.clear()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_restore_2"><a class="anchor" href="#_restore_2"></a><a class="link" href="#_restore_2">restore()</a></h4>
+<div class="paragraph">
+<p>Restore the original event class</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.restore()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_transactions"><a class="anchor" href="#_database_transactions"></a><a class="link" href="#_database_transactions">Database transactions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A struggle to keep the database clean for each test is quite hard. You may end up using <a href="testing#_lifecycle_hooks">lifecycle hooks</a> to <code>truncate</code> the tables after each test.</p>
+</div>
+<div class="paragraph">
+<p>To make this process easy, AdonisJs ships with a <strong>database transaction trait</strong>, which wraps all of your databases queries inside a transaction and roll it back after each test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('User registration')
+
+trait('DatabaseTransactions')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That is all 😊</p>
+</div>
+</div>
+</div>

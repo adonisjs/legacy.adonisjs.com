@@ -1,0 +1,187 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_defining_hooks">Defining hooks</a></li>
+<li><a href="#_aborting_database_operations">Aborting Database Operations</a></li>
+<li><a href="#_lifecycle_events">Lifecycle Events</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Hooks are the actions you perform before or after a specified database operation. Hooks plays a major role in keeping your code base DRY and easy to reason about.</p>
+</div>
+<div class="paragraph">
+<p>For example: <strong>Hashing</strong> the user password before saving it to the database.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_hooks"><a class="anchor" href="#_defining_hooks"></a><a class="link" href="#_defining_hooks">Defining hooks</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hooks can be defined inline within the Model class or by referencing a <code>file.method</code> from the <strong>Hooks</strong> directory.</p>
+</div>
+<div class="sect2">
+<h3 id="_binding_closure"><a class="anchor" href="#_binding_closure"></a><a class="link" href="#_binding_closure">Binding closure</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Model = use('Model')
+const Hash = use('Hash')
+
+class User extends Model {
+  static boot () {
+    super.boot()
+
+    this.addHook('beforeCreate', async (userInstance) =&gt; {
+      userInstance.password = await Hash.make(userInstance.password)
+    })
+  }
+}
+
+module.exports = User</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now every time we create a user, the <code>beforeCreate</code> hook closure is executed with the current instance of the user and hashes the password.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hook_file"><a class="anchor" href="#_hook_file"></a><a class="link" href="#_hook_file">Hook file</a></h3>
+<div class="paragraph">
+<p>It is always nice to keep extracted pieces of code into their files. AdonisJs comes with a dedicated directory <code>app/Models/Hooks</code> to store model hooks.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s use <code>adonis make:hook</code> command to create a hook for us.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:hook User</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  app/Models/Hooks/UserHook.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s open the created file and move the code to hash the password inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Hash = use('Hash')
+
+const UserHook = exports = module.exports = {}
+
+UserHook.hashPassword = async (user) =&gt; {
+  user.password = await Hash.make(user.password)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we can remove the inline code from the model and instead reference this file and method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Model = use('Model')
+
+class User extends Model {
+  static boot () {
+    super.boot()
+    this.addHook('beforeCreate', 'UserHook.hashPassword')
+  }
+}
+
+module.exports = User</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aborting_database_operations"><a class="anchor" href="#_aborting_database_operations"></a><a class="link" href="#_aborting_database_operations">Aborting Database Operations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hooks can also abort the database operations by throwing exceptions.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Models/Hooks/User.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">UserHook.validate = async (user) =&gt; {
+  if (!user.username) {
+    throw new Error('Username is required')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lifecycle_events"><a class="anchor" href="#_lifecycle_events"></a><a class="link" href="#_lifecycle_events">Lifecycle Events</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of life cycle events and their description</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeCreate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before creating a new row.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterCreate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a new record is created.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeUpdate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before updating a row.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterUpdate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a row has been updated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeSave</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This event occurs before <strong>creating</strong> or <strong>updating</strong> a new record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterSave</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a new record has been <strong>created</strong> or <strong>updated</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">beforeDelete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before removing a row.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterDelete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a row is removed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterFind</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After a single row is fetched from the database.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterFetch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After the <code>fetch</code> method is executed. The hook method receives an array of the model instances.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afterPaginate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">After the <code>paginate</code> method is executed. The hook receives 2 arguments, where the first is the array of model instances and 2nd the pagination meta data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

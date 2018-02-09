@@ -1,0 +1,565 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_creating_migrations">Creating migrations</a></li>
+<li><a href="#_defining_schema">Defining schema</a></li>
+<li><a href="#_multiple_connections">Multiple connections</a></li>
+<li><a href="#_run_migrations">Run migrations</a></li>
+<li><a href="#_migrations_status">Migrations status</a></li>
+<li><a href="#_migrations_commands">Migrations commands</a></li>
+<li><a href="#_table_s_api">Table&#8217;s API</a></li>
+<li><a href="#_extensions">Extensions</a></li>
+<li><a href="#_executing_arbitrary_code">Executing arbitrary code</a></li>
+<li><a href="#_schema_builder_api">Schema builder API</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Migrations are mutations to your database as you keep evolving your application. Think of them as step by step screenshot of your database schema, that you can roll back at any given point of time.</p>
+</div>
+<div class="paragraph">
+<p>Also, migrations make it easier to work as a team, where database changes from one developer are easily spotted and used by other developers in the team.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_migrations"><a class="anchor" href="#_creating_migrations"></a><a class="link" href="#_creating_migrations">Creating migrations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start from the beginning where we want to create a users table with the help of migrations.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure the <a href="database#_setup">migrations provider</a> is registered inside <code>aceProviders</code> array inside <code>start/app.js</code> file.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We make use of the <code>adonis make:migration</code> command to create a schema file for us.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:migration users</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On prompt choose <code>Create table</code> option and press <kbd>Enter</kbd></p>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  database/migrations/1502691651527_users_schema.js</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_schema"><a class="anchor" href="#_defining_schema"></a><a class="link" href="#_defining_schema">Defining schema</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now quickly open the created file and write some code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Schema = use('Schema')
+
+class UsersSchema extends Schema {
+  up () {
+    this.create('users', (table) =&gt; {
+      table.increments()
+      table.string('username').unique()
+      table.string('email').unique()
+      table.string('password', 80)
+      table.timestamps()
+    })
+  }
+
+  down () {
+    this.drop('users')
+  }
+}
+
+module.exports = UsersSchema</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, it is so simple to create/alter database tables using schema files, since you can chain different methods to define the field attributes.</p>
+</div>
+<div class="paragraph">
+<p>The schema file is a Javascript ES6 class with two required methods called <code>up</code> and <code>down</code> on it.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">up</dt>
+<dd>
+<p>The <code>up</code> method is used to take action on a table. It can be creating a new table or altering the existing table.</p>
+</dd>
+<dt class="hdlist1">down</dt>
+<dd>
+<p>The <code>down</code> method is the reverse of the up action. When <code>up</code> method creates a table, you simply drop it inside the down method.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multiple_connections"><a class="anchor" href="#_multiple_connections"></a><a class="link" href="#_multiple_connections">Multiple connections</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The schema files can also make use of a different connection by defining a <code>connection</code> property on them. Also make sure that the same connection is defined inside <code>config/database.js</code> file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+A table <code>adonis_schema</code> is created to manage the lifecycle of migrations. This table will always be created inside the primary connection database and there is no option to override it.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Schema = use('Schema')
+
+class UsersSchema extends Schema {
+  static get connection () {
+    return 'mysql'
+  }
+
+  up () {
+  }
+
+  down () {
+  }
+}
+
+module.exports = UsersSchema</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_migrations"><a class="anchor" href="#_run_migrations"></a><a class="link" href="#_run_migrations">Run migrations</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Finally, we need to call another command to run the migrations, which executes the <code>up</code> method on this class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis migration:run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">migrate: 1502691651527_users_schema.js
+Database migrated successfully in 117 ms</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_migrations_status"><a class="anchor" href="#_migrations_status"></a><a class="link" href="#_migrations_status">Migrations status</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also, you can check the migration status by running <code>migration:status</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis migration:status</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output
+<a href="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502694030/migration-status_zajqib.jpg" target="_blank" rel="noopener"><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502694030/migration-status_zajqib.jpg" alt="migration status zajqib"></span></a></p>
+</div>
+<div class="paragraph">
+<p>There is a <strong>Batch</strong> next to each migration so that you can rollback to a given batch without manually altering the database tables.</p>
+</div>
+<div class="paragraph">
+<p>That is how migrations work under the hood.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Every time you run <code>adonis migration:run</code>, a new batch is created for all the pending schema files.</p>
+</li>
+<li>
+<p>Files which are migrated once, are not executed again.</p>
+</li>
+<li>
+<p>Running <code>adonis migration:rollback</code>  rollbacks the last batch migrations in reverse order.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Do not create all tables in a single schema file, instead create a new file for each database change. This way you keep your database atomic and can roll back to any version.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_migrations_commands"><a class="anchor" href="#_migrations_commands"></a><a class="link" href="#_migrations_commands">Migrations commands</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available command with their description. Also, make sure to append <code>--help</code> to the command name to see a list of available options. For example:</p>
+</div>
+<div class="sect2">
+<h3 id="_commands_list"><a class="anchor" href="#_commands_list"></a><a class="link" href="#_commands_list">Commands list</a></h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Command</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">make:migration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create a new migration file,</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run all pending migrations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:rollback</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rollback last set of migrations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:refresh</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rollback all migrations to the <code>0</code> batch and then re-run them from the start.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:reset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rollback all migrations to the <code>0</code> batch.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">migration:status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Get status of all the migrations.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_command_help"><a class="anchor" href="#_command_help"></a><a class="link" href="#_command_help">Command help</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis migration:run --help</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Usage:
+  migration:run [options]
+
+Options:
+  -f, --force   Forcefully run migrations in production
+  -s, --silent  Silent the migrations output
+  --log         Log SQL queries instead of executing them
+
+About:
+  Run all pending migrations</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_table_s_api"><a class="anchor" href="#_table_s_api"></a><a class="link" href="#_table_s_api">Table&#8217;s API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods available to interact with database tables.</p>
+</div>
+<div class="sect3">
+<h4 id="_create"><a class="anchor" href="#_create"></a><a class="link" href="#_create">create</a></h4>
+<div class="paragraph">
+<p>Create a new database table</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">up () {
+  this.create('users', (table) =&gt; {
+  })
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_createifnotexists"><a class="anchor" href="#_createifnotexists"></a><a class="link" href="#_createifnotexists">createIfNotExists</a></h4>
+<div class="paragraph">
+<p>Create a new database table only if it doesn&#8217;t exists</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">up () {
+  this.createIfNotExists('users', (table) =&gt; {
+  })
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rename_from_to"><a class="anchor" href="#_rename_from_to"></a><a class="link" href="#_rename_from_to">rename(from, to)</a></h4>
+<div class="paragraph">
+<p>Rename existing database table</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">up () {
+  this.rename('users', 'my_users')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_drop"><a class="anchor" href="#_drop"></a><a class="link" href="#_drop">drop</a></h4>
+<div class="paragraph">
+<p>Drop database table</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">down () {
+  this.drop('users')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dropifexists"><a class="anchor" href="#_dropifexists"></a><a class="link" href="#_dropifexists">dropIfExists</a></h4>
+<div class="paragraph">
+<p>Drop database table only when it exists</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">down () {
+  this.dropIfExists('users')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_alter"><a class="anchor" href="#_alter"></a><a class="link" href="#_alter">alter</a></h4>
+<div class="paragraph">
+<p>Select database table for alternation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">up () {
+  this.alter('users', (table) =&gt; {
+    // add new columns or remove existing
+  })
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raw"><a class="anchor" href="#_raw"></a><a class="link" href="#_raw">raw</a></h4>
+<div class="paragraph">
+<p>Run an arbitrary SQL query.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">up () {
+  this
+    .raw("SET sql_mode='TRADITIONAL'")
+    .table('users', (table) =&gt; {
+      table.dropColumn('name')
+      table.string('first_name')
+      table.string('last_name')
+    })
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_hastable"><a class="anchor" href="#_hastable"></a><a class="link" href="#_hastable">hasTable</a></h4>
+<div class="paragraph">
+<p>Tells whether a table exists or not. It is an <code>async</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">async up () {
+  const exists = await this.hasTable('users')
+
+  if (!exists)  {
+    this.create('up', (table) =&gt; {
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extensions"><a class="anchor" href="#_extensions"></a><a class="link" href="#_extensions">Extensions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of extension methods you can execute when running migrations.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Extension only works with PostgreSQL database.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_createextension_extensionname"><a class="anchor" href="#_createextension_extensionname"></a><a class="link" href="#_createextension_extensionname">createExtension(extensionName)</a></h4>
+<div class="paragraph">
+<p>Create a database extension.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.createExtension('postgis')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_createextensionifnotexists_extensionname"><a class="anchor" href="#_createextensionifnotexists_extensionname"></a><a class="link" href="#_createextensionifnotexists_extensionname">createExtensionIfNotExists(extensionName)</a></h4>
+<div class="paragraph">
+<p>Only creates the extension if it does not exists, otherwise silently ignores the <strong>createExtension</strong> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    this.createIfNotExists('postgis')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dropextension_extensioname"><a class="anchor" href="#_dropextension_extensioname"></a><a class="link" href="#_dropextension_extensioname">dropExtension(extensioName)</a></h4>
+<div class="paragraph">
+<p>Drop an existing database extension.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  down () {
+    this.dropExtension('postgis')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dropextensionifexists_extensionname"><a class="anchor" href="#_dropextensionifexists_extensionname"></a><a class="link" href="#_dropextensionifexists_extensionname">dropExtensionIfExists(extensionName)</a></h4>
+<div class="paragraph">
+<p>Drop database extension only if it exists, otherwise silently ignores the <strong>dropExtension</strong> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  down () {
+    this.dropExtensionIfExists('postgis')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_executing_arbitrary_code"><a class="anchor" href="#_executing_arbitrary_code"></a><a class="link" href="#_executing_arbitrary_code">Executing arbitrary code</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Commands written inside <code>up</code> and <code>down</code> methods are scheduled to be executed later inside a migration. In case you want to execute <strong>arbitrary</strong> database commands, you can wrap them inside the <code>schedule</code> function.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>schedule</code> method receives the <strong>transaction object</strong> and it is important to run all database commands inside the same transaction, otherwise queries will hang forever.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class UserSchema {
+  up () {
+    // create new table
+    this.create('new_users', (table) =&gt; {
+    })
+
+    // copy data
+    this.schedule(async (trx) =&gt; {
+      const users = await Database.table('users').transacting(trx)
+      await Database.table('new_users').transacting(trx).insert(users)
+    })
+
+    // copy old table
+    this.drop('users')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_schema_builder_api"><a class="anchor" href="#_schema_builder_api"></a><a class="link" href="#_schema_builder_api">Schema builder API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The schema builder API is exactly same as the <a href="http://knexjs.org/#Schema-Building">knex api</a>, so make sure to read their documentation.</p>
+</div>
+<div class="sect3">
+<h4 id="_fn_now"><a class="anchor" href="#_fn_now"></a><a class="link" href="#_fn_now">fn.now()</a></h4>
+<div class="paragraph">
+<p>Knex has a method called <a href="http://knexjs.org/#Schema-timestamp">knex.fn.now()</a>, which is used to set the current timestamp on the database field.</p>
+</div>
+<div class="paragraph">
+<p>In AdonisJs, you reference this method as <code>this.fn.now()</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">up () {
+  this.table('users', (table) =&gt; {
+    table.timestamp('created_at').defaultTo(this.fn.now())
+  })
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

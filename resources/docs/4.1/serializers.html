@@ -1,0 +1,232 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_using_serializer">Using Serializer</a></li>
+<li><a href="#_vanilla_serializer">Vanilla Serializer</a></li>
+<li><a href="#_creating_serializer">Creating Serializer</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Serializers provides clean abstractions towards structuring the database results. AdonisJs by default ships with a <a href="https://github.com/adonisjs/adonis-lucid/blob/develop/src/Lucid/Serializers/Vanilla.js">Vanilla serializer</a>, but you are free to create/use other serializers too.</p>
+</div>
+<div class="paragraph">
+<p>For example: You can create a serializer to format data as per <a href="http://jsonapi.org/">jsonapi</a> specs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every time you make a database query using <strong>Lucid models</strong>, the return value is always a serializer instance and calling <code>toJSON</code> to it returns a formatted output.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const users = await User.all()
+
+// users -&gt; Vanilla Serializer instance</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>users</code> object is an instance of Vanilla serializer and in order to get a plain array/object from it, you need to call <code>toJSON()</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const json = users.toJSON()</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_use_serializers"><a class="anchor" href="#_why_use_serializers"></a><a class="link" href="#_why_use_serializers">Why use serializers?</a></h3>
+<div class="paragraph">
+<p>When writing an API server, the data returned from models is not something that you want to return back and instead follow some conventions to structure the data.</p>
+</div>
+<div class="paragraph">
+<p>The serializer solves that problem by giving the freedom to format the data as you want. For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const users = await User
+  .query()
+  .with('posts')
+  .fetch()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this point <strong>Lucid</strong> loads all the users and their posts, but doesn&#8217;t care on how to present them in JSON format, but instead pass all the data to the serializer, which can be accessed from <code>users</code> constant.</p>
+</div>
+<div class="paragraph">
+<p>Now when you call <code>toJSON</code> on <code>users</code>. The vanilla serializer formats the data as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">users.toJSON()
+
+// output
+[
+  {
+    id: 1,
+    username: 'virk',
+    posts: [
+      {
+        id: 1,
+        user_id: 1,
+        title: 'Adonis 101'
+      }
+    ]
+  }
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, it executes all the <code>getters</code>, <code>setters</code> and <code>computed properties</code> for you.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_serializer"><a class="anchor" href="#_using_serializer"></a><a class="link" href="#_using_serializer">Using Serializer</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The serializers can be defined on each model by overriding the <code>Serializer</code> getter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get Serializer () {
+    return // your own implementation
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vanilla_serializer"><a class="anchor" href="#_vanilla_serializer"></a><a class="link" href="#_vanilla_serializer">Vanilla Serializer</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here is the list of operations vanilla serializer performs for you.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Attach all relations next to the row as a property.</p>
+</li>
+<li>
+<p>Attach all <code>sideloaded</code> data to the <code><em>__meta__</em></code> key. For example <strong>posts counts</strong> for a given user are represented as</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  id: 1,
+  username: 'virk',
+  __meta__: {
+    posts_count: 2
+  }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Format pagination results as.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  total: 10,
+  perPage: 20,
+  lastPage: 1,
+  currentPage: 1,
+  data: []
+}</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_serializer"><a class="anchor" href="#_creating_serializer"></a><a class="link" href="#_creating_serializer">Creating Serializer</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can create your serializer to get data back in your desired format. Intentionally the API of serializers is pretty small, to make it easier to add and use new serializers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Serializers should not be created for small amendments to the output, use <code>getters</code> and <code>computed properties</code> for that.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_api_overview"><a class="anchor" href="#_api_overview"></a><a class="link" href="#_api_overview">API overview</a></h3>
+<div class="paragraph">
+<p>Below is the list of methods, which are required on a serializer.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class CustomSerializer {
+  constructor (rows, pages = null, isOne = false) {
+    this.rows = rows
+    this.pages = pages
+    this.isOne = isOne
+  }
+
+  first () {
+    return this.rows[0]
+  }
+
+  last () {
+    return this.rows[this.rows.length - 1]
+  }
+
+  size () {
+    return this.isOne ? 1 : this.rows.length
+  }
+
+  toJSON () {
+    // return formatted data
+  }
+}
+
+module.exports = CustomSerializer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once done, you can import this serializer manually using <code>require</code> statement or bind it to the IoC container.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/hooks.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ioc } = require('@adonisjs/fold')
+
+ioc.bind('MyApp/CustomSerializer', () =&gt; {
+  return require('./CustomSerializer')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use it as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get Serializer () {
+    return 'MyApp/CustomSerializer'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

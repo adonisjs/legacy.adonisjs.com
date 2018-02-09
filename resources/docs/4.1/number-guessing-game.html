@@ -1,0 +1,278 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_game_story">Game story</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_routing">Routing</a></li>
+<li><a href="#_http_controller">Http controller</a></li>
+<li><a href="#_views">Views</a></li>
+<li><a href="#_next_steps">Next Steps</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In this guide, we create a simple number guessing game as a way to learn more about the framework. By the end of this guide, you will know how to make use of <strong>views</strong>, <strong>create new routes</strong> and <strong>bind controllers</strong> to them.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can see the final working version on <a href="https://adonis-number-guessing-game.glitch.me/?number=5" target="_blank" rel="noopener">glitch</a>. Also, you can checkout the code using the following remix button.<br>
+<a href="https://glitch.com/edit/#!/remix/adonis-number-guessing-game" target="_blank" rel="noopener"><span class="image"><img src="https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg" alt="2703baf2 b643 4da7 ab91 7ee2a2d00b5b%2Fremix button"></span></a>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_game_story"><a class="anchor" href="#_game_story"></a><a class="link" href="#_game_story">Game story</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The number guessing takes input from the user and matches it against a random number. If the number matches, it is called a match, otherwise it is a pass.</p>
+</div>
+<div class="paragraph">
+<p>To keep it simple, we accept the user guessed number as the query string in the URL.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s create a new project using <code>adonis</code> command. We create a slim project since we do not need a database or models for this app.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis new number-game --slim</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, <code>cd</code> into the created directory and make sure you can run the application using <code>adonis serve</code> command.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_routing"><a class="anchor" href="#_routing"></a><a class="link" href="#_routing">Routing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start by removing everything from the <code>start/routes.js</code> file and paste the following code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Route = use('Route')
+
+Route.get('/', ({ request }) =&gt; {
+  /** get number from the url query string */
+  const guessedNumber = Number(request.input('number'))
+
+  /** if number is not specified, let the user know about it */
+  if (!guessedNumber) {
+    return 'Please specify a number by passing ?number=&lt;num&gt; to the url'
+  }
+
+  /** generate a random number */
+  const randomNumber = Math.floor(Math.random() * 20) + 1
+
+  /** let the user know about the match */
+  return randomNumber === guessedNumber
+  ? 'Matched'
+  : `Match failed. The actual number is ${randomNumber}`
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if we visit <a href="http://127.0.0.1:3333?number=5">127.0.0.1:3333?number=5</a> and keep on changing the <code>number</code> between 1-20, we see <strong>Matched</strong> or the <strong>Match failed</strong> statement.</p>
+</div>
+<div class="paragraph">
+<p>The logic of number guessing game remains the same, but we start extracting this code into a controller and also create a view for it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_http_controller"><a class="anchor" href="#_http_controller"></a><a class="link" href="#_http_controller">Http controller</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s create a new controller by running the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:controller Game</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  app/Controllers/Http/GameController.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now open the <code>GameController.js</code> file and paste the following code into it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class GameController {
+
+  render ({ request }) {
+    /** get number from the url query string */
+    const guessedNumber = Number(request.input('number'))
+
+    /** if number is not specified, let the user know about it */
+    if (!guessedNumber) {
+      return 'Please specify a number by passing ?number=&lt;num&gt; to the url'
+    }
+
+    /** generate a random number */
+    const randomNumber = Math.floor(Math.random() * 20) + 1
+
+    /** let the user know about the match */
+    return randomNumber === guessedNumber
+    ? 'Matched'
+    : `Match failed. The actual number is ${randomNumber}`
+  }
+}
+
+module.exports = GameController</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All we have done is moved the code from the route closure to the controller file. Now, we can remove all the code from <code>start/routes.js</code> file and instead bind controller to it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', 'GameController.render')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now refresh the page, and the game works as expected.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_views"><a class="anchor" href="#_views"></a><a class="link" href="#_views">Views</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs makes use of <a href="http://edge.adonisjs.com/" target="_blank" rel="noopener">edge.js</a> as the templating engine to power views. Let&#8217;s learn how to register the view provider and render it from the controller method.</p>
+</div>
+<div class="sect2">
+<h3 id="_setup_2"><a class="anchor" href="#_setup_2"></a><a class="link" href="#_setup_2">Setup</a></h3>
+<div class="paragraph">
+<p>All of the providers are registered inside <code>start/app.js</code> file. So will the <strong>ViewProvider</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/framework/providers/ViewProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the provider has been registered, you can access the <code>view</code> instance inside your controller methods as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">render ({ request, view }) {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, all we need to do is, create the <code>game.edge</code> template file and write the logic inside it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_template_file"><a class="anchor" href="#_creating_template_file"></a><a class="link" href="#_creating_template_file">Creating template file</a></h3>
+<div class="paragraph">
+<p>Just like the controller, we can use the <code>make:view</code> command to create a new view for us.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:view game</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  resources/views/game.edge</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extracting_logic_from_controller"><a class="anchor" href="#_extracting_logic_from_controller"></a><a class="link" href="#_extracting_logic_from_controller">Extracting logic from controller</a></h3>
+<div class="paragraph">
+<p>Let&#8217;s remove all the logic from the controller method and instead render a view with required data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class GameController {
+
+  render ({ request, view }) {
+    const guessedNumber = Number(request.input('number'))
+    const randomNumber = Math.floor(Math.random() * 20) + 1
+
+    /** rendering view */
+    return view.render('game', { guessedNumber, randomNumber })
+  }
+}
+
+module.exports = GameController</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">resources/views/game.edge</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@if(!guessedNumber)
+  &lt;p&gt; Please specify a number by passing &lt;code&gt;?number&lt;/code&gt; to the url &lt;/p&gt;
+@elseif(guessedNumber === randomNumber)
+  &lt;h2&gt; Matched &lt;/h2&gt;
+@else
+  &lt;h2&gt;Match failed. The actual number is {{ randomNumber }}&lt;/h2&gt;
+@endif</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, Edge makes it so simple to write logic in the template files. We are easily able to output the statement we want.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you have any questions or concerns, please join us on <a href="https://forum.adonisjs.com/c/help/view" target="_blank" rel="noopener">discourse</a> to be a part of our small and helpful community.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_next_steps"><a class="anchor" href="#_next_steps"></a><a class="link" href="#_next_steps">Next Steps</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial was the easiest attempt to make use of different pieces and build a simple application in AdonisJs. Moving forward consider learning more about the following topics.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p><a href="routing">Routing</a></p>
+</li>
+<li>
+<p><a href="database">Database</a></p>
+</li>
+<li>
+<p>and <a href="authentication">Authentication</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>

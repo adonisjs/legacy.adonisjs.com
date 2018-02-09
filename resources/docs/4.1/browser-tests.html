@@ -1,0 +1,898 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_custom_chromium_path">Custom Chromium path</a></li>
+<li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_page_interactions">Page interactions</a></li>
+<li><a href="#_waiting_for_actions">Waiting for actions</a></li>
+<li><a href="#_reading_values">Reading values</a></li>
+<li><a href="#_assertions">Assertions</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes it simpler and easy to write <strong>functional tests</strong> using the <strong>Chrome</strong> browser. Under the hood, it makes use of <a href="https://github.com/GoogleChrome/puppeteer" target="_blank" rel="noopener">puppeteer</a> to launch a real browser and run assertions.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Since AdonisJs uses Chrome engine, you cannot run your tests on multiple browsers like <strong>IE</strong> or <strong>Firefox</strong>.<br>
+Cross-browser testing is usually done for Frontend Javascript, which is out of the scope of AdonisJs.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn about opening a browser programmatically, and running tests like a real user are using the app.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The provider to run browser tests is not shipped by default. Hence we need to pull it from <code>npm</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<a href="https://github.com/GoogleChrome/puppeteer" target="_blank" rel="noopener">Puppeteer</a> comes with a bundled Chromium and takes a while to install it. You can skip the chromium installation by passing <code>PUPPETEER_SKIP_CHROMIUM_DOWNLOAD</code> environment variable.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/vow-browser
+
+# Skip Chromium download
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true adonis install @adonisjs/vow-browser</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to register the provider under <code>aceProviders</code> array.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const aceProviders = [
+  '@adonisjs/vow-browser/providers/VowBrowserProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That is all!</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now we have setup the provider; we can start making use of <code>Test/Browser</code> trait to open a new browser.</p>
+</div>
+<div class="paragraph">
+<p>Create a new functional test by running the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:test hello-world</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">create: test/functional/hello-world.spec.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const { test, trait } = use('Test/Suite')('Hello World')
+
+trait('Test/Browser')
+
+test('Visit home page', async ({ browser }) =&gt; {
+  const page = await browser.visit('/')
+  await page.assertHas('Adonis')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if we run adonis test, hopefully, the test passes ( if you have not changed the default output of / route). Also, let’s talk about how everything works in a nutshell.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Very first we register the <code>Test/Browser</code> trait, which gives us the access to a <code>browser</code> object to make HTTP requests.</p>
+</li>
+<li>
+<p>Next, we visit a URL and access the save the reference to the page object.</p>
+</li>
+<li>
+<p>Finally, we run assertions to make sure the return HTML does contain <code>Adonis</code> as text.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_custom_chromium_path"><a class="anchor" href="#_custom_chromium_path"></a><a class="link" href="#_custom_chromium_path">Custom Chromium path</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you have used <code>PUPPETEER_SKIP_CHROMIUM_DOWNLOAD</code> environment variable to install the provider, the chromium is not installed by default, and you are supposed to pass a path to the executable file.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First, make sure to download <a href="https://chromium.woolyss.com/download/">chromium</a> and place it in a directory, where Node.js can access it.</p>
+</li>
+<li>
+<p>After that, when making use of the <code>trait</code>, define the path to the executable file.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">trait('Test/Browser', {
+  executablePath: '/absolute/path/to/chromium'
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can define the executable path as an environment variable inside <code>.env.testing</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">CHROMIUM_PATH=/absolute/path/to/chromium</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of options you can configure when launching a new browser.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">trait('Test/Browser', {
+  headless: false
+})</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_options"><a class="anchor" href="#_options"></a><a class="link" href="#_options">options</a></h4>
+<table class="tableblock frame-all grid-all spread resource-table">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 70%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">headless <span class="description">Boolean &lt;true&gt;</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to run tests in headless mode or launch a real browser.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">executablePath <span class="description">String</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path to the <code>Chromium</code> executable, it is only required, when you don&#8217;t make use of bundled chromium.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">slowMo <span class="description">Number</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pass number of millseconds to be used for slowing down each browser interaction. It can be used to see tests in slow motion.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dumpio <span class="description">Boolean &lt;false&gt;</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log all browser console messages to the terminal.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For all other options, do check <a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions">puppeteer.launch</a> official documentation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_page_interactions"><a class="anchor" href="#_page_interactions"></a><a class="link" href="#_page_interactions">Page interactions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The most common thing you want to achieve when writing browser tests, is to interact with the webpage. Below is the list of methods for same.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Browser client supports all <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors">CSS selectors</a>. Feel free to use your CSS selector skills.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_type_selector_value"><a class="anchor" href="#_type_selector_value"></a><a class="link" href="#_type_selector_value">type(selector, value)</a></h4>
+<div class="paragraph">
+<p>Type inside an element with given selector.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Hello World')
+
+trait('Test/Browser')
+
+test('Visit home page', async ({ browser }) =&gt; {
+  const page = await browser.visit('/')
+
+  await page
+    .type('[name="username"]', 'virk')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To type multiple values, you can chain methods</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .type('[name="username"]', 'virk')
+  .type('[name="age"]', 22)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_select_selector_value"><a class="anchor" href="#_select_selector_value"></a><a class="link" href="#_select_selector_value">select(selector, value)</a></h4>
+<div class="paragraph">
+<p>Select value inside a select box</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .select('[name="gender"]', 'Male')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To select multiple options, pass an array of values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .select('[name="lunch"]', ['Chicken box', 'Salad'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_radio_selector_value"><a class="anchor" href="#_radio_selector_value"></a><a class="link" href="#_radio_selector_value">radio(selector, value)</a></h4>
+<div class="paragraph">
+<p>Select a radio button, based of it&#8217;s value</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .radio('[name="gender"]', 'Male')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_check_selector"><a class="anchor" href="#_check_selector"></a><a class="link" href="#_check_selector">check(selector)</a></h4>
+<div class="paragraph">
+<p>Check a checkbox</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .check('[name="terms"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_uncheck_selector"><a class="anchor" href="#_uncheck_selector"></a><a class="link" href="#_uncheck_selector">uncheck(selector)</a></h4>
+<div class="paragraph">
+<p>Uncheck a checkbox</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .uncheck('[name="newsletter"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_submitform_selector"><a class="anchor" href="#_submitform_selector"></a><a class="link" href="#_submitform_selector">submitForm(selector)</a></h4>
+<div class="paragraph">
+<p>Submit a selected form</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .submitForm('form')
+
+// or use a name
+await page
+  .submitForm('form[name="register"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_click_selector"><a class="anchor" href="#_click_selector"></a><a class="link" href="#_click_selector">click(selector)</a></h4>
+<div class="paragraph">
+<p>Click an element.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .click('a[href="/there"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_doubleclick_selector"><a class="anchor" href="#_doubleclick_selector"></a><a class="link" href="#_doubleclick_selector">doubleClick(selector)</a></h4>
+<div class="paragraph">
+<p>Double click an element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .doubleClick('button')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rightclick_selector"><a class="anchor" href="#_rightclick_selector"></a><a class="link" href="#_rightclick_selector">rightClick(selector)</a></h4>
+<div class="paragraph">
+<p>Right click on an element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .rightClick('button')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clear_selector"><a class="anchor" href="#_clear_selector"></a><a class="link" href="#_clear_selector">clear(selector)</a></h4>
+<div class="paragraph">
+<p>Clear value of a given element.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .clear('[name="username"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attach_selector_files"><a class="anchor" href="#_attach_selector_files"></a><a class="link" href="#_attach_selector_files">attach(selector, [files])</a></h4>
+<div class="paragraph">
+<p>Attach one or multiple files</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .attach('[name="profile_pic"]', [
+    Helpers.tmpPath('profile_pic.jpg')
+  ])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_screenshot_savetopath"><a class="anchor" href="#_screenshot_savetopath"></a><a class="link" href="#_screenshot_savetopath">screenshot(saveToPath)</a></h4>
+<div class="paragraph">
+<p>Take and save screenshot of the current state of webpage</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .type('[name="username"]', 'Virk')
+  .type('[name="age"]', 27)
+  .screenshot()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_waiting_for_actions"><a class="anchor" href="#_waiting_for_actions"></a><a class="link" href="#_waiting_for_actions">Waiting for actions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you have to wait for a certain action to take effect. For example:</p>
+</div>
+<div class="ulist ol-shrinked">
+<ul class="ol-shrinked">
+<li>
+<p>Waiting for an element to appear on the webpage.</p>
+</li>
+<li>
+<p>Waiting for a page to redirect and so on.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&nbsp;</p>
+</div>
+<div class="sect3">
+<h4 id="_waitforelement_selector_timeout_15000"><a class="anchor" href="#_waitforelement_selector_timeout_15000"></a><a class="link" href="#_waitforelement_selector_timeout_15000">waitForElement(selector, timeout = 15000)</a></h4>
+<div class="paragraph">
+<p>Wait for a element to be present inside DOM. The default timeout is to <code>15 seconds</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .waitForElement('div.alert')
+  .assertHasIn('div.alert', 'Success!')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_waituntilmissing_selector"><a class="anchor" href="#_waituntilmissing_selector"></a><a class="link" href="#_waituntilmissing_selector">waitUntilMissing(selector)</a></h4>
+<div class="paragraph">
+<p>Wait until an element disppears from the DOM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .waitUntilMissing('div.alert')
+  .assertNotExists('div.alert')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_waitfornavigation"><a class="anchor" href="#_waitfornavigation"></a><a class="link" href="#_waitfornavigation">waitForNavigation()</a></h4>
+<div class="paragraph">
+<p>Wait until page is navigated properly to a new URL.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .click('a[href="/there"]')
+  .waitForNavigation()
+  .assertPath('/there')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_waitfor_closure"><a class="anchor" href="#_waitfor_closure"></a><a class="link" href="#_waitfor_closure">waitFor(closure)</a></h4>
+<div class="paragraph">
+<p>Wait until the <code>Closure</code> returns true. The closure is executed in browser context and has access to variables like <code>window</code>, <code>document</code> and so on.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .waitFor(function () {
+    return !!document.querySelector('body.loaded')
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pause_timeout_15000"><a class="anchor" href="#_pause_timeout_15000"></a><a class="link" href="#_pause_timeout_15000">pause(timeout = 15000)</a></h4>
+<div class="paragraph">
+<p>Pause the webpage for a given timeframe</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page.pause()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reading_values"><a class="anchor" href="#_reading_values"></a><a class="link" href="#_reading_values">Reading values</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods you can use to read the values from the web page.</p>
+</div>
+<div class="sect3">
+<h4 id="_gettext_selector"><a class="anchor" href="#_gettext_selector"></a><a class="link" href="#_gettext_selector">getText([selector])</a></h4>
+<div class="paragraph">
+<p>Get text for a given element or the entire page</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .getText()
+
+// or
+await page
+  .getText('span.username')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gethtml_selector"><a class="anchor" href="#_gethtml_selector"></a><a class="link" href="#_gethtml_selector">getHtml([selector])</a></h4>
+<div class="paragraph">
+<p>Get HTML for a given element or entire web page</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .getHtml()
+
+// or
+await page
+  .getHtml('div.header')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_isvisible_selector"><a class="anchor" href="#_isvisible_selector"></a><a class="link" href="#_isvisible_selector">isVisible(selector)</a></h4>
+<div class="paragraph">
+<p>Find if a given element is visible on page or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const isVisible = await page
+  .isVisible('div.alert')
+
+assert.isFalse(isVisible)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_haselement_selector"><a class="anchor" href="#_haselement_selector"></a><a class="link" href="#_haselement_selector">hasElement(selector)</a></h4>
+<div class="paragraph">
+<p>Find if an element exists in DOM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const hasElement = await page
+  .hasElement('div.alert')
+
+assert.isFalse(hasElement)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ischecked_selector"><a class="anchor" href="#_ischecked_selector"></a><a class="link" href="#_ischecked_selector">isChecked(selector)</a></h4>
+<div class="paragraph">
+<p>Find if a checkbox is checked</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const termsChecked = await page
+  .isChecked('[name="terms"]')
+
+assert.isTrue(termsChecked)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getattribute_selector_name"><a class="anchor" href="#_getattribute_selector_name"></a><a class="link" href="#_getattribute_selector_name">getAttribute(selector, name)</a></h4>
+<div class="paragraph">
+<p>Get value for a given attribute</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const dataTip = await page
+  .getAttribute('div.tooltip', 'data-tip')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getattributes_selector"><a class="anchor" href="#_getattributes_selector"></a><a class="link" href="#_getattributes_selector">getAttributes(selector)</a></h4>
+<div class="paragraph">
+<p>Get all attributes for a given element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const attributes = await page
+  .getAttributes('div.tooltip')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getvalue_selector"><a class="anchor" href="#_getvalue_selector"></a><a class="link" href="#_getvalue_selector">getValue(selector)</a></h4>
+<div class="paragraph">
+<p>Get value for a given form element</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const value = await page
+  .getValue('[name="username"]')
+
+assert.equal(value, 'virk')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getpath"><a class="anchor" href="#_getpath"></a><a class="link" href="#_getpath">getPath()</a></h4>
+<div class="paragraph">
+<p>Get current webpage path</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .getPath()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getqueryparams"><a class="anchor" href="#_getqueryparams"></a><a class="link" href="#_getqueryparams">getQueryParams()</a></h4>
+<div class="paragraph">
+<p>Get query params</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .getQueryParams()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getqueryparam_key"><a class="anchor" href="#_getqueryparam_key"></a><a class="link" href="#_getqueryparam_key">getQueryParam(key)</a></h4>
+<div class="paragraph">
+<p>Get value for a single query param</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .getQueryParam('orderBy')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gettitle"><a class="anchor" href="#_gettitle"></a><a class="link" href="#_gettitle">getTitle()</a></h4>
+<div class="paragraph">
+<p>Get webpage title</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .getTitle()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assertions"><a class="anchor" href="#_assertions"></a><a class="link" href="#_assertions">Assertions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One way to run assertions is to read the value for certain elements and then run assertions manually. Whereas the browser client bundles a bunch of helper methods to run inline assertions.</p>
+</div>
+<div class="sect3">
+<h4 id="_asserthas_expected"><a class="anchor" href="#_asserthas_expected"></a><a class="link" href="#_asserthas_expected">assertHas(expected)</a></h4>
+<div class="paragraph">
+<p>Assert the webpage includes the expected text value</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertHas('Adonis')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_asserthasin_selector_expected"><a class="anchor" href="#_asserthasin_selector_expected"></a><a class="link" href="#_asserthasin_selector_expected">assertHasIn(selector, expected)</a></h4>
+<div class="paragraph">
+<p>Assert a given selector contains the expected value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertHasIn('div.alert', 'Success!')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertattribute_selector_attribute_expected"><a class="anchor" href="#_assertattribute_selector_attribute_expected"></a><a class="link" href="#_assertattribute_selector_attribute_expected">assertAttribute(selector, attribute, expected)</a></h4>
+<div class="paragraph">
+<p>Assert the value of an attribute is same as expected</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertAttribute('div.tooltip', 'data-tip', 'Some helpful tooltip')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertvalue_selector_expected"><a class="anchor" href="#_assertvalue_selector_expected"></a><a class="link" href="#_assertvalue_selector_expected">assertValue(selector, expected)</a></h4>
+<div class="paragraph">
+<p>Assert value for a given form element.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertValue('[name="username"]', 'virk')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertischecked_selector"><a class="anchor" href="#_assertischecked_selector"></a><a class="link" href="#_assertischecked_selector">assertIsChecked(selector)</a></h4>
+<div class="paragraph">
+<p>Assert that checkbox is checked</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertIsChecked('[name="terms"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertisnotchecked_selector"><a class="anchor" href="#_assertisnotchecked_selector"></a><a class="link" href="#_assertisnotchecked_selector">assertIsNotChecked(selector)</a></h4>
+<div class="paragraph">
+<p>Assert that checkbox is not checked</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertIsNotChecked('[name="terms"]')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertisvisible_selector"><a class="anchor" href="#_assertisvisible_selector"></a><a class="link" href="#_assertisvisible_selector">assertIsVisible(selector)</a></h4>
+<div class="paragraph">
+<p>Assert element is visible</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertIsVisible('div.notification')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertisnotvisible_selector"><a class="anchor" href="#_assertisnotvisible_selector"></a><a class="link" href="#_assertisnotvisible_selector">assertIsNotVisible(selector)</a></h4>
+<div class="paragraph">
+<p>Assert element is not visible</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertIsNotVisible('div.notification')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertpath_value"><a class="anchor" href="#_assertpath_value"></a><a class="link" href="#_assertpath_value">assertPath(value)</a></h4>
+<div class="paragraph">
+<p>Assert the value of current path</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertPath('/there')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertqueryparam_key_value"><a class="anchor" href="#_assertqueryparam_key_value"></a><a class="link" href="#_assertqueryparam_key_value">assertQueryParam(key, value)</a></h4>
+<div class="paragraph">
+<p>Assert the value of a query param</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertQueryParam('orderBy', 'id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertexists_selector"><a class="anchor" href="#_assertexists_selector"></a><a class="link" href="#_assertexists_selector">assertExists(selector)</a></h4>
+<div class="paragraph">
+<p>Assert that an element exists inside DOM</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertExists('div.notification')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertnotexists_selector"><a class="anchor" href="#_assertnotexists_selector"></a><a class="link" href="#_assertnotexists_selector">assertNotExists(selector)</a></h4>
+<div class="paragraph">
+<p>Assert that an element does not exists inside DOM</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertNotExists('div.notification')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertcount_selector_expectedcount"><a class="anchor" href="#_assertcount_selector_expectedcount"></a><a class="link" href="#_assertcount_selector_expectedcount">assertCount(selector, expectedCount)</a></h4>
+<div class="paragraph">
+<p>Assert over the number of elements for a given selector</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertCount('table tr', 2)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_asserttitle_expected"><a class="anchor" href="#_asserttitle_expected"></a><a class="link" href="#_asserttitle_expected">assertTitle(expected)</a></h4>
+<div class="paragraph">
+<p>Assert webpage title</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertTitle('Welcome to Adonis')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_asserteval_selector_fn_args_expected"><a class="anchor" href="#_asserteval_selector_fn_args_expected"></a><a class="link" href="#_asserteval_selector_fn_args_expected">assertEval(selector, fn, [args], expected)</a></h4>
+<div class="paragraph">
+<p>Assert the value of a function executed on a given selector. The <code>fn</code> is executed in browser context.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertEval('table tr', function (el) {
+    return el.length
+  }, 2)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In above example, we count the number of <code>tr</code> inside a table and assert that count is <code>2</code>.</p>
+</div>
+<div class="paragraph">
+<p>Also, you can pass <strong>args</strong> to the selector fn.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertEval(
+    'div.notification',
+    function (el, attribute) {
+      return el[attribute]
+    },
+    ['id'],
+    'notification-1'
+  )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example, we assert over a given attribute of <code>div.notification</code>. The attribute is dynamic and passed as an argument.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertfn_fn_args_expected"><a class="anchor" href="#_assertfn_fn_args_expected"></a><a class="link" href="#_assertfn_fn_args_expected">assertFn(fn, [args], expected)</a></h4>
+<div class="paragraph">
+<p>Assert the output of a given function. The <code>fn</code> is executed in browser context.</p>
+</div>
+<div class="paragraph">
+<p>The difference between <code>assertFn</code> and <code>assertEval</code> is that the later one pre-selects an element before running the function.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await page
+  .assertFn(function () {
+    return document.title
+  }, 'Welcome to Adonis')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

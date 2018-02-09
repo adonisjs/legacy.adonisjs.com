@@ -1,0 +1,260 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_creating_database_tables">Creating database tables</a></li>
+<li><a href="#_using_database">Using database</a></li>
+<li><a href="#_saving_posts">Saving posts</a></li>
+<li><a href="#_next_steps">Next Steps</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When getting started with any web framework, the first question one often ask is, <strong>how to create data-driven applications?</strong>. By the end of this guide, you learn how easy AdonisJs makes to interact with SQL databases.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The database provider is not configured with the <strong>slim application blueprint</strong>, but setting it up as simple as installing it from
+npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/lucid</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ npm: Installed @adonisjs/lucid
+create: config/database.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Post installation, you would have seen a new web page getting popped up in your browser. That is the minimal instructions you need to follow to setup the installed package.</p>
+</div>
+<div class="paragraph">
+<p>Feel free to ignore the setup instructions and follow this guide instead.</p>
+</div>
+<div class="sect2">
+<h3 id="_registering_provider"><a class="anchor" href="#_registering_provider"></a><a class="link" href="#_registering_provider">Registering provider</a></h3>
+<div class="paragraph">
+<p>As always we need to register the database provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/lucid/providers/LucidProvider'
+]
+
+const aceProviders = [
+  '@adonisjs/lucid/providers/MigrationsProvider'
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration"><a class="anchor" href="#_configuration"></a><a class="link" href="#_configuration">Configuration</a></h3>
+<div class="paragraph">
+<p>The database package <strong>(lucid)</strong> supports all popular SQL databases out of the box. You can learn more about it <a href="database#_supported_databases">here</a></p>
+</div>
+<div class="paragraph">
+<p>By default, the configuration file (config/database.js) makes use of <code>sqlite</code> database and needs a SQLite driver to be installed from npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install sqlite3</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_database_tables"><a class="anchor" href="#_creating_database_tables"></a><a class="link" href="#_creating_database_tables">Creating database tables</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now since the setup process has been completed, let&#8217;s get started by creating a database table and run some queries to interact with it.</p>
+</div>
+<div class="paragraph">
+<p>Creating database tables in AdonisJs is done via <a href="https://en.wikipedia.org/wiki/Schema_migration" target="_blank" rel="noopener">migrations</a>. It is fine if you do not understand the concept of migrations properly, just follow along and you will find them super easy and useful.</p>
+</div>
+<div class="paragraph">
+<p>More <code>adonis</code> ❤️  &nbsp; to create the migration. Also, select the <code>Create table</code> option on prompt.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:migration BlogPost</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  database/migrations/1502346098443_blog_post_schema.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The created file gives you an interface to create the database table structure using JavaScript. Let&#8217;s see it in action.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Schema = use('Schema')
+
+class BlogPostSchema extends Schema {
+  up () {
+    this.create('blog_posts', (table) =&gt; {
+      table.increments()
+      table.string('title')
+      table.text('body', 'longtext')
+      table.timestamps()
+    })
+  }
+
+  down () {
+    this.drop('blog_posts')
+  }
+}
+
+module.exports = BlogPostSchema</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The migration file has two methods</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">up</dt>
+<dd>
+<p>The <code>up</code> method is used to take action on a table. It can be creating a new table or altering the existing table.</p>
+</dd>
+<dt class="hdlist1">down</dt>
+<dd>
+<p>The <code>down</code> method is the reverse of the up action. When <code>up</code> method creates a table, you simply drop it inside the down method.</p>
+<div class="paragraph">
+<p>The beauty of this approach makes it easier to roll back the database changes.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Now finally we can run another command to create the table using the schema file we just updated.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis migration:run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">migrate: 1502346098443_blog_post_schema.js
+Database migrated successfully in 86 ms</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s take a moment to recap on what we did so far.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>We installed <code>@adonisjs/lucid</code> package from npm and registered the required providers.</p>
+</li>
+<li>
+<p>Next, used the migrations feature to create a schema file and migrated the database.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_database"><a class="anchor" href="#_using_database"></a><a class="link" href="#_using_database">Using database</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s see how we can use the <strong>Database provider</strong> to fetch all the blog posts from the database.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Database = use('Database')
+const Route = use('Route')
+
+Route.get('/posts', async () =&gt; {
+  return await Database.table('blog_posts').select('*')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Assuming the web server is running on <code>port=3333</code>. If you visit <a href="http://localhost:3333/posts">localhost:3333/posts</a>, you see an empty array is returned, that is because we have not saved any posts inside the database table.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_saving_posts"><a class="anchor" href="#_saving_posts"></a><a class="link" href="#_saving_posts">Saving posts</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The ideal way is to have an HTML form to create the posts, but for the sake the simplicity, we take a shortcut and use the <strong>Adonis repl</strong> to interact with the database.</p>
+</div>
+<div class="sect2">
+<h3 id="_what_is_repl"><a class="anchor" href="#_what_is_repl"></a><a class="link" href="#_what_is_repl">What is repl?</a></h3>
+<div class="paragraph">
+<p>AdonisJs has an inbuilt command line repl, which can be used to interact with your application from command line. Let&#8217;s see it in action to create a post.</p>
+</div>
+<div class="paragraph">
+<p>The following command starts the repl session, and you are free to run Node.js code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis repl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So paste the following code inside it</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">await use('Database').table('blog_posts').insert({ title: 'Adonis 101', body: 'some description' })</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Animated Gif</dt>
+<dd>
+<p>Check out the following gif to see it in action</p>
+<div class="paragraph">
+<p><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502354650/Adonis-repl_uiaar3.gif" alt="Adonis repl uiaar3"></span></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Now if you refresh the browser <a href="http://localhost:3333/posts">localhost:3333/posts</a> you see the recently created blog post being returned as JSON.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_next_steps"><a class="anchor" href="#_next_steps"></a><a class="link" href="#_next_steps">Next Steps</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide was just an introduction to the Database provider, and there is a lot you can do when it comes to data-driven applications. Consider learning more about</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p><a href="query-builder">Database query builder</a></p>
+</li>
+<li>
+<p><a href="lucid">Lucid models</a></p>
+</li>
+<li>
+<p><a href="seeds-and-factories">Seeds &amp; factories</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>

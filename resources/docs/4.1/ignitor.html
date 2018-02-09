@@ -1,0 +1,144 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_hooks">Hooks</a></li>
+<li><a href="#_preloading_files">Preloading files</a></li>
+<li><a href="#_ignitor_methods">Ignitor methods</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ignitor is the package that powers bootstrapping of an AdonisJs application. In this guide, we learn about some features and functionalities offered by this package to manage our code.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hooks"><a class="anchor" href="#_hooks"></a><a class="link" href="#_hooks">Hooks</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://github.com/adonisjs/adonis-ignitor" target="_blank" rel="noopener">Ignitor</a> provides a bunch of hooks that you can use to customize the application behavior. The hooks are registered inside <code>start/hooks.js</code> file. Feel free to create this file, if it is missing.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start with an example of register a view global after all the providers have been booted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersBooted(() =&gt; {
+  const View = use('View')
+  View.global('time', () =&gt; new Date().getTime())
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like <code>hooks.after</code>, you can make use of <code>hooks.before</code> to hook into before something happens. Below is the list of available hooks.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 90%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Hook</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">providersRegistered</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before/after all providers have been registered</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">providersBooted</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before/after all providers are booted.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">preloading</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before/after pre loading registered files.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">httpServer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before/after HTTP server has been started.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">aceCommand</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Before/after ace command is executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preloading_files"><a class="anchor" href="#_preloading_files"></a><a class="link" href="#_preloading_files">Preloading files</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ignitor also makes it easy to preload a bunch of files after HTTP server has been started. For this, you need to modify <code>server.js</code> file and call the following method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">new Ignitor(require('@adonisjs/fold'))
+  .appRoot(__dirname)
+  .preLoad('start/fire-zombies')
+  .fireHttpServer()
+  .catch(console.error)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>preLoad</code> method takes a relative path from the application path or an absolute path to any <strong>.js</strong> file. To load multiple files, just call the <code>preLoad</code> method for multiple times.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">new Ignitor(require('@adonisjs/fold'))
+  .preLoad('')
+  .preLoad('')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ignitor_methods"><a class="anchor" href="#_ignitor_methods"></a><a class="link" href="#_ignitor_methods">Ignitor methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods available on the ignitor instance.</p>
+</div>
+<div class="sect3">
+<h4 id="_approot_location"><a class="anchor" href="#_approot_location"></a><a class="link" href="#_approot_location">appRoot(location)</a></h4>
+<div class="paragraph">
+<p>Define absolute path to the application root.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ignitor
+  .appRoot(__dirname)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_appfile_location"><a class="anchor" href="#_appfile_location"></a><a class="link" href="#_appfile_location">appFile(location)</a></h4>
+<div class="paragraph">
+<p>Relative path to the app file. By default <code>start/app.js</code> file is used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ignitor
+  .appFile('start/app.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_loadcommands"><a class="anchor" href="#_loadcommands"></a><a class="link" href="#_loadcommands">loadCommands()</a></h4>
+<div class="paragraph">
+<p>Instruct ignitor to load ace providers and commands. It is done when running an ace command. However, you can also load commands when starting the HTTP server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ignitor
+  .loadCommands()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

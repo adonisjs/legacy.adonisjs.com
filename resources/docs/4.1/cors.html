@@ -1,0 +1,87 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Cross-Origin Resource Sharing(CORS) is a way to allow incoming HTTP requests from different domains. It is very common in AJAX applications where the browser blocks all cross-domain requests if the server does not authorize them. Read more about CORS <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Install the middleware provider from npm by executing the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/cors</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const providers = [
+  '@adonisjs/cors/providers/CorsProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The middleware will be registered inside <code>start/kernel.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Server
+  .use(['Adonis/Middleware/Cors'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration for CORS is defined inside <code>config/cors.js</code> file and accepts following options.</p>
+</div>
+<div class="sect3">
+<h4 id="_origin"><a class="anchor" href="#_origin"></a><a class="link" href="#_origin">origin</a></h4>
+<div class="paragraph">
+<p>The origin(s) to be allowed for making cross domain requests. You can return one of the following values.</p>
+</div>
+<div class="ulist ul-spaced">
+<ul class="ul-spaced">
+<li>
+<p>A boolean <code>true</code> or <code>false</code> to deny the current request origin.</p>
+</li>
+<li>
+<p>A comma separated strings of domains to be allowed.</p>
+</li>
+<li>
+<p>An array of domains to be allowed.</p>
+</li>
+<li>
+<p>A function, which receives current request origin. Here you can compute whether or not the origin is allowed by returning true or false.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">origin: function (currentOrigin) {
+  return currentOrigin === 'mywebsite.com'
+}</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For all other options, go through the comments inside the <a href="https://github.com/adonisjs/adonis-cors/blob/develop/config/cors.js#L3" target="_blank" rel="noopener">config file</a>.</p>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,766 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_route_methods_verbs">Route methods/verbs</a></li>
+<li><a href="#_route_parameters">Route parameters</a></li>
+<li><a href="#_routing_for_spa_s">Routing for SPA&#8217;s</a></li>
+<li><a href="#_binding_controllers">Binding controllers</a></li>
+<li><a href="#_route_middleware">Route middleware</a></li>
+<li><a href="#_named_routes">Named routes</a></li>
+<li><a href="#_route_formats">Route formats</a></li>
+<li><a href="#_route_resources">Route resources</a></li>
+<li><a href="#_routing_domains">Routing domains</a></li>
+<li><a href="#_route_groups">Route groups</a></li>
+<li><a href="#_route_renderer">Route renderer</a></li>
+<li><a href="#_extending_routes">Extending routes</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs routing favors <strong>REST conventions</strong>, but still, give enough room to create and register custom routes. In this guide, we learn about creating routes, binding controller methods and different ways to organize them.</p>
+</div>
+<div class="paragraph">
+<p>All of the application routes are registered inside <code>start/routes.js</code> file. Also, you are free to create multiple files for routes and just require them inside the <code>routes.js</code> file.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The most basic route requires a URL path and closure to be executed. The returned value from the closure is sent back as the response.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', () =&gt; 'Hello world')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After starting the server using <code>adonis serve --dev</code>, if you visit <a href="http://localhost:3333">localhost:3333</a>, you see the <strong>Hello world</strong> in the browser.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_methods_verbs"><a class="anchor" href="#_route_methods_verbs"></a><a class="link" href="#_route_methods_verbs">Route methods/verbs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Restful routes make use of different HTTP methods to indicate the type of request. For example: <code>POST</code> method is used to create a record and <code>GET</code> is used to fetch record(s).</p>
+</div>
+<div class="paragraph">
+<p>You can define routes for different HTTP methods using one of the following methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_get"><a class="anchor" href="#_get"></a><a class="link" href="#_get">get</a></h4>
+<div class="paragraph">
+<p>Create a route with GET method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post"><a class="anchor" href="#_post"></a><a class="link" href="#_post">post</a></h4>
+<div class="paragraph">
+<p>Create a route with POST method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.post('/', async () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_put_patch"><a class="anchor" href="#_put_patch"></a><a class="link" href="#_put_patch">put/patch</a></h4>
+<div class="paragraph">
+<p>The <code>PUT</code> and <code>PATCH</code> methods are used to update a resource.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.put('/', async () =&gt; {
+})
+
+Route.patch('/', async () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete"><a class="anchor" href="#_delete"></a><a class="link" href="#_delete">delete</a></h4>
+<div class="paragraph">
+<p>The <code>DELETE</code> method indicates removing a resource.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.delete('/', async () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_route"><a class="anchor" href="#_route"></a><a class="link" href="#_route">route</a></h4>
+<div class="paragraph">
+<p>Also, you can create routes that respond to multiple verbs using the <code>Route.route</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.route('/', async () =&gt; {
+
+}, ['GET', 'POST'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_parameters"><a class="anchor" href="#_route_parameters"></a><a class="link" href="#_route_parameters">Route parameters</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creating routes with static paths are not quite helpful, and often you need a way to accept dynamic data as part of the URL, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">/posts/1
+/posts/2
+/posts/300</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You would need a way to fetch the post id from the URL and render the appropriate post. The same is achieved by defining route parameters.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('posts/:id', async ({ params }) =&gt; {
+  const post = await Post.find(params.id)
+  return post
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>:id</code> is a route parameter which is passed as part of the <code>params</code> object. Also, you can make it optional by adding <code>?</code> to the parameter. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('make/:drink?', async ({ params }) =&gt; {
+  // use Coffee as fallback when drink is not defined
+  const drink = params.drink || 'Coffee'
+
+  return `Will make ${drink} for you`
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_routing_for_spa_s"><a class="anchor" href="#_routing_for_spa_s"></a><a class="link" href="#_routing_for_spa_s">Routing for SPA&#8217;s</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you find yourself creating a SPA ( single page application ), where you want to render a single view from the server and handle routing on front-end using your favorite front end framework.</p>
+</div>
+<div class="paragraph">
+<p>This can be done by defining a wildcard route.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.any('*', ({ view }) =&gt; view.render('main'))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you have any other specific routes, they should be defined before the wildcard route. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/api/v1/users', 'UserController.index')
+
+// wildcard route
+Route.any('*', ({ view }) =&gt; view.render('main'))</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_binding_controllers"><a class="anchor" href="#_binding_controllers"></a><a class="link" href="#_binding_controllers">Binding controllers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Defining closures as the route actions are not scalable, since writing all the code inside a single file is never desired and neither practical.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs being an MVC framework offers a nice abstractions layer called <strong>Controllers</strong> to keep all the request handling logic inside custom ES6 classes.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s create a controller using the <code>make:controller</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:controller Posts</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  app/Controllers/Http/PostController.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The next step is to bind the controller method to the route. It is defined as a <code>dot (.)</code> separated string.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('posts', 'PostController.index')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, we need to create the <code>index</code> method on the controller class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class PostController {
+  index () {
+    return 'Hello world'
+  }
+}
+
+module.exports = PostController</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_middleware"><a class="anchor" href="#_route_middleware"></a><a class="link" href="#_route_middleware">Route middleware</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can apply selected middleware to routes by calling the <code>middleware</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .get('profile', 'UserController.profile')
+  .middleware(['auth'])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>middleware</code> method accepts an array of named middleware, which is defined inside <code>start/kernel.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/kernel.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const namedMiddleware = {
+  auth: 'Adonis/Middleware/Auth'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Click <a href="middleware">here</a> to learn more about middleware.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_named_routes"><a class="anchor" href="#_named_routes"></a><a class="link" href="#_named_routes">Named routes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Routes are defined inside <code>start/routes.js</code> file but referenced everywhere inside your application. For example: Defining a form action to submit to a particular URL.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.post('users', 'UserController.store')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Inside the template</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;form method="POST" action="/users"&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if you change your route path from <code>/users</code> to something else, you have to remember to come back and change it inside the template as-well.</p>
+</div>
+<div class="paragraph">
+<p>To overcome this problem, you can name your routes uniquely and reference them in other part of the program.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .post('users', 'UserController.store')
+  .as('storeUser')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>as</code> method gives your route a name. Now inside your template, you can reference it using a view global.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;form method="POST" action="{{ route('storeUser') }}"&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_formats"><a class="anchor" href="#_route_formats"></a><a class="link" href="#_route_formats">Route formats</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Route formats open up a new way for <a href="https://en.wikipedia.org/wiki/Content_negotiation" target="_blank" rel="noopener">Content negotiation</a>, where you can accept the response format as part of the URL.</p>
+</div>
+<div class="paragraph">
+<p>Route format is a contract between the client and the server on which type of response to be created. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .get('users', async ({ request, view }) =&gt; {
+    const users = await User.all()
+
+    if (request.format() === 'json') {
+      return users
+    } else {
+      return view.render('users.list', { users })
+    }
+
+  })
+  .formats(['json'])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now the <code>users</code> endpoint can respond in multiple formats, based upon the URL.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">/users.json</dt>
+<dd>
+<p>Return an array of users in JSON.</p>
+</dd>
+<dt class="hdlist1">/users</dt>
+<dd>
+<p>Render the view and returns HTML</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Also, you can disable the default URL and always force the client to define the format.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .get('/', async ({ request, view }) =&gt; {
+    const users = await User.all()
+    const format = request.format()
+
+    switch (format) {
+      case 'html':
+        return view.render('users.list', { users })
+      case 'json':
+        return users
+    }
+  })
+  .formats(['json', 'html'], true)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Passing <code>true</code> as the second parameter makes sure that the client defines one of the expected formats. Otherwise, a 404 is thrown.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_resources"><a class="anchor" href="#_route_resources"></a><a class="link" href="#_route_resources">Route resources</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you like building web apps around REST conventions then <strong>route resources</strong> helps you in defining conventional routes by writing less code.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is required to bind a <strong>Controller</strong> to the resource. Binding a closure throws an exception.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.resource('users', 'UsersController')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>Route.resource</code> method under the hood creates a total of 7 routes</p>
+</div>
+<table class="tableblock frame-all grid-all spread resource-table">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 10%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Url</th>
+<th class="tableblock halign-left valign-top">Verb</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Controller Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users <span class="description">Show a list of all the users</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.index</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users/create <span class="description">Render a form to be used for creating a new user</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.create</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users <span class="description">Create/save a new user.</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.store</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.store</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users/:id <span class="description">Display a single user</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.show</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.show</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users/:id/edit <span class="description">Render a form to update an existing user.</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GET</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.edit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.edit</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users/:id <span class="description">Update user details.</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PUT or PATCH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.update</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users/:id <span class="description">Delete a user with id.</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DELETE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users.destroy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsersController.destroy</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Nested resources can be created with <code>dot (.)</code> notation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.resource('posts.comments', 'CommentsController')</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_filtering_resources"><a class="anchor" href="#_filtering_resources"></a><a class="link" href="#_filtering_resources">Filtering resources</a></h3>
+<div class="paragraph">
+<p>You can limit the number of routes a resource should create by chaining handful of methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_apionly"><a class="anchor" href="#_apionly"></a><a class="link" href="#_apionly">apiOnly</a></h4>
+<div class="paragraph">
+<p>Limit the routes to only 5 by removing <code>users/create</code> and <code>users/:id/edit</code>. Since when writing an API server, you may want to render the forms within the API consumer (e.g., a mobile app, frontend web framework, etc.).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UsersController')
+  .apiOnly()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_only_names"><a class="anchor" href="#_only_names"></a><a class="link" href="#_only_names">only([names])</a></h4>
+<div class="paragraph">
+<p>Remove all other routes but not the ones passed to the <code>only</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UsersController')
+  .only(['index', 'show'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_except_names"><a class="anchor" href="#_except_names"></a><a class="link" href="#_except_names">except([names])</a></h4>
+<div class="paragraph">
+<p>Remove route for names passed to the <code>except</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UsersController')
+  .except(['index', 'show'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resource_middleware"><a class="anchor" href="#_resource_middleware"></a><a class="link" href="#_resource_middleware">Resource Middleware</a></h3>
+<div class="paragraph">
+<p>You can attach middleware to the resource, just like you would do to a single route.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UsersController')
+  .middleware(['auth'])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since attaching auth middleware to all the routes is not always desired, you can customize the behavior by passing a map of values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UsersController')
+  .middleware(new Map([
+    [['store', 'update', 'delete'], ['auth']]
+  ]))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we have defined the <code>auth</code> middleware on <strong>store</strong>, <strong>update</strong> and <strong>delete</strong> routes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resource_formats"><a class="anchor" href="#_resource_formats"></a><a class="link" href="#_resource_formats">Resource Formats</a></h3>
+<div class="paragraph">
+<p>Also, you can define the formats for all the resourceful routes, just like the way you do for a single route or a group of routes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .resource('users', 'UsersController')
+  .formats(['json'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_routing_domains"><a class="anchor" href="#_routing_domains"></a><a class="link" href="#_routing_domains">Routing domains</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs makes it super easy to serve multiple domains within a single codebase. The domains can be static endpoints like <code>blog.adonisjs.com</code> or dynamic endpoints like <code>:user.adonisjs.com</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can define the domain on a single route as well, but it is a good idea to group domain specific routes.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .group(() =&gt; {
+    Route.get('users', async ({ subdomains }) =&gt; {
+      return `The username is ${subdomains.user}`
+    })
+  })
+  .domain(':user.myapp.com')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if you visit <code>virk.myapp.com</code>, You see the above route is executed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_groups"><a class="anchor" href="#_route_groups"></a><a class="link" href="#_route_groups">Route groups</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often your application routes share common logic/configuration around them. So instead of re-defining the configuration on each route, it&#8217;s better to group them. For example:</p>
+</div>
+<div class="paragraph">
+<p>Not desired</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('api/v1/users', 'UserController.index')
+Route.post('api/v1/users', 'UserController.store')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Instead, we can make use of the route&#8217;s group here.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .group(() =&gt; {
+    Route.get('users', 'UserController.index')
+    Route.post('users', 'UserController.store')
+  })
+  .prefix('api/v1')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like the <code>prefix</code> method, you can call the following methods on a group of routes.</p>
+</div>
+<div class="sect3">
+<h4 id="_middleware"><a class="anchor" href="#_middleware"></a><a class="link" href="#_middleware">middleware</a></h4>
+<div class="paragraph">
+<p>Define middleware on a group of routes. All group middleware are executed before the middleware defined on a single route.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .group(() =&gt; {
+  })
+  .middleware(['auth'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_domain"><a class="anchor" href="#_domain"></a><a class="link" href="#_domain">domain</a></h4>
+<div class="paragraph">
+<p>Specify routes on a group of routes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .group(() =&gt; {
+  })
+  .domain('blog.adonisjs.com')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formats"><a class="anchor" href="#_formats"></a><a class="link" href="#_formats">formats</a></h4>
+<div class="paragraph">
+<p>Define formats on a group of routes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .group(() =&gt; {
+  })
+  .formats(['json', 'html'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_route_renderer"><a class="anchor" href="#_route_renderer"></a><a class="link" href="#_route_renderer">Route renderer</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Route renderer is a one liner to render a view without creating a controller method or binding a closure.</p>
+</div>
+<div class="paragraph">
+<p>Instead of following</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async function ({ view }) {
+  return view.render('welcome')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can write</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.on('/').render('welcome')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_routes"><a class="anchor" href="#_extending_routes"></a><a class="link" href="#_extending_routes">Extending routes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs makes it possible to extend routes by adding your own methods to it known as <strong>macros</strong>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Since the code to extend the routes needs to be executed once, you can make use of providers or ignitor hooks. Make sure to read <a href="">how to extend</a> guide before continuing.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Route = use('Route')
+const Server = use('Server')
+
+// middleware function
+async function bindMiddleware (ctx, next, [model, identifier, key]) {
+  const identifierValue = ctx.params[identifier]
+
+  if (identifierValue) {
+    ctx[key] = await use(model).findBy(identifier, identifierValue)
+  }
+
+  await next()
+}
+
+// Pre register middleware with a name
+Server.registerNamed({ bm: bindMiddleware })
+
+// Add macro
+Route.Route.macro('bind', function (model, identifier, key) {
+  this.middleware(`bm:${model},${identifier},${key}`)
+  return this
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>bind</code> method can be used as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .get('user/:id', ({ user }) =&gt; {
+    return user
+  })
+  .bind('App/Models/User', 'id', 'user')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we added the <code>bind</code> method to the <a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/index.js">Route class</a> prototype. This method internally adds a middleware to the route, which fetches a record from the database, using a model.</p>
+</div>
+<div class="paragraph">
+<p>Also you can add macros to the following classes.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/Group.js">RouteGroup</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/Resource.js">RouteResource</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/Brisk.js">BriskRoute</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>

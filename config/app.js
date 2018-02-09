@@ -167,6 +167,7 @@ module.exports = {
   */
   docs: {
     versions: {
+      '4.1': 'Version 4.1',
       '4.0': 'Version 4.0',
       '3.2': 'Version 3.2 ( legacy )',
     },

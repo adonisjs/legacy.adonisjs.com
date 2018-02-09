@@ -1,0 +1,159 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_requirements">Requirements</a></li>
+<li><a href="#_cli_tool">Cli tool</a></li>
+<li><a href="#_creating_new_app">Creating new app</a></li>
+<li><a href="#_running_application">Running application</a></li>
+<li><a href="#_customizing_new_command">Customizing new command</a></li>
+<li><a href="#_next_steps">Next Steps</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This guide gets you started with AdonisJs by installing the framework and required dependencies. By the end of this guide, you will have a working AdonisJs web server with the <strong>Hello world</strong> page.</p>
+</div>
+<div class="paragraph">
+<p>If you face any troubles installing AdonisJs, please file an issue on <a href="https://github.com/adonisjs/adonis-framework/issues/new" target="_blank" rel="noopener">github</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements"><a class="anchor" href="#_requirements"></a><a class="link" href="#_requirements">Requirements</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since AdonisJs is a Node.js framework, please make sure Node.js is installed on your operating system with npm. Below are the minimum required versions.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p><a href="https://nodejs.org" target="_blank" rel="noopener">Node.js</a> 8.0 or greater.</p>
+</li>
+<li>
+<p><a href="https://www.npmjs.com" target="_blank" rel="noopener">Npm</a> 3.0 or greater.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can also make use of <a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">nvm</a> to manage and run multiple versions of Node.js
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cli_tool"><a class="anchor" href="#_cli_tool"></a><a class="link" href="#_cli_tool">Cli tool</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once requirements to run AdonisJs Apps are met, the next step is to install the <strong>cli</strong> tool, which will help us in creating new AdonisJs applications.</p>
+</div>
+<div class="paragraph">
+<p>The cli tool is installed globally using npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i -g @adonisjs/cli</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the installation completes, make sure that you can run <code>adonis</code> from your command line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis --help</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Continue, if everything works as expected. Otherwise please create an issue on <a href="https://github.com/adonisjs/adonis-framework/issues/new" target="_blank" rel="noopener">github</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_new_app"><a class="anchor" href="#_creating_new_app"></a><a class="link" href="#_creating_new_app">Creating new app</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start by creating a new application using the cli tool <code>new</code> command. It accepts the project name/folder as a required parameter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis new yardstick</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1517474934/carbon_3_rkehpj.png" alt="carbon 3 rkehpj"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_running_application"><a class="anchor" href="#_running_application"></a><a class="link" href="#_running_application">Running application</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the installation process is completed, you can <code>cd</code> into the directory and run the following command to start the HTTP server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis serve --dev</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Started server in dev mode
+
+[date] - info: serving app on 127.0.0.1:3333</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>serve</code> command starts the HTTP server on port defined inside the <code>.env</code> file in the project root. If you open <a href="http://127.0.0.1:3333">127.0.0.1:3333</a> inside your browser, you will see the following <strong>welcome page</strong>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1502292352/welcome-page.png" alt="welcome page"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customizing_new_command"><a class="anchor" href="#_customizing_new_command"></a><a class="link" href="#_customizing_new_command">Customizing new command</a></h2>
+<div class="sectionbody">
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p>The <code>adonis new &lt;PATH&gt;</code> command creates the project directory and does <code>npm install</code> for you automatically. You can pass <code>--yarn</code> to make use of yarn over npm.</p>
+</li>
+<li>
+<p>By default <a href="https://github.com/adonisjs/adonis-fullstack-app" target="_blank" rel="noopener">fullstack app</a> blueprint is cloned from Github, which can be customized by passing <code>--slim</code> or <code>--api-only</code> flag.</p>
+</li>
+<li>
+<p>To make use of community created blueprints, you can pass <code>--blueprint=&lt;github-org/repo&gt;</code>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When in doubt, make use of the <code>adonis new --help</code> command to see the list of available options.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_next_steps"><a class="anchor" href="#_next_steps"></a><a class="link" href="#_next_steps">Next Steps</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide was small and focused only on the installation part of the process. Going forward we will learn about the HTTP lifecycle and the <a href="folder-structure">folder structure</a>.</p>
+</div>
+</div>
+</div>

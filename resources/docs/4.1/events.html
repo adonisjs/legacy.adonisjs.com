@@ -1,0 +1,275 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_about_events">About events</a></li>
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_api">API</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs ships with a dedicated <strong>Event provider</strong>, which internally uses <a href="https://github.com/asyncly/EventEmitter2" target="_blank" rel="noopener">EventEmitter2</a> with a bunch of convivence on top of it.</p>
+</div>
+<div class="paragraph">
+<p>Also, the event provider has a <a href="testing-fakes#_events_fake">fake</a> implementation, which can be used for assertions when writing tests.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_events"><a class="anchor" href="#_about_events"></a><a class="link" href="#_about_events">About events</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Event listeners are defined inside <code>start/events.js</code> file.</p>
+</li>
+<li>
+<p>Events listeners can be defined as <strong>Closures</strong> or you can bind an IoC container namespace.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Event.on('new::user', async (user) =&gt; {
+})
+
+// OR
+Event.on('new::user', 'User.registered')</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The <code>app/Listeners</code> directory is dedicated for storing Event listeners.</p>
+</li>
+<li>
+<p>When binding listeners to the events, you are not required to enter the entire namespace. For example, A listener stored as <code>app/Listeners/User.js</code> is referenced as <code>User.&lt;method&gt;</code>.</p>
+</li>
+<li>
+<p>Make use of <code>make:listener</code> command to create a new event listener.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:listener User
+
+✔ create  app/Listeners/User.js</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s say we want to emit an event every time a user register on our website, and inside the <strong>event listener</strong>, we send an email to the registered user.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.post('register', 'UserController.register')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">app/Controllers/Http/UserController.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Event = use('Event')
+
+class UserController {
+  register () {
+    // register the user
+
+    Event.fire('new::user', user)
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need to bind a listener for the <code>new::user</code> event, so that we can send the email. The same is done by creating a file inside the <code>start</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash"># Mac / Linux
+touch start/events.js
+
+# Windows
+type NUL &gt; start/events.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s write the following code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Event = use('Event')
+const Mail = use('Mail')
+
+Event.on('new::user', async (user) =&gt; {
+  await Mail.send('new.user', user, (message) =&gt; {
+    message.to(user.email)
+    message.from('from@email')
+  })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see, AdonisJs makes it easier to use the <code>await</code> keyword inside the Event listener callback.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api"><a class="anchor" href="#_api"></a><a class="link" href="#_api">API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods that can be used to interact with the <strong>Event provider</strong>.</p>
+</div>
+<div class="sect3">
+<h4 id="_on_event_listener"><a class="anchor" href="#_on_event_listener"></a><a class="link" href="#_on_event_listener">on(event, listener)</a></h4>
+<div class="paragraph">
+<p>Bind a single or multiple listeners for a given event. The <code>listener</code> can be a function or reference to the IoC container binding.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.on('new::user', async () =&gt; {
+
+})
+
+// IoC container binding
+Event.on('new::user', 'User.registered')
+
+// Array of listeners
+Event.on('new::user', ['Mailer.sendEmail', 'SalesForce.trackLead'])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>when</code> method is an alias of <code>on</code> method.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_once_event_listener"><a class="anchor" href="#_once_event_listener"></a><a class="link" href="#_once_event_listener">once(event, listener)</a></h4>
+<div class="paragraph">
+<p>Same as <a href="#_on_event_listener">on</a>, but instead called only for one time.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.once('new::user', () =&gt; {
+  console.log('executed once')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_onany_listener"><a class="anchor" href="#_onany_listener"></a><a class="link" href="#_onany_listener">onAny(listener)</a></h4>
+<div class="paragraph">
+<p>Bind listener for any event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.onAny(function () {
+
+})
+
+// Ioc container binding
+Event.onAny('EventsLogger.track')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_times_number"><a class="anchor" href="#_times_number"></a><a class="link" href="#_times_number">times(number)</a></h4>
+<div class="paragraph">
+<p>The <code>times</code> is chained with <code>on</code> or <code>when</code> to limit the number of times the listener should be fired.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event
+  .times(3)
+  .on('new::user', () =&gt; {
+    console.log('fired 3 times')
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_emit_event_data"><a class="anchor" href="#_emit_event_data"></a><a class="link" href="#_emit_event_data">emit(event, data)</a></h4>
+<div class="paragraph">
+<p>Emit an event with optional data. Also, you can use <code>fire</code> method, which is an alias for <code>emit</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.emit('new::user', user)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removelistener_event_listener"><a class="anchor" href="#_removelistener_event_listener"></a><a class="link" href="#_removelistener_event_listener">removeListener(event, listener)</a></h4>
+<div class="paragraph">
+<p>Remove listener(s) for a given event.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You must bind an IoC container reference to remove it later.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.on('new::user', 'User.registered')
+
+// later remove it
+Event.removeListener('new::user', 'User.registered')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can make use of the alias method called <code>off</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removealllisteners_event"><a class="anchor" href="#_removealllisteners_event"></a><a class="link" href="#_removealllisteners_event">removeAllListeners(event)</a></h4>
+<div class="paragraph">
+<p>Remove all listeners for a given event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.removeAllListeners()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_listenerscount_event"><a class="anchor" href="#_listenerscount_event"></a><a class="link" href="#_listenerscount_event">listenersCount(event)</a></h4>
+<div class="paragraph">
+<p>Returns the number of listeners for a given event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.listenersCount('new::user')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getlisteners_event"><a class="anchor" href="#_getlisteners_event"></a><a class="link" href="#_getlisteners_event">getListeners(event)</a></h4>
+<div class="paragraph">
+<p>Returns an array of listeners for a given event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.getListeners('new::user')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_haslisteners_event"><a class="anchor" href="#_haslisteners_event"></a><a class="link" href="#_haslisteners_event">hasListeners(event)</a></h4>
+<div class="paragraph">
+<p>Find if there are any listeners for a given event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Event.hasListeners('new::user')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

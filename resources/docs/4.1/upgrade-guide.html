@@ -1,0 +1,267 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_getting_started">Getting started</a></li>
+<li><a href="#_exception_handling">Exception handling</a></li>
+<li><a href="#_routing">Routing</a></li>
+<li><a href="#_validator">Validator</a></li>
+<li><a href="#_lucid">Lucid</a></li>
+<li><a href="#_goodies">Goodies</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The 4.1 release contains bunch of <strong>bug fixes</strong> and <strong>API improvements</strong> to keep the code base simple and less magical. I tried to keep the breaking changes as few as possible, however cannot eliminate them completely.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a><a class="link" href="#_getting_started">Getting started</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The first step is to get the latest version of all dependencies. I personally use <a href="https://www.npmjs.com/package/npm-check">npm-check</a> to pull latest versions of packages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm install -g npm-check</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run the following command to interactively update dependencies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm-check -u</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exception_handling"><a class="anchor" href="#_exception_handling"></a><a class="link" href="#_exception_handling">Exception handling</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the biggest changes have been done in the <a href="https://github.com/adonisjs/adonis-framework/issues/718">Global exception handler</a>.</p>
+</div>
+<div class="paragraph">
+<p>Make the following changes inside <code>app/Exceptions/Handler.js</code> file. Feel free to ignore this section, if you never created the global exception handler.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Make sure your exception handler extends the <code>BaseExceptionHandler</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const BaseExceptionHandler = use('BaseExceptionHandler')
+
+class ExceptionHandler extends BaseExceptionHandler {
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Call <code>super.handle</code> for exceptions you don&#8217;t want to handle.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class ExceptionHandler extends BaseExceptionHandler {
+  async handle (error, { response }) {
+    if (error.name === 'UserNotFoundException') {
+      // handle it yourself
+      return
+    }
+
+    super.handle(...arguments)
+  }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>At last you can remove <code>Exception.bind</code> calls from your codebase, since all exceptions will be routed to the global exception handler.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_routing"><a class="anchor" href="#_routing"></a><a class="link" href="#_routing">Routing</a></h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="_route_url"><a class="anchor" href="#_route_url"></a><a class="link" href="#_route_url">Route.url</a></h4>
+<div class="paragraph">
+<p>The <code>Route.url</code> generates a fully qualified URL to a pre-registered route. Earlier the <code>domain</code> was passed as a string literal and now it is accepted as an object.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.url('posts/:id', { id: 1 }, 'blog.adonisjs.com')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.url('posts/:id', { id: 1 }, { domain: 'blog.adonisjs.com' })</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validator"><a class="anchor" href="#_validator"></a><a class="link" href="#_validator">Validator</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The validator provider now uses latest version of Indicative. Here&#8217;s the list of breaking changes due to API changes done in Indicative.</p>
+</div>
+<div class="sect3">
+<h4 id="_formatters"><a class="anchor" href="#_formatters"></a><a class="link" href="#_formatters">formatters</a></h4>
+<div class="paragraph">
+<p>There is no concept of named formatters anymore. If you want to use a pre-existing formatter, you pass it as a reference, instead of passing it&#8217;s name.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validate } = use('Validator')
+validate(data, rules, messages, 'jsonapi')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validate, formatters } = use('Validator')
+validate(data, rules, messages, formatters.JsonApi)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same applies to route validators too.</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class StoreUser {
+  get formatter () {
+    return 'jsonapi'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { formatters } = use('Validator')
+
+class StoreUser {
+  get formatter () {
+    return formatters.JsonApi
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configure"><a class="anchor" href="#_configure"></a><a class="link" href="#_configure">configure</a></h4>
+<div class="paragraph">
+<p>New version of Indicative exposes the <a href="http://indicative.adonisjs.com/docs/api/configure">configure</a> method to define library wide defaults. They same can be used with Validator provider too.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { formatters, configure } = use('Validator')
+
+configure({
+  FORMATTER: formatters.JsonApi
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lucid"><a class="anchor" href="#_lucid"></a><a class="link" href="#_lucid">Lucid</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Date formatting was inconsistent with newly created records and already existing records. Same has been fixed in the newer release with a <strong>small breaking change</strong>. Make sure to read the <a href="https://github.com/adonisjs/adonis-lucid/issues/245">related issue</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_dates"><a class="anchor" href="#_dates"></a><a class="link" href="#_dates">dates</a></h4>
+<div class="paragraph">
+<p>The date fields will longer be casted to <code>moment</code> instances on the model instance. For example</p>
+</div>
+<div class="paragraph">
+<p>Earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+user.created_at instanceof moment // true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+user.created_at instanceof moment // false</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This change prevents you from mutating the date on the model instance directly and instead make use of <code>castDates</code> hook to mutate the date when you serialize the model properties.</p>
+</div>
+<div class="paragraph">
+<p>The <code>castDates</code> hook will work as earlier</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static castDates (field, value) {
+    if (field === 'dob') {
+      return `${value.fromNow(true)} old`
+    }
+    return super.formatDates(field, value)
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_goodies"><a class="anchor" href="#_goodies"></a><a class="link" href="#_goodies">Goodies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Bunch of bug fixes have been done to keep the codebase reliable. Also a handful of perfomance improvements have been done.</p>
+</div>
+<div class="sect3">
+<h4 id="_validator_2"><a class="anchor" href="#_validator_2"></a><a class="link" href="#_validator_2">Validator</a></h4>
+<div class="paragraph">
+<p>Since indicative is written from groundup, the new version is <code>2x faster</code> than the old one.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_middleware"><a class="anchor" href="#_middleware"></a><a class="link" href="#_middleware">Middleware</a></h4>
+<div class="paragraph">
+<p>The middleware parsing layer now resolves all middleware at the time of booting the app and just instantiates a new instance of them for each request. Whereas earlier the <strong>resolve</strong> process was done for each request.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_betters_errors"><a class="anchor" href="#_betters_errors"></a><a class="link" href="#_betters_errors">Betters errors</a></h4>
+<div class="paragraph">
+<p>The errors will appear in a nice formatted way on your terminal as shown in the screenshot.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="https://pbs.twimg.com/media/DTHfXErU8AADIyQ.png" alt="DTHfXErU8AADIyQ"></span></p>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,388 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_making_response">Making response</a></li>
+<li><a href="#_headers">Headers</a></li>
+<li><a href="#_cookies">Cookies</a></li>
+<li><a href="#_redirects">Redirects</a></li>
+<li><a href="#_attachments">Attachments</a></li>
+<li><a href="#_extending_response">Extending Response</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This guide gives an outline on how to make use of the HTTP <a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Response/index.js" target="_blank" rel="noopener">Response</a> object to make the response.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The Node.js raw <code>res</code> object can be accessed as <code>response.response</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>AdonisJs passes the current HTTP response object as part of the <a href="http-context#_http_context">context</a> which is sent to all route handlers and middleware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ response }) =&gt; {
+  response.send('hello world')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s see how to send an array of users back as JSON from the route.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async ({ response }) =&gt; {
+  const users = await User.all()
+  response.send(users)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can use <code>response.json</code> method as an alias to <code>response.send</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_making_response"><a class="anchor" href="#_making_response"></a><a class="link" href="#_making_response">Making response</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As of 4.0, you can also <code>return</code> values from the route closure or controller method, instead of using dedicated <code>response</code> methods.</p>
+</div>
+<div class="paragraph">
+<p>The following is equivalent to <code>response.send</code> or <code>response.json</code> but feels more natural with a return statement.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async () =&gt; {
+  return await User.all()
+})</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_no_callbacks_please"><a class="anchor" href="#_no_callbacks_please"></a><a class="link" href="#_no_callbacks_please">No callbacks please</a></h3>
+<div class="paragraph">
+<p>Since the request/response lifecycle allows you to return values and calling dedicated methods, it discourages the usage of callbacks entirely.</p>
+</div>
+<div class="paragraph">
+<p>Which means the following will not work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async ({ response }) =&gt; {
+  fs.readFile('somefile', (error, contents) =&gt; {
+    response.send(contents)
+  })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The reason why above code is not going to work, is that as soon the route handler is executed, AdonisJs ends the response, and your callback gets executed later, resulting in an error.</p>
+</div>
+<div class="paragraph">
+<p>It may <strong>sound scary</strong>, but it is done in favor of having a clean codebase, instead of sprinkling mixed API everywhere.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_promisfying_callbacks"><a class="anchor" href="#_promisfying_callbacks"></a><a class="link" href="#_promisfying_callbacks">Promisfying callbacks</a></h3>
+<div class="paragraph">
+<p>What you can do instead is promisify the callback and use it with <code>await</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Helpers = use('Helpers')
+const fs = use('fs')
+const readFile = Helpers.promisify(fs.readFile)
+
+Route.get('/', async ({ response }) =&gt; {
+  return await readFile('somefile')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See how cleaner the code is now. Javascript has a rich eco-system, and it is <strong>100% possible</strong> to write code without callbacks just by promisfying them, and as a community, we want to encourage it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_i_need_callbacks"><a class="anchor" href="#_i_need_callbacks"></a><a class="link" href="#_i_need_callbacks">I need callbacks</a></h3>
+<div class="paragraph">
+<p>If you think using callbacks is great, we have a way for you to use them. Simply instruct the <code>response</code> object not to end <code>implicitly</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', async ({ response }) =&gt; {
+  response.implicitEnd = false
+
+  fs.readFile('somefile', (error, contents) =&gt; {
+    response.send(contents)
+  })
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_headers"><a class="anchor" href="#_headers"></a><a class="link" href="#_headers">Headers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following is the list of methods to set/remove headers.</p>
+</div>
+<div class="sect3">
+<h4 id="_header"><a class="anchor" href="#_header"></a><a class="link" href="#_header">header</a></h4>
+<div class="paragraph">
+<p>Set&#8217;s header on the response</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.header('Content-type', 'application/json')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_safeheader"><a class="anchor" href="#_safeheader"></a><a class="link" href="#_safeheader">safeHeader</a></h4>
+<div class="paragraph">
+<p>Only set the header if it does not exist.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.safeHeader('Content-type', 'application/json')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removeheader"><a class="anchor" href="#_removeheader"></a><a class="link" href="#_removeheader">removeHeader</a></h4>
+<div class="paragraph">
+<p>Remove existing header</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.removeHeader('Content-type')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_type"><a class="anchor" href="#_type"></a><a class="link" href="#_type">type</a></h4>
+<div class="paragraph">
+<p>Set <code>Content-type</code> header.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.type('application/json')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cookies"><a class="anchor" href="#_cookies"></a><a class="link" href="#_cookies">Cookies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also, you can set/remove cookies by calling one of the following methods</p>
+</div>
+<div class="sect3">
+<h4 id="_cookie"><a class="anchor" href="#_cookie"></a><a class="link" href="#_cookie">cookie</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.cookie('cartTotal', 20)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clearcookie"><a class="anchor" href="#_clearcookie"></a><a class="link" href="#_clearcookie">clearCookie</a></h4>
+<div class="paragraph">
+<p>Remove existing cookie by setting the expiry in the past.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.clearCookie('cartTotal')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_plaincookie"><a class="anchor" href="#_plaincookie"></a><a class="link" href="#_plaincookie">plainCookie</a></h4>
+<div class="paragraph">
+<p>Since all cookies are encrypted and signed, it is not possible to read them from frontend Javascript code. In that case, may want to set a plain cookie instead.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// not signed or encrypted
+response.plainCookie('cartTotal', 20)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_redirects"><a class="anchor" href="#_redirects"></a><a class="link" href="#_redirects">Redirects</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use one of the following methods to redirect requests to a different URL.</p>
+</div>
+<div class="sect3">
+<h4 id="_redirect_url_sendparams_false_status_302"><a class="anchor" href="#_redirect_url_sendparams_false_status_302"></a><a class="link" href="#_redirect_url_sendparams_false_status_302">redirect(url, sendParams = false, status = 302)</a></h4>
+<div class="paragraph">
+<p>Redirect request to a different url, by default it will set the status as <code>302</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.redirect('/url')
+
+// or
+response.redirect('/url', false, 301)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can send current request params to the other request as well by setting <code>true</code> as the 2nd param.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.redirect('/url', true)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_route_route_data_domain_sendparams_false_status_302"><a class="anchor" href="#_route_route_data_domain_sendparams_false_status_302"></a><a class="link" href="#_route_route_data_domain_sendparams_false_status_302">route(route, data, domain, sendParams = false, status = 302)</a></h4>
+<div class="paragraph">
+<p>Redirect to a route. This method builds the URL automatically from the route name or controller method.</p>
+</div>
+<div class="listingblock">
+<div class="title">Defining route</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .get('users/:id', 'UserController.show')
+  .as('profile')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Redirect</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.route('profile', { id: 1 })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can pass the controller method.</p>
+</div>
+<div class="listingblock">
+<div class="title">Redirect</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.route('UserController.show', { id: 1 })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since AdonisJs allows registering routes for <a href="routing#_routing_domains">multiple domains</a>, you can instruct this method to build the URL for a specific domain.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.route('posts', { id: 1 }, 'blog.adonisjs.com')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_attachments"><a class="anchor" href="#_attachments"></a><a class="link" href="#_attachments">Attachments</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The response object makes it super easy to stream files from your server to the client.</p>
+</div>
+<div class="sect3">
+<h4 id="_download_filepath"><a class="anchor" href="#_download_filepath"></a><a class="link" href="#_download_filepath">download(filePath)</a></h4>
+<div class="paragraph">
+<p>Stream the file to the client. This method does not force the client to download the file as an attachment. For example, Browsers may choose to display the file in a new window.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.download(Helpers.tmpPath('uploads/avatar.jpg'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attachment_filepath_name_disposition"><a class="anchor" href="#_attachment_filepath_name_disposition"></a><a class="link" href="#_attachment_filepath_name_disposition">attachment(filePath, name, disposition)</a></h4>
+<div class="paragraph">
+<p>Force download the file</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.attachment(
+  Helpers.tmpPath('uploads/avatar.jpg')
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a custom name</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.attachment(
+  Helpers.tmpPath('uploads/avatar.jpg'),
+  'myAvatar.jpg'
+)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_response"><a class="anchor" href="#_extending_response"></a><a class="link" href="#_extending_response">Extending Response</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is also possible to extend the <code>Response</code> prototype by adding your own methods, known as macros.</p>
+</div>
+<div class="sect2">
+<h3 id="_application_specific"><a class="anchor" href="#_application_specific"></a><a class="link" href="#_application_specific">Application specific</a></h3>
+<div class="paragraph">
+<p>If your macros are specific to your application only, you can add the macro inside <code>start/hooks.js</code> file after the providers have been booted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersBooted(() =&gt; {
+  const Response = use('Adonis/Src/Response')
+
+  Response.macro('sendStatus', function (status) {
+    this.status(status).send(status)
+  })
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_via_provider"><a class="anchor" href="#_via_provider"></a><a class="link" href="#_via_provider">Via Provider</a></h3>
+<div class="paragraph">
+<p>If you are writing a module/addon for AdonisJs, you can add a macro inside the boot method of your service provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ServiceProvider } = require('@adonisjs/fold')
+
+class MyServiceProvider extends ServiceProvider {
+  boot () {
+    const Response = use('Adonis/Src/Response')
+
+    Response.macro('sendStatus', function (status) {
+      this.status(status).send(status)
+    })
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

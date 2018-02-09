@@ -1,0 +1,748 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_creating_commands">Creating commands</a></li>
+<li><a href="#_command_signature">Command signature</a></li>
+<li><a href="#_command_action">Command action</a></li>
+<li><a href="#_questions">Questions</a></li>
+<li><a href="#_colorful_logs">Colorful logs</a></li>
+<li><a href="#_file_management">File management</a></li>
+<li><a href="#_database_connection_management">Database connection management</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ace is a powerful command line tool crafted for AdonisJs. So far you have been using lots of ace commands to generate <strong>controllers</strong>, <strong>models</strong>, or to <strong>run migrations</strong>.</p>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn about the internals of Ace and how to create commands.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every AdonisJs project has an <code>ace</code> file in the project root, which is a regular Javascript file but without the <code>.js</code> extension.</p>
+</div>
+<div class="paragraph">
+<p>The <code>ace</code> file is used to execute project specific commands, and for reusable commands, you must bundle them as npm packages.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s run the following code to see the list of available commands.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">node ace</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Usage:
+  command [arguments] [options]
+
+Global Options:
+  --env                Set NODE_ENV before running the commands
+  --no-ansi            Disable colored output
+
+Available Commands:
+  seed                 Seed database using seed files
+ migration
+  migration:refresh    Refresh migrations by performing rollback and then running from start
+  migration:reset      Rollback migration to the first batch
+  migration:rollback   Rollback migration to latest batch or a specific batch number
+  migration:run        Run all pending migrations
+  migration:status     Check migrations current status</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For convenience, the <code>adonis</code> command proxies all the commands for a given project.<br>
+For example running <code>adonis migration:run</code> has the same result as running <code>node ace migration:run</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_commands"><a class="anchor" href="#_creating_commands"></a><a class="link" href="#_creating_commands">Creating commands</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s quickly build a command to pull random quotes of <strong>Paul Graham</strong> using <a href="http://gophergala.github.io/wisdom">wisdom API</a> and display it on the terminal.</p>
+</div>
+<div class="sect2">
+<h3 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:command Quote</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Follow the output instructions and register the command inside the commands array in <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  app/Commands/Quote.js
+┌───────────────────────────────────────────────────────────┐
+│        Register command as follows                        │
+│                                                           │
+│        1. Open start/app.js                               │
+│        2. Add App/Commands/Quote to commands array        │
+└───────────────────────────────────────────────────────────┘</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, if we run <code>adonis</code>, we should see the <code>quote</code> command inside the list of available commands.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_showing_quotes"><a class="anchor" href="#_showing_quotes"></a><a class="link" href="#_showing_quotes">Showing quotes</a></h3>
+<div class="paragraph">
+<p>Let&#8217;s replace everything inside the command file with the following code.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure to install <a href="https://npmjs.org/package/got">got</a> from npm. It is used to consume the HTTP API.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const { Command } = use('@adonisjs/ace')
+const got = use('got')
+
+class Quote extends Command {
+  static get signature () {
+    return 'quote'
+  }
+
+  static get description () {
+    return 'Shows inspirational quote from Paul Graham'
+  }
+
+  async handle (args, options) {
+    const response = await got('https://wisdomapi.herokuapp.com/v1/author/paulg/random')
+    const quote = JSON.parse(response.body)
+    console.log(`${this.chalk.gray(quote.author.name)} - ${this.chalk.cyan(quote.author.company)}`)
+    console.log(`${quote.content}`)
+  }
+}
+
+module.exports = Quote</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Running <code>adonis quote</code> prints the quote from the terminal.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_signature"><a class="anchor" href="#_command_signature"></a><a class="link" href="#_command_signature">Command signature</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The command signature defines the command name, required/optional options and flags. The signature is defined as an expression string.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">static get signature () {
+  return 'greet { name: Name of the user to greet }'
+}</code></pre>
+</div>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>In above signature <code>greet</code> is the command name</p>
+</li>
+<li>
+<p>The <code>{ name }</code> is the required argument to be passed when running the command.</p>
+</li>
+<li>
+<p>Everything after the <code>:</code> is the description of the argument.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The command signature can in multiple lines using the ES6 template literals.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">static get signature () {
+  return `
+    greet
+    { name : Name of the user to greet }
+    { age? : User age }
+  `
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_optional_arguments"><a class="anchor" href="#_optional_arguments"></a><a class="link" href="#_optional_arguments">Optional arguments</a></h4>
+<div class="paragraph">
+<p>The arguments can be optional by passing <code>?</code> to the name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'greet { name? : Name of the user to greet }'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_default_value"><a class="anchor" href="#_default_value"></a><a class="link" href="#_default_value">Default value</a></h4>
+<div class="paragraph">
+<p>You can also define default value for an argument</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'greet { name?=virk : Name of the user to greet }'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flags"><a class="anchor" href="#_flags"></a><a class="link" href="#_flags">Flags</a></h4>
+<div class="paragraph">
+<p>The flags are prefixed with <code>--</code> and has the same signature as arguments</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">static get signature () {
+  return `
+    send:email
+    { --log : Log email response to the console }
+  `
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When running the command, we can pass the <code>--log</code> as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">adonis send:email --log</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flags_with_values"><a class="anchor" href="#_flags_with_values"></a><a class="link" href="#_flags_with_values">Flags with values</a></h4>
+<div class="paragraph">
+<p>At times you may want to accept values with flags, same can be done by tweaking the expression as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">static get signature () {
+  return `
+    send:email
+    { --driver=@value : Define a custom driver to be used  }
+  `
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>=@value</code> instructs ace to make sure a value is always passed to the <code>--driver</code> flag.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_action"><a class="anchor" href="#_command_action"></a><a class="link" href="#_command_action">Command action</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>handle</code> method on the command class is invoked every time command is executed. It receives an object of <code>arguments</code> and <code>flags</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All <strong>arguments</strong> and <strong>flags</strong> are passed in camel case format. For example <code>--file-path</code> flag is set as <code>filePath</code> key inside the object.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">async handle (args, flags) {
+  console.log(args)
+  console.log(flags)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_questions"><a class="anchor" href="#_questions"></a><a class="link" href="#_questions">Questions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Within your command, you can prompt users and accept values by asking interactive questions.</p>
+</div>
+<div class="sect3">
+<h4 id="_ask_question_defaultanswer"><a class="anchor" href="#_ask_question_defaultanswer"></a><a class="link" href="#_ask_question_defaultanswer">ask(question, [defaultAnswer])</a></h4>
+<div class="paragraph">
+<p>Prompt for free text question.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">async handle () {
+  const name = await this
+    .ask('Enter project name')
+
+  // with default answer
+  const name = await this
+    .ask('Enter project name', 'yardstick')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_confirm_question"><a class="anchor" href="#_confirm_question"></a><a class="link" href="#_confirm_question">confirm(question)</a></h4>
+<div class="paragraph">
+<p>Prompt user for a <code>Yes/no</code> question.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const deleteFiles = await this
+  .confirm('Are you sure you want to delete selected files?')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_secure_question_defaultanswer"><a class="anchor" href="#_secure_question_defaultanswer"></a><a class="link" href="#_secure_question_defaultanswer">secure(question, [defaultAnswer])</a></h4>
+<div class="paragraph">
+<p>Prompt user for a secure input like a password or some secret.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const password = await this
+  .secure('What is your password?')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_multiple_title_choices_selected"><a class="anchor" href="#_multiple_title_choices_selected"></a><a class="link" href="#_multiple_title_choices_selected">multiple(title, choices, [selected])</a></h4>
+<div class="paragraph">
+<p>Prompt for a multiple choice question</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const lunch = await this
+  .multiple('Friday lunch ( 2 per person )', [
+    'Roasted vegetable lasagna',
+    'Vegetable &amp; feta cheese filo pie',
+    'Roasted Cauliflower + Aubergine'
+  ])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The options can also be an object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const lunch = await this
+  .multiple('Friday lunch ( 2 per person )', [
+    {
+      name: 'Roasted Cauliflower + Aubergine',
+      value: 'no 1'
+    },
+    {
+      name: 'Carrot + Tabbouleh',
+      value: 'no 2'
+    }
+  ])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can pass an array of pre selected values</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const lunch = await this
+  .multiple('Friday lunch ( 2 per person )', [
+    'Roasted vegetable lasagna',
+    'Vegetable &amp; feta cheese filo pie',
+    'Roasted Cauliflower + Aubergine'
+  ], [
+    'Roasted vegetable lasagna.'
+  ])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_choice_question_choices_selected"><a class="anchor" href="#_choice_question_choices_selected"></a><a class="link" href="#_choice_question_choices_selected">choice(question, choices, [selected])</a></h4>
+<div class="paragraph">
+<p>choose one value from a list of options.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const client = await this
+  .choice('Client to use for installing dependencies', [
+    'yarn', 'npm'
+  ])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also can also be an object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const client = await this
+  .choice('Client to use for installing dependencies', [
+    {
+      name: 'Use yarn',
+      value: 'yarn'
+    },
+    {
+      name: 'Use npm',
+      value: 'npm'
+    }
+  ])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can pre select one of the available options.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const client = await this
+  .choice('Client to use for installing dependencies', [
+    {
+      name: 'Use yarn',
+      value: 'yarn'
+    },
+    {
+      name: 'Use npm',
+      value: 'npm'
+    }
+  ], 'npm')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_openeditor_question_defaultvalue"><a class="anchor" href="#_openeditor_question_defaultvalue"></a><a class="link" href="#_openeditor_question_defaultvalue">openEditor(question, [defaultValue])</a></h4>
+<div class="paragraph">
+<p>Open default editor and get value on editor window exits</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const message = this
+  .openEditor('Enter commit message')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_colorful_logs"><a class="anchor" href="#_colorful_logs"></a><a class="link" href="#_colorful_logs">Colorful logs</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ace uses <a href="https://npmjs.org/package/chalk" target="_blank" rel="noopener">chalk</a> to output colorful messages on the terminal, you can access the instance of chalk as <code>this.chalk</code>.</p>
+</div>
+<div class="paragraph">
+<p>Also, there are some helper methods to log consistently styled messages.</p>
+</div>
+<div class="sect3">
+<h4 id="_error_message"><a class="anchor" href="#_error_message"></a><a class="link" href="#_error_message">error(message)</a></h4>
+<div class="paragraph">
+<p>Log error message to <code>stderr</code> in red color.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">this.error('Something went bad')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_info_message"><a class="anchor" href="#_info_message"></a><a class="link" href="#_info_message">info(message)</a></h4>
+<div class="paragraph">
+<p>Log info message to <code>stdout</code> in cyan color.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">this.info('Something worth sharing')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_warn_message"><a class="anchor" href="#_warn_message"></a><a class="link" href="#_warn_message">warn(message)</a></h4>
+<div class="paragraph">
+<p>Log message in yellow color</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">this.warn('Fire in the hole')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_success_message"><a class="anchor" href="#_success_message"></a><a class="link" href="#_success_message">success(message)</a></h4>
+<div class="paragraph">
+<p>Log message in green color</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">this.success('All went fine')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_completed_action_message"><a class="anchor" href="#_completed_action_message"></a><a class="link" href="#_completed_action_message">completed(action, message)</a></h4>
+<div class="paragraph">
+<p>Mark an action as completed</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">this.completed('create', 'config/app.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_failed_action_message"><a class="anchor" href="#_failed_action_message"></a><a class="link" href="#_failed_action_message">failed(action, message)</a></h4>
+<div class="paragraph">
+<p>Unable to complete an action</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">this.failed('create', 'config/app.js')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_table_head_body"><a class="anchor" href="#_table_head_body"></a><a class="link" href="#_table_head_body">table(head, body)</a></h4>
+<div class="paragraph">
+<p>Print tabular data</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const head = ['Name', 'Age']
+const body = [['virk', 22], ['joe', 23]]
+
+this.table(head, body)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can define the head row color.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const head = ['Name', 'Age']
+const body = [['virk', 22], ['joe', 23]]
+const options = { head: ['red'] }
+
+this.table(head, body, options)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_icon_type"><a class="anchor" href="#_icon_type"></a><a class="link" href="#_icon_type">icon(type)</a></h4>
+<div class="paragraph">
+<p>Print icon for one of the following types.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Icon</th>
+<th class="tableblock halign-left valign-top">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ℹ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">info</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✔</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">success</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">⚠</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">warn</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✖</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">error</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">console.log(`${this.icon('success')} Completed`)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_management"><a class="anchor" href="#_file_management"></a><a class="link" href="#_file_management">File management</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ace makes it simple to interact with the file system by offering Promise first API.</p>
+</div>
+<div class="sect3">
+<h4 id="_writefile_location_contents"><a class="anchor" href="#_writefile_location_contents"></a><a class="link" href="#_writefile_location_contents">writeFile(location, contents)</a></h4>
+<div class="paragraph">
+<p>Write file to a given location. Missing directories are created automatically.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.writeFile(Helpers.appRoot('Models/User.js'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ensurefile_location"><a class="anchor" href="#_ensurefile_location"></a><a class="link" href="#_ensurefile_location">ensureFile(location)</a></h4>
+<div class="paragraph">
+<p>Ensure file exists at a given location, otherwise an empty file is created.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.ensureFile(Helpers.appRoot('Models/User.js'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ensuredir_location"><a class="anchor" href="#_ensuredir_location"></a><a class="link" href="#_ensuredir_location">ensureDir(location)</a></h4>
+<div class="paragraph">
+<p>Ensure directory exists at a given location, otherwise an empty directory is created.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.ensureDir(Helpers.appRoot('Models'))</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pathexists_location"><a class="anchor" href="#_pathexists_location"></a><a class="link" href="#_pathexists_location">pathExists(location)</a></h4>
+<div class="paragraph">
+<p>Find a path exists or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const exists = await this.pathExists('some-location')
+
+if (exists) {
+  // do something
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removefile_location"><a class="anchor" href="#_removefile_location"></a><a class="link" href="#_removefile_location">removeFile(location)</a></h4>
+<div class="paragraph">
+<p>Remove file from a given location</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.removeFile('some-location')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removedir_location"><a class="anchor" href="#_removedir_location"></a><a class="link" href="#_removedir_location">removeDir(location)</a></h4>
+<div class="paragraph">
+<p>Remove directory from a given location</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.removeDir('some-location')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_readfile_location"><a class="anchor" href="#_readfile_location"></a><a class="link" href="#_readfile_location">readFile(location)</a></h4>
+<div class="paragraph">
+<p>Read contents of a given file</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const contents = await this.readFile('some-location', 'utf-8')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_copy_src_dest"><a class="anchor" href="#_copy_src_dest"></a><a class="link" href="#_copy_src_dest">copy(src, dest)</a></h4>
+<div class="paragraph">
+<p>Copy file/directory from one location to other</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.copy(src, dest)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_move_src_dest"><a class="anchor" href="#_move_src_dest"></a><a class="link" href="#_move_src_dest">move(src, dest)</a></h4>
+<div class="paragraph">
+<p>Move file/directory from one location to other</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await this.move(src, dest)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_connection_management"><a class="anchor" href="#_database_connection_management"></a><a class="link" href="#_database_connection_management">Database connection management</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you use database access (Lucid or directly), you must remember to manually close the database connection.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database.close()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A more complete example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Database = use('Database')
+
+class Quote extends Command {
+  static get signature () {
+    return 'quote'
+  }
+
+  static get description () {
+    return 'Shows inspirational quote from Paul Graham'
+  }
+
+  async handle (args, options) {
+    let quote = await Quote.query().orderByRaw('rand()').first()
+    console.log(quote.content)
+
+    // This is the important line. Without it, the command runner will not exit.
+    Database.close()
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>

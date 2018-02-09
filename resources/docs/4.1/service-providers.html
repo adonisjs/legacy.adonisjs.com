@@ -1,0 +1,367 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_npm_package_as_a_service_provider">Npm package as a service provider</a></li>
+<li><a href="#_distributing_as_a_package">Distributing as a package</a></li>
+<li><a href="#_faq_s">FAQ&#8217;s</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So far we learned <a href="ioc-container#_binding_dependencies">how to bind</a> dependencies to the IoC container. In this guide, we take a step further to learn about <strong>service providers</strong> and how to distribute packages that play nicely with the AdonisJs eco-system.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We know that <code>ioc.bind</code> method can be used to register bindings. However, there are no clear guidelines on where to call this method.</p>
+</div>
+<div class="paragraph">
+<p>It is where <strong>service providers</strong> comes into the picture. Service providers are simple ES6 classes with lifecycle methods that are used to register and bootstrap bindings.</p>
+</div>
+<div class="paragraph">
+<p>For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ServiceProvider } = require('@adonisjs/fold')
+
+class MyProvider extends ServiceProvider {
+  register () {
+    // register bindings
+  }
+
+  boot () {
+    // optionally do some initial setup
+  }
+}
+
+module.exports = MyProvider</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>register</code> method is used to register the binding, and you should never try to use any other binding inside this method.</p>
+</li>
+<li>
+<p>The <code>boot</code> method is called when all providers have been registered. It is the right time to use existing bindings to bootstrap some state.<br></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For example: Adding a view global.<br></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">boot () {
+  const View = this.app.use('Adonis/Src/View')
+  View.global('time', () =&gt; new Date().getTime())
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_npm_package_as_a_service_provider"><a class="anchor" href="#_npm_package_as_a_service_provider"></a><a class="link" href="#_npm_package_as_a_service_provider">Npm package as a service provider</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s see how we can wrap an existing npm package to a service provider. All application specific providers live inside the <code>providers</code> directory in the root of your app.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Do not wrap packages like <code>lodash</code> inside a provider, since it can be used directly and doesn&#8217;t require any setup process that can be abstracted.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_directory_structure"><a class="anchor" href="#_directory_structure"></a><a class="link" href="#_directory_structure">Directory structure</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">├── app
+└── providers
+  └── Queue
+    └── index.js
+    └── Provider.js
+└── start</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_principles"><a class="anchor" href="#_principles"></a><a class="link" href="#_principles">Principles</a></h3>
+<div class="paragraph">
+<p>We are going to wrap <a href="https://github.com/bee-queue/bee-queue" target="_blank" rel="noopener">bee-queue</a> as a provider. Below is the set of principles we want to follow.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>End-user should not have to worry about configuring the queue provider.</p>
+</li>
+<li>
+<p>All configuration should live inside <code>config/queue.js</code> file.</p>
+</li>
+<li>
+<p>It should be simple enough to create new queues with a different configuration.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_implementation"><a class="anchor" href="#_implementation"></a><a class="link" href="#_implementation">Implementation</a></h3>
+<div class="paragraph">
+<p>Let&#8217;s create implementing the wrapper inside <code>providers/Queue/index.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const BeeQueue = require('bee-queue')
+
+class Queue {
+  constructor (Config) {
+    this.Config = Config
+    this._queuesPool = {}
+  }
+
+  get (name) {
+    /**
+     * If there is an instance of queue already, then return it
+     */
+    if (this._queuesPool[name]) {
+      return this._queuesPool[name]
+    }
+
+    /**
+     * Read configuration using Config
+     * provider
+     */
+    const config = this.Config.get(`queue.${name}`)
+
+    /**
+     * Create a new queue instance and save it's
+     * reference
+     */
+    this._queuesPool[name] = new BeeQueue(name, config)
+
+    /**
+     * Return the instance back
+     */
+    return this._queuesPool[name]
+  }
+}
+
+module.exports = Queue</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above class only has one method called <code>get</code>, which returns an instance of the queue for a given <strong>queue name</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Following are the steps performed by the get method</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Look for an instance of a given queue name.</p>
+</li>
+<li>
+<p>If an instance does not exist, read the configuration using the <strong>Config provider</strong>.</p>
+</li>
+<li>
+<p>Create a new <code>bee-queue</code> instance and store inside an object for future use.</p>
+</li>
+<li>
+<p>Finally, return the instance.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The <code>Queue</code> class is pure, since it does not have any hard dependencies on the framework and instead rely on <strong>Dependency Injection</strong> to provide the <strong>Config provider</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_provider"><a class="anchor" href="#_service_provider"></a><a class="link" href="#_service_provider">Service provider</a></h3>
+<div class="paragraph">
+<p>Now let&#8217;s create a service provider who does the instantiation of this class and binds it to be IoC container. The code lives inside <code>providers/Queue/Provider.js</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ServiceProvider } = require('@adonisjs/fold')
+
+class QueueProvider extends ServiceProvider {
+  register () {
+    this.app.singleton('Bee/Queue', () =&gt; {
+      const Config = this.app.use('Adonis/Src/Config')
+      return new (require('.'))(Config)
+    })
+  }
+}
+
+module.exports = QueueProvider</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>this.app</code> is a reference to the <code>ioc</code> object. Which means instead of calling <code>ioc.singleton</code>, we call <code>this.app.singleton</code>.</p>
+</div>
+<div class="paragraph">
+<p>Finally, we need to register this provider like any other provider inside the <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  path.join(__dirname, '..', 'providers', 'Queue/provider')
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, we can call <code>use('Bee/Queue')</code> inside any file of your application and use it as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Queue = use('Bee/Queue')
+
+Queue
+  .get('addition')
+  .createJob({ x: 2, y: 3 })
+  .save()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_distributing_as_a_package"><a class="anchor" href="#_distributing_as_a_package"></a><a class="link" href="#_distributing_as_a_package">Distributing as a package</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="#_npm_package_as_a_service_provider">bee queue</a> provider we created lives in the same project struture. However, we can extract it into it&#8217;s own package.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s create a new directory with following directory structure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">└── providers
+    └── QueueProvider.js
+├── src
+  └── Queue
+    └── index.js
+└── package.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All we did is moved the actual <code>Queue</code> implementation to the <code>src</code> directory and renamed the provider file to <code>QueueProvider.js</code></p>
+</div>
+<div class="paragraph">
+<p>Also we have to make following changes</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Since the <code>Queue/index.js</code> is in a different directory, we need to tweak the reference of this file inside our service provider.</p>
+</li>
+<li>
+<p>Rename <code>Bee/Queue</code> namespace to a more suited namespace, which has less changes of collision. For example, when creating this provider for AdonisJs, we will name it as <code>Adonis/Addons/Queue</code>.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ServiceProvider } = require('@adonisjs/fold')
+
+class QueueProvider extends ServiceProvider {
+  register () {
+    this.app.singleton('Bee/Queue', () =&gt; {
+      const Config = this.app.use('Adonis/Src/Config')
+      return new (require('../src/Queue'))(Config)
+    })
+  }
+}
+
+module.exports = QueueProvider</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure you do not include <code>@adonisjs/fold</code> as a dependency for your provider. This should be installed by the main app only. For testing you can install it as a <strong>dev dependency</strong>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_writing_provider_tests"><a class="anchor" href="#_writing_provider_tests"></a><a class="link" href="#_writing_provider_tests">Writing provider tests</a></h3>
+<div class="paragraph">
+<p>You can use any testing engine you want. However we officially use <a href="https://github.com/thetutlage/japa" target="_blank" rel="noopener">japa</a> as the testing engine to write tests for any providers.</p>
+</div>
+<div class="paragraph">
+<p>Setting up japa is simple as shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev japa</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the tests inside the <code>test</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">mkdir test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The tests can be executed by running the test file using <code>node</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">node test/example.spec.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But of course, you want to run all the test files together and for that you can make use of <code>japa-cli</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">npm i --save-dev japa-cli</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And run tests as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./node_modules/.bin/japa</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_faq_s"><a class="anchor" href="#_faq_s"></a><a class="link" href="#_faq_s">FAQ&#8217;s</a></h2>
+<div class="sectionbody">
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p><strong>Why not install <code>@adonisjs/fold</code> as a dependency?</strong><br>
+If you have ever worked with gulp, they also <a href="https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/guidelines.md">recommend (p:14)</a> not to install gulp as the dependency when creating plugins.<br>
+&nbsp;<br>
+It is required so that always the main application version of <code>@adonisjs/fold</code> is installed and your provider makes use of it. Otherwise, each provider will end up shipping it&#8217;s own version of IoC container.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>

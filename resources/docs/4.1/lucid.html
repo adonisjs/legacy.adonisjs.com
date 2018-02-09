@@ -1,0 +1,1023 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_convention_over_configuration">Convention over configuration</a></li>
+<li><a href="#_hiding_fields">Hiding Fields</a></li>
+<li><a href="#_dates">Dates</a></li>
+<li><a href="#_query_builder">Query builder</a></li>
+<li><a href="#_static_methods">Static methods</a></li>
+<li><a href="#_aggregate_helpers">Aggregate helpers</a></li>
+<li><a href="#_query_scopes">Query scopes</a></li>
+<li><a href="#_pagination">Pagination</a></li>
+<li><a href="#_inserts_updates">Inserts &amp; Updates</a></li>
+<li><a href="#_deletes">Deletes</a></li>
+<li><a href="#_transactions">Transactions</a></li>
+<li><a href="#_boot_cycle">Boot cycle</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Lucid is an implementation of <a href="https://en.wikipedia.org/wiki/Active_record_pattern" target="_blank" rel="noopener">Active Record</a> pattern in Javascript. If you are coming from the <strong>Laravel</strong> or the <strong>Rails</strong> world, then you may be quite familiar with it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The reason behind using Models over writing plain database queries is the ease of use and the powerful API to drive the data flow. Lucid models under the hood takes care of</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fetching, persisting model instance transparently.</p>
+</li>
+<li>
+<p>Expressive API to manage relationships.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class User extends Model {
+
+  profile () {
+    return this.hasOne('App/Models/Profile')
+  }
+
+  posts () {
+    return this.hasMany('App/Models/Post')
+  }
+
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Define life-cycle hooks to keep your code DRY.</p>
+</li>
+<li>
+<p>Getters/Setters to mutate data on the fly.</p>
+</li>
+<li>
+<p>Serialize data using <strong>serializers</strong>, <strong>computed properties</strong> etc.</p>
+</li>
+<li>
+<p>Manage date formats.</p>
+</li>
+<li>
+<p>and much more.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Lucid models are not tied to your database schema and instead manages everything on their own.<br>
+<strong>For example</strong>: There is no need to define associations in SQL when using lucid relationships.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The lucid models are stored as ES6 classes inside <code>app/Models</code> directory, where each model represents a database table. For example</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Model</th>
+<th class="tableblock halign-left valign-top">Database table</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">users</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Post</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">posts</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s see how to create and make use of a Model to read/write to the database. You can make use of the <code>adonis</code> command to generate a model.</p>
+</div>
+<div class="sect2">
+<h3 id="_creating_model"><a class="anchor" href="#_creating_model"></a><a class="link" href="#_creating_model">Creating model</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:model User
+
+# or with migration
+adonis make:model User --migration</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">✔ create  app/Models/User.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+const Model = use('Model')
+
+class User extends Model {
+}
+
+module.exports = User</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fetching_users"><a class="anchor" href="#_fetching_users"></a><a class="link" href="#_fetching_users">Fetching users</a></h3>
+<div class="paragraph">
+<p>Now inside the routes file, we use the <strong>User</strong> model to fetch all users.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/routes.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Route = use('Route')
+const User = use('App/Models/User')
+
+Route.get('users', async () =&gt; {
+  return await User.all()
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_user"><a class="anchor" href="#_creating_user"></a><a class="link" href="#_creating_user">Creating user</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+
+user.username = 'virk'
+user.password = 'some-password'
+
+await user.save()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_convention_over_configuration"><a class="anchor" href="#_convention_over_configuration"></a><a class="link" href="#_convention_over_configuration">Convention over configuration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lucid models do a lot based on certain conventions, but of course, you are free to override the defaults with your settings.</p>
+</div>
+<div class="sect3">
+<h4 id="_table"><a class="anchor" href="#_table"></a><a class="link" href="#_table">table</a></h4>
+<div class="paragraph">
+<p>The table name is always the <strong>lowercase</strong> and <strong>plural</strong> form of the model name. However, you can override it defining a getter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get table () {
+    return 'my_users'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_connection"><a class="anchor" href="#_connection"></a><a class="link" href="#_connection">connection</a></h4>
+<div class="paragraph">
+<p>By default, models make use of the default connection defined inside <code>config/database.js</code> file. However, you can set a different database connection for each model.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get connection () {
+    return 'mysql'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_primarykey"><a class="anchor" href="#_primarykey"></a><a class="link" href="#_primarykey">primaryKey</a></h4>
+<div class="paragraph">
+<p>The primary key is set as <code>id</code> by default. However, you can mark a different field as the primary key. Also, make sure that the value of this field should always be unique.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get primaryKey () {
+    return 'uid'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_createdatcolumn"><a class="anchor" href="#_createdatcolumn"></a><a class="link" href="#_createdatcolumn">createdAtColumn</a></h4>
+<div class="paragraph">
+<p>The field name to be used for setting the created at time stamp. You can return <code>null</code> to disable it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get createdAtColumn () {
+    return 'created_at'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updatedatcolumn"><a class="anchor" href="#_updatedatcolumn"></a><a class="link" href="#_updatedatcolumn">updatedAtColumn</a></h4>
+<div class="paragraph">
+<p>The field name to be used for setting the updated at time stamp. You can return <code>null</code> to disable it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get updatedAtColumn () {
+    return 'updated_at'
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_incrementing"><a class="anchor" href="#_incrementing"></a><a class="link" href="#_incrementing">incrementing</a></h4>
+<div class="paragraph">
+<p>Lucid assumes that each table associated with a Model has an auto incrementing primary key. You can disable this flag by return <code>false</code> from the incrementing getter.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When you set <code>incrementing = false</code>, you have to make sure to set the <code>primaryKeyValue</code> manually.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get incrementing () {
+    return false
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_primarykeyvalue"><a class="anchor" href="#_primarykeyvalue"></a><a class="link" href="#_primarykeyvalue">primaryKeyValue</a></h4>
+<div class="paragraph">
+<p>The value of the primary key. You only update this key when <code>incrementing</code> is set to false.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+console.log(user.primaryKeyValue)
+
+// when incrementing is false
+user.primaryKeyValue = uuid.v4()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hiding_fields"><a class="anchor" href="#_hiding_fields"></a><a class="link" href="#_hiding_fields">Hiding Fields</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you will find yourself omitting fields from the database results. For example: Hiding the user’s password from the JSON output. Doing this manually can be tedious in many ways.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You will have manually loop over the rows and delete the key/value pair.</p>
+</li>
+<li>
+<p>When you fetch relationships, you will have to loop through all the parent records and then their child records to delete the key/value pair.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes it simpler by defining the visible or hidden (one at a time) on your model.</p>
+</div>
+<div class="sect3">
+<h4 id="_hidden"><a class="anchor" href="#_hidden"></a><a class="link" href="#_hidden">hidden</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get hidden () {
+    return ['password']
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_visible"><a class="anchor" href="#_visible"></a><a class="link" href="#_visible">visible</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class Post extends Model {
+  static get visible () {
+    return ['title', 'body']
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_setvisible_sethidden"><a class="anchor" href="#_setvisible_sethidden"></a><a class="link" href="#_setvisible_sethidden">setVisible/setHidden</a></h4>
+<div class="paragraph">
+<p>Also you can define <code>hidden/visible</code> fields for a single query using following methods.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">User.query().setVisible(['title', 'body']).fetch()
+
+// or set hidden
+User.query().setHidden(['password']).fetch()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dates"><a class="anchor" href="#_dates"></a><a class="link" href="#_dates">Dates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dates are the hardest part of building data driver applications. We want to store them differently and show them differently, which usually requires much manual work.</p>
+</div>
+<div class="paragraph">
+<p>Lucid handles date gracefully so that you have minimal work to do.</p>
+</div>
+<div class="sect2">
+<h3 id="_defining_date_fields"><a class="anchor" href="#_defining_date_fields"></a><a class="link" href="#_defining_date_fields">Defining date fields</a></h3>
+<div class="paragraph">
+<p>The first step is to tell Lucid, which fields are supposed to be treated as dates. By default, the timestamps <code>created_at</code> and <code>updated_at</code> are marked as dates.</p>
+</div>
+<div class="paragraph">
+<p>However, you can define your own too.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static get dates () {
+    return super.dates.concat(['dob'])
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So here we pull the fields which are marked as dates by default and push a new date field to it and finally return it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formatting_date_fields"><a class="anchor" href="#_formatting_date_fields"></a><a class="link" href="#_formatting_date_fields">Formatting date fields</a></h3>
+<div class="paragraph">
+<p>Lucid formats all dates as <code>YYYY-MM-DD HH:mm:ss</code> by default, which is a valid format for all database engines. Also, it gives you a way to conditionally format certain or all date fields.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>formatDates</code> method is called before saving the model instance to the database. So make sure the return value is always a valid format for the database engine you are using.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static formatDates (field, value) {
+    if (field === 'dob') {
+      return value.format('YYYY-MM-DD')
+    }
+    return super.formatDates(field, value)
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>value</code> is the actual date given when setting the field.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_casting_dates"><a class="anchor" href="#_casting_dates"></a><a class="link" href="#_casting_dates">Casting dates</a></h3>
+<div class="paragraph">
+<p>Now we have saved the dates to the database; we may want to format them differently when displaying it to the user. It can be done quite easily using the <code>castDates</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class User extends Model {
+  static castDates (field, value) {
+    if (field === 'dob') {
+      return `${value.fromNow(true)} old`
+    }
+    return super.formatDates(field, value)
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>value</code> is an instance of <a href="https://momentjs.com/" target="_blank" rel="noopener">moment.js</a>, which means you can call any moment methods to format the date. Also, the <code>castDates</code> method is called when the model instance is <strong>deserialized</strong>, which happens after calling <code>toJSON</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const users = await User.all()
+
+// converting to JSON array
+const usersJSON = users.toJSON()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_query_builder"><a class="anchor" href="#_query_builder"></a><a class="link" href="#_query_builder">Query builder</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lucid models make use of <a href="query-builder">database query builder</a> to run database queries. You can obtain an instance of query builder by calling <code>query</code> method on a model.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const adults = await User
+  .query()
+  .where('age', '&gt;', 18)
+  .fetch()</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>All of the query builder methods are fully supported.</p>
+</li>
+<li>
+<p>With Lucid models, you are supposed to call <code>fetch</code> method to execute the query. It is required to get results back within an instance of <code>serializer</code> ( learn more about <a href="serializers">serializers</a> ).</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_static_methods"><a class="anchor" href="#_static_methods"></a><a class="link" href="#_static_methods">Static methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lucid models come with a bunch of static methods to do common operations without using the query builder interface.</p>
+</div>
+<div class="paragraph">
+<p>Also, there is no need to call <code>fetch</code> when using one of the following static methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_find"><a class="anchor" href="#_find"></a><a class="link" href="#_find">find</a></h4>
+<div class="paragraph">
+<p>Find a record using for the primary key. Always returns one record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+await User.find(1)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_findorfail"><a class="anchor" href="#_findorfail"></a><a class="link" href="#_findorfail">findOrFail</a></h4>
+<div class="paragraph">
+<p>Same as the <code>find</code> method but instead throws <code>ModelNotFoundException</code> when unable to find a record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+await User.findOrFail(1)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_findby_findbyorfail"><a class="anchor" href="#_findby_findbyorfail"></a><a class="link" href="#_findby_findbyorfail">findBy / findByOrFail</a></h4>
+<div class="paragraph">
+<p>Find a record using a key/value pair. Returns the first matching record.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+await User.findBy('email', 'foo@bar.com')
+
+// or
+await User.findByOrFail('email', 'foo@bar.com')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_first_firstorfail"><a class="anchor" href="#_first_firstorfail"></a><a class="link" href="#_first_firstorfail">first / firstOrFail</a></h4>
+<div class="paragraph">
+<p>Find the first row from the database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+await User.first()
+
+// or
+await User.firstOrFail()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_findorcreate_whereattributes_values"><a class="anchor" href="#_findorcreate_whereattributes_values"></a><a class="link" href="#_findorcreate_whereattributes_values">findOrCreate (whereAttributes, values)</a></h4>
+<div class="paragraph">
+<p>Find a record, if not found a new record will be created and returned back on the fly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const user = await User.findOrCreate(
+  { username: 'virk' },
+  { username: 'virk', email: 'virk@adonisjs.com' }
+)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pick_rows_1"><a class="anchor" href="#_pick_rows_1"></a><a class="link" href="#_pick_rows_1">pick(rows = 1)</a></h4>
+<div class="paragraph">
+<p>Pick <code>x</code> number of rows from the database table. By default it only selects <code>1</code> row.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+await User.pick(3)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pickinverse_rows_1"><a class="anchor" href="#_pickinverse_rows_1"></a><a class="link" href="#_pickinverse_rows_1">pickInverse(rows = 1)</a></h4>
+<div class="paragraph">
+<p>Pick <code>x</code> number of rows from the database table from last. By default it only selects <code>1</code> row.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+await User.pickInverse(3)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ids"><a class="anchor" href="#_ids"></a><a class="link" href="#_ids">ids</a></h4>
+<div class="paragraph">
+<p>Returns an array of primary keys. If the primary key is defined as <code>uid</code>, then it is an array of <code>uid&#8217;s</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const userIds = await User.ids()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pair_lhs_rhs"><a class="anchor" href="#_pair_lhs_rhs"></a><a class="link" href="#_pair_lhs_rhs">pair(lhs, rhs)</a></h4>
+<div class="paragraph">
+<p>Returns an object of key/value pair. The <code>lhs</code> field is the object key, and <code>rhs</code> is the value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const users = await User.pair('id', 'country')
+
+// returns { 1: 'ind', 2: 'uk' }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_all"><a class="anchor" href="#_all"></a><a class="link" href="#_all">all</a></h4>
+<div class="paragraph">
+<p>Select all rows</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const users = await User.all()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_truncate"><a class="anchor" href="#_truncate"></a><a class="link" href="#_truncate">truncate</a></h4>
+<div class="paragraph">
+<p>Delete all rows (truncate table)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const users = await User.truncate()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aggregate_helpers"><a class="anchor" href="#_aggregate_helpers"></a><a class="link" href="#_aggregate_helpers">Aggregate helpers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="query-builder#_aggregate_helpers">Query Builder aggregate helpers</a> provide shortcut access to common aggregate queries. Static model methods can be used when you wish to aggregate the entire table.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+These methods end the query builder chaining and returns a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_getcount_columnname"><a class="anchor" href="#_getcount_columnname"></a><a class="link" href="#_getcount_columnname">getCount(columnName = '*')</a></h4>
+<div class="paragraph">
+<p>Return a count of records in a given result set.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+// returns number
+await User.getCount()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also you can add query constraints before calling <code>getCount</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await User
+  .query()
+  .where('is_active', 1)
+  .getCount()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like <code>getCount</code> you can call all of the aggregate methods available on the <a href="query-builder#_aggregate_helpers">query builder</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_query_scopes"><a class="anchor" href="#_query_scopes"></a><a class="link" href="#_query_scopes">Query scopes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Query scopes are convenient methods to extract query constraints to useable and powerful methods. For example, we want to fetch all those users, who have a profile</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Model = use('Model')
+
+class User extends Model {
+  static scopeHasProfile (query) {
+    return query.has('profile')
+  }
+
+  profile () {
+    return this.hasOne('App/Models/Profile')
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So, now you can use it as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const users = await User.query().hasProfile().fetch()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The idea of query scopes is to make your code more readable as if you are reading plain text.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The scopes are always defined with a keyword called <code>scope</code>, followed by the method name.</p>
+</li>
+<li>
+<p>When using the scope, you can call the method by dropping the <code>scope</code> keyword and calling the method in <strong>camelCase</strong> form.</p>
+</li>
+<li>
+<p>You can call all standard query builder methods inside a query scope.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pagination"><a class="anchor" href="#_pagination"></a><a class="link" href="#_pagination">Pagination</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lucid also supports the <code>paginate</code> method from the query builder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const page = 1
+
+const users = await User.query().paginate(page)
+
+return view.render('users', { users: users.toJSON() })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The return value of <code>paginate</code> is not an array of users. Instead, it is an object with metadata and <code>data</code> property that has a list of users.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  total: '',
+  perPage: '',
+  lastPage: '',
+  page: '',
+  data: []
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_inserts_updates"><a class="anchor" href="#_inserts_updates"></a><a class="link" href="#_inserts_updates">Inserts &amp; Updates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With models instead of inserting raw values to the database, you persist the model instance which in turn makes the insert query for you. For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+user.username = 'virk'
+user.email = 'foo@bar.com'
+
+await user.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>save</code> method persists the instance to the database. Also, it smartly figures out whether to create a new row or update the existing row. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+user.username = 'virk'
+user.email = 'foo@bar.com'
+
+// Insert
+await user.save()
+
+user.age = 22
+
+// Update
+await user.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>update</code> query only takes place if something has been changed. Calling <code>save</code> multiple times, without updating the model attributes does not perform any queries.</p>
+</div>
+<div class="paragraph">
+<p>Rather than setting attributes manually, the <code>fill</code> or <code>merge</code> methods may be used.</p>
+</div>
+<div class="paragraph">
+<p>The <code>fill</code> method will override all existing key/pair values of the model instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+user.username = 'virk'
+user.age = 22
+
+user.fill({ age: 23 }) // remove existing values, only set age.
+
+await user.save()
+
+// returns { age: 23, username: null }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>merge</code> method only modifies the specified attributes</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const user = new User()
+user.fill({ username: 'virk', age: 22 })
+
+user.merge({ age: 23 })
+
+await user.save()
+
+// returns { age: 23, username: 'virk' }</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create"><a class="anchor" href="#_create"></a><a class="link" href="#_create">create</a></h4>
+<div class="paragraph">
+<p>Alternatively, you can also feed a bunch of data directly to the model instance, instead of setting attributes manually.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const userData = request.only(['username', 'email', 'age'])
+
+// save and get instance back
+const user = await User.create(userData)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_createmany"><a class="anchor" href="#_createmany"></a><a class="link" href="#_createmany">createMany</a></h4>
+<div class="paragraph">
+<p>Just like <code>create</code> you can persist multiple instances of a model using the createMany method.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>createMany</code> method makes <strong>n</strong> number of queries instead of doing a bulk insert, where <strong>n</strong> is the number of rows.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+const usersData = request.collect(['username' 'email', 'age'])
+
+const users = await User.createMany(usersData)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bulk_updates"><a class="anchor" href="#_bulk_updates"></a><a class="link" href="#_bulk_updates">Bulk updates</a></h3>
+<div class="paragraph">
+<p>The bulk updates can be done with the help of query builder. Lucid makes sure to format dates accordingly when doing bulk updates.</p>
+</div>
+<div class="paragraph">
+<p><strong>Bulk updates never execute any model hooks</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+await User
+  .query()
+  .where('username', 'virk')
+  .update({ role: 'admin' })</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deletes"><a class="anchor" href="#_deletes"></a><a class="link" href="#_deletes">Deletes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A single model instance can be deleted by calling the delete method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+const { id } = params
+const user = await User.find(id)
+
+await user.delete()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After calling <code>delete</code> method, the model instance freezes for any updates, but you can still read data from it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await user.delete()
+
+console.log(user.id) // works fine
+
+user.id = 1 // throws exception</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bulk_deletes"><a class="anchor" href="#_bulk_deletes"></a><a class="link" href="#_bulk_deletes">Bulk deletes</a></h3>
+<div class="paragraph">
+<p>Bulk deletes can be done with the help of query builder.</p>
+</div>
+<div class="paragraph">
+<p><strong>Bulk deletes never execute any model hooks.</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+await User
+  .query()
+  .where('role', 'guest')
+  .delete()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_transactions"><a class="anchor" href="#_transactions"></a><a class="link" href="#_transactions">Transactions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Majority of Lucid methods has support for transactions. The first step is always to obtain the <code>trx</code> object using the Database provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const trx = await Database.beginTransaction()
+
+const user = new User()
+
+// pass the trx object and lucid will use it
+await user.save(trx)
+
+// once done commit the transaction
+trx.commit()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like with <code>save</code>, you can pass the <code>trx</code> object to the <code>create</code> method as well.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const trx = await Database.beginTransaction()
+
+await User.create({ username: 'virk' }, trx)
+
+// once done commit the transaction
+trx.commit()</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await User.createMany([
+  { username: 'virk' }
+], trx)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boot_cycle"><a class="anchor" href="#_boot_cycle"></a><a class="link" href="#_boot_cycle">Boot cycle</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each model has a boot cycle where it gets booted, and that happens only once. So if you want to perform something that should occur only once, consider writing it inside the <code>boot</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Model = use('Model')
+
+class User extends Model {
+  static boot () {
+    super.boot()
+
+    /**
+      I will be called only once
+    */
+  }
+}
+
+module.exports = User</code></pre>
+</div>
+</div>
+</div>
+</div>

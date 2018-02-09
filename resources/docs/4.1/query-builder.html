@@ -1,0 +1,1014 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_selects">Selects</a></li>
+<li><a href="#_where_clauses">Where Clauses</a></li>
+<li><a href="#_joins">Joins</a></li>
+<li><a href="#_ordering_and_limits">Ordering and Limits</a></li>
+<li><a href="#_inserts">Inserts</a></li>
+<li><a href="#_updates">Updates</a></li>
+<li><a href="#_deletes">Deletes</a></li>
+<li><a href="#_pagination">Pagination</a></li>
+<li><a href="#_database_transactions">Database Transactions</a></li>
+<li><a href="#_aggregates">Aggregates</a></li>
+<li><a href="#_helpers">Helpers</a></li>
+<li><a href="#_sub_queries">Sub queries</a></li>
+<li><a href="#_raw_queries">Raw Queries</a></li>
+<li><a href="#_closing_connection">Closing connection</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs query builder gives you a unified syntax to interact with SQL databases using Javascript methods. This guide is a reference to all the available methods on query builder.</p>
+</div>
+<div class="paragraph">
+<p>Checkout <a href="database">database introduction</a> guide to check the list of <strong>supported databases</strong>, <strong>configuration options</strong> and <strong>debugging queries</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Writing SQL queries can be tedious in so many ways, even if you are good with SQL.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s imagine you write all of your queries for MySQL, and after some time your manager asks you to migrate everything to PostgreSQL. Now you have to re-write/amend your MySQL queries to make sure they work well with PostgreSQL.</p>
+</div>
+<div class="paragraph">
+<p>Another issue can be of building incremental queries with conditional blocks.</p>
+</div>
+<div class="listingblock">
+<div class="title">Without Query Builder</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const sql = 'SELECT * FROM `users`'
+
+if (username) {
+  sql += ' WHERE `username` = ' + username
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">With Query Builder</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const query = Database.table('users')
+
+if (username) {
+  query.where('username', username)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s review a basic example of working with the query builder by chaining different methods.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Database = use('Database')
+
+class UserController {
+
+  async index (request, response) {
+    return await Database
+      .table('users')
+      .where('username', 'john')
+      .first()
+  }
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_selects"><a class="anchor" href="#_selects"></a><a class="link" href="#_selects">Selects</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>select</code> method defines the fields to be selected for a given query.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.select('id', 'username').from('users')
+// or
+await Database.select('*').from('users')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">SQL Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-sql" data-lang="sql">select `id`, `username` from `users`
+select * from `users`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can define aliases</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database.select('username as uname')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_clauses"><a class="anchor" href="#_where_clauses"></a><a class="link" href="#_where_clauses">Where Clauses</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Query builder offers a bunch of dynamic methods to add <strong>where</strong> clauses. Also, it supports sub-queries by passing a <code>closure</code> or <code>another query</code> instead of the actual value.</p>
+</div>
+<div class="paragraph">
+<p>Also make sure to reference the <a href="http://knexjs.org/#Builder-wheres" target="_blank" rel="noopener">knex documentation</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Passing <code>undefined</code> to the where clause causes an error during SQL compilation. Make sure that dynamic values are not <code>undefined</code> before passing them.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_where"><a class="anchor" href="#_where"></a><a class="link" href="#_where">where</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const users = await Database.from('users').where('id', 1)
+// Or
+const users = await Database.from('users').where({ id: 1 })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can define the comparison operator to the where clause.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const adults = await Database
+  .from('users')
+  .where('age', '&gt;', 18)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_where_with_callback"><a class="anchor" href="#_where_with_callback"></a><a class="link" href="#_where_with_callback">where ( with callback )</a></h4>
+<div class="paragraph">
+<p>You can also add a callback to the <strong>where</strong> clause. Callback outputs a little different SQL query by grouping all the where clauses.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').where(function () {
+  this.where('id', 1)
+})</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-sql" data-lang="sql">select * from `users` where (`id` = 1)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherenot"><a class="anchor" href="#_wherenot"></a><a class="link" href="#_wherenot">whereNot</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .from('users')
+  .whereNot('age', '&gt;', 15)
+
+// or
+await Database
+  .from('users')
+  .whereNot({username: 'foo'})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherein"><a class="anchor" href="#_wherein"></a><a class="link" href="#_wherein">whereIn</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .from('users')
+  .whereIn('id', [1,2,3])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherenotin"><a class="anchor" href="#_wherenotin"></a><a class="link" href="#_wherenotin">whereNotIn</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .from('users')
+  .whereNotIn('id', [1,2,3])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherenull"><a class="anchor" href="#_wherenull"></a><a class="link" href="#_wherenull">whereNull</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .from('users')
+  .whereNull('deleted_at')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherenotnull"><a class="anchor" href="#_wherenotnull"></a><a class="link" href="#_wherenotnull">whereNotNull</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .from('users')
+  .whereNotNull('created_at')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_whereexists"><a class="anchor" href="#_whereexists"></a><a class="link" href="#_whereexists">whereExists</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').whereExists(function () {
+  this.from('accounts').where('users.id', 'accounts.user_id')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherenotexists"><a class="anchor" href="#_wherenotexists"></a><a class="link" href="#_wherenotexists">whereNotExists</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').whereNotExists(function () {
+  this.from('accounts').where('users.id', 'accounts.user_id')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherebetween"><a class="anchor" href="#_wherebetween"></a><a class="link" href="#_wherebetween">whereBetween</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .whereBetween('age',[18,32])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_wherenotbetween"><a class="anchor" href="#_wherenotbetween"></a><a class="link" href="#_wherenotbetween">whereNotBetween</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .whereNotBetween('age',[45,60])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_whereraw"><a class="anchor" href="#_whereraw"></a><a class="link" href="#_whereraw">whereRaw</a></h4>
+<div class="paragraph">
+<p>Convenience helper for <code>.where(Database.raw(query))</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .from('users')
+  .whereRaw('id = ?', [20])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_joins"><a class="anchor" href="#_joins"></a><a class="link" href="#_joins">Joins</a></h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="_innerjoin"><a class="anchor" href="#_innerjoin"></a><a class="link" href="#_innerjoin">innerJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .innerJoin('accounts', 'user.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can pass a closure to construct the join.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .innerJoin('accounts', function () {
+    this
+      .on('users.id', 'accounts.user_id')
+      .orOn('users.id', 'accounts.owner_id')
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_leftjoin"><a class="anchor" href="#_leftjoin"></a><a class="link" href="#_leftjoin">leftJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database
+  .select('*')
+  .from('users')
+  .leftJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_leftouterjoin"><a class="anchor" href="#_leftouterjoin"></a><a class="link" href="#_leftouterjoin">leftOuterJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('users')
+  .leftOuterJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rightjoin"><a class="anchor" href="#_rightjoin"></a><a class="link" href="#_rightjoin">rightJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('users')
+  .rightJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rightouterjoin"><a class="anchor" href="#_rightouterjoin"></a><a class="link" href="#_rightouterjoin">rightOuterJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('users')
+  .rightOuterJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_outerjoin"><a class="anchor" href="#_outerjoin"></a><a class="link" href="#_outerjoin">outerJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('users')
+  .outerJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fullouterjoin"><a class="anchor" href="#_fullouterjoin"></a><a class="link" href="#_fullouterjoin">fullOuterJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('users')
+  .fullOuterJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_crossjoin"><a class="anchor" href="#_crossjoin"></a><a class="link" href="#_crossjoin">crossJoin</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('users')
+  .crossJoin('accounts', 'users.id', 'accounts.user_id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_joinraw"><a class="anchor" href="#_joinraw"></a><a class="link" href="#_joinraw">joinRaw</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .select('*')
+  .from('accounts')
+  .joinRaw('natural full join table1').where('id', 1)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ordering_and_limits"><a class="anchor" href="#_ordering_and_limits"></a><a class="link" href="#_ordering_and_limits">Ordering and Limits</a></h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="_distinct"><a class="anchor" href="#_distinct"></a><a class="link" href="#_distinct">distinct</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .distinct('age')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groupby"><a class="anchor" href="#_groupby"></a><a class="link" href="#_groupby">groupBy</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .groupBy('age')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groupbyraw"><a class="anchor" href="#_groupbyraw"></a><a class="link" href="#_groupbyraw">groupByRaw</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .groupByRaw('age, status')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_orderby_column_direction_asc"><a class="anchor" href="#_orderby_column_direction_asc"></a><a class="link" href="#_orderby_column_direction_asc">orderBy(column, [direction=asc])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .orderBy('id', 'desc')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_orderbyraw_column_direction_asc"><a class="anchor" href="#_orderbyraw_column_direction_asc"></a><a class="link" href="#_orderbyraw_column_direction_asc">orderByRaw(column, [direction=asc])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .orderByRaw('col NULLS LAST DESC')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_having_column_operator_value"><a class="anchor" href="#_having_column_operator_value"></a><a class="link" href="#_having_column_operator_value">having(column, operator, value)</a></h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>groupBy()</code> clause is always required before making use of <code>having()</code> method.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .groupBy('age')
+  .having('age', '&gt;', 18)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_offset_limit_value"><a class="anchor" href="#_offset_limit_value"></a><a class="link" href="#_offset_limit_value">offset/limit(value)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('users')
+  .offset(11)
+  .limit(10)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_inserts"><a class="anchor" href="#_inserts"></a><a class="link" href="#_inserts">Inserts</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Insert operation returns the <code>id</code> of the inserted row. In the case of bulk inserts, the <code>id</code> of the first record is returned, and it is more of a limitation with MYSQL itself. <a href="http://dev.mysql.com/doc/refman/5.6/en/information-functions.html#function_last-insert-id">LAST_INSERT_ID</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_insert_values"><a class="anchor" href="#_insert_values"></a><a class="link" href="#_insert_values">insert(values)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const userId = await Database
+  .table('users')
+  .insert({username: 'foo', ...})
+
+// BULK INSERT
+const firstUserId = await Database
+  .from('users')
+  .insert([{username: 'foo'}, {username: 'bar'}])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_into_tablename"><a class="anchor" href="#_into_tablename"></a><a class="link" href="#_into_tablename">into(tableName)</a></h4>
+<div class="paragraph">
+<p>Method <code>into</code> is more readable than <code>table/from</code> when insert rows to the database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const userId = await Database
+  .insert({username: 'foo', ...})
+  .into('users')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_postgresql_only"><a class="anchor" href="#_postgresql_only"></a><a class="link" href="#_postgresql_only">PostgreSQL only</a></h3>
+<div class="paragraph">
+<p>For PostgreSQL, you have to define the returning column explicitly. All other database clients ignore this statement.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const userId = await Database
+  .insert({ username: 'virk' })
+  .into('users')
+  .returning('id')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_updates"><a class="anchor" href="#_updates"></a><a class="link" href="#_updates">Updates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All update operations returns the number of affected rows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const affectedRows = await Database
+  .table('users')
+  .where('username', 'tutlage')
+  .update('lastname', 'Virk')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Pass an object for multiple columns.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const affectedRows = await Database
+  .table('users')
+  .where('username', 'tutlage')
+  .update({ lastname: 'Virk', firstname: 'Aman' })</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deletes"><a class="anchor" href="#_deletes"></a><a class="link" href="#_deletes">Deletes</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Delete operations also returns the number of affected rows.</p>
+</div>
+<div class="sect3">
+<h4 id="_delete"><a class="anchor" href="#_delete"></a><a class="link" href="#_delete">delete</a></h4>
+<div class="paragraph">
+<p>Also, you can make use of <code>del()</code>, since <code>delete</code> is a reserved keyword in Javascript.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const affectedRows = await Database
+  .table('users')
+  .where('username', 'tutlage')
+  .delete()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_truncate"><a class="anchor" href="#_truncate"></a><a class="link" href="#_truncate">truncate</a></h4>
+<div class="paragraph">
+<p>Truncate removes all the rows from a database and set auto increment id back to <strong>0</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.truncate('users')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pagination"><a class="anchor" href="#_pagination"></a><a class="link" href="#_pagination">Pagination</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Query builder provides a handful of convenient ways to paginate results from the database.</p>
+</div>
+<div class="sect3">
+<h4 id="_forpage_page_limit_20"><a class="anchor" href="#_forpage_page_limit_20"></a><a class="link" href="#_forpage_page_limit_20">forPage(page, [limit=20])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const users = await Database
+  .from('users')
+  .forPage(1, 10)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_paginate_page_limit_20"><a class="anchor" href="#_paginate_page_limit_20"></a><a class="link" href="#_paginate_page_limit_20">paginate(page, [limit=20])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const results = await Database
+  .from('users')
+  .paginate(2, 10)</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The output of the <code>paginate</code> method is different from the <code>forPage</code> method.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  pages: {
+    total: 0,
+    currentPage: 2,
+    perPage: 10,
+    lastPage: 0,
+  },
+  rows: [{...}]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_transactions"><a class="anchor" href="#_database_transactions"></a><a class="link" href="#_database_transactions">Database Transactions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Database transactions are safe operations, which are not reflected in the database until and unless you explicitly commit your changes.</p>
+</div>
+<div class="sect3">
+<h4 id="_begintransaction"><a class="anchor" href="#_begintransaction"></a><a class="link" href="#_begintransaction">beginTransaction</a></h4>
+<div class="paragraph">
+<p>The <code>beginTransaction</code> method returns the transaction object, which can be used to perform any queries.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const trx = await Database.beginTransaction()
+await trx.insert({username: 'virk'}).into('users')
+
+trx.commit() // insert query will take place on commit
+trx.rollback() // will not insert anything</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_transaction"><a class="anchor" href="#_transaction"></a><a class="link" href="#_transaction">transaction</a></h4>
+<div class="paragraph">
+<p>Also, you can wrap your transactions inside a <strong>callback</strong>. The major difference is, you do not have to call <code>commit or `rollback</code> manually. If any of your queries throws an error, the transaction
+rolls back automatically. Otherwise, it is committed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.transaction(async (trx) =&gt; {
+  await trx.insert({username: 'virk'}).into('users')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aggregates"><a class="anchor" href="#_aggregates"></a><a class="link" href="#_aggregates">Aggregates</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Lucid Query Builder exposes the full power of <a href="http://knexjs.org/#Builder-count">knex&#8217;s aggregate methods</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_count"><a class="anchor" href="#_count"></a><a class="link" href="#_count">count()</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const count = await Database
+  .from('users')
+  .count()                                      // returns array
+
+const total = count[0]['count(*)']              // returns number
+
+// COUNT A COLUMN
+const count = await Database
+  .from('users')
+  .count('id')                                  // returns array
+
+const total = count[0]['count("id")']           // returns number
+
+// COUNT COLUMN AS NAME
+const count = await Database
+  .from('users')
+  .count('* as total')                          // returns array
+
+const total = count[0].total                    // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_countdistinct"><a class="anchor" href="#_countdistinct"></a><a class="link" href="#_countdistinct">countDistinct</a></h4>
+<div class="paragraph">
+<p>The <code>countDistinct</code> is same as count, but adds distinct expression.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const count = await Database
+  .from('users')
+  .countDistinct('id')                          // Returns array
+
+const total = count[0]['count(distinct "id")']  // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_min"><a class="anchor" href="#_min"></a><a class="link" href="#_min">min</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').min('age')         // returns array
+await Database.from('users').min('age as a')    // returns array</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_max"><a class="anchor" href="#_max"></a><a class="link" href="#_max">max</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').max('age')         // returns array
+await Database.from('users').max('age as a')    // returns array</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sum"><a class="anchor" href="#_sum"></a><a class="link" href="#_sum">sum</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').sum('total')        // returns array
+await Database.from('cart').sum('total as t')   // returns array</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sumdistinct"><a class="anchor" href="#_sumdistinct"></a><a class="link" href="#_sumdistinct">sumDistinct</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').sumDistinct('total')      // returns array
+await Database.from('cart').sumDistinct('total as t') // returns array</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_avg"><a class="anchor" href="#_avg"></a><a class="link" href="#_avg">avg</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').avg('age')         // returns array
+await Database.from('users').avg('age as age')  // returns array</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_avgdistinct"><a class="anchor" href="#_avgdistinct"></a><a class="link" href="#_avgdistinct">avgDistinct</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').avgDistinct('age')         // returns array
+await Database.from('users').avgDistinct('age as age')  // returns array</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_increment"><a class="anchor" href="#_increment"></a><a class="link" href="#_increment">increment</a></h4>
+<div class="paragraph">
+<p>Increment the column existing value by <strong>1</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('credits')
+  .where('id', 1)
+  .increment('balance', 10)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_decrement"><a class="anchor" href="#_decrement"></a><a class="link" href="#_decrement">decrement</a></h4>
+<div class="paragraph">
+<p>Opposite of <code>increment</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database
+  .table('credits')
+  .where('id', 1)
+  .decrement('balance', 10)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aggregate_helpers"><a class="anchor" href="#_aggregate_helpers"></a><a class="link" href="#_aggregate_helpers">Aggregate Helpers</a></h3>
+<div class="paragraph">
+<p>Query Builder also extends knex&#8217;s query aggregates with helpful shortcut methods for common aggregate queries.</p>
+</div>
+<div class="paragraph">
+<p>Helper methods end the query builder chaining and return a value. All helpers accept a column name to be used for aggregation. When possible Lucid will choose a default for the column name. Some methods, such as <code>sum()</code>, require a column name.</p>
+</div>
+<div class="paragraph">
+<p>The knex query builder underlying Lucid defines methods <code>count()</code>, <code>countDistinct()</code>, <code>avg()</code>, <code>avgDistinct()</code>, <code>sum()</code>, <code>sumDistinct()</code>, <code>min()</code>, and <code>max()</code>. To avoid confusion and naming collisions, Lucid prefixes its aggregate helper methods with <code>get</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_getcount_columnname"><a class="anchor" href="#_getcount_columnname"></a><a class="link" href="#_getcount_columnname">getCount(columnName = '*')</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const total = await Database
+  .from('users')
+  .getCount()                                   // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getcountdistinct_columnname"><a class="anchor" href="#_getcountdistinct_columnname"></a><a class="link" href="#_getcountdistinct_columnname">getCountDistinct(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const total = await Database
+  .from('users')
+  .countDistinct('id')                          // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getmin_columnname"><a class="anchor" href="#_getmin_columnname"></a><a class="link" href="#_getmin_columnname">getMin(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getMin('age')      // returns a number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getmax_columnname"><a class="anchor" href="#_getmax_columnname"></a><a class="link" href="#_getmax_columnname">getMax(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getMax('age')      // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsum_columnname"><a class="anchor" href="#_getsum_columnname"></a><a class="link" href="#_getsum_columnname">getSum(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').getSum('total')     // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsumdistinct_columnname"><a class="anchor" href="#_getsumdistinct_columnname"></a><a class="link" href="#_getsumdistinct_columnname">getSumDistinct(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('cart').getSumDistinct('total')   // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavg_columnname"><a class="anchor" href="#_getavg_columnname"></a><a class="link" href="#_getavg_columnname">getAvg(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getAvg('age')      // returns number</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavgdistinct_columnname"><a class="anchor" href="#_getavgdistinct_columnname"></a><a class="link" href="#_getavgdistinct_columnname">getAvgDistinct(columnName)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').getAvgDistinct('age')      // returns number</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_helpers"><a class="anchor" href="#_helpers"></a><a class="link" href="#_helpers">Helpers</a></h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="_pluck_column"><a class="anchor" href="#_pluck_column"></a><a class="link" href="#_pluck_column">pluck(column)</a></h4>
+<div class="paragraph">
+<p>The <code>pluck</code> method will return an array of values for the selected column.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const usersIds = await Database.from('users').pluck('id')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_first"><a class="anchor" href="#_first"></a><a class="link" href="#_first">first</a></h4>
+<div class="paragraph">
+<p>The <code>first</code> method adds a <strong>limit 1</strong> clause to the query.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">await Database.from('users').first()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clone"><a class="anchor" href="#_clone"></a><a class="link" href="#_clone">clone</a></h4>
+<div class="paragraph">
+<p>Clone the current query chain for re-usability.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const query = Database
+  .from('users')
+  .where('username', 'virk')
+  .clone()
+
+// later
+await query</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_columninfo"><a class="anchor" href="#_columninfo"></a><a class="link" href="#_columninfo">columnInfo</a></h4>
+<div class="paragraph">
+<p>Returns information for a given column.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const username = await Database
+  .table('users')
+  .columnInfo('username')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sub_queries"><a class="anchor" href="#_sub_queries"></a><a class="link" href="#_sub_queries">Sub queries</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const subquery = Database
+  .from('accounts')
+  .where('account_name', 'somename')
+  .select('account_name')
+
+const users = await Database
+  .from('users')
+  .whereIn('id', subquery)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-sql" data-lang="sql">select * from `users` where `id` in (select `account_name` from `accounts` where `account_name` = 'somename')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_raw_queries"><a class="anchor" href="#_raw_queries"></a><a class="link" href="#_raw_queries">Raw Queries</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>Database.raw</code> method should be used for running raw SQL queries.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Database
+  .raw('select * from users where username = ?', [username])</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_closing_connection"><a class="anchor" href="#_closing_connection"></a><a class="link" href="#_closing_connection">Closing connection</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The database connections can be closed by calling the <code>close</code> method. By default this method all close all open database connections. To close selected connections, make sure to pass an array of connection names.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Database.close() // all
+
+Database.close(['sqlite', 'mysql'])</code></pre>
+</div>
+</div>
+</div>
+</div>

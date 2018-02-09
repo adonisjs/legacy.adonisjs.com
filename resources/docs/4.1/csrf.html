@@ -1,0 +1,209 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_how_it_works">How It Works?</a></li>
+<li><a href="#_view_helpers">View Helpers</a></li>
+<li><a href="#_handling_exception">Handling exception</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery ( CSRF )</a> allows an attacker to perform actions on behalf of another user without their knowledge or permission.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs protects your application from CSRF attacks by denying unidentified requests. HTTP requests with <strong>POST, PUT and DELETE</strong> methods are checked to make sure that these requests are invoked by right people from right place.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Make sure to install the <code>shield</code> provider and register the appropriate middleware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/shield</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/shield/providers/ShieldProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And, finally register the global middleware inside <code>start/kernel.js</code> file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Shield middleware relies on <a href="sessions">sessions</a>, so make sure they are setup correctly.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const globalMiddleware = [
+  'Adonis/Middleware/Shield'
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration for CSRF is saved inside <code>config/shield.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">csrf: {
+  enable: true,
+  methods: ['POST', 'PUT', 'DELETE'],
+  filterUris: ['/user/:id'],
+  cookieOptions: {}
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A boolean to turn on/off CSRF for the entire application.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">methods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTTP verbs to be protected by CSRF. Consider adding all verbs which allow the end user to add or modify data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">filterUris</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list of URLs/Routes to ignore. You can pass actual routes definition or a regular expression to match.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cookieOptions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An object of <a href="https://www.npmjs.com/package/cookie#options-1" target="_blank" rel="noopener">cookie options</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_it_works"><a class="anchor" href="#_how_it_works"></a><a class="link" href="#_how_it_works">How It Works?</a></h2>
+<div class="sectionbody">
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p>AdonisJs creates a <strong>CSRF secret</strong> for each user visiting your website.</p>
+</li>
+<li>
+<p>A corresponding token for the secret is generated for each request and passed to all views as <code>csrfToken</code> and <code>csrfField()</code> globals.</p>
+</li>
+<li>
+<p>Also, the same token is set to a cookie with key <code>XSRF-TOKEN</code>. Frontend Frameworks like <strong>AngularJs</strong> automatically reads this cookie and send it along with each Ajax request.</p>
+</li>
+<li>
+<p>Whenever a <strong>POST</strong>, <strong>PUT</strong> or <strong>DELETE</strong> requests comes, the middleware verifies the token with the secret to make sure it is valid.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are using the <code>XSRF-TOKEN</code> cookie value, then do make sure the header key is <code>X-XSRF-TOKEN</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_view_helpers"><a class="anchor" href="#_view_helpers"></a><a class="link" href="#_view_helpers">View Helpers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can access the CSRF token using one of the following view helpers and make sure to set them inside your forms.</p>
+</div>
+<div class="paragraph">
+<p>To send the token along with each request, you need access to it. There are a few ways to get access to the CSRF token.</p>
+</div>
+<div class="sect3">
+<h4 id="_csrffield"><a class="anchor" href="#_csrffield"></a><a class="link" href="#_csrffield">csrfField</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ csrfField() }}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;input type="hidden" name="_csrf" value="xxxxxx"&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_csrftoken"><a class="anchor" href="#_csrftoken"></a><a class="link" href="#_csrftoken">csrfToken</a></h4>
+<div class="paragraph">
+<p>The <code>csrfToken</code> helper returns the raw value of the token.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ csrfToken }}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_handling_exception"><a class="anchor" href="#_handling_exception"></a><a class="link" href="#_handling_exception">Handling exception</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>On validation failure, an exception is thrown with <strong>EBADCSRFTOKEN</strong> code. Make sure to listen for the exception and return an appropriate response.</p>
+</div>
+<div class="listingblock">
+<div class="title">app/Exceptions/Handler.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">class ExceptionHandler {
+  async handle (error, { response }) {
+    if (error.code === 'EBADCSRFTOKEN') {
+      response.forbidden('Cannot process your request.')
+      return
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>

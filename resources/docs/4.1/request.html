@@ -1,0 +1,611 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_request_body">Request body</a></li>
+<li><a href="#_request_collection">Request collection</a></li>
+<li><a href="#_headers">Headers</a></li>
+<li><a href="#_cookies">Cookies</a></li>
+<li><a href="#_content_negotiation">Content negotiation</a></li>
+<li><a href="#_request_methods">Request methods</a></li>
+<li><a href="#_method_spoofing">Method spoofing</a></li>
+<li><a href="#_extending_request">Extending Request</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This guide gives an outline on how to make use of the HTTP <a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js" target="_blank" rel="noopener">Request</a> object to read data for a request.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The Node.js raw <code>req</code> object can be accessed as <code>request.request</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>AdonisJs passes the current HTTP request object as part of the <a href="http-context#_http_context">context</a> which is sent to all route handlers and middleware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ request }) =&gt; {
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We used <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" target="_blank" rel="noopener">ES6 destructuring</a> to get the <code>request</code> object from context.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request_body"><a class="anchor" href="#_request_body"></a><a class="link" href="#_request_body">Request body</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The request object offers a bunch of helpful methods to read the request body. First, make sure that you have installed the body-parser middleware.</p>
+</div>
+<div class="paragraph">
+<p>If not, follow the upcoming steps.</p>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_bodyparser"><a class="anchor" href="#_setting_up_bodyparser"></a><a class="link" href="#_setting_up_bodyparser">Setting up bodyparser</a></h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Fullstack and API only boilerplates comes with pre-configured body-parser.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">adonis install @adonisjs/bodyparser</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then register the provider inside <code>start/app.js</code> file</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/bodyparser/providers/BodyParserProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, register the global middleware inside <code>start/kernel.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const globalMiddleware = [
+  'Adonis/Middleware/BodyParser'
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_methods"><a class="anchor" href="#_methods"></a><a class="link" href="#_methods">Methods</a></h3>
+<div class="paragraph">
+<p>Following is the list of methods you can call to read the request body.</p>
+</div>
+<div class="sect3">
+<h4 id="_all"><a class="anchor" href="#_all"></a><a class="link" href="#_all">all</a></h4>
+<div class="paragraph">
+<p>Returns the request body as an object. This method merges the <code>query params</code> with the <code>request body</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const all = request.all()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get"><a class="anchor" href="#_get"></a><a class="link" href="#_get">get</a></h4>
+<div class="paragraph">
+<p>Get an object of query params</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const query = request.get()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post"><a class="anchor" href="#_post"></a><a class="link" href="#_post">post</a></h4>
+<div class="paragraph">
+<p>Get an object of just request body</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const body = request.post()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raw"><a class="anchor" href="#_raw"></a><a class="link" href="#_raw">raw</a></h4>
+<div class="paragraph">
+<p>Get data posted as the raw body.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If raw data is JSON with <code>Content-type: application/json</code>, then the bodyparser parses it smartly and returns it as part of <code>post</code> method.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const body = request.raw()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_only"><a class="anchor" href="#_only"></a><a class="link" href="#_only">only</a></h4>
+<div class="paragraph">
+<p>Returns an object with <code>only</code> specified keys</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const body = request.only(['username', 'email', 'age'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_except"><a class="anchor" href="#_except"></a><a class="link" href="#_except">except</a></h4>
+<div class="paragraph">
+<p>The opposite of <code>only</code> and returns everything except defined keys.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const body = request.except(['csrf_token', 'submit'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_input"><a class="anchor" href="#_input"></a><a class="link" href="#_input">input</a></h4>
+<div class="paragraph">
+<p>Get value for a given key only, and it does not exist, return the <code>default</code> value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const drink = request.input('drink')
+
+// with default value
+const drink = request.input('drink', 'coffee')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request_collection"><a class="anchor" href="#_request_collection"></a><a class="link" href="#_request_collection">Request collection</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you want to handle HTML forms that submit an array of data over key/value pairs. <strong>For example:</strong> Form to create multiple users at once.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;form method="POST" action="/users"&gt;
+  &lt;input type="text" name="username[0]" /&gt;
+  &lt;input type="text" name="age[0]" /&gt;
+
+  &lt;hr&gt;
+  &lt;input type="text" name="username[1]" /&gt;
+  &lt;input type="text" name="age[1]" /&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s say we want to get the username and age inside the controller.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const users = request.only(['username', 'age'])
+
+// output
+{ username: ['virk', 'nikk'], age: [26, 25] }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above piece of data is something that you cannot save to the database directly since it is not in the right format.</p>
+</div>
+<div class="paragraph">
+<p>Using <code>request.collect</code> we can get it formatted out of the box.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const users = request.collect(['username', 'age'])
+
+// output
+[{ username: 'virk', age: 26 }, { username: 'nikk', age: 25 }]
+
+// save to db
+await User.createMany(users)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_headers"><a class="anchor" href="#_headers"></a><a class="link" href="#_headers">Headers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also, you can read headers from the request using one of the following methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_header"><a class="anchor" href="#_header"></a><a class="link" href="#_header">header</a></h4>
+<div class="paragraph">
+<p>The header value for a given key.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const auth = request.header('authorization')
+
+// different word case
+const auth = request.header('Authorization')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_headers_2"><a class="anchor" href="#_headers_2"></a><a class="link" href="#_headers_2">headers</a></h4>
+<div class="paragraph">
+<p>Returns an object of headers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const headers = request.headers()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cookies"><a class="anchor" href="#_cookies"></a><a class="link" href="#_cookies">Cookies</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Cookies are read using one of the following methods</p>
+</div>
+<div class="sect3">
+<h4 id="_cookie"><a class="anchor" href="#_cookie"></a><a class="link" href="#_cookie">cookie</a></h4>
+<div class="paragraph">
+<p>Returns the value for a key inside cookies. Optionally returns the default value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const cartTotal = request.cookie('cart_total')
+
+// with default value
+const cartTotal = request.cookie('cart_total', 0)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cookies_2"><a class="anchor" href="#_cookies_2"></a><a class="link" href="#_cookies_2">cookies</a></h4>
+<div class="paragraph">
+<p>Returns an object of all the cookies</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const cookies = request.cookies()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You are supposed to use the following methods to read the cookies set on client side.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_plaincookie"><a class="anchor" href="#_plaincookie"></a><a class="link" href="#_plaincookie">plainCookie</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const jsCookie = request.plainCookie('cart_total')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_plaincookies"><a class="anchor" href="#_plaincookies"></a><a class="link" href="#_plaincookies">plainCookies</a></h4>
+<div class="paragraph">
+<p>Get an object of raw cookies</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const plainCookies = request.plainCookies()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_content_negotiation"><a class="anchor" href="#_content_negotiation"></a><a class="link" href="#_content_negotiation">Content negotiation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation" target="_blank" rel="noopener">Content negotiation</a> is a way for server and client to decide upon the best response type to be returned from the server.</p>
+</div>
+<div class="paragraph">
+<p>Since web servers do not only serve web pages, they have to deal with API response in <strong>JSON</strong>, or maybe in <strong>XML</strong>. Instead of creating separate URL&#8217;s for each content type, the consumer can ask the server to return the response in a specific format.</p>
+</div>
+<div class="paragraph">
+<p>Now to construct the response in a specific format, the server needs to know it first. The same can be done using the <code>accepts</code> method.</p>
+</div>
+<div class="sect3">
+<h4 id="_accepts"><a class="anchor" href="#_accepts"></a><a class="link" href="#_accepts">accepts</a></h4>
+<div class="paragraph">
+<p>Reads the <code>Accept</code> header to know response format.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const bestFormat = request.accepts(['json', 'html'])
+
+if (bestFormat === 'json') {
+  return response.json(users)
+}
+
+return view.render('users.list', { users })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_language"><a class="anchor" href="#_language"></a><a class="link" href="#_language">language</a></h4>
+<div class="paragraph">
+<p>Language can also be negotiated based upon <code>Accept-Language</code> header.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const language = request.language(['en', 'fr'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_request_methods"><a class="anchor" href="#_request_methods"></a><a class="link" href="#_request_methods">Request methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following is the list of all request methods and their usage example</p>
+</div>
+<div class="sect3">
+<h4 id="_url"><a class="anchor" href="#_url"></a><a class="link" href="#_url">url</a></h4>
+<div class="paragraph">
+<p>Returns the current request url</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const url = request.url()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_originalurl"><a class="anchor" href="#_originalurl"></a><a class="link" href="#_originalurl">originalUrl</a></h4>
+<div class="paragraph">
+<p>The URL with query strings on it</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const url = request.originalUrl()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_method"><a class="anchor" href="#_method"></a><a class="link" href="#_method">method</a></h4>
+<div class="paragraph">
+<p>Returns the request HTTP method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const method = request.method()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_intended"><a class="anchor" href="#_intended"></a><a class="link" href="#_intended">intended</a></h4>
+<div class="paragraph">
+<p>Since Adonisjs allows <a href="#_method_spoofing">method spoofing</a>, you can fetch the actual method using <code>intended</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const method = request.intended()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ip"><a class="anchor" href="#_ip"></a><a class="link" href="#_ip">ip</a></h4>
+<div class="paragraph">
+<p>Returns the most trusted ip address for the user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ip = request.ip()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ips"><a class="anchor" href="#_ips"></a><a class="link" href="#_ips">ips</a></h4>
+<div class="paragraph">
+<p>Returns an array of ips from most to the least trusted one. It removes the default ip address, which can be accessed via <code>ip</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ips = request.ips()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_subdomains"><a class="anchor" href="#_subdomains"></a><a class="link" href="#_subdomains">subdomains</a></h4>
+<div class="paragraph">
+<p>Returns a list of request subdomains, this method removes <code>www</code> from the list.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const subdomains = request.subdomains()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ajax"><a class="anchor" href="#_ajax"></a><a class="link" href="#_ajax">ajax</a></h4>
+<div class="paragraph">
+<p>Checks for <code>X-Requested-With</code> header to determine if the request is ajax or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">if (request.ajax()) {
+  // do something
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pjax"><a class="anchor" href="#_pjax"></a><a class="link" href="#_pjax">pjax</a></h4>
+<div class="paragraph">
+<p><a href="https://github.com/defunkt/jquery-pjax" target="_blank" rel="noopener">Pjax</a> is an evolved way to make use of Ajax to deliver better user experience on traditional apps. In rails world, it is known as Turbolinks.</p>
+</div>
+<div class="paragraph">
+<p>This methods looks at <code>X-PJAX</code> header to identify if request is pjax or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">if (request.pjax()) {
+  // do something
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_hostname"><a class="anchor" href="#_hostname"></a><a class="link" href="#_hostname">hostname</a></h4>
+<div class="paragraph">
+<p>Returns the request hostname</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const hostname = request.hostname()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_protocol"><a class="anchor" href="#_protocol"></a><a class="link" href="#_protocol">protocol</a></h4>
+<div class="paragraph">
+<p>Return request protocol.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const protocol = request.protocol()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_match"><a class="anchor" href="#_match"></a><a class="link" href="#_match">match</a></h4>
+<div class="paragraph">
+<p>Matches a set of expressions against the current request URL to tell if it matches one.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// current request url - posts/1
+
+request.match(['posts/:id']) // returns true</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_hasbody"><a class="anchor" href="#_hasbody"></a><a class="link" href="#_hasbody">hasBody</a></h4>
+<div class="paragraph">
+<p>A boolean indicating if the request has post body.  It is mainly used by the bodyparser to know whether to parse the body or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">if (request.hasBody()) {
+  // do something
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_is"><a class="anchor" href="#_is"></a><a class="link" href="#_is">is</a></h4>
+<div class="paragraph">
+<p>The <code>is</code> method returns the best matching content type for the current request. The check is entirely based upon the <code>content-type</code> header.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// assuming content-type is `application/json`
+
+request.is(['json', 'html']) // returns - json
+
+request.is(['application/*']) // returns - application/json</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_method_spoofing"><a class="anchor" href="#_method_spoofing"></a><a class="link" href="#_method_spoofing">Method spoofing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>HTML forms are only capable of making <code>GET</code> and <code>POST</code> requests, which means you cannot utilize the REST conventions of using other HTTP methods like <strong>PUT</strong>, <strong>DELETE</strong> and so on.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs makes it simpler bypassing the request method as part of the query string and then it executes the correct Route for you automatically.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.put('users', 'UserController.update')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;form method="POST" action="/users?_method=PUT"&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above works in following cases.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The original request method is <code>POST</code>.</p>
+</li>
+<li>
+<p><code>allowMethodSpoofing</code> is enabled inside <code>config/app.js</code> file.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_request"><a class="anchor" href="#_extending_request"></a><a class="link" href="#_extending_request">Extending Request</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you have the requirement of extending the <code>Request</code> prototype by attaching new methods. Same can be done by defining a macro on the Request class.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Since the code to extend the <code>Request</code> needs to be executed once, you can make use of providers or ignitor hooks. Make sure to read <a href="">how to extend</a> guide before continuing.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Request = use('Adonis/Src/Request')
+
+Request.macro('cartValue', function () {
+  return this.cookie('cartValue', 0)
+})</code></pre>
+</div>
+</div>
+</div>
+</div>

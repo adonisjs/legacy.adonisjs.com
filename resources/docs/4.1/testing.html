@@ -1,0 +1,330 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_test_cases">Test cases</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_running_tests">Running tests</a></li>
+<li><a href="#_testing_suite_traits">Testing suite &amp; traits</a></li>
+<li><a href="#_lifecycle_hooks">Lifecycle hooks</a></li>
+<li><a href="#_assertions">Assertions</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Every time you make a change to your application, you want to test the behavior to ensure that it works fine. Manually testing changes by visiting each web page or API is impossible and hence automated testing makes sure that everything works fine.</p>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn about the benefits and different ways to test your application</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_cases"><a class="anchor" href="#_test_cases"></a><a class="link" href="#_test_cases">Test cases</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you are new to testing, you may find it hard to discover the benefits of testing. But once you get into the habit of writing tests, your code quality and confidence over code improve drastically.</p>
+</div>
+<div class="paragraph">
+<p>To build a better mental model, testing is divided into multiple categories, so that you can write different types of test cases with a clear boundary.</p>
+</div>
+<div class="sect2">
+<h3 id="_unit_tests"><a class="anchor" href="#_unit_tests"></a><a class="link" href="#_unit_tests">Unit tests</a></h3>
+<div class="paragraph">
+<p>Unit tests are written to test small pieces of code in isolation. For example: Testing a service directly, without worrying about how that service is used in real world.</p>
+</div>
+<div class="paragraph">
+<p>Unit tests ensure that each part of the application works fine on its own and also it is easier to write them since you do not need the whole application to work before you can test it.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test } = use('Test/Suite')('Example unit test')
+const UserValidator = use('App/Services/UserValidator')
+
+test('validate user details', async ({ assert }) =&gt; {
+  const validation = await UserValidator.validate({
+    email: 'wrong email'
+  })
+
+  assert.isTrue(validation.fails())
+  assert.deepEqual(validation.messages(), [
+    {
+      field: 'email',
+      message: 'Invalid user email address'
+    }
+  ])
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_functional_tests"><a class="anchor" href="#_functional_tests"></a><a class="link" href="#_functional_tests">Functional tests</a></h3>
+<div class="paragraph">
+<p>Functional tests are written to test your app like an end user. Which means opening up a browser programmatically and visiting the web pages to ensure they all work fine.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Example functional test')
+trait('Test/Browser')
+
+test('validate user details', async ({ browser }) =&gt; {
+  const page = await browser.visit('/')
+
+  await page
+    .type('email', 'wrong email')
+    .submit('form')
+    .waitForNavigation()
+
+  page.session.assertError('email', 'Invalid user email address')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both the above examples validate the email address for a given user, but the approach is different based on the type of test you are writing.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, we need to set up the testing engine by installing it from npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/vow</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, make sure to register the provider inside <code>aceProviders</code> array, since we do not want to boot testing engine when running your application in production.</p>
+</div>
+<div class="listingblock">
+<div class="title">start/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const aceProviders = [
+  '@adonisjs/vow/providers/VowProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once <code>@adonisjs/vow</code> is installed, it creates a sample test for you, along with some other files described below.</p>
+</div>
+<div class="sect3">
+<h4 id="_vowfile_js"><a class="anchor" href="#_vowfile_js"></a><a class="link" href="#_vowfile_js">vowfile.js</a></h4>
+<div class="paragraph">
+<p>The <code>vowfiles.js</code> is loaded before your tests are executed. You can use this file to define tasks that should occur before and after running all the tests.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_env_testing"><a class="anchor" href="#_env_testing"></a><a class="link" href="#_env_testing">.env.testing</a></h4>
+<div class="paragraph">
+<p>This file contains the environment variables to be used when running tests. This file gets merged with <code>.env</code> file so must only define values you want to override from the <code>.env</code> file.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_test"><a class="anchor" href="#_test"></a><a class="link" href="#_test">test</a></h4>
+<div class="paragraph">
+<p>All of the application tests are stored inside subfolders of <code>test</code> directory.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_running_tests"><a class="anchor" href="#_running_tests"></a><a class="link" href="#_running_tests">Running tests</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vow provider automatically creates a <strong>unit</strong> test for you, which can be executed by running the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Example
+  ✓ make sure 2 + 2 is 4 (2ms)
+
+PASSED
+total       : 1
+passed      : 1
+time        : 6ms</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_testing_suite_traits"><a class="anchor" href="#_testing_suite_traits"></a><a class="link" href="#_testing_suite_traits">Testing suite &amp; traits</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before we dive into writing tests, let&#8217;s understand some fundamentals which are important to understanding the flow of tests.</p>
+</div>
+<div class="sect2">
+<h3 id="_suite"><a class="anchor" href="#_suite"></a><a class="link" href="#_suite">Suite</a></h3>
+<div class="paragraph">
+<p>Each file is a test suite, which defines a group of tests of same behavior. For example, We can have a suite of tests for <strong>User registration</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Suite = use('Test/Suite')('User registeration')
+
+// or destructuring
+const { test } = use('Test/Suite')('User registeration')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>test</code> function obtained from the Suite instance is used for defining tests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">test('return error when credentials are wrong', async (ctx) =&gt; {
+  // implementation
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_traits"><a class="anchor" href="#_traits"></a><a class="link" href="#_traits">Traits</a></h3>
+<div class="paragraph">
+<p>Traits are building blocks for your test suite. Since AdonisJs test runner is not bloated with a bunch of functionality, we ship different pieces of code as traits.</p>
+</div>
+<div class="paragraph">
+<p>For example: Using the browser to run your test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('User registeration')
+
+trait('Test/Browser')
+
+test('return error when credentials are wrong', async ({ browser }) =&gt; {
+  const page = await browser.visit('/user')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The beauty of this approach is that <strong>Traits</strong> can enhance your tests transparently without doing much work. For instance, if we remove <code>Test/Browser</code> trait. The <code>browser</code> object gets <code>undefined</code> inside our tests.</p>
+</div>
+<div class="paragraph">
+<p>Also, you can define your traits either by defining a closure or an IoC container binding.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You do not have to create a trait for everything. Majority of the work can be done by using <a href="#_lifecycle_hooks">Lifecycle hooks</a>. Traits are helpful when you want to bundle a package to be used by others.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('User registeration')
+
+trait(function (suite) {
+  suite.Context.getter('foo', () =&gt; {
+    return 'bar'
+  })
+})
+
+test('foo must be bar', async ({ foo, assert }) =&gt; {
+  assert.equal(foo, 'bar')
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_context"><a class="anchor" href="#_context"></a><a class="link" href="#_context">Context</a></h3>
+<div class="paragraph">
+<p>Since each test has an isolated context, you can pass values to it by defining <strong>getters</strong> or <strong>macros</strong> and access them inside the test closure.</p>
+</div>
+<div class="paragraph">
+<p>By default, the context has only one property called <code>assert</code>, which is an instance of <a href="http://chaijs.com/api/assert/">chaijs/assert</a> to run assertions.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lifecycle_hooks"><a class="anchor" href="#_lifecycle_hooks"></a><a class="link" href="#_lifecycle_hooks">Lifecycle hooks</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each suite has some lifecycle hooks, which can be used to perform repetitive tasks, like cleaning the database after each test and so on.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Suite = use('Test/Suite')('User registeration')
+
+const { before, beforeEach, after, afterEach } = Suite
+
+before(async () =&gt; {
+  // executed before all the tests for a given suite
+})
+
+beforeEach(async () =&gt; {
+  // executed before each test inside a given suite
+})
+
+after(async () =&gt; {
+  // executed after all the tests for a given suite
+})
+
+afterEach(async () =&gt; {
+  // executed after each test inside a given suite
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assertions"><a class="anchor" href="#_assertions"></a><a class="link" href="#_assertions">Assertions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>assert</code> object is an instance of <a href="http://chaijs.com/api/assert/">chaijs/assert</a> which is passed to each test as a property on test context.</p>
+</div>
+<div class="paragraph">
+<p>To make your tests more reliable, you can also plan assertions to be executed for a given test. Let&#8217;s consider this example.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">test('must throw exception', async ({ assert }) =&gt; {
+  try {
+    await badOperation()
+  } catch ({ message }) {
+    assert.equal(message, 'Some error message')
+  }
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above test passes even if an exception was never thrown and no assertions were run. Which means it is a bad test, which is passed because we structured it badly.</p>
+</div>
+<div class="paragraph">
+<p>To overcome this situation, you must plan some assertions, to make sure the <code>catch</code> block is always executed and an assertion has been made.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">test('must throw exception', async ({ assert }) =&gt; {
+  assert.plan(1)
+
+  try {
+    await badOperation()
+  } catch ({ message }) {
+    assert.equal(message, 'Some error message')
+  }
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This time, if <code>badOperation</code> doesn&#8217;t throw an exception, the test still fails since we planned for <code>1</code> assertion and <code>0</code> were made.</p>
+</div>
+</div>
+</div>

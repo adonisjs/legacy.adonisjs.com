@@ -1,0 +1,106 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_first_steps">First steps</a></li>
+<li><a href="#_nginx_proxy">Nginx proxy</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This recipe shares the minimally required steps to serve AdonisJs app using <code>nginx</code> proxy.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_steps"><a class="anchor" href="#_first_steps"></a><a class="link" href="#_first_steps">First steps</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before getting started, make sure you can run your application on the defined port. Also, it is recommended to make use of a process manager like <code>pm2</code> to start your Node.js server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">pm2 start server.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify it is working</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">pm2 list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To check application logs, you can run the following command</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">pm2 logs</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nginx_proxy"><a class="anchor" href="#_nginx_proxy"></a><a class="link" href="#_nginx_proxy">Nginx proxy</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Open the <code>default</code> server configuration file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash"># empty the file
+echo &gt; /etc/nginx/sites-available/default
+
+# open in editor
+vi /etc/nginx/sites-available/default</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moreover, paste the following code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-nginx" data-lang="nginx">server {
+  listen 80;
+
+  server_name myapp.com;
+
+  location / {
+      proxy_pass http://localhost:3333;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_cache_bypass $http_upgrade;
+  }
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_points_to_note"><a class="anchor" href="#_points_to_note"></a><a class="link" href="#_points_to_note">Points to note</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It is assumed that <code>nginx</code> is installed and working as expected.</p>
+</li>
+<li>
+<p>Your app is running on <code>PORT 3333</code>. If not, then do change <code>proxy_pass</code> block inside the nginx file and define the appropriate port.</p>
+</li>
+<li>
+<p>Do replace <code>myapp.com</code> with the actual domain of your app.</p>
+</li>
+<li>
+<p>Change value of <code>trustProxy</code> to <strong>true</strong> inside <a href="https://github.com/adonisjs/adonis-slim-app/blob/develop/config/app.js#L43">config/app.js</a> file.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now visiting <code>myapp.com</code> shows your Adonisjs application, since <code>nginx</code> is proxying all the requests to the application running on a specified port.</p>
+</div>
+</div>
+</div>
+</div>

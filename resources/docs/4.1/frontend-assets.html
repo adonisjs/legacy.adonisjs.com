@@ -1,0 +1,197 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_webpack">Webpack</a></li>
+<li><a href="#_sass_setup">Sass setup</a></li>
+<li><a href="#_scripts_setup">Scripts setup</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs does not make any assumptions, neither provide tools on how to bundle your frontend assets. The goal of the framework is to provide a productive workflow for backend applications only.</p>
+</div>
+<div class="paragraph">
+<p>Whereas, in this recipe, we discuss some ways on how you can go about managing and bundling your frontend code.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_webpack"><a class="anchor" href="#_webpack"></a><a class="link" href="#_webpack">Webpack</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are so many build tools in the frontend eco-system that it is quite easy to feel overwhelming. However, <a href="https://webpack.js.org/concepts/" target="_blank" rel="noopener">webpack</a> <strong>(as of now)</strong> does manage everything gracefully and is the popular choice for many devs.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see how to go about storing your assets and then bundling them.</p>
+</div>
+<div class="sect2">
+<h3 id="_directory_structure"><a class="anchor" href="#_directory_structure"></a><a class="link" href="#_directory_structure">Directory structure</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">└── resources
+    └── assets
+        └── sass
+        └── scripts
+        └── images</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We should keep all <code>source assets</code> inside the <code>resources</code> directory. This directory is already used by Adonis to store the views.</p>
+</div>
+<div class="paragraph">
+<p>All compiled assets from this directory are placed inside the <code>public</code> directory.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_webpack_base_config"><a class="anchor" href="#_webpack_base_config"></a><a class="link" href="#_webpack_base_config">Webpack base config</a></h3>
+<div class="paragraph">
+<p>First, make sure to install webpack as a dev dependency and create the config file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev webpack
+
+touch webpack.config.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">webpack.config.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">module.exports = {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run <code>./node_modules/.bin/webpack</code> to build your files. Also <code>--watch</code> flag can be passed to start a watcher.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sass_setup"><a class="anchor" href="#_sass_setup"></a><a class="link" href="#_sass_setup">Sass setup</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev css-loader extract-text-webpack-plugin node-sass sass-loader</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add following code to your webpack.config.js file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+const extractSass = new ExtractTextPlugin({
+  filename: 'public/app.css'
+})
+
+function sassRules () {
+  return [
+    {
+      test: /\.(sass|scss)$/,
+      loader: extractSass.extract(['css-loader', 'sass-loader'])
+    }
+  ]
+}
+
+module.exports = {
+  entry: [
+    './resources/assets/sass/app.scss'
+  ],
+  output: {
+    filename: 'public/app.js'
+  },
+  module: {
+    rules: sassRules()
+  },
+  plugins: [
+    extractSass
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we make use of <code>sass-loader</code> and some related dependencies to compile <code>resources/assets/sass/app.scss &#8594; public/app.css</code>.</p>
+</div>
+<div class="paragraph">
+<p>Require css file from <code>edge</code> templates.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;head&gt;
+  {{ css('app') }}
+&lt;/head&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_scripts_setup"><a class="anchor" href="#_scripts_setup"></a><a class="link" href="#_scripts_setup">Scripts setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The scripts setup is done to bundle your frontend Javascript into a single file. I assume that you want to compile code to ES5 to target all major browsers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We use babel for ES6 to ES5 transpilation. Also <strong>AdonisJs itself does not need babel</strong>, it is just for the Javascript you are writing for the browser.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev babel-loader babel-core babel-preset-env</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">function scriptRules () {
+  return [
+    {
+      test: /\.js$/,
+      exclude: [/node_modules/],
+      loader: 'babel-loader',
+      options: { presets: ['env'] }
+    }
+  ]
+}
+
+module.exports = {
+  entry: [
+    './resources/assets/sass/app.scss',
+    './resources/assets/scripts/app.js'
+  ],
+  output: {
+    filename: 'public/app.js'
+  },
+  module: {
+    rules: sassRules().concat(scriptRules())
+  },
+  plugins: [
+    extractSass
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This time we compile <code>resources/assets/scripts/app.js &#8594; public/app.js</code></p>
+</div>
+<div class="paragraph">
+<p>Require js file from <code>edge</code> templates.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;head&gt;
+  {{ script('app') }}
+&lt;/head&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>

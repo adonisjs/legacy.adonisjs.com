@@ -1,0 +1,454 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_client_methods">Client methods</a></li>
+<li><a href="#_multipart_requests">Multipart requests</a></li>
+<li><a href="#_sessions">Sessions</a></li>
+<li><a href="#_authentication">Authentication</a></li>
+<li><a href="#_assertions">Assertions</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn how to write tests against an API server. If you are new to testing with AdonisJs or in general, make sure to read the <a href="testing">getting started</a> guide.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s get started with a basic example to test an endpoint that returns a list of posts in JSON.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Upcoming example assumes that you have database tables set up with a <code>Post</code> model.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start by creating a <strong>functional test</strong> since we are testing the API endpoint like an end-user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:test Post</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">create: test/functional/post.spec.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s open the test file and paste following code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="title">test/functional/post.spec.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Post')
+const Post = use('App/Models/Post')
+
+trait('Test/ApiClient')
+
+test('get list of posts', async ({ client }) =&gt; {
+  await Post.create({
+    title: 'Adonis 101',
+    body: 'Blog post content'
+  })
+
+  const response = await client.get('/posts').end()
+
+  response.assertStatus(200)
+  response.assertJSONSubset([{
+    title: 'Adonis 101',
+    body: 'Blog post content'
+  }])
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if we run <code>adonis test</code>, hopefully, the test passes. Also, let&#8217;s talk about how everything works in a nutshell.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Very first we register the <code>Test/ApiClient</code> trait, which gives us an HTTP client to make requests on a URL.</p>
+</li>
+<li>
+<p>We create a dummy post before hitting the <code>posts</code> URL.</p>
+</li>
+<li>
+<p>Finally, we run assertions to make sure the return HTTP status is <code>200</code> with one post having the same <strong>title</strong> and <strong>body</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Congratulations 👏  &nbsp; You have got your first test passing.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_client_methods"><a class="anchor" href="#_client_methods"></a><a class="link" href="#_client_methods">Client methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available methods you can call when making HTTP requests.</p>
+</div>
+<div class="sect3">
+<h4 id="_get_url"><a class="anchor" href="#_get_url"></a><a class="link" href="#_get_url">get(url)</a></h4>
+<div class="paragraph">
+<p>Make an HTTP <code>GET</code> request to a given url.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client.get('posts')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Just like <code>get</code>, you can use other methods like <code>post</code>, <code>put</code>, <code>delete</code> to make HTTP requests.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_header_key_value"><a class="anchor" href="#_header_key_value"></a><a class="link" href="#_header_key_value">header(key, value)</a></h4>
+<div class="paragraph">
+<p>Set <code>key/value</code> pair as an header when making the HTTP request.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .header('accept', 'application/json')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_send_body"><a class="anchor" href="#_send_body"></a><a class="link" href="#_send_body">send(body)</a></h4>
+<div class="paragraph">
+<p>Send request body when making the HTTP request.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .post('posts')
+  .send({
+    title: 'Adonis 101',
+    body: 'Post content'
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_queryobject"><a class="anchor" href="#_query_queryobject"></a><a class="link" href="#_query_queryobject">query(queryObject)</a></h4>
+<div class="paragraph">
+<p>Set query string</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .query({ order: 'desc', page: 1 })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_type_type"><a class="anchor" href="#_type_type"></a><a class="link" href="#_type_type">type(type)</a></h4>
+<div class="paragraph">
+<p>Set request content type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .type('json')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_accept_type"><a class="anchor" href="#_accept_type"></a><a class="link" href="#_accept_type">accept(type)</a></h4>
+<div class="paragraph">
+<p>Set the data type you want to accept from the server.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .accept('json')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cookie_key_value"><a class="anchor" href="#_cookie_key_value"></a><a class="link" href="#_cookie_key_value">cookie(key, value)</a></h4>
+<div class="paragraph">
+<p>Set request cookies. Since all cookies are encrypted in AdonisJs, this method makes sure to encrypt the values properly, so that AdonisJs server can parse them.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .cookie('name', 'virk')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_plaincookie_key_value"><a class="anchor" href="#_plaincookie_key_value"></a><a class="link" href="#_plaincookie_key_value">plainCookie(key, value)</a></h4>
+<div class="paragraph">
+<p>Set a cookie which doesn&#8217;t get encrypted</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .plainCookie('name', 'virk')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_end"><a class="anchor" href="#_end"></a><a class="link" href="#_end">end</a></h4>
+<div class="paragraph">
+<p>The <code>end</code> method ends the HTTP request chain and returns the response. Make sure always to call the 'end' method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const response = await client.get('posts').end()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multipart_requests"><a class="anchor" href="#_multipart_requests"></a><a class="link" href="#_multipart_requests">Multipart requests</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The API client also makes it possible to make multipart requests and send files as part of the request body.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await client
+  .post('posts')
+  .field('title', 'Adonis 101')
+  .attach('cover_image', Helpers.tmpPath('cover-image.jpg'))
+  .end()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can set HTML form style field names to send an array of data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await client
+  .post('user')
+  .field('user[name]', 'Virk')
+  .field('user[email]', 'virk@adonisjs.com')
+  .end()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessions"><a class="anchor" href="#_sessions"></a><a class="link" href="#_sessions">Sessions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When writing tests, you may want to set sessions beforehand, and same can be done by using the <code>Session/Client</code> trait.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure you have installed the session provider before you can take advantage of the <code>Session/Client</code> trait.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Post')
+
+trait('Test/ApiClient')
+trait('Session/Client')
+
+test('get list of posts', async ({ client }) =&gt; {
+  const response = await client
+    .get('posts')
+    .session('adonis-auth', 1)
+    .end()
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authentication"><a class="anchor" href="#_authentication"></a><a class="link" href="#_authentication">Authentication</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also, you can authenticate users beforehand by using the <code>Auth/Client</code> trait.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { test, trait } = use('Test/Suite')('Post')
+
+trait('Test/ApiClient')
+trait('Session/Client')
+trait('Auth/Client')
+
+test('get list of posts', async ({ client }) =&gt; {
+  const user = await User.find(1)
+
+  const response = await client
+    .get('posts')
+    .loginVia(user)
+    .end()
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can pass a custom scheme to be used for authenticating users.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .loginVia(user, 'jwt')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moreover, for a basic auth, you must pass the <code>username</code> and the <code>password</code> to log in the user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">client
+  .get('posts')
+  .loginVia(username, password, 'basic')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assertions"><a class="anchor" href="#_assertions"></a><a class="link" href="#_assertions">Assertions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of assertions you can run when using the API client.</p>
+</div>
+<div class="sect3">
+<h4 id="_assertstatus"><a class="anchor" href="#_assertstatus"></a><a class="link" href="#_assertstatus">assertStatus</a></h4>
+<div class="paragraph">
+<p>Assert response status</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertStatus(200)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertjson"><a class="anchor" href="#_assertjson"></a><a class="link" href="#_assertjson">assertJSON</a></h4>
+<div class="paragraph">
+<p>Response the response body to <code>deepEqual</code> the expected value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertJSON({
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertjsonsubset"><a class="anchor" href="#_assertjsonsubset"></a><a class="link" href="#_assertjsonsubset">assertJSONSubset</a></h4>
+<div class="paragraph">
+<p>Assert subset of JSON. This assertion tests a subset of objects, which is quite helpful when some keys inside an object are not determinable. For example: <strong>timestamps</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertJSONSubset({
+  title: 'Adonis 101',
+  body: 'Some content'
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_asserttext"><a class="anchor" href="#_asserttext"></a><a class="link" href="#_asserttext">assertText</a></h4>
+<div class="paragraph">
+<p>Assert plain text returned by the server</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertText('Hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_asserterror"><a class="anchor" href="#_asserterror"></a><a class="link" href="#_asserterror">assertError</a></h4>
+<div class="paragraph">
+<p>Assert the error received as response</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertError([
+  {
+    message: 'username is required',
+    field: 'username',
+    validation: 'required'
+  }
+])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertcookie"><a class="anchor" href="#_assertcookie"></a><a class="link" href="#_assertcookie">assertCookie</a></h4>
+<div class="paragraph">
+<p>Assert that the server set a cookie with value</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertCookie('key', 'value')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertplaincookie"><a class="anchor" href="#_assertplaincookie"></a><a class="link" href="#_assertplaincookie">assertPlainCookie</a></h4>
+<div class="paragraph">
+<p>Assert plain cookie</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertPlainCookie('key', 'value')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertheader"><a class="anchor" href="#_assertheader"></a><a class="link" href="#_assertheader">assertHeader</a></h4>
+<div class="paragraph">
+<p>Assert that the server sent a header.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertHeader('content-type', 'application/json')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertredirect"><a class="anchor" href="#_assertredirect"></a><a class="link" href="#_assertredirect">assertRedirect</a></h4>
+<div class="paragraph">
+<p>Assert that the request was redirected to a given URL.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertRedirect('/there')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,472 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_mail_api">Mail API</a></li>
+<li><a href="#_message_api">Message API</a></li>
+<li><a href="#_switching_connections">Switching connections</a></li>
+<li><a href="#_drivers">Drivers</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs has first class support for sending emails. The mail provider comes with a handful of drivers to send emails, which includes.</p>
+</div>
+<div class="ulist ul-shrinked">
+<ul class="ul-shrinked">
+<li>
+<p>Smtp ( smtp )</p>
+</li>
+<li>
+<p>Spark Post ( sparkpost )</p>
+</li>
+<li>
+<p>Mailgun ( mailgun )</p>
+</li>
+<li>
+<p>Amazon SES ( ses )</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The mail provider is not part of the default project structure and must be installed as defined in following steps.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/mail</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/mail/providers/MailProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The configuration is saved inside <code>config/mail.js</code> file. Make sure to update the settings as per your needs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with the basic example of sending email on user registration.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.post('user', 'UserController.store')</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Mail = use('Mail')
+
+class UserController {
+
+  async store ({ request }) {
+    const data = request.only(['email', 'username', 'password'])
+    const user = await User.create(data)
+
+    await Mail.send('emails.welcome', user.toJSON(), (message) =&gt; {
+      message
+        .to(user.email)
+        .from('&lt;from-email&gt;')
+        .subject('Welcome to yardstick')
+    })
+
+    return 'Registered successfully'
+  }
+}
+
+module.exports = UserController</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, we need to create <code>emails/welcome.edge</code> view, which is the HTML body.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;h2&gt; Hello {{ username }} &lt;/h2&gt;
+&lt;p&gt;
+  Welcome to the yardstick club, here's your getting started guide
+&lt;/p&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mail_api"><a class="anchor" href="#_mail_api"></a><a class="link" href="#_mail_api">Mail API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods you can use to send emails.</p>
+</div>
+<div class="sect3">
+<h4 id="_send_views_data_callback"><a class="anchor" href="#_send_views_data_callback"></a><a class="link" href="#_send_views_data_callback">send(views, data, callback)</a></h4>
+<div class="paragraph">
+<p>Send email using one or multiple Edge views.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.send('view', data, (message) =&gt; {
+  message
+    .from('')
+    .to('')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>views</code> can be a single view or an array of views for a specific content type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.send(['welcome', 'welcome.text'])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The view ending with <code>.text</code> is used as the plain text body of the email. In the same way, you can set the mail body for Apple watch.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.send(['welcome', 'welcome.text', 'welcome.watch'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_raw_body_callback"><a class="anchor" href="#_raw_body_callback"></a><a class="link" href="#_raw_body_callback">raw(body, callback)</a></h4>
+<div class="paragraph">
+<p>Use raw string to send the mail. The email <strong>HTML body</strong> will be set when the string is HTML, otherwise plain text email will be sent.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.raw('plain text email', (message) =&gt; {
+  message.from('foo@bar.com')
+  message.to('baz@bar.com')
+})
+
+await Mail.raw('&lt;h1&gt; HTML email &lt;/h1&gt;', (message) =&gt; {
+  message.from('foo@bar.com')
+  message.to('baz@bar.com')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_message_api"><a class="anchor" href="#_message_api"></a><a class="link" href="#_message_api">Message API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods you can use to build message using fluent message API.</p>
+</div>
+<div class="sect3">
+<h4 id="_to_address_name"><a class="anchor" href="#_to_address_name"></a><a class="link" href="#_to_address_name">to(address, [name])</a></h4>
+<div class="paragraph">
+<p>Set <code>to</code> address.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.to(user.email)
+
+// with email and name both
+message.to(user.email, user.name)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_from_address_name"><a class="anchor" href="#_from_address_name"></a><a class="link" href="#_from_address_name">from(address, [name])</a></h4>
+<div class="paragraph">
+<p>Set <code>from</code> address.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.from('team@yardstick.io')
+
+// with email and name both
+message.from('team@yardstick.io', 'Yardstick')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cc_address_name"><a class="anchor" href="#_cc_address_name"></a><a class="link" href="#_cc_address_name">cc(address, [name])</a></h4>
+<div class="paragraph">
+<p>Add cc address on the email</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.cc(user.email)
+
+// with email and name both
+message.cc(user.email, user.name)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bcc_address_name"><a class="anchor" href="#_bcc_address_name"></a><a class="link" href="#_bcc_address_name">bcc(address, [name])</a></h4>
+<div class="paragraph">
+<p>Add bcc address on the email.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.bcc(user.email)
+
+// with email and name both
+message.bcc(user.email, user.name)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can call the above methods for multiple times to defined multiple addresses.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_replyto_address_name"><a class="anchor" href="#_replyto_address_name"></a><a class="link" href="#_replyto_address_name">replyTo(address, [name])</a></h4>
+<div class="paragraph">
+<p>Set <code>replyTo</code> email address</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.replyTo('noreply@yardstick.io')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_inreplyto_messageid"><a class="anchor" href="#_inreplyto_messageid"></a><a class="link" href="#_inreplyto_messageid">inReplyTo(messageId)</a></h4>
+<div class="paragraph">
+<p>Set email message id</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.inReplyTo(someThread.id)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_subject_value"><a class="anchor" href="#_subject_value"></a><a class="link" href="#_subject_value">subject(value)</a></h4>
+<div class="paragraph">
+<p>Set email subject</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.subject('Welcome to yardstick')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_text_value"><a class="anchor" href="#_text_value"></a><a class="link" href="#_text_value">text(value)</a></h4>
+<div class="paragraph">
+<p>Manually set the plain text body for the email.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.text('Email plain text version')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attach_filepath_options"><a class="anchor" href="#_attach_filepath_options"></a><a class="link" href="#_attach_filepath_options">attach(filePath, options)</a></h4>
+<div class="paragraph">
+<p>Attach file(s) with email.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message
+  .attach(Helpers.tmpPath('guides/getting-started.pdf'))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Set custom file name</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message
+  .attach(Helpers.tmpPath('guides/getting-started.pdf'), {
+    filename: 'Getting-Started.pdf'
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attachdata_data_filename_options"><a class="anchor" href="#_attachdata_data_filename_options"></a><a class="link" href="#_attachdata_data_filename_options">attachData(data, filename, options)</a></h4>
+<div class="paragraph">
+<p>Attach raw data as a <code>String</code>, <code>Buffer</code> or <code>Stream</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.attachData('hello', 'hello.txt')
+
+// buffer
+message.attachData(new Buffer('hello'), 'hello.txt')
+
+// stream
+message.attachData(fs.createReadStream('hello.txt'), 'hello.txt')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_embed_filepath_cid_options"><a class="anchor" href="#_embed_filepath_cid_options"></a><a class="link" href="#_embed_filepath_cid_options">embed(filePath, cid, options)</a></h4>
+<div class="paragraph">
+<p>Embed image into HTML body using <strong>content id</strong>. Make sure the <code>cid</code> is unique for each image for a given email.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.embed(Helpers.publicPath('logo.png'), 'logo')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Later inside the template, you can say</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;img src="cid:logo" /&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_driverextras_extras"><a class="anchor" href="#_driverextras_extras"></a><a class="link" href="#_driverextras_extras">driverExtras(extras)</a></h4>
+<div class="paragraph">
+<p>Pass an object of values to the current driver. The mail provider passes the object to the driver, and it is up to the driver to consume these values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">message.driverExtras({ campaign_id: 20 })</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switching_connections"><a class="anchor" href="#_switching_connections"></a><a class="link" href="#_switching_connections">Switching connections</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Mail provider allows defining multiple connections inside <code>config/mail.js</code> file. Connections can be for same or a different driver.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/mail.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  connection: 'smtp',
+
+  smtp: {},
+
+  sparkpost: {
+    driver: 'sparkpost',
+    apiKey: Env.get('SPARKPOST_API_KEY'),
+    extras: {}
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the above config, you can switch to <code>sparkpost</code> connection using the <code>connection</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail
+  .connection('sparkpost')
+  .send('view', data, (message) =&gt; {
+  })</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drivers"><a class="anchor" href="#_drivers"></a><a class="link" href="#_drivers">Drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below sections are instructions related to specific drivers.</p>
+</div>
+<div class="sect2">
+<h3 id="_ses"><a class="anchor" href="#_ses"></a><a class="link" href="#_ses">SES</a></h3>
+<div class="paragraph">
+<p>The <code>ses</code> driver relies on <a href="https://npmjs.org/package/aws-sdk" target="_blank" rel="noopener">aws-sdk</a>. Make sure to install the dependencies from npm, since it is installed by default.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i aws-sdk</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sparkpost"><a class="anchor" href="#_sparkpost"></a><a class="link" href="#_sparkpost">SparkPost</a></h3>
+<div class="paragraph">
+<p>You can pass following extra options when using sparkpost as the driver.</p>
+</div>
+<div class="paragraph">
+<p>Via config</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  extras: {
+    campaign_id: '',
+    options: {}
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check out sparkpost <a href="https://developer.sparkpost.com/api/transmissions.html#header-options-attributes">options attributes</a> docs to learn more about available options.</p>
+</div>
+<div class="paragraph">
+<p>Also, you can pass <code>extras</code> at runtime using the <code>driverExtras</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.send('view', data, (message) =&gt; {
+  message.driverExtras({
+    campaign_id: '',
+    options: {}
+  })
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mailgun"><a class="anchor" href="#_mailgun"></a><a class="link" href="#_mailgun">Mailgun</a></h3>
+<div class="paragraph">
+<p>You can pass following extra options when using mailgun as the driver.</p>
+</div>
+<div class="paragraph">
+<p>Via config</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  extras: {
+    'o:tag': '',
+    'o:campaign': '',
+    ....
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check out <a href="https://mailgun-documentation.readthedocs.io/en/latest/api-sending.html#sending">mailgun docs</a> to learn more about available options.</p>
+</div>
+<div class="paragraph">
+<p>Also, you can pass <code>extras</code> at runtime using the <code>driverExtras</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.send('view', data, (message) =&gt; {
+  message.driverExtras({
+    'o:tag': '',
+    'o:campaign': ''
+  })
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

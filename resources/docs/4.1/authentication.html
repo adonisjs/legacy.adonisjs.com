@@ -1,0 +1,916 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_authenticators">Authenticators</a></li>
+<li><a href="#_about_authentication">About Authentication</a></li>
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_sessions">Sessions</a></li>
+<li><a href="#_basic_auth">Basic Auth</a></li>
+<li><a href="#_jwt">JWT</a></li>
+<li><a href="#_personal_api_tokens">Personal API tokens</a></li>
+<li><a href="#_switching_authenticators">Switching authenticators</a></li>
+<li><a href="#_auth_middleware">Auth middleware</a></li>
+<li><a href="#_helpers">Helpers</a></li>
+<li><a href="#_revoking_tokens">Revoking tokens</a></li>
+<li><a href="#_tokens_encryption">Tokens encryption</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Every Web application deals with User Management and Authentication at some stage. The AdonisJs Authentication provider is a fully featured system to authenticate HTTP requests using multiple authenticators. Using authenticators, you can build traditional <strong>session based</strong> login systems to secure <strong>REST API&#8217;s</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authenticators"><a class="anchor" href="#_authenticators"></a><a class="link" href="#_authenticators">Authenticators</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each authenticator is a combination of serializers and an authentication scheme.</p>
+</div>
+<div class="sect2">
+<h3 id="_schemes"><a class="anchor" href="#_schemes"></a><a class="link" href="#_schemes">Schemes</a></h3>
+<div class="ulist support-list">
+<ul class="support-list">
+<li>
+<p>Sessions (session)</p>
+</li>
+<li>
+<p>Basic Auth (basic)</p>
+</li>
+<li>
+<p>JWT (jwt)</p>
+</li>
+<li>
+<p>Personal API Tokens (api)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&nbsp;</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_serializers"><a class="anchor" href="#_serializers"></a><a class="link" href="#_serializers">Serializers</a></h3>
+<div class="ulist support-list">
+<ul class="support-list">
+<li>
+<p>Lucid ( lucid )</p>
+</li>
+<li>
+<p>Database ( database )</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_authentication"><a class="anchor" href="#_about_authentication"></a><a class="link" href="#_about_authentication">About Authentication</a></h2>
+<div class="sectionbody">
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p>Authentication is divided into two broad categories of <strong>Stateful authentication</strong> and <strong>Stateless authentication</strong>.</p>
+</li>
+<li>
+<p>Session based authentication is considered <strong>Stateful Authentication</strong> since once logged in the user can navigate to different areas of the application without resending the credentials.</p>
+</li>
+<li>
+<p><strong>Stateless Authentication</strong> requires the end-user to send the credentials on each HTTP request which is very common with REST API&#8217;s.</p>
+</li>
+<li>
+<p>AdonisJs provides necessary tooling &amp; helpers to manage both types of authentication with ease.</p>
+</li>
+<li>
+<p>Authentication provider makes use of the <a href="encryption-and-hashing#_hashing_values">Hash</a> module to verify passwords. Make sure to <a href="database-hooks#_defining_hooks">hash your passwords</a> before saving them to the database.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Authentication provider comes pre-installed with <code>fullstack</code> and <code>api</code> boilerplates. If not installed, follow the defined steps.</p>
+</div>
+<div class="paragraph">
+<p>Install the package from npm and automatically set it up.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/auth</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registering_provider"><a class="anchor" href="#_registering_provider"></a><a class="link" href="#_registering_provider">Registering provider</a></h3>
+<div class="paragraph">
+<p>Next, you need to register the provider inside the <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">const providers = [
+  '@adonisjs/auth/providers/AuthProvider'
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_registering_middleware"><a class="anchor" href="#_registering_middleware"></a><a class="link" href="#_registering_middleware">Registering middleware</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const globalMiddleware = [
+  'Adonis/Middleware/AuthInit'
+]
+
+const namedMiddleware = {
+  auth: 'Adonis/Middleware/Auth'
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Configuration for authentication is saved inside <code>config/auth.js</code> file. By default, it makes use of the <code>session</code> authenticator to authenticate requests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">module.exports = {
+  authenticator: 'session',
+  session: {
+    serializer: 'Lucid',
+    scheme: 'session',
+    model: 'App/Models/User',
+    uid: 'email',
+    password: 'password'
+  }
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 18.1818%;">
+<col style="width: 36.3636%;">
+<col style="width: 45.4546%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Values</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serializer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lucid, database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Serializer to be used for fetching the user from the database.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">scheme</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">session, basic, jwt, api</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scheme to be used for fetching and authenticating user credentials.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database field name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database field to be used as unique identifier for a given user.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database field name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field to be used for verifying user password</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">model</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Model Namespace <strong>(Lucid Only)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Applicable only when using Lucid serializer. Given model is used for querying the database.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database table name <strong>(Database Only)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Applicable only when using Database serializer.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with a basic example of making a user login and then showing them their profile, only if they are logged in.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .get('users/:id', 'UserController.show')
+  .middleware('auth')
+
+Route.post('login', 'UserController.login')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s create the <code>UserController</code> using the <code>adonis</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:controller User</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_login_user"><a class="anchor" href="#_login_user"></a><a class="link" href="#_login_user">Login user</a></h3>
+<div class="paragraph">
+<p>Let&#8217;s start by creating the <code>login</code> method on the UserController, which takes the user credentials and log in the user if they are correct.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class UserController {
+
+  async login ({ request, auth }) {
+    const { email, password } = request.all()
+    await auth.attempt(email, password)
+
+    return 'Logged in successfully'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Yes, that is all you need to do to log in a user using their <code>email</code> and <code>password</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_showing_profile"><a class="anchor" href="#_showing_profile"></a><a class="link" href="#_showing_profile">Showing profile</a></h3>
+<div class="paragraph">
+<p>Let&#8217;s write the <code>show</code> method too, which returns the user profile as JSON.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class UserController {
+  async login () {
+    ...
+  }
+
+  show ({ auth, params }) {
+    if (auth.user.id !== Number(params.id)) {
+      return 'You cannot see someone else\'s profile'
+    }
+    return auth.user
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>auth.user</code> is the instance of the <strong>User model</strong>, so we can just return it. Also, we want to make sure the <code>id</code> received as params is same as currently logged in user id.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessions"><a class="anchor" href="#_sessions"></a><a class="link" href="#_sessions">Sessions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <strong>session authenticator</strong> exposes following methods to login or authenticate a user.</p>
+</div>
+<div class="sect3">
+<h4 id="_attempt_uid_password"><a class="anchor" href="#_attempt_uid_password"></a><a class="link" href="#_attempt_uid_password">attempt(uid, password)</a></h4>
+<div class="paragraph">
+<p>Attempt to log in a user using their <code>uid</code> and <code>password</code>. It throws an exception if unable to find the user or if password mismatch.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.attempt(uid, password)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_login_user_2"><a class="anchor" href="#_login_user_2"></a><a class="link" href="#_login_user_2">login(user)</a></h4>
+<div class="paragraph">
+<p>Login a user using the <code>user</code> model instance. This method does not verify anything and simply mark the user as logged in.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+
+await auth.login(user)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_loginviaid_id"><a class="anchor" href="#_loginviaid_id"></a><a class="link" href="#_loginviaid_id">loginViaId(id)</a></h4>
+<div class="paragraph">
+<p>Login a user using their id. This method queries the database to make sure the user exists.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.loginViaId(1)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_remember"><a class="anchor" href="#_remember"></a><a class="link" href="#_remember">remember</a></h4>
+<div class="paragraph">
+<p>Anytime you call methods like <code>attempt</code>, <code>login</code> or <code>loginViaId</code>, you can chain the <code>remember</code> method to make sure that users are logged in again even after closing their browser.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>remember</code> method creates a token for the user inside the <code>tokens</code> table. If you ever want to revoke the long-lived session of a particular user, simply set <code>is_revoked</code> to true.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth
+  .remember(true)
+  .attempt(email, password)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_check"><a class="anchor" href="#_check"></a><a class="link" href="#_check">check</a></h4>
+<div class="paragraph">
+<p>Check if a user is already logged in by reading the session.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  await auth.check()
+} catch (error) {
+  response.send('You are not logged in')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getuser"><a class="anchor" href="#_getuser"></a><a class="link" href="#_getuser">getUser</a></h4>
+<div class="paragraph">
+<p>This method calls the <code>check</code> method internally and returns the user details if they are logged in.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  return await auth.getUser()
+} catch (error) {
+  response.send('You are not logged in')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_logout"><a class="anchor" href="#_logout"></a><a class="link" href="#_logout">logout</a></h4>
+<div class="paragraph">
+<p>Logout the currently logged in user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.logout()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_auth"><a class="anchor" href="#_basic_auth"></a><a class="link" href="#_basic_auth">Basic Auth</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The basic authentication is stateless, where the end-user is supposed to pass the credentials on each request, so there is no concept of <code>login</code> and <code>logout</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_check_2"><a class="anchor" href="#_check_2"></a><a class="link" href="#_check_2">check</a></h4>
+<div class="paragraph">
+<p>Check to see if the user has passed <code>basic auth</code> credentials in the request header or not. Also, this method verifies the user existence and their password</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Set the <code>Authorization = Basic &lt;credentials&gt;</code>  header to authenticate the request. The credentials are a <code>base64</code> encoded string of <code>uid:password</code> where <code>uid</code> is the <code>uid</code> database field designated in the auth config.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  await auth.check()
+} catch (error) {
+  response.send(error.message)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getuser_2"><a class="anchor" href="#_getuser_2"></a><a class="link" href="#_getuser_2">getUser</a></h4>
+<div class="paragraph">
+<p>Calls <code>check</code> internally and returns the user details.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  return await auth.getUser()
+} catch (error) {
+  response.send('Credentials missing')
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jwt"><a class="anchor" href="#_jwt"></a><a class="link" href="#_jwt">JWT</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://jwt.io/" target="_blank" rel="noopener">jwt authentication</a> is an industry standard to implement stateless authentication using tokens, and AdonisJs has out of the box support for JWT.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticate the request.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">config/auth.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">{
+  authenticator: 'jwt',
+  jwt: {
+    serializer: 'Lucid',
+    model: 'App/Model/User',
+    scheme: 'jwt',
+    uid: 'email',
+    password: 'password',
+    options: {
+      secret: Config.get('app.appKey'),
+      // Options to be used while generating token
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Additional Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Available Values</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">algorithm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HS256, HS384</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HS256</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Algorithm to be used for generating token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">expiresIn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">valid time in seconds or <a href="https://github.com/rauchg/ms.js">ms string</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When to expire the token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">notBefore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">valid time in seconds or <a href="https://github.com/rauchg/ms.js">ms string</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Till when at least to keep the token valid</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">audience</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A value to be checked against the <code>aud</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">issuer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array or String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value to be used for <code>iss</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">subject</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A value to be checked against the <code>sub</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="_attempt_uid_password_jwtpayload"><a class="anchor" href="#_attempt_uid_password_jwtpayload"></a><a class="link" href="#_attempt_uid_password_jwtpayload">attempt(uid, password, [jwtPayload])</a></h4>
+<div class="paragraph">
+<p>Validate the user credentials and generate a JWT token in exchange.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.attempt(uid, password)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  type: 'type',
+  token: '.....',
+  refreshToken: '....'
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generate_user_jwtpayload"><a class="anchor" href="#_generate_user_jwtpayload"></a><a class="link" href="#_generate_user_jwtpayload">generate(user, [jwtPayload])</a></h4>
+<div class="paragraph">
+<p>Generate JWT token for a given user. Optionally you can pass a custom object to be encoded within the token. Passing <code>jwtPayload=true</code> encodes the user object within the token.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+
+await auth.generate(user)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withrefreshtoken"><a class="anchor" href="#_withrefreshtoken"></a><a class="link" href="#_withrefreshtoken">withRefreshToken</a></h4>
+<div class="paragraph">
+<p>Instruct JWT authenticator to generate a refresh token as well. The refresh token is generated so that the clients can refresh the actual <code>jwt</code> token without asking for user credentials again.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth
+  .withRefreshToken()
+  .attempt(uid, password)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generateforrefreshtoken"><a class="anchor" href="#_generateforrefreshtoken"></a><a class="link" href="#_generateforrefreshtoken">generateForRefreshToken</a></h4>
+<div class="paragraph">
+<p>Generate a new JWT token using the refresh token.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const refreshToken = request.input('refresh_token')
+
+await auth.generateForRefreshToken(refreshToken)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_newrefreshtoken"><a class="anchor" href="#_newrefreshtoken"></a><a class="link" href="#_newrefreshtoken">newRefreshToken</a></h4>
+<div class="paragraph">
+<p>When generating a new <code>jwt</code> token, auth provider does not reissue a new refresh token and instead uses the old one. If you want, you can also regenerate a new refresh token.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth
+  .newRefreshToken()
+  .generateForRefreshToken(refreshToken)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_check_3"><a class="anchor" href="#_check_3"></a><a class="link" href="#_check_3">check</a></h4>
+<div class="paragraph">
+<p>Check if the token has been sent in the <code>Authorization</code> header or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  await auth.check()
+} catch (error) {
+  response.send('Missing or invalid jwt token')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getuser_3"><a class="anchor" href="#_getuser_3"></a><a class="link" href="#_getuser_3">getUser</a></h4>
+<div class="paragraph">
+<p>Calls the <code>check</code> method internally and returns the user if authentication passes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  return await auth.getUser()
+} catch (error) {
+  response.send('Missing or invalid jwt token')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_listtokens"><a class="anchor" href="#_listtokens"></a><a class="link" href="#_listtokens">listTokens</a></h4>
+<div class="paragraph">
+<p>List all JWT refresh tokens for the user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.listTokens()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_personal_api_tokens"><a class="anchor" href="#_personal_api_tokens"></a><a class="link" href="#_personal_api_tokens">Personal API tokens</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The personal API tokens become popular by <a href="https://github.com/blog/1509-personal-api-tokens" target="_blank" rel="noopener">Github</a>, to use a token for automated scripts, where it is not possible to manually type the <strong>email</strong> and <strong>password</strong> every time.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs allows you to build applications, where your users can create personal API tokens and can use them to get authenticated.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticate the request.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_attempt_uid_password_2"><a class="anchor" href="#_attempt_uid_password_2"></a><a class="link" href="#_attempt_uid_password_2">attempt(uid, password)</a></h4>
+<div class="paragraph">
+<p>Generate a new token by validating the user credentials</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.attempt(uid, password)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  type: 'bearer',
+  token: '...'
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generate_user"><a class="anchor" href="#_generate_user"></a><a class="link" href="#_generate_user">generate(user)</a></h4>
+<div class="paragraph">
+<p>Generate token for a given user</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+
+await auth.generate(user)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_check_4"><a class="anchor" href="#_check_4"></a><a class="link" href="#_check_4">check</a></h4>
+<div class="paragraph">
+<p>Check if the token has been passed as the <code>Authorization</code> header or not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  await auth.check()
+} catch (error) {
+  response.send('Missing or invalid api token')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getuser_4"><a class="anchor" href="#_getuser_4"></a><a class="link" href="#_getuser_4">getUser</a></h4>
+<div class="paragraph">
+<p>Calls the <code>check</code> method internally and returns the user if authentication passes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">try {
+  await auth.getUser()
+} catch (error) {
+  response.send('Missing or invalid api token')
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_listtokens_2"><a class="anchor" href="#_listtokens_2"></a><a class="link" href="#_listtokens_2">listTokens</a></h4>
+<div class="paragraph">
+<p>List all API tokens for the user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth.listTokens()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switching_authenticators"><a class="anchor" href="#_switching_authenticators"></a><a class="link" href="#_switching_authenticators">Switching authenticators</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The auth provider makes it so simple to use and switch between multiple <strong>authenticators</strong> at runtime by calling the <code>authenticator</code> method.</p>
+</div>
+<div class="paragraph">
+<p>Assuming the user is logged in using <code>session</code> authenticator, we can generate a JWT token for them as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// loggedin user via sessions
+const user = auth.user
+
+const auth
+  .authenticator('jwt')
+  .generate(user)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_auth_middleware"><a class="anchor" href="#_auth_middleware"></a><a class="link" href="#_auth_middleware">Auth middleware</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>auth</code> middleware automates the flow of authenticating specific routes by adding the middleware on them. The middleware is registered as a name middleware inside <code>start/kernel.js</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const namedMiddleware = {
+  auth: 'Adonis/Middleware/Auth'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Usage</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">Route
+  .get('users/profile', 'UserController.profile')
+  .middleware(['auth'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_helpers"><a class="anchor" href="#_helpers"></a><a class="link" href="#_helpers">Helpers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The auth provider does add a couple of helpers to the view instance so that you can write HTML around the state of a logged-in user.</p>
+</div>
+<div class="sect3">
+<h4 id="_auth"><a class="anchor" href="#_auth"></a><a class="link" href="#_auth">auth</a></h4>
+<div class="paragraph">
+<p>Reference to the <code>auth</code> object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">Hello {{ auth.user.username }}!</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_loggedin"><a class="anchor" href="#_loggedin"></a><a class="link" href="#_loggedin">loggedIn</a></h4>
+<div class="paragraph">
+<p>The <code>loggedIn</code> tag can be used to write <code>if/else</code> around the loggedin user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@loggedIn
+  &lt;h2&gt; Hello {{ auth.user.username }} &lt;/h2&gt;
+@else
+  &lt;p&gt; Please login &lt;/p&gt;
+@endloggedIn</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_revoking_tokens"><a class="anchor" href="#_revoking_tokens"></a><a class="link" href="#_revoking_tokens">Revoking tokens</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>jwt</code> and <code>api</code> schemes exposes methods to revoke tokens using the <code>auth</code> interface.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For jwt scheme only refresh tokens are revoked, since actual tokens are never saved in the database
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_revoketokens_tokens_delete_false"><a class="anchor" href="#_revoketokens_tokens_delete_false"></a><a class="link" href="#_revoketokens_tokens_delete_false">revokeTokens(tokens, delete = false)</a></h4>
+<div class="paragraph">
+<p>The following method will revoke the token by setting the flag inside the <code>tokens</code> table. However, you can pass <code>true</code> for the 2nd argument and row will be deleted from the database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const refreshToken = '' // get it from user
+
+await auth
+  .scheme('jwt')
+  .revokeTokens([refreshToken])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Delete instead of setting the <code>is_revoked</code> flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const refreshToken = '' // get it from user
+
+await auth
+  .scheme('jwt')
+  .revokeTokens([refreshToken], true)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Revoke all</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth
+  .scheme('jwt')
+  .revokeTokens()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When revoking the <code>api</code> token for the currently loggedin user, you can access the value from the request header.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// for currently loggedin user
+const apiToken = auth.getAuthHeader()
+
+await auth
+  .scheme('api')
+  .revokeTokens([apiToken])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_revoketokensforuser_user_tokens_delete_false"><a class="anchor" href="#_revoketokensforuser_user_tokens_delete_false"></a><a class="link" href="#_revoketokensforuser_user_tokens_delete_false">revokeTokensForUser(user, tokens, delete = false)</a></h4>
+<div class="paragraph">
+<p>This method works same as the <code>revokeTokens</code> method, but instead you can specify the user yourself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
+
+await auth
+  .scheme('jwt')
+  .revokeTokensForUser(user)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tokens_encryption"><a class="anchor" href="#_tokens_encryption"></a><a class="link" href="#_tokens_encryption">Tokens encryption</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The tokens are saved in plain format inside the database, whereas these tokens are sent in <code>encrypted</code> form to the end-user.</p>
+</div>
+<div class="paragraph">
+<p>It is done to ensure, that if someone gets access to your database, they are not able to use these tokens directly and have to figure out how to encrypt them using the secret key.</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,169 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_configuration_debt">Configuration debt</a></li>
+<li><a href="#_getting_started">Getting started</a></li>
+<li><a href="#_environment_variables">Environment variables</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In this guide, we learn how AdonisJs handles the application configuration and environment variables. By the end of this guide, you will know how to keep sensitive information secure and avoid configuration debt.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration_debt"><a class="anchor" href="#_configuration_debt"></a><a class="link" href="#_configuration_debt">Configuration debt</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before getting started, let&#8217;s understand the concept of configuration debt. Many Node.js applications face the issue of scattered configuration inside multiple files. For example:</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>Defining middleware config with the routes file.</p>
+</li>
+<li>
+<p>Defining email setup details with in the service that sends the email.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For a new user working on the code base for the first time, it becomes a nightmare to find all the configuration, and they keep juggling within multiple files/directories.</p>
+</div>
+<div class="paragraph">
+<p>To avoid this behavior a dedicated directory <code>config</code> is used to store configuration at one place.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a><a class="link" href="#_getting_started">Getting started</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In AdonisJs, we store all the configuration inside a separate directory called <code>config</code>. All of the configuration files are loaded at boot time, and values can be accessed using the <strong>Config provider</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s say we want to read the <code>appSecret</code> from <code>config/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Config = use('Config')
+const appSecret = Config.get('app.appSecret')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The values are fetched by defining the <code>fileName.key</code>. Nested values can be fetched using dot-notation.</p>
+</div>
+<div class="listingblock">
+<div class="title">config/database.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  mysql: {
+    host: '127.0.0.1'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, access it as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Config.get('database.mysql.host')
+
+// or with default value
+Config.get('database.mysql.host', '127.0.0.1')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also you can update the in-memory config value for a key as shown below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Config.set('database.mysql.host', 'db.example.com')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_environment_variables"><a class="anchor" href="#_environment_variables"></a><a class="link" href="#_environment_variables">Environment variables</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quite often you want to have a different configuration based upon the environment your code is running in. For example: Using <strong>sandbox secrets</strong> for a 3rd party service in development.</p>
+</div>
+<div class="paragraph">
+<p>Also from the security point of view, you should never share your production credentials with all of the developers working on a codebase.</p>
+</div>
+<div class="paragraph">
+<p>Instead, these credentials are stored as environment variables on your production server and defined inside <code>.env</code> file when developing the app locally.</p>
+</div>
+<div class="listingblock">
+<div class="title">env</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-env" data-lang="env">APP_SECRET=F7op5n9vx1nAkno0DsNgZm5vjNXpOLIq
+DB_HOST=127.0.0.1
+DB_USER=root</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can access those variable by using the <code>Env</code> provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Env = use('Env')
+Env.get('APP_SECRET')</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Env.get</code> always returns a string. If you want to get a boolean value you&#8217;ll need to check it as follows.<br>
+  <code>Env.get('&#8230;&#8203;') === 'true'</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_different_env_file"><a class="anchor" href="#_different_env_file"></a><a class="link" href="#_different_env_file">Different .env file</a></h4>
+<div class="paragraph">
+<p>At times you may want to load a different <code>.env</code> file stored on your server at a different location. Same can be done as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">ENV_PATH=/user/.env node server.js</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_disabling_env_file"><a class="anchor" href="#_disabling_env_file"></a><a class="link" href="#_disabling_env_file">Disabling .env file</a></h4>
+<div class="paragraph">
+<p>If <code>.env</code> file is missing, AdonisJs throws an exception by default. However, you turn off the exception as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">ENV_SILENT=true node server.js</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_testing_variables"><a class="anchor" href="#_testing_variables"></a><a class="link" href="#_testing_variables">Testing variables</a></h4>
+<div class="paragraph">
+<p>If your application is started with <code>NODE_ENV=testing</code>, AdonisJs attempts to load <code>.env.testing</code> file from the root of your application.</p>
+</div>
+<div class="paragraph">
+<p>This file overrides the values from <code>.env</code> file, so that you can have slightly different configuration when running tests.</p>
+</div>
+<div class="listingblock">
+<div class="title">env.testing</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-env" data-lang="env">DB_CONNECTION=sqlite</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

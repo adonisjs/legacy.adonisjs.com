@@ -1,0 +1,675 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_locales_storage">Locales storage</a></li>
+<li><a href="#_icu_message_syntax">ICU Message syntax</a></li>
+<li><a href="#_formatting_values">Formatting values</a></li>
+<li><a href="#_registering_formats">Registering formats</a></li>
+<li><a href="#_switch_locale">Switch locale</a></li>
+<li><a href="#_switch_loader">Switch loader</a></li>
+<li><a href="#_http_request_locale">Http request locale</a></li>
+<li><a href="#_formatting_messages_for_user_language">Formatting messages for user language</a></li>
+<li><a href="#_view_global">View global</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs has first class support for internationalization built on top of <a href="https://formatjs.io/" target="_blank" rel="noopener">formatjs.io</a> standards. You can easily translate <strong>numbers</strong>, <strong>dates</strong>, and <strong>messages</strong> for multiple languages.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since the provider to add <strong>Intl</strong> support is not installed by default. We need to pull it from npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/antl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moreover, next, make sure to register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/antl/providers/AntlProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The configuration for locales is saved inside <code>config/app.js</code> file, with following options.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 20%;">
+<col style="width: 70%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ISO 639</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The locale to be used as the default locale for the application. It must be one of the available locales from <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO 639 codes</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">loader</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">database or file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The loader to be used for loading messages for different languages.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_locales_storage"><a class="anchor" href="#_locales_storage"></a><a class="link" href="#_locales_storage">Locales storage</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_file"><a class="anchor" href="#_file"></a><a class="link" href="#_file">File</a></h3>
+<div class="paragraph">
+<p>The locales for the <code>file</code> loader are stored inside <code>resources/locales</code> directory. Each language gets its directory with a <strong>flat list of files</strong> inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">└── resources
+  └── locales
+      ├── en
+      ├── fr
+      └── it</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also create a directory named <code>fallback</code> to store messages which are used when the message for current language is missing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_database"><a class="anchor" href="#_database"></a><a class="link" href="#_database">Database</a></h3>
+<div class="paragraph">
+<p>When making use of <code>database</code> loader, all the locales are fetched from the database table called <code>locales</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>adonis install</code> command does create the migration for the table. However, you can always reference the latest schema file from <a href="https://github.com/adonisjs/adonis-antl/blob/develop/templates/locales-schema.js" target="_blank" rel="noopener">github</a></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 5%;">
+<col style="width: 5%;">
+<col style="width: 5%;">
+<col style="width: 5%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id</th>
+<th class="tableblock halign-left valign-top">locale</th>
+<th class="tableblock halign-left valign-top">group</th>
+<th class="tableblock halign-left valign-top">item</th>
+<th class="tableblock halign-left valign-top">text</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cart</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">total</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cart total is {total, number, usd}</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fr</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cart</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">total</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Le panier est total {total, number, usd}</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is mandatory to define a <code>group</code> for each locale item.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_icu_message_syntax"><a class="anchor" href="#_icu_message_syntax"></a><a class="link" href="#_icu_message_syntax">ICU Message syntax</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs uses <a href="http://userguide.icu-project.org/formatparse/messages">ICU Message syntax</a> ( industry standard ) to format messages.</p>
+</div>
+<div class="paragraph">
+<p>The following topics define the usage of ICU message syntax.</p>
+</div>
+<div class="sect2">
+<h3 id="_arguments"><a class="anchor" href="#_arguments"></a><a class="link" href="#_arguments">Arguments</a></h3>
+<div class="paragraph">
+<p>You can pass dynamic arguments to the message, which replaces the placeholder values under <code>{ }</code> curly braces.</p>
+</div>
+<div class="listingblock">
+<div class="title">messages.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "greeting": "Hello {name}"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatMessage('messages.greeting', { name: 'virk' })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formatted_arguments"><a class="anchor" href="#_formatted_arguments"></a><a class="link" href="#_formatted_arguments">Formatted arguments</a></h3>
+<div class="paragraph">
+<p>The values passed to the message can also be formatted for a certain type. For example: When passing a number to the message, we can format it as a <code>currency</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">cart.json</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "total": "Cart total is {total, number, usd}"
+}</code></pre>
+</div>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>Here <code>total</code> is the value to the passed in the message.</p>
+</li>
+<li>
+<p>The <code>number</code> is the type of the value.</p>
+</li>
+<li>
+<p>Finally, <code>usd</code> is the format for the <code>total</code> value.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The <strong>ICU message syntax</strong> doesn&#8217;t understand the formats directly, so we need to pass them manually when formatting the message.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You also have to register the formats before passing them to the message. Learn more about <a href="#_registering_formats">registering formats</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Antl = use('Antl')
+const Formats = use('Antl/Formats')
+
+Antl.formatMessage(
+  'cart.total',
+  { total: 20 },
+  [Formats.pass('usd', 'number')]
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All we are doing here is calling <code>formatMessage</code> with 3 arguments.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>The first is the reference to the message to be formatted.</p>
+</li>
+<li>
+<p>Next the <code>data</code> to be passed</p>
+</li>
+<li>
+<p>Finally, we pass an <strong>Array</strong> of formats.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_select_format"><a class="anchor" href="#_select_format"></a><a class="link" href="#_select_format">Select format</a></h3>
+<div class="paragraph">
+<p>The <code>select</code> format makes it easy to choose an output by matching value to one of many choices.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Try and edit the below message in your <a href="https://format-message.github.io/icu-message-format-for-translators/editor.html?m={gender%2C%20select%2C%0D%0A%20%20%20%20male%20{He}%0D%0A%20%20%20%20female%20{She}%0D%0A%20%20%20%20other%20{They}%0D%0A}%20will%20respond%20shortly&amp;l=en-us&amp;gender=male" target="_blank" rel="noopener">browser</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-plain" data-lang="plain">{gender, select,
+    male {He}
+    female {She}
+    other {They}
+} will respond shortly</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_plural_format"><a class="anchor" href="#_plural_format"></a><a class="link" href="#_plural_format">Plural format</a></h3>
+<div class="paragraph">
+<p>Also, you define the options on how to pluralize the keywords inside a locale message.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Try and edit the below message in your <a href="https://format-message.github.io/icu-message-format-for-translators/editor.html?m=%7B%20count%20%2C%20plural%20%2C%0A%C2%A0%C2%A0%C2%A0%3D0%20%7BNo%20candy%20left%7D%0A%C2%A0%C2%A0one%20%7BGot%20%23%20candy%20left%7D%0Aother%20%7BGot%20%23%20candies%20left%7D%20%7D" target="_blank" rel="noopener">browser</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-plain" data-lang="plain">{count, plural,
+   =0 {No candy left}
+   one {Got # candy left}
+   other {Got # candies left}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_formatting_values"><a class="anchor" href="#_formatting_values"></a><a class="link" href="#_formatting_values">Formatting values</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods you can use to format <strong>messages</strong> or <strong>raw values</strong>.</p>
+</div>
+<div class="sect3">
+<h4 id="_formatmessage_key_data_formats"><a class="anchor" href="#_formatmessage_key_data_formats"></a><a class="link" href="#_formatmessage_key_data_formats">formatMessage(key, data, [formats])</a></h4>
+<div class="paragraph">
+<p>The <code>formatMessage</code> method, takes the <code>key</code> to be formatted with an object of data and formats to be used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Antl = use('Antl')
+
+Antl.formatMessage('response.eta', { gender: 'male' })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, you can pass an array of formats.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Antl = use('Antl')
+const Formats = use('Antl/Formats')
+
+Antl.formatMessage(
+  'cart.total',
+  { total: 20 },
+  [
+    Formats.pass('usd', 'number')
+  ]
+)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formatnumber_value_options"><a class="anchor" href="#_formatnumber_value_options"></a><a class="link" href="#_formatnumber_value_options">formatNumber(value, options)</a></h4>
+<div class="paragraph">
+<p>Format value as a number. It also takes an object of options defined <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat" target="_blank" rel="noopener">here</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatNumber(10)
+
+// as currency
+Antl.formatNumber(10, {
+  style: 'currency',
+  currency: 'usd'
+})
+
+// as percentage
+Antl.formatNumber(10, {
+  style: 'percent'
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formatamount_value_currency_options"><a class="anchor" href="#_formatamount_value_currency_options"></a><a class="link" href="#_formatamount_value_currency_options">formatAmount(value, currency, options)</a></h4>
+<div class="paragraph">
+<p>Format value with <code>style</code> set to currency.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatAmount(100, 'usd')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formatdate_value_options"><a class="anchor" href="#_formatdate_value_options"></a><a class="link" href="#_formatdate_value_options">formatDate(value, options)</a></h4>
+<div class="paragraph">
+<p>Format value as date.  It also takes an object of options defined <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat" target="_blank" rel="noopener">here</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatDate(new Date())
+
+// pull weekday for the date
+Antl.formatDate(new Date(), {
+  weekday: 'long'
+})
+
+// pull day only
+Antl.formatDate(new Date(), {
+  day: '2-digit'
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_formatrelative_value_options"><a class="anchor" href="#_formatrelative_value_options"></a><a class="link" href="#_formatrelative_value_options">formatRelative(value, options)</a></h4>
+<div class="paragraph">
+<p>Format a date relative to the current date/time. Here is the list of <a href="https://github.com/yahoo/intl-relativeformat#custom-options" target="_blank" rel="noopener">available options</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatRelative(new Date())
+
+// always in numeric style
+Antl.formatRelative(new Date(), {
+  style: 'numeric'
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registering_formats"><a class="anchor" href="#_registering_formats"></a><a class="link" href="#_registering_formats">Registering formats</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="#_formatmessage_key_data_formats">formatMessage</a> method only takes an array of pre-registered formats. Here is how you can register your formats for a given type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Formats = use('Antl/Formats')
+
+Formats.add('usd', {
+  style: 'currency',
+  currency: 'usd'
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use it as follows</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatMessage(
+  'cart.total'
+  { total: 20 },
+  [
+    Formats.pass('usd', 'number')
+  ]
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>Formats.pass</code> takes 2 arguments.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p>The first argument is the format to be used</p>
+</li>
+<li>
+<p>2nd is the <code>type</code> to which format should be passed.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Also, you can pass multiple formats to a given type. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-json" data-lang="json">{
+  "total": "Usd total { total, number, usd } or in GBP { gbpTotal, number, gbp }"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the <code>usd</code> and <code>gbp</code> formats.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Formats.add('usd', {
+  style: 'currency',
+  currency: 'usd'
+})
+
+Formats.add('gbp', {
+  style: 'currency',
+  currency: 'gbp'
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can format the message as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.formatMessage(
+  'cart.total',
+  { total: 20, gbpTotal: 13 },
+  [
+    Formats.pass('usd', 'number'),
+    Formats.pass('gbp', 'number')
+  ]
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-plain" data-lang="plain">Usd total $20.00 or in GBP £13.00</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switch_locale"><a class="anchor" href="#_switch_locale"></a><a class="link" href="#_switch_locale">Switch locale</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Antl makes it simple to format locale at runtime when formatting values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl
+  .forLocale('fr')
+  .formatMessage('response.eta')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switch_loader"><a class="anchor" href="#_switch_loader"></a><a class="link" href="#_switch_loader">Switch loader</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can also switch between available loaders at runtime by calling <code>loader</code> method.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Always make sure to call <code>bootLoader</code> before making use of it. Also <code>bootLoader</code> needs to be called only once.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Antl = use('Antl')
+
+// asynchronous
+await Antl.bootLoader()
+
+// get antl instance for a booted loader
+const AntlDb = Antl.loader('database')
+
+// all methods are available
+AntlDb.formatMessage()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_http_request_locale"><a class="anchor" href="#_http_request_locale"></a><a class="link" href="#_http_request_locale">Http request locale</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The antl provider binds the <code>locale</code> property to the <a href="http-context">Http context</a> object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ locale }) =&gt; {
+  return `User language is ${locale}`
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The locale property is resolved as follows.</p>
+</div>
+<div class="olist ol-spaced">
+<ol class="ol-spaced">
+<li>
+<p>It looks for <code>Accept-Language</code> HTTP header or <code>lang</code> query parameter to detect the user language.</p>
+</li>
+<li>
+<p>Next, matches the user language with the list of available locales configured by your application.<br>
+The configured locales are determined by messages saved inside <strong>database</strong> or <strong>file system</strong> for given languages.</p>
+</li>
+<li>
+<p>If user language is not supported by your application, then it will fallback to the default locale defined inside <code>config/app.js</code> file.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_formatting_messages_for_user_language"><a class="anchor" href="#_formatting_messages_for_user_language"></a><a class="link" href="#_formatting_messages_for_user_language">Formatting messages for user language</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since we can access the user <code>locale</code> based upon some standard conventions, you can format messages in one of the following ways.</p>
+</div>
+<div class="sect2">
+<h3 id="_import_globally"><a class="anchor" href="#_import_globally"></a><a class="link" href="#_import_globally">Import globally</a></h3>
+<div class="paragraph">
+<p>Import the <code>Antl</code> provider globally and manually call the <code>forLocale</code> method when formatting the values.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Antl = use('Antl')
+
+Route.get('/', ({ locale }) =&gt; {
+  return Antl
+    .forLocale(locale)
+    .formatNumber(20, { style: 'currency', currency: 'usd' })
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_context_instance"><a class="anchor" href="#_context_instance"></a><a class="link" href="#_context_instance">Context instance</a></h3>
+<div class="paragraph">
+<p>However, you can also make use of the <code>antl</code> object, which is passed to all route handlers like <strong>request</strong> and <strong>response</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ antl }) =&gt; {
+  return antl
+    .formatNumber(20, { style: 'currency', currency: 'usd' })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example, you can switch locale for renderer view as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ antl, view }) =&gt; {
+  antl.switchLocale('fr')
+  return view.render('some-view')
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_view_global"><a class="anchor" href="#_view_global"></a><a class="link" href="#_view_global">View global</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Also the <a href="#_context_instance">Context instance</a> is shared with all the views. So you can access all the available methods inside your view templates.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+There is no way to switch loader inside templates.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ antl.formatNumber(20, currency = 'usd', style = 'currency')  }}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can make use of the <code>@mustache</code> tag to write in multiple lines.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@mustache(antl.formatNumber(
+  20,
+  { currency: 'usd', style: 'currency }
+))</code></pre>
+</div>
+</div>
+</div>
+</div>

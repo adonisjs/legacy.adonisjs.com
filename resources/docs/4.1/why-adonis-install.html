@@ -1,0 +1,52 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_command_execution">Command execution</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs ships with a command called <code>adonis install &lt;package&gt;</code>, which is same as <code>npm install</code> or <code>yarn add</code>.</p>
+</div>
+<div class="paragraph">
+<p>In fact behind the scenes <code>adonis install</code> uses npm or yarn to install the package, but also performs an extra step after the install.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_command_execution"><a class="anchor" href="#_command_execution"></a><a class="link" href="#_command_execution">Command execution</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1509020167/adonis-install-flow.png"><span class="image"><img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1509020167/adonis-install-flow.png" alt="adonis install flow" width="400px"></span></a></p>
+</div>
+<div class="paragraph">
+<p>Every provider can have two files <a href="https://github.com/adonisjs/adonis-lucid/blob/develop/instructions.js" target="_blank" rel="noopener">instructions.js</a> and <a href="https://github.com/adonisjs/adonis-lucid/blob/develop/instructions.md" target="_blank" rel="noopener">instructions.md</a>, which are used by adonis to perform <code>post install</code> steps.</p>
+</div>
+<div class="sect2">
+<h3 id="_instructions_js"><a class="anchor" href="#_instructions_js"></a><a class="link" href="#_instructions_js">instructions.js</a></h3>
+<div class="paragraph">
+<p>The <code>.js</code> file exports a function. This function can be used to perform any steps since you can write functional code inside it.</p>
+</div>
+<div class="paragraph">
+<p>Most commonly performed steps are</p>
+</div>
+<div class="ulist ul-shrinked">
+<ul class="ul-shrinked">
+<li>
+<p>Copy config files.</p>
+</li>
+<li>
+<p>Create entities like controllers, models and so on.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_instructions_md"><a class="anchor" href="#_instructions_md"></a><a class="link" href="#_instructions_md">instructions.md</a></h3>
+<div class="paragraph">
+<p>The <code>.md</code> files are the small set of instructions to be followed by hand from the user of the provider. So it is a nice place to drop some usage and setup instructions written in Github flavored markdown.</p>
+</div>
+</div>
+</div>
+</div>

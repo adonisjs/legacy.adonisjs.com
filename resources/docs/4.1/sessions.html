@@ -1,0 +1,443 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_supported_drivers">Supported drivers</a></li>
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_session_methods">Session methods</a></li>
+<li><a href="#_flash_messages">Flash messages</a></li>
+<li><a href="#_session_persistence">Session persistence</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs has the first-class support for sessions and comes with a variety of inbuilt <strong>drivers</strong> to easily manage and store sessions. In this guide, we learn how to configure different drivers and use them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If session provider is not already setup, make sure to install it as defined below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/session</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above command installs the provider, creates the config file automatically and shows a small set of instructions to follow to set it up.</p>
+</div>
+<div class="paragraph">
+<p>The first step is to register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/session/providers/SessionProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, register the middleware inside <code>start/kernel.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const globalMiddleware = [
+  'Adonis/Middleware/Session'
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supported_drivers"><a class="anchor" href="#_supported_drivers"></a><a class="link" href="#_supported_drivers">Supported drivers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of drivers supported by the session provider. You can change the current driver inside <code>config/session.js</code> file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The redis driver rely on <code>@adonisjs/redis</code> make sure to install the provider.
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 20%;">
+<col style="width: 70%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Config key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cookie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cookie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Saves the session values in encrypted form inside cookies.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">File</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Saves inside a file on a server. Should not be used if you are running Adonisjs on multiple servers and behind a load balancer.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Redis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">redis</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save inside redis. Ideal for scaling horizontally.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>session</code> object is passed as part of HTTP <a href="http-context#_http_context">context</a>, just like request and response. Let&#8217;s see how to use sessions during the HTTP lifecycle.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ session, response }) =&gt; {
+  session.put('username', 'virk')
+  response.redirect('/print')
+})
+
+Route.get('/print', ({ session }) =&gt; {
+  return session.get('username')
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_session_methods"><a class="anchor" href="#_session_methods"></a><a class="link" href="#_session_methods">Session methods</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here is the list of methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_put_key_value"><a class="anchor" href="#_put_key_value"></a><a class="link" href="#_put_key_value">put(key, value)</a></h4>
+<div class="paragraph">
+<p>Add a key/value pair to the session store.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.put('username', 'virk')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_key_defaultvalue"><a class="anchor" href="#_get_key_defaultvalue"></a><a class="link" href="#_get_key_defaultvalue">get(key, [defaultValue])</a></h4>
+<div class="paragraph">
+<p>Returns the value for a given or the default value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.get('username', 'fallbackName')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_all"><a class="anchor" href="#_all"></a><a class="link" href="#_all">all</a></h4>
+<div class="paragraph">
+<p>Get everything back as an object from the session store.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.all()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_increment_key_steps"><a class="anchor" href="#_increment_key_steps"></a><a class="link" href="#_increment_key_steps">increment(key, steps)</a></h4>
+<div class="paragraph">
+<p>Increment the value for a given key. Make sure the previous value is always a number.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.increment('counter')
+
+// or increment by 5
+session.increment('counter', 5)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_decrement_key_steps"><a class="anchor" href="#_decrement_key_steps"></a><a class="link" href="#_decrement_key_steps">decrement(key, steps)</a></h4>
+<div class="paragraph">
+<p>Decrement the value for a given key. Make sure the previous value is always a number.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.increment('counter')
+
+// or decrement by 2
+session.decrement('counter', 2)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_forget_key"><a class="anchor" href="#_forget_key"></a><a class="link" href="#_forget_key">forget(key)</a></h4>
+<div class="paragraph">
+<p>Remove key/value pair from the store</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.forget('username')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pull_key_defaultvalue"><a class="anchor" href="#_pull_key_defaultvalue"></a><a class="link" href="#_pull_key_defaultvalue">pull(key, defaultValue)</a></h4>
+<div class="paragraph">
+<p>Remove the value from the store and get it back.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const username = session.pull('username') // returns username
+request.pull('username') // null</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clear"><a class="anchor" href="#_clear"></a><a class="link" href="#_clear">clear</a></h4>
+<div class="paragraph">
+<p>Empty the session store</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.clear()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_flash_messages"><a class="anchor" href="#_flash_messages"></a><a class="link" href="#_flash_messages">Flash messages</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Flash messages are short-lived session values for a single request only. Mainly flash messages are used to <strong>flash form errors</strong> but can be used for any other purpose.</p>
+</div>
+<div class="paragraph">
+<p>Taking the example of HTML forms, let&#8217;s say we want to validate the user data and redirect the request back to the form with the validation errors.</p>
+</div>
+<div class="listingblock">
+<div class="title">Html form</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;form method="POST" action="/users"&gt;
+  {{ csrfField() }}
+  &lt;input type="text" name="username" /&gt;
+  &lt;button type="submit"&gt; Submit &lt;/button&gt;
+&lt;/form&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s register the route and validate the form data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { validate } = use('Validator')
+
+Route.post('users', ({ request, session, response }) =&gt; {
+  const rules = { username: 'required' }
+  const validation = await validate(request.all(), rules)
+
+  if (validation.fails()) {
+    session.withErrors(validation.messages()).flashAll()
+    return response.redirect('back')
+  }
+
+  return 'Validation passed'
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now inside the view, we can grab the flash data using <strong>view helpers</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;input type="text" name="username" value="{{ old('username', '') }}" /&gt;
+{{ getErrorFor('username') }}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_methods"><a class="anchor" href="#_methods"></a><a class="link" href="#_methods">Methods</a></h3>
+<div class="paragraph">
+<p>Below is the list of available methods</p>
+</div>
+<div class="sect3">
+<h4 id="_flashall"><a class="anchor" href="#_flashall"></a><a class="link" href="#_flashall">flashAll</a></h4>
+<div class="paragraph">
+<p>Flash the request form data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flashAll()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flashonly"><a class="anchor" href="#_flashonly"></a><a class="link" href="#_flashonly">flashOnly</a></h4>
+<div class="paragraph">
+<p>Flash only selected fields.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flashOnly(['username', 'email'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flashexcept"><a class="anchor" href="#_flashexcept"></a><a class="link" href="#_flashexcept">flashExcept</a></h4>
+<div class="paragraph">
+<p>Flash except selected fields.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flashExcept(['password', 'csrf_token'])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_witherrors"><a class="anchor" href="#_witherrors"></a><a class="link" href="#_witherrors">withErrors</a></h4>
+<div class="paragraph">
+<p>Flash with an array of errors</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session
+  .withErrors([{ field: 'username', message: 'Error message' }])
+  .flashAll()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flash"><a class="anchor" href="#_flash"></a><a class="link" href="#_flash">flash</a></h4>
+<div class="paragraph">
+<p>Flash custom object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flash({ notification: 'You have been redirected back' })</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_view_helpers"><a class="anchor" href="#_view_helpers"></a><a class="link" href="#_view_helpers">View helpers</a></h3>
+<div class="paragraph">
+<p>When using flash messages, you can use the following view helpers to read values from the flash session store.</p>
+</div>
+<div class="sect3">
+<h4 id="_old_key_defaultvalue"><a class="anchor" href="#_old_key_defaultvalue"></a><a class="link" href="#_old_key_defaultvalue">old(key, defaultValue)</a></h4>
+<div class="paragraph">
+<p>Returns the value for a given key from the flash store.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flashOnly(['username'])</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">&lt;input type="text" name="username" value="{{ old('username', '') }}" /&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_haserrorfor_key"><a class="anchor" href="#_haserrorfor_key"></a><a class="link" href="#_haserrorfor_key">hasErrorFor(key)</a></h4>
+<div class="paragraph">
+<p>Find if there is an error for a given field inside the flash store.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session
+  .withErrors({ username: 'Username is required' })
+  .flashAll()</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@if(hasErrorFor('username'))
+  // display error
+@endif</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_geterrorfor_key"><a class="anchor" href="#_geterrorfor_key"></a><a class="link" href="#_geterrorfor_key">getErrorFor(key)</a></h4>
+<div class="paragraph">
+<p>Returns the error message for a given key</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session
+  .withErrors({ username: 'Username is required' })
+  .flashAll()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_flashmessage_key_defaultvalue"><a class="anchor" href="#_flashmessage_key_defaultvalue"></a><a class="link" href="#_flashmessage_key_defaultvalue">flashMessage(key, defaultValue)</a></h4>
+<div class="paragraph">
+<p>Returns the flash message for a given key</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">session.flash({ notification: 'Update successful!' })</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">@if(flashMessage('notification'))
+  &lt;span&gt; {{ flashMessage('notification') }} &lt;/span&gt;
+@endif</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_session_persistence"><a class="anchor" href="#_session_persistence"></a><a class="link" href="#_session_persistence">Session persistence</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Session values are persisted in bulk when the request ends. It keeps the request/response performant since you can mutate the session store as many times as you want and a bulk update is performed at the end.</p>
+</div>
+<div class="paragraph">
+<p>It is achieved using the middleware layer of Adonis, check out the implementation <a href="https://github.com/adonisjs/adonis-session/blob/develop/src/Session/Middleware.js#L89" target="_blank" rel="noopener">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>However, there is a caveat to it. In case an exception is thrown, the middleware layer breaks and session values are never committed.</p>
+</div>
+<div class="paragraph">
+<p>AdonisJs first party packages handle this gracefully, but you should commit the session manually if you are handling exceptions of your own.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const GE = require('@adonisjs/generic-exceptions')
+
+class MyCustomException extends GE.LogicalException {
+  handle (error, { session }) {
+    await session.commit()
+    // handle exception
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>

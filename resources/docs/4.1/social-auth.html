@@ -1,0 +1,362 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_config">Config</a></li>
+<li><a href="#_basic_example">Basic Example</a></li>
+<li><a href="#_ally_api">Ally API</a></li>
+<li><a href="#_user_api">User API</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Adonis Ally is a social authentication provider for AdonisJs. It makes it super easy to authenticate users via 3rd party websites like <strong>Facebook</strong>, <strong>Twitter</strong>, <strong>Google</strong>, so on, with minimum efforts.</p>
+</div>
+<div class="paragraph">
+<p>Here is the list of supported drivers</p>
+</div>
+<div class="ulist ul-shrinked">
+<ul class="ul-shrinked">
+<li>
+<p>Facebook</p>
+</li>
+<li>
+<p>Github</p>
+</li>
+<li>
+<p>Google</p>
+</li>
+<li>
+<p>Instagram</p>
+</li>
+<li>
+<p>Linkedin</p>
+</li>
+<li>
+<p>Twitter</p>
+</li>
+<li>
+<p>Foursquare</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since <a href="https://npmjs.org/package/@adonisjs/ally" target="_blank" rel="noopener">ally</a> is not installed by default, we need to install it from npm.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/ally</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/ally/providers/AllyProvider'
+]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installing ally using <code>adonis install</code> command creates the <code>config/services.js</code> file if one does not exists. However, you can always access the latest configuration from <a href="https://github.com/adonisjs/adonis-ally/blob/master/examples/config.js" target="_blank" rel="noopener">github</a>.</p>
+</div>
+<div class="paragraph">
+<p>The configuration must be stored inside <code>config/services.js</code> file, under an object called <code>ally</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">module.exports = {
+  ally: {
+    facebook: {}
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic Example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with a basic example of <strong>Login using Facebook</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('login/facebook', 'LoginController.redirect')
+Route.get('facebook/callback', 'LoginController.callback')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We registered a couple of routes, to redirect the user to Facebook and then handle the response when the user is redirected back from Facebook.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure the auth provider and middleware is <a href="authentication#_setup">configured correctly</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:controller Login</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const User = use('App/Models/User')
+
+class LoginController {
+  async redirect ({ ally }) {
+    await ally.driver('facebook').redirect()
+  }
+
+  async callback ({ ally, auth }) {
+    try {
+      const fbUser = await ally.driver('facebook').getUser()
+
+      // user details to be saved
+      const userDetails = {
+        email: fbUser.getEmail(),
+        token: fbUser.getAccessToken(),
+        login_source: 'facebook'
+      }
+
+      // search for existing user
+      const whereClause = {
+        email: fbUser.getEmail()
+      }
+
+      const user = await User.findOrCreate(whereClause, userDetails)
+      await auth.login(user)
+
+      return 'Logged in'
+    } catch (error) {
+      return 'Unable to authenticate. Try again later'
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have a fully working login system in a few lines of code. The API is consistent across all the drivers, so it is easier to swap <code>facebook</code> with <code>google</code> or some other one.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ally_api"><a class="anchor" href="#_ally_api"></a><a class="link" href="#_ally_api">Ally API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available functions.</p>
+</div>
+<div class="sect3">
+<h4 id="_redirect"><a class="anchor" href="#_redirect"></a><a class="link" href="#_redirect">redirect</a></h4>
+<div class="paragraph">
+<p>Redirect user to the 3rd party website</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await ally.driver('facebook').redirect()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getredirecturl"><a class="anchor" href="#_getredirecturl"></a><a class="link" href="#_getredirecturl">getRedirectUrl</a></h4>
+<div class="paragraph">
+<p>Get redirect URL back as a string over redirecting the user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const url = await ally.driver('facebook').getRedirectUrl()
+
+return view.render('login', { url })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scope_scopesarray"><a class="anchor" href="#_scope_scopesarray"></a><a class="link" href="#_scope_scopesarray">scope(scopesArray)</a></h4>
+<div class="paragraph">
+<p>Define runtime scopes before redirecting the user.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You must check the official OAuth documentation of the provider to get a list of available scopes.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await ally
+  .driver('facebook')
+  .scope(['email', 'birthday'])
+  .redirect()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fields_fieldsarray"><a class="anchor" href="#_fields_fieldsarray"></a><a class="link" href="#_fields_fieldsarray">fields(fieldsArray)</a></h4>
+<div class="paragraph">
+<p>Fields to be fetched when getting authenticated user profile.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">await ally
+  .driver('facebook')
+  .fields(['username', 'email', 'profile_pic'])
+  .getUser()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getuser"><a class="anchor" href="#_getuser"></a><a class="link" href="#_getuser">getUser</a></h4>
+<div class="paragraph">
+<p>Get user profile of an authenticated user. An instance of <a href="https://github.com/adonisjs/adonis-ally/blob/develop/src/AllyUser.js" target="_blank" rel="noopener">AllyUser</a> is returned.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_user_api"><a class="anchor" href="#_user_api"></a><a class="link" href="#_user_api">User API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of available methods on a user instance.</p>
+</div>
+<div class="sect3">
+<h4 id="_getname"><a class="anchor" href="#_getname"></a><a class="link" href="#_getname">getName</a></h4>
+<div class="paragraph">
+<p>Returns the user name</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await ally
+  .driver('facebook')
+  .getUser()
+
+user.getName()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getemail"><a class="anchor" href="#_getemail"></a><a class="link" href="#_getemail">getEmail</a></h4>
+<div class="paragraph">
+<p>Returns the user email.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Some 3rd party providers do not share email, in which case this method returns <code>null.</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getEmail()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getnickname"><a class="anchor" href="#_getnickname"></a><a class="link" href="#_getnickname">getNickname</a></h4>
+<div class="paragraph">
+<p>Returns the nick name/display name of the user.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getNickname()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getavatar"><a class="anchor" href="#_getavatar"></a><a class="link" href="#_getavatar">getAvatar</a></h4>
+<div class="paragraph">
+<p>Returns public URL to the profile picture</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getAvatar()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getaccesstoken"><a class="anchor" href="#_getaccesstoken"></a><a class="link" href="#_getaccesstoken">getAccessToken</a></h4>
+<div class="paragraph">
+<p>Returns the access token which may be used later to update the user profile.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getAccessToken()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getrefreshtoken"><a class="anchor" href="#_getrefreshtoken"></a><a class="link" href="#_getrefreshtoken">getRefreshToken</a></h4>
+<div class="paragraph">
+<p>Refresh token to be used when access token expires. Available only when 3rd party provider implements <strong>OAuth2</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getRefreshToken()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getexpires"><a class="anchor" href="#_getexpires"></a><a class="link" href="#_getexpires">getExpires</a></h4>
+<div class="paragraph">
+<p>Access token expiry data. Available only when 3rd party provider implements <strong>OAuth2</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getExpires()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gettokensecret"><a class="anchor" href="#_gettokensecret"></a><a class="link" href="#_gettokensecret">getTokenSecret</a></h4>
+<div class="paragraph">
+<p>Returns token secret. Available only when 3rd party provider uses <strong>OAuth1</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getTokenSecret()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getoriginal"><a class="anchor" href="#_getoriginal"></a><a class="link" href="#_getoriginal">getOriginal</a></h4>
+<div class="paragraph">
+<p>Original payload returned by the 3rd party provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">user.getOriginal()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

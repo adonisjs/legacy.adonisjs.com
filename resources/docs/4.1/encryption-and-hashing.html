@@ -1,0 +1,91 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_encrypting_data">Encrypting Data</a></li>
+<li><a href="#_hashing_values">Hashing Values</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs comes with a couple of providers for <strong>hashing values</strong> and <strong>encrypting data</strong>. Hashing values are different from encryption since hashed values cannot be decrypted once encrypted that is not the case with encryption.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_encrypting_data"><a class="anchor" href="#_encrypting_data"></a><a class="link" href="#_encrypting_data">Encrypting Data</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs encryption provider makes use of <a href="https://nodejs.org/api/crypto.html" target="_blank" rel="noopener">Node.js crypto module</a> to encrypt and decrypt values.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure that <strong>appKey</strong> inside <code>config/app.js</code> is defined before you can encrypt values.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_encrypt_value"><a class="anchor" href="#_encrypt_value"></a><a class="link" href="#_encrypt_value">encrypt(value)</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Encryption = use('Encryption')
+const encrypted = Encryption.encrypt('hello world')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_decrypt"><a class="anchor" href="#_decrypt"></a><a class="link" href="#_decrypt">decrypt</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Encryption = use('Encryption')
+const decrypted = Encryption.decrypt('encrypted value')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hashing_values"><a class="anchor" href="#_hashing_values"></a><a class="link" href="#_hashing_values">Hashing Values</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs hash provider makes use of <a href="https://en.wikipedia.org/wiki/Bcrypt" target="_blank" rel="noopener">bcrypt</a> to hash values, which is a slow algorithm to hash/verify a value.</p>
+</div>
+<div class="paragraph">
+<p>Bcrypt is commonly used to hash passwords, and since it is a slow algorithm, it makes it expensive(if not impossible) for attackers to crack a password. The slowness of the algorithm is based upon the number of <strong>rounds</strong> to be executed before returning the hashed value.</p>
+</div>
+<div class="sect3">
+<h4 id="_make_value_rounds_10"><a class="anchor" href="#_make_value_rounds_10"></a><a class="link" href="#_make_value_rounds_10">make(value, [rounds=10])</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Hash = use('Hash')
+const safePassword = await Hash.make(request.input('password'))
+
+// or
+const safePassword = await Hash.make(request.input('password'), 20)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_verify_value_hashedvalue"><a class="anchor" href="#_verify_value_hashedvalue"></a><a class="link" href="#_verify_value_hashedvalue">verify(value, hashedValue)</a></h4>
+<div class="paragraph">
+<p>Since you cannot decrypt a hash, you can verify the user input against the previously hashed value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Hash = use('Hash')
+const isSame = await Hash.verify('plain-value', 'hashed-value')
+
+if (isSame) {
+  // ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

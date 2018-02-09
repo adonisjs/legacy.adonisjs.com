@@ -1,0 +1,221 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_where_to_write_code">Where to write code?</a></li>
+<li><a href="#_adding_macros_getters">Adding macros/getters</a></li>
+<li><a href="#_extending_providers">Extending providers</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs is fully extendible to the core. In this guide we learn about the ways, you can transparently extend parts of the framework</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_to_write_code"><a class="anchor" href="#_where_to_write_code"></a><a class="link" href="#_where_to_write_code">Where to write code?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The easiest way to get started is to make use of <a href="ignitor#_hooks">applications hooks</a> and later move code inside a provider if you want to share your code as a package.</p>
+</div>
+<div class="paragraph">
+<p>The hooks lives inside <code>start/hooks.js</code> file and bunch of pre-existing hooks can be used to execute the code at a specific time.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Hooks callbacks are synchronous. You must create a provider and use the <code>boot</code> method to write async code.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">start/hooks.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersRegistered(() =&gt; {
+  // execute your code
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Providers lives inside the <code>providers</code> directory in the project root. Always make sure to register the provider inside the <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">├── providers
+  ├── AppProvider.js</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">start/app.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const path = require('path')
+
+const providers = [
+  path.join(__dirname, '..', 'providers/AppProvider')
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Generally providers are used to add functionality to your application by binding namespaces to the IoC container. However, you can use the providers to run some code when it has been booted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ServiceProvider } = require('@adonisjs/fold')
+
+class AppProvider extends ServiceProvider {
+  async boot () {
+    // execute code
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_macros_getters"><a class="anchor" href="#_adding_macros_getters"></a><a class="link" href="#_adding_macros_getters">Adding macros/getters</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Macros let you add methods to the existing classes. A class must extend <a href="https://www.npmjs.com/package/macroable">Macroable</a> class in order to be extended.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can use hooks or the provider <code>boot</code> method to add macros.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Response = use('Adonis/Src/Response')
+const Request = use('Adonis/Src/Request')
+
+Response.macro('sendStatus', (status) =&gt; {
+  this.status(status).send(status)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And use it as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.get('/', ({ response }) =&gt; {
+  response.sendStatus(200)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In same way you can also add <code>getters</code> to the macroable classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Request.getter('time', function () {
+  return new Date().getTime()
+})
+
+// Or add a singleton getter
+Request.getter('id', function () {
+  return uuid.v4()
+}, true)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Below is the list of classes you can add getters/macros on.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Context/index.js" target="_blank" rel="noopener">Adonis/Src/HttpContext</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Request/index.js" target="_blank" rel="noopener">Adonis/Src/Request</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Response/index.js" target="_blank" rel="noopener">Adonis/Src/Response</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adonisjs/adonis-framework/blob/develop/src/Route/index.js" target="_blank" rel="noopener">Adonis/Src/Route</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extending_providers"><a class="anchor" href="#_extending_providers"></a><a class="link" href="#_extending_providers">Extending providers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Some existing providers let you extend them by adding new functionality. For example: <strong>Session provider</strong> allows new drivers to be added and <strong>Auth provider</strong> allows new serializers and schemes.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Make sure to refer the documentation of individual providers to understand the extending capabilities.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To keep the extend interface simple and unified, you make use of <code>Ioc.extend</code> method to add new drivers or serializers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ioc } = require('@adonisjs/fold')
+const { hooks } = require('@adonisjs/ignitor')
+
+hooks.after.providersRegistered(() =&gt; {
+  ioc.extend('Adonis/Src/Session', 'mongo', function () {
+    return class MongoDriver {
+    }
+  })
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are developing a provider, and want to use the same interface for exposing extending capabilities, make sure to bind a <code>Manager</code> object as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const { ServiceProvider } = require('@adonisjs/fold')
+
+class MyProvider extends ServiceProvider {
+  register () {
+    this.app.manager('MyApp/Provider', {
+      extend: function () {
+      }
+    })
+  }
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The manager object must have a extend method on it. The values passed to <code>ioc.extend</code> will be forwaded to this method.</p>
+</li>
+<li>
+<p>The <code>namespace</code> must be same as the binding namespace.</p>
+</li>
+<li>
+<p>You have to manage the registeration/lifecycle of a driver.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
