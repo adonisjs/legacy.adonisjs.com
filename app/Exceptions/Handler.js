@@ -22,7 +22,7 @@ class ExceptionHandler extends BaseExceptionHandler {
    */
   async handle (error, ctx) {
     if (process.env.NODE_ENV === 'development') {
-      return BaseExceptionHandler.handle(error, ctx)
+      return super.handle(error, ctx)
     }
 
     const { response, view } = ctx
