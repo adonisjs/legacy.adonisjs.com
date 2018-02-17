@@ -55,12 +55,13 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Once you create this file, AdonisJs hands over all the exceptions occurred during HTTP lifecycle to it. It should have the <code>handle</code> method with an optional <code>report</code> method on it.</p>
+<p>Once you create this file, AdonisJs hands over all the exceptions occurred during HTTP lifecycle to it.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class ExceptionHandler {
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const BaseExceptionHandler = use('BaseExceptionHandler')
 
+class ExceptionHandler extends BaseExceptionHandler {
   async handle (error, { response, session }) {
     if (error.name === 'ValidationException') {
       session.withErrors(error.messages).flashAll()
@@ -69,7 +70,7 @@
       return
     }
 
-    response.status(error.status).send(error.message)
+    return super.handle(...arguments)
   }
 }
 
@@ -78,9 +79,6 @@ module.exports = ExceptionHandler</code></pre>
 </div>
 <div class="paragraph">
 <p>The <code>handle</code> method in this class handles the <code>ValidationException</code> differently by flashing the errors back to the form.</p>
-</div>
-<div class="paragraph">
-<p>Also, the <code>report</code> method may be used to report the exception to a 3rd party service like <strong>Bugsnag</strong> for logging purposes.</p>
 </div>
 </div>
 <div class="sect2">

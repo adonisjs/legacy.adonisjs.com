@@ -1,0 +1,84 @@
+@layout('layouts.master')
+
+@section('body')
+  @super()
+
+  @set('title', 'AdonisJs screencasts')
+  @set('description', 'Screencasts to get started with AdonisJs')
+
+  <div class="screencasts-container">
+    <div class="shrinked-container splash">
+      <h1 class="title"> Watch and Learn </h1>
+      <h2 class="subtitle is-5">
+        Below is the list of community driven screencasts to help you get started with the framework and learn about some neat programming tricks.
+      </h2>
+    </div>
+
+    <div class="screencasts-list">
+      <div class="container">
+        <div class="columns is-multiline">
+          <div class="column is-4">
+            @component('components.screencast',
+              image = 'https://i.vimeocdn.com/video/676185529.jpg?mw=1500&mh=3000&q=70',
+              position = '-25px 16px',
+              title = 'Adonis 4, From Scratch to Sass',
+              url = 'https://www.bahdcasts.com/course/adonis-4-from-scratch-to-saas'
+            )
+              <p>
+                A beginners friendly series of screencasts handholding you to create a pratical working application from scratch.
+              </p>
+            @endcomponent
+          </div>
+
+          <div class="column is-4">
+            @component('components.screencast',
+              image = 'https://i.ytimg.com/vi/2oXpBK2iNQU/hqdefault.jpg',
+              position = '50% 61%',
+              url = 'https://www.youtube.com/playlist?list=PLoCq0WM_wHG-rFQEsShMQkgGcTO1Hmnvx'
+            )
+              <p>
+                A popular course by Traversy Media covering the basics of the framework and the same time creating a simple blog engine.
+              </p>
+            @endcomponent
+          </div>
+
+          <div class="column is-4">
+            @component('components.screencast',
+              image = 'https://i.ytimg.com/vi/yTiZrOluehU/maxresdefault.jpg',
+              position = '50% 0',
+              url = 'https://youtu.be/yTiZrOluehU'
+            )
+              <p>
+                A Series of screencasts explaining how IoC container and Service providers works under the hood by digging into by source code.
+              </p>
+            @endcomponent
+          </div>
+
+          <div class="column is-4">
+            @component('components.screencast',
+              image = 'https://i.ytimg.com/vi/_zUF_mhubL0/maxresdefault.jpg',
+              position = '50% 0',
+              url = 'https://youtu.be/_zUF_mhubL0'
+            )
+              <p>
+                Get familiar with the Lucid syntax and encouter the ease of Eagerloading related data.
+              </p>
+            @endcomponent
+          </div>
+
+          <div class="column is-4">
+            @component('components.screencast',
+              image = 'https://i.ytimg.com/vi/5wzcRtrRVd4/maxresdefault.jpg',
+              position = '50% 50%',
+              url = 'https://www.youtube.com/playlist?list=PLoCq0WM_wHG-rFQEsShMQkgGcTO1Hmnvx'
+            )
+              <p>
+                Learn how to create an API server, by following the official documentation.
+              </p>
+            @endcomponent
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection

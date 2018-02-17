@@ -11,7 +11,7 @@
   svg {
     position: absolute;
     right: 20px;
-    top: 14px;
+    top: 13px;
 
     .fill__group {
       fill: #fff;
@@ -31,6 +31,31 @@
           fill: #fff;
         }
       }
+    }
+  }
+}
+
+.button.is-outlined.is-video {
+  padding: 9px 28px 9px 48px;
+  margin-left: 10px;
+  cursor: pointer;
+  height: auto;
+  font-size: 1rem;
+  position: relative;
+  display: inline-block;
+  border-radius: 0;
+  transition: background .1s ease-out;
+
+  svg {
+    position: absolute;
+    left: 20px;
+    top: 12px;
+  }
+
+  &:hover, &:focus, &:active {
+    box-shadow: none;
+    svg polygon {
+      fill: #fff;
     }
   }
 }

@@ -24,7 +24,7 @@
 <div class="olist ol-spaced">
 <ol class="ol-spaced">
 <li>
-<p>The server level middleware stack includes a middleware to serve static resources from the <code>public</code> directory. You should only add server level middleware when they can override the URL&#8217;s registered by routes.</p>
+<p>The server level middleware stack includes a middleware to serve static resources from the <code>public</code> directory. You should only add server level middleware when you want it to be executed even when no routes for the current URL have been registered.</p>
 </li>
 <li>
 <p>If a request is not intercepted by server level middleware, then AdonisJs looks for a registered route, if a route is found, the global, named middleware and route action is executed.</p>
@@ -40,7 +40,7 @@
 <h2 id="_http_context"><a class="anchor" href="#_http_context"></a><a class="link" href="#_http_context">Http context</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Since Node.js handles HTTP requests concurrently, each request needs to be identified and managed uniquely. AdonisJs creates a request <strong>Context</strong> which is a class instance containing all the request related data.</p>
+<p>Since Node.js handles HTTP requests concurrently, each request needs to be identified and managed uniquely. AdonisJs passes a <strong>Context</strong> object to all route handlers, this object holds everything you need to handle an HTTP request.</p>
 </div>
 <div class="paragraph">
 <p>So when you bind a handler to the <code>Route</code>, that handler is executed for each request matching that URL and receives a unique <code>context</code> instance.</p>
