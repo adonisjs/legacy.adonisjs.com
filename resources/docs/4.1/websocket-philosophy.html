@@ -1,0 +1,129 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_pure_websockets">Pure websockets</a></li>
+<li><a href="#_multiplexing">Multiplexing</a></li>
+<li><a href="#_channels_topics">Channels &amp; topics</a></li>
+<li><a href="#_data_encoders">Data encoders</a></li>
+<li><a href="#_message_packets">Message packets</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This guide covers the philosophy of the Websocket server. By the end of this guide, you will know about <strong>channels</strong>, <strong>topic subscriptions</strong> and <strong>multiplexing</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pure_websockets"><a class="anchor" href="#_pure_websockets"></a><a class="link" href="#_pure_websockets">Pure websockets</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs makes use of pure Websockets and does not support any other transports like polling. Websockets are widely supported by all the major browsers and by removing extra overhead of multiple transports, we make it easier to scale the server.</p>
+</div>
+<div class="paragraph">
+<p>The websocket server <strong>scales naturally on Node.js cluster</strong> without any 3rd party dependencies like Redis. Also there is no need of sticky sessions.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_multiplexing"><a class="anchor" href="#_multiplexing"></a><a class="link" href="#_multiplexing">Multiplexing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Multiplexing is a way of re-using the same TCP connection, but seperating the <strong>events</strong> and <strong>authentication</strong> layer between channels.</p>
+</div>
+<div class="paragraph">
+<p>This way only one connection is maintained from client to server, but Adonis gives you clean abstraction layer to manage channel subscriptions and exchange messages on that.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_channels_topics"><a class="anchor" href="#_channels_topics"></a><a class="link" href="#_channels_topics">Channels &amp; topics</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once a client makes a Websocket connection, they are required to subscribe to a <strong>topic</strong> in order to exchange messages.</p>
+</div>
+<div class="paragraph">
+<p>Channels and topics are inter related, so let&#8217;s write some code to understand them.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Ws.channel('chat', ({ socket }) =&gt; {
+  console.log(socket.topic)
+})</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Above we registered a channel called <code>chat</code>.</p>
+</li>
+<li>
+<p>All subscriptions to the <code>chat</code> channel, will have a static topic called <code>chat</code>. In short the channel and the topic name are same.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Ws.channel('chat:*', ({ socket }) =&gt; {
+  console.log(socket.topic)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This time we extend the possibility of accepting dynamic topics. For example: A user can subscribe to topic <code>chat:watercooler</code>, <code>chat:intro</code> and so on.</p>
+</div>
+<div class="paragraph">
+<p>The wildcard approach, opens up a new world of possibilities. For example: you can create dynamic topics for private a chat between two users.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_encoders"><a class="anchor" href="#_data_encoders"></a><a class="link" href="#_data_encoders">Data encoders</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Websocket server makes use of data encoders while passing messages over the network. By default is makes use of <code>JSON</code> encoder, which has limitations when you want to pass binary data.</p>
+</div>
+<div class="paragraph">
+<p>However, you can make use of <a href="https://www.npmjs.com/package/@adonisjs/msgpack-encoder" target="_blank" rel="noopener">@adonisjs/msgpack-encoder</a> which works great with <strong>ArrayBuffers</strong> and <strong>Blobs</strong>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_message_packets"><a class="anchor" href="#_message_packets"></a><a class="link" href="#_message_packets">Message packets</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It&#8217;s impossible to build a multiplexing layer without having a standard around data packets.</p>
+</div>
+<div class="paragraph">
+<p>As a consumer of the package, you never have to worry about the packets type, but when writing a client for Adonis websocket server, it&#8217;s really important to understand them.</p>
+</div>
+<div class="paragraph">
+<p>Once the network data is decoded by an encoder, you will end up with an <strong>Object (or equalvent data type for your programming language)</strong> similar to be following structure.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  t: 7,
+  d: {
+    topic: 'chat',
+    data: 'hello world'
+  }
+}</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The property <code>t</code> is the type of the packet. We use numbers over strings, since it&#8217;s less data to transfer.</p>
+</li>
+<li>
+<p>The <code>d</code> is the data associated to that packet.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can learn more about packets and helpers libraries <a href="https://github.com/adonisjs/adonis-websocket-protocol" target="_blank" rel="noopener">here</a></p>
+</div>
+</div>
+</div>

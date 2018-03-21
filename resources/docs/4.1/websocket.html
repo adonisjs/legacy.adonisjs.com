@@ -1,0 +1,310 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_setup">Setup</a></li>
+<li><a href="#_basic_example">Basic example</a></li>
+<li><a href="#_controllers">Controllers</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AdonisJs offers a robust Websocket server to develop realtime applications by staying expressive with your code. The server works on pure <strong>Websocket</strong> connection (supported by all major browsers) and scales naturally with Node.js cluster.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since, the websocket addon is not installed by default, we need to install it from Npm as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis install @adonisjs/websocket
+
+# yarn
+adonis install @adonisjs/websocket --yarn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once installed, register the provider inside <code>start/app.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const providers = [
+  '@adonisjs/websocket/providers/WsProvider'
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next step is to tell <code>ignitor</code> to boot the Websocket server along with the HTTP server. Same needs to be done within <code>server.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-diff" data-lang="diff">const { Ignitor } = require('@adonisjs/ignitor')
+
+new Ignitor(require('@adonisjs/fold'))
+   .appRoot(__dirname)
++  .wsServer()
+   .fireHttpServer()
+   .catch(console.error)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also, the addon will attempt to create the following files inside your project.</p>
+</div>
+<div class="olist ol-shrinked">
+<ol class="ol-shrinked">
+<li>
+<p><code>config/socket.js</code> file contains the server configuration.</p>
+</li>
+<li>
+<p><code>start/socket.js</code> is used to boot the socket server and register <strong>Channels</strong>.</p>
+</li>
+<li>
+<p><code>start/wsKernel.js</code> is used to register middleware to be executed on channel subscriptions.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_cluster_support"><a class="anchor" href="#_cluster_support"></a><a class="link" href="#_cluster_support">Cluster support</a></h3>
+<div class="paragraph">
+<p>When running a Node.js cluster, you need to write one line of code inside the master
+node to hook the pub/sub between workers.</p>
+</div>
+<div class="paragraph">
+<p>The following code will go inside <code>start/server.js</code> file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const cluster = require('cluster')
+
+if (cluster.isMaster) {
+  for (let i=0; i &lt; 4; i ++) {
+    cluster.fork()
+  }
+  require('@adonisjs/websocket-client/clusterPubSub')()
+  return
+}
+
+const { Ignitor } = require('@adonisjs/ignitor')
+new Ignitor(require('@adonisjs/fold'))
+ .appRoot(__dirname)
+ .wsServer()
+ .fireHttpServer()
+ .catch(console.error)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s build a single room chat server, where users can exchange messages with each other. To keep the code simple, we will not store messages anywhere and just exchange them over websocket.</p>
+</div>
+<div class="paragraph">
+<p>Open <code>start/socket.js</code> file and paste following code inside it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Ws = use('Ws')
+
+Ws.channel('chat', 'ChatController')</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We can also bind a closure to <code>Ws.channel</code> method, but having a seperate controller is more convenient.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Next, step is to create the <code>ChatController</code> using the following command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis make:controller Chat --type=ws</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once done, open <code>app/Controllers/Ws/ChatController.js</code> file. The default controller looks similar to the following code snippet.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class ChatController {
+  constructor ({ socket, request }) {
+    this.socket = socket
+    this.request = request
+  }
+}
+
+module.exports = ChatController</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_client_side_code"><a class="anchor" href="#_client_side_code"></a><a class="link" href="#_client_side_code">Client side code</a></h3>
+<div class="paragraph">
+<p>Now let&#8217;s switch from the server side to the client side code and subscribe to the <code>chat</code> channel. To get started, you can grab the css and the HTML template from <a href="https://gist.github.com/thetutlage/7f0f2252b4d22dad13753ced890051e2">this gist</a>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The template will be saved inside <code>resources/views/chat.edge</code>.</p>
+</li>
+<li>
+<p>Css is saved inside inside <code>public/style.css</code>.</p>
+</li>
+<li>
+<p>Also make sure to serve the template by defining a route.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Finally, let&#8217;s get started by writing the Javascript code to connect to the websocket server. Also to keep things simple, we are using jQuery.</p>
+</div>
+<div class="listingblock">
+<div class="title">public/chat.js</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">let ws = null
+
+$(function () {
+  if (window.username) {
+    startChat()
+  }
+})
+
+function startChat () {
+  ws = adonis.Ws().connect()
+
+  ws.on('open', () =&gt; {
+    $('.connection-status').addClass('connected')
+    subscribeToChannel()
+  })
+
+  ws.on('error', () =&gt; {
+    $('.connection-status').removeClass('connected')
+  })
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The startup code is simple, we make the Websocket connection when <code>window.username</code> is available.</p>
+</div>
+<div class="paragraph">
+<p>Next step is to make a subscription on the <code>chat</code> topic and bind listeners to receive messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">function subscribeToChannel () {
+  const chat = ws.subscribe('chat')
+
+  chat.on('error', () =&gt; {
+    $('.connection-status').removeClass('connected')
+  })
+
+  chat.on('message', (message) =&gt; {
+    $('.messages').append(`
+      &lt;div class="message"&gt;&lt;h3&gt; ${message.username} &lt;/h3&gt; &lt;p&gt; ${message.body} &lt;/p&gt; &lt;/div&gt;
+    `)
+  })
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, let&#8217;s write the code to send the message when we press enter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">$('#message').keyup(function (e) {
+  if (e.which === 13) {
+    e.preventDefault()
+
+    const message = $(this).val()
+    $(this).val('')
+
+    ws.getSubscription('chat').emit('message', {
+      username: window.username,
+      body: message
+    })
+    return
+  }
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_server_code"><a class="anchor" href="#_server_code"></a><a class="link" href="#_server_code">Server code</a></h3>
+<div class="paragraph">
+<p>Since we are done with the frontend code, let&#8217;s open the <code>ChatController</code> again and write the code to replay messages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-diff" data-lang="diff">class ChatController {
+  constructor ({ socket, request }) {
+    this.socket = socket
+    this.request = request
+  }
+
++  onMessage (message) {
++    this.socket.broadcastToAll('message', message)
++  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>onMessage</code> method just replays the same message to all the connected clients using <code>broadcastToAll</code> method.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_controllers"><a class="anchor" href="#_controllers"></a><a class="link" href="#_controllers">Controllers</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The controllers let you keep your code structured by defining a seperate class for each channel. Controllers lives inside <code>app/Controllers/Ws</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>A new instance of controller is created for each subscription and the <code>context</code> is passed to the constructor.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class ChatController {
+  constructor ({ socket }) {
+    this.socket = socket
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also you can bind to different events by creating methods with the same name. Also all the methods, must be prefixed with the <code>on</code> keyword.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">class ChatController {
+  onMessage () {
+    // same as: socket.on('message')
+  }
+
+  onClose () {
+    // same as: socket.on('close')
+  }
+
+  onError () {
+    // same as: socket.on('error')
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>

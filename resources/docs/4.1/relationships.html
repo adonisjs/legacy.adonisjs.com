@@ -1208,6 +1208,24 @@ await user.cars().detach([mercedes.id])</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="_sync"><a class="anchor" href="#_sync"></a><a class="link" href="#_sync">sync</a></h4>
+<div class="paragraph">
+<p>The <code>sync</code> method is a shortcut for calling <code>detach</code> and then <code>attach</code> methods. It can be used for updating pivot table.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const mercedes = await Car.findBy('reg_no', '39020103')
+const user = await User.find(1)
+
+// Behave the same way as:
+// await user.cars().detach()
+// await user.cars().attach([mercedes.id])
+
+await user.cars().sync([mercedes.id])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_update"><a class="anchor" href="#_update"></a><a class="link" href="#_update">update</a></h4>
 <div class="paragraph">
 <p>The <code>update</code> method is used to make bulk updates on related rows. You can make use of the query builder methods to update specific fields only.</p>

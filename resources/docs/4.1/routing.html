@@ -632,6 +632,50 @@ Route.post('api/v1/users', 'UserController.store')</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="_namespace"><a class="anchor" href="#_namespace"></a><a class="link" href="#_namespace">namespace</a></h4>
+<div class="paragraph">
+<p>Often we have multiple controllers grouped inside the same folder. With the <code>namespace</code> method you can specify the folder on the group. For example with the following folder structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">├── app
+│   └── Controller
+│       └── Http
+|           └──Api
+|              └── v1
+|                  ├── UserController.js
+|                  └── RoleController.js</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Normally you would define the resource as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route.
+  group(() =&gt; {
+    Route.resource('/users', 'Api/v1/UserController')
+    Route.resource('/roles', 'Api/v1/RoleController')
+  })
+  .prefix('api/v1')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the <code>namespace</code> method you can simplify this group to the this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
+  .group(() =&gt; {
+    Route.resource('/users', 'UserController')
+    Route.resource('/roles', 'RoleController')
+  })
+  .prefix('api/v1')
+  .namespace('Api/v1')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="_domain"><a class="anchor" href="#_domain"></a><a class="link" href="#_domain">domain</a></h4>
 <div class="paragraph">
 <p>Specify routes on a group of routes.</p>

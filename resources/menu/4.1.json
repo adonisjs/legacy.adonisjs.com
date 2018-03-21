@@ -224,102 +224,102 @@
     "savePath": "resources/docs/4.1/traits.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/01-validator.adoc",
+    "path": "content/4.1/08-websockets/01-introduction.adoc",
+    "title": "Introduction",
+    "permalink": "websocket",
+    "category": "websockets",
+    "savePath": "resources/docs/4.1/websocket.html"
+  },
+  {
+    "path": "content/4.1/08-websockets/02-philosophy.adoc",
+    "title": "Philosophy",
+    "permalink": "websocket-philosophy",
+    "category": "websockets",
+    "savePath": "resources/docs/4.1/websocket-philosophy.html"
+  },
+  {
+    "path": "content/4.1/08-websockets/03-server.adoc",
+    "title": "Websocket server",
+    "permalink": "websocket-server",
+    "category": "websockets",
+    "savePath": "resources/docs/4.1/websocket-server.html"
+  },
+  {
+    "path": "content/4.1/08-websockets/04-client.adoc",
+    "title": "Websocket client",
+    "permalink": "websocket-client",
+    "category": "websockets",
+    "savePath": "resources/docs/4.1/websocket-client.html"
+  },
+  {
+    "path": "content/4.1/09-cookbooks/01-validator.adoc",
     "title": "Validator",
     "permalink": "validator",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/validator.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/02-encryption-and-hashing.adoc",
+    "path": "content/4.1/09-cookbooks/02-encryption-and-hashing.adoc",
     "title": "Encryption and Hashing",
     "permalink": "encryption-and-hashing",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/encryption-and-hashing.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/03-ace-commands.adoc",
+    "path": "content/4.1/09-cookbooks/03-ace-commands.adoc",
     "title": "Ace commands",
     "permalink": "ace",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/ace.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/04-mail.adoc",
+    "path": "content/4.1/09-cookbooks/04-mail.adoc",
     "title": "Mail",
     "permalink": "mail",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/mail.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/05-events.adoc",
+    "path": "content/4.1/09-cookbooks/05-events.adoc",
     "title": "Events",
     "permalink": "events",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/events.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/06-file-system.adoc",
+    "path": "content/4.1/09-cookbooks/06-file-system.adoc",
     "title": "File System",
     "permalink": "file-system",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/file-system.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/07-logger.adoc",
+    "path": "content/4.1/09-cookbooks/07-logger.adoc",
     "title": "Logger",
     "permalink": "logger",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/logger.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/08-internationalization.adoc",
+    "path": "content/4.1/09-cookbooks/08-internationalization.adoc",
     "title": "Internationalization",
     "permalink": "internationalization",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/internationalization.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/09-helpers.adoc",
+    "path": "content/4.1/09-cookbooks/09-helpers.adoc",
     "title": "Helpers",
     "permalink": "helpers",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/helpers.html"
   },
   {
-    "path": "content/4.1/08-cookbooks/10-extending-adonisjs.adoc",
+    "path": "content/4.1/09-cookbooks/10-extending-adonisjs.adoc",
     "permalink": "extending-adonisjs",
     "title": "Extending AdonisJs",
     "category": "cookbooks",
     "savePath": "resources/docs/4.1/extending-adonisjs.html"
-  },
-  {
-    "path": "content/4.1/09-web-security/01-introduction.adoc",
-    "permalink": "security-introduction",
-    "title": "Introduction",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/security-introduction.html"
-  },
-  {
-    "path": "content/4.1/09-web-security/02-csrf.adoc",
-    "permalink": "csrf",
-    "title": "CSRF protection",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/csrf.html"
-  },
-  {
-    "path": "content/4.1/09-web-security/03-cors.adoc",
-    "permalink": "cors",
-    "title": "CORS",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/cors.html"
-  },
-  {
-    "path": "content/4.1/09-web-security/04-shield-middleware.adoc",
-    "permalink": "shield",
-    "title": "Shield middleware",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/shield.html"
   },
   {
     "path": "content/4.1/10-testing/01-introduction.adoc",
@@ -348,6 +348,34 @@
     "title": "Testing fakes and Helpers",
     "category": "testing",
     "savePath": "resources/docs/4.1/testing-fakes.html"
+  },
+  {
+    "path": "content/4.1/11-web-security/01-introduction.adoc",
+    "permalink": "security-introduction",
+    "title": "Introduction",
+    "category": "web-security",
+    "savePath": "resources/docs/4.1/security-introduction.html"
+  },
+  {
+    "path": "content/4.1/11-web-security/02-csrf.adoc",
+    "permalink": "csrf",
+    "title": "CSRF protection",
+    "category": "web-security",
+    "savePath": "resources/docs/4.1/csrf.html"
+  },
+  {
+    "path": "content/4.1/11-web-security/03-cors.adoc",
+    "permalink": "cors",
+    "title": "CORS",
+    "category": "web-security",
+    "savePath": "resources/docs/4.1/cors.html"
+  },
+  {
+    "path": "content/4.1/11-web-security/04-shield-middleware.adoc",
+    "permalink": "shield",
+    "title": "Shield middleware",
+    "category": "web-security",
+    "savePath": "resources/docs/4.1/shield.html"
   },
   {
     "path": "content/4.1/recipes/01-nginx-proxy.adoc",

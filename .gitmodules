@@ -6,3 +6,7 @@
 	path = content/3.2
 	url = https://github.com/adonisjs/docs
 	branch = 3.2
+[submodule "content/4.1"]
+	path = content/4.1
+	url = git@github.com:adonisjs/docs.git
+	branch = 4.1

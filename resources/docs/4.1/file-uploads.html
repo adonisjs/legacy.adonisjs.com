@@ -327,7 +327,7 @@ When using <a href="https://github.com/adonisjs/adonis-bodyparser/blob/develop/s
 Route.post('upload', async ({ request }) =&gt; {
 
   request.multipart.file('profile_pic', {}, async (file) =&gt; {
-    await Drive.disk('s3').put(file.fileName, file.stream)
+    await Drive.disk('s3').put(file.clientName, file.stream)
   })
 
   await request.multipart.process()

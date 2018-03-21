@@ -5,12 +5,6 @@ const extractSass = new ExtractTextPlugin('adonis.css')
 const WebpackShellPlugin = require('webpack-shell-plugin')
 
 const plugins = [
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false,
-      drop_console: false,
-    }
-  }),
   extractSass
 ]
 
@@ -31,6 +25,7 @@ module.exports = {
     filename: 'adonis.js',
     path: path.resolve(__dirname, 'public')
   },
+  mode: 'production',
   module: {
     rules: [
       {

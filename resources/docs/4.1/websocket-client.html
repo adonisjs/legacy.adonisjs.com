@@ -1,0 +1,437 @@
+<div id="preamble">
+<div class="sectionbody">
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_polyfill">Polyfill</a></li>
+<li><a href="#_production_builds">Production builds</a></li>
+<li><a href="#_getting_started">Getting started</a></li>
+<li><a href="#_subscription_api">Subscription API</a></li>
+<li><a href="#_ws_api">Ws API</a></li>
+<li><a href="#_authentication">Authentication</a></li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This guide covers the documentation around the Javascript client used for connecting to the websocket server.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation"><a class="anchor" href="#_installation"></a><a class="link" href="#_installation">Installation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can install the package from npm and then bundle it using Webpack or rollup.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i @adonisjs/websocket-client</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and then import it as follows</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">import Ws from '@adonisjs/websocket-client'
+const ws = Ws('ws://localhost:3333')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Also you can grab the UMD bundle from unpkg.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-html" data-lang="html">&lt;script src="https://unpkg.com/@adonisjs/websocket-client"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const ws = adonis.Ws('ws://localhost:3333')
+&lt;/script&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_polyfill"><a class="anchor" href="#_polyfill"></a><a class="link" href="#_polyfill">Polyfill</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The module build requires <a href="https://babeljs.io/docs/plugins/transform-regenerator">regenerator-runtime</a> polyfill, so make sure to add it via babel.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_production_builds"><a class="anchor" href="#_production_builds"></a><a class="link" href="#_production_builds">Production builds</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The development build contains a bunch of log statements, so it is recommended to use <a href="https://webpack.js.org/plugins/define-plugin/">Webpack DefinePlugin</a> or <a href="https://github.com/rollup/rollup-plugin-replace">rollup-plugin-replace</a> in order to define <code>NODE_ENV</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a><a class="link" href="#_getting_started">Getting started</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s get started by connecting to the Websocket server and make some subscriptions.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If <code>url</code> is not defined, it will fallback to the current hostname. Otherwise a complete URL with <code>ws</code> protocol is required.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ws = Ws(url, options)
+
+// connect to the server
+ws.connect()</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_options"><a class="anchor" href="#_options"></a><a class="link" href="#_options">options</a></h4>
+<table class="tableblock frame-all grid-all spread resource-table">
+<colgroup>
+<col style="width: 30%;">
+<col style="width: 10%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Key</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>adonis-ws</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path to the used for making the connection. Only change, if you changed it on the server</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reconnection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>true</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not make reconnect automatically after disconnect</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reconnectionAttempts</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>10</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number to reconnection attempts to be made, before giving up</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">reconnectionDelay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>1000</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">How long to wait, before reconnecting. The value will be used as <code>n x delay</code>, where <code>n</code> is the current value of reconnection attempts.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">query</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>null</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query string to passed to the connection URL. You can pass an object</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">encoder</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>JsonEncoder</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The encoder to be used. The same encoder will be required on the server too.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>It is recommended to listen for <code>open</code> and <code>close</code> events, to manage your application state properly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">let isConnected = false
+
+ws.on('open', () =&gt; {
+  isConnected = true
+})
+
+ws.on('close', () =&gt; {
+  isConnected = false
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once, connected you can subscribe to different/multiple topics.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const chat = ws.subscribe('chat')
+
+chat.on('ready', () =&gt; {
+  chat.emit('message', 'hello')
+})
+
+chat.on('error', (error) =&gt; {
+  console.log(error)
+})
+
+chat.on('close', () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_subscription_api"><a class="anchor" href="#_subscription_api"></a><a class="link" href="#_subscription_api">Subscription API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Following is the list of methods to be used for sending/receiving messages.</p>
+</div>
+<div class="sect3">
+<h4 id="_emit_event_data"><a class="anchor" href="#_emit_event_data"></a><a class="link" href="#_emit_event_data">emit(event, data)</a></h4>
+<div class="paragraph">
+<p>Send event to the server</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">chat.emit('message', {
+  body: 'hello',
+  user: 'virk'
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_on_event_callback"><a class="anchor" href="#_on_event_callback"></a><a class="link" href="#_on_event_callback">on(event, callback)</a></h4>
+<div class="paragraph">
+<p>Bind event listener</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">chat.on('message', () =&gt; {})
+chat.on('new:user', () =&gt; {})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_off_event_callback"><a class="anchor" href="#_off_event_callback"></a><a class="link" href="#_off_event_callback">off(event, callback)</a></h4>
+<div class="paragraph">
+<p>Remove event listener</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const messageHandler = function () {}
+
+chat.on('message', messageHandler)
+chat.off(messageHandler)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_close"><a class="anchor" href="#_close"></a><a class="link" href="#_close">close()</a></h4>
+<div class="paragraph">
+<p>Initiate request to close the subscription. You must wait for the <code>close</code> event, to mark the subscription as closed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">chat.on('close', () =&gt; {
+  // server acknowledged close
+})
+
+chat.close()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_leaveerror"><a class="anchor" href="#_leaveerror"></a><a class="link" href="#_leaveerror">leaveError</a></h4>
+<div class="paragraph">
+<p>The <code>leaveError</code> event is emitted, when server refuses to close the subscription. This ideally will never occur.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">chat.on('leaveError', (response) =&gt; {
+  console.log(response)
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_error"><a class="anchor" href="#_error"></a><a class="link" href="#_error">error</a></h4>
+<div class="paragraph">
+<p>Emitted when error occurs on the TCP connection. Ideally you must be listening to <code>ws.on('error')</code> event.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">chat.on('error', (event) =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_close_2"><a class="anchor" href="#_close_2"></a><a class="link" href="#_close_2">close</a></h4>
+<div class="paragraph">
+<p>Emitted when subscription is closed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">chat.on('close', () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ws_api"><a class="anchor" href="#_ws_api"></a><a class="link" href="#_ws_api">Ws API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the list of methods available on a single <code>ws</code> connection.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ws = Ws(url, options)</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_connect"><a class="anchor" href="#_connect"></a><a class="link" href="#_connect">connect</a></h4>
+<div class="paragraph">
+<p>Initiate the connection</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ws.connect()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_close_3"><a class="anchor" href="#_close_3"></a><a class="link" href="#_close_3">close</a></h4>
+<div class="paragraph">
+<p>Forcefully close the connection. After this, all subscription will removed and no reconnection will be triggered.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ws.close()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsubscription_topic"><a class="anchor" href="#_getsubscription_topic"></a><a class="link" href="#_getsubscription_topic">getSubscription(topic)</a></h4>
+<div class="paragraph">
+<p>Returns instance of a subscription for a given topic. If there is no subscription <code>null</code> will be returned.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">ws.subscribe('chat')
+
+ws.getSubscription('chat').on('message', () =&gt; {
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_subscribe_topic"><a class="anchor" href="#_subscribe_topic"></a><a class="link" href="#_subscribe_topic">subscribe(topic)</a></h4>
+<div class="paragraph">
+<p>Subscribe to a topic. Subscribing to the same topic twice, will raise an exception.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const chat = ws.subscribe('chat')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authentication"><a class="anchor" href="#_authentication"></a><a class="link" href="#_authentication">Authentication</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Javascript client makes it super easy to authenticate users. The auth credentials are only passed once to the server, during the initial connection and then same information can be reused to allow or disallow channel subscriptions.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are using sessions, then user will be authenticated automatically, if they have a valid session.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_withbasicauth_username_password"><a class="anchor" href="#_withbasicauth_username_password"></a><a class="link" href="#_withbasicauth_username_password">withBasicAuth(username, password)</a></h4>
+<div class="paragraph">
+<p>Authenticate user using basic auth</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ws = Ws(url, options)
+
+ws
+  .withBasicAuth(username, password)
+  .connect()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withapitoken_token"><a class="anchor" href="#_withapitoken_token"></a><a class="link" href="#_withapitoken_token">withApiToken(token)</a></h4>
+<div class="paragraph">
+<p>Authenticate user using api token</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ws = Ws(url, options)
+
+ws
+  .withApiToken(token)
+  .connect()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_withjwttoken_token"><a class="anchor" href="#_withjwttoken_token"></a><a class="link" href="#_withjwttoken_token">withJwtToken(token)</a></h4>
+<div class="paragraph">
+<p>Authenticate user using JWT token</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const ws = Ws(url, options)
+
+ws
+  .withJwtToken(token)
+  .connect()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On the server, you can access the user information from the <code>auth</code> object.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You must setup required middleware before running the following code. Learn more about <a href="websocket-server#_registering_middleware">middleware</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Ws.channel('chat', ({ auth }) =&gt; {
+  console.log(auth.user)
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to enforce authenticated connections, make sure to define the named middleware.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Ws.channel('chat', ({ auth }) =&gt; {
+  console.log(auth.user)
+}).middleware(['auth'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
