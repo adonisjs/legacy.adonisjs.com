@@ -4,10 +4,16 @@ const _ = require('lodash')
 
 module.exports = function registerViewGlobals () {
   const View = use('Adonis/Src/View')
+  const Env = use('Adonis/Src/Env')
+
   View.global('humanize', (input) => {
     return _.upperFirst(input.replace(/-(\w)/g, (group, word) => {
       return ` ${word.toUpperCase()}`
     }))
+  })
+
+  View.global('latestVersion', () => {
+    return Env.get('LATEST_VERSION')
   })
 
   View.global('getProps', (item, doc) => {

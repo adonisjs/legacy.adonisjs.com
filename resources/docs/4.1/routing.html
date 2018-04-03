@@ -529,12 +529,12 @@ It is required to bind a <strong>Controller</strong> to the resource. Binding a 
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">Route
   .resource('users', 'UsersController')
   .middleware(new Map([
-    [['store', 'update', 'delete'], ['auth']]
+    [['store', 'update', 'destroy'], ['auth']]
   ]))</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Here we have defined the <code>auth</code> middleware on <strong>store</strong>, <strong>update</strong> and <strong>delete</strong> routes.</p>
+<p>Here we have defined the <code>auth</code> middleware on <strong>store</strong>, <strong>update</strong> and <strong>destroy</strong> controller methods.</p>
 </div>
 </div>
 <div class="sect2">

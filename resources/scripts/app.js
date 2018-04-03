@@ -27,7 +27,11 @@ Zepto(function () {
     appId: adonis.algoliaAppId,
     apiKey: adonis.algoliaApiKey,
     indexName: 'adonisjs',
-    inputSelector: '#search'
+    inputSelector: '#search',
+    urlSync: true,
+    algoliaOptions: {
+      facetFilters: ['version:'+window.adonis.currentVersion || window.adonis.version]
+    }
   })
 
   $('#show-quick-i-modal').click(function (e) {
