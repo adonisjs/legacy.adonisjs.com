@@ -6,6 +6,7 @@
 <li><a href="#_registering_channels">Registering channels</a></li>
 <li><a href="#_registering_middleware">Registering middleware</a></li>
 <li><a href="#_creating_middleware">Creating middleware</a></li>
+<li><a href="#_broadcast_from_anywhere">Broadcast from anywhere</a></li>
 <li><a href="#_socket_api">Socket API</a></li>
 </ul>
 </div>
@@ -130,6 +131,46 @@ const namedMiddleware = {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_broadcast_from_anywhere"><a class="anchor" href="#_broadcast_from_anywhere"></a><a class="link" href="#_broadcast_from_anywhere">Broadcast from anywhere</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Websocket communication is not always within the socket lifecycle. Quite often, you want to emit events during the HTTP lifecycle.</p>
+</div>
+<div class="paragraph">
+<p>This is quite simple, since you can access pre-registered channels anywhere inside your code.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Ws = use('Ws')
+
+class UserController {
+  async register () {
+    Ws
+      .getChannel('subscriptions')
+      .topic('subscriptions')
+      .broadcast('new:user')
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You start by selecting a channel using <code>getChannel(name)</code> method. Now inside that channel, you can broadcast messages to any topic using <code>topic(name)</code> method.</p>
+</div>
+<div class="paragraph">
+<p>After calling <code>.topic</code> you get an object which has following methods.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">const chat = Ws.getChannel('chat:*')
+const { broadcast, emitTo } = chat.topic('chat:watercooler')
+
+// broadcast: send to everyone
+// emitTo: send to selected socket ids</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_socket_api"><a class="anchor" href="#_socket_api"></a><a class="link" href="#_socket_api">Socket API</a></h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -179,7 +220,18 @@ const namedMiddleware = {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_broadcast_event_data_ackcallback"><a class="anchor" href="#_broadcast_event_data_ackcallback"></a><a class="link" href="#_broadcast_event_data_ackcallback">broadcast(event, data, [ackCallback])</a></h4>
+<h4 id="_emitto_event_data_socketids"><a class="anchor" href="#_emitto_event_data_socketids"></a><a class="link" href="#_emitto_event_data_socketids">emitTo(event, data, socketIds[])</a></h4>
+<div class="paragraph">
+<p>Emit messages to an array of socket ids</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">socket.emitTo('greeting', 'hello', [someIds])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_broadcast_event_data"><a class="anchor" href="#_broadcast_event_data"></a><a class="link" href="#_broadcast_event_data">broadcast(event, data)</a></h4>
 <div class="paragraph">
 <p>Emit event to everyone except yourself</p>
 </div>
@@ -190,7 +242,7 @@ const namedMiddleware = {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_broadcasttoall_event_data_ackcallback"><a class="anchor" href="#_broadcasttoall_event_data_ackcallback"></a><a class="link" href="#_broadcasttoall_event_data_ackcallback">broadcastToAll(event, data, [ackCallback])</a></h4>
+<h4 id="_broadcasttoall_event_data"><a class="anchor" href="#_broadcasttoall_event_data"></a><a class="link" href="#_broadcasttoall_event_data">broadcastToAll(event, data)</a></h4>
 <div class="paragraph">
 <p>Emit event to everyone including yourself</p>
 </div>
