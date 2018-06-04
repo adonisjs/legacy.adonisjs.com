@@ -1,0 +1,38 @@
+.sponsors-container {
+  padding: 100px 0;
+
+  .splash {
+    padding-top: 60px;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 3.4rem;
+    font-weight: 900;
+    margin: 0 0 50px 0;
+    color: $dark;
+  }
+
+  .subtitle {
+    font-family: $family-primary;
+    margin-bottom: 50px;
+    line-height: 1.5;
+    font-size: 1.15rem;
+  }
+
+  .featured-sponsors {
+    margin-bottom: 100px;
+  }
+
+  .sponsor-card {
+    color: $text;
+    padding: 40px 50px;
+    p {
+      margin-top: 30px;
+    }
+  }
+}
+
+.backers-list {
+  padding-top: 30px;
+}
