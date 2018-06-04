@@ -1,11 +1,8 @@
 <ul class="timeline">
-  @component('components.timeline-item', title = 'Install', isWysiwyg = true)
-    <pre class="highlight line-numbers language-javascript is-small">
-    <code>npm i -g @adonisjs/cli
-adonis new yardstick
-cd yardstick
-adonis serve --dev</code></pre>
-  @endcomponent
+
+@component('components.timeline-item', title = 'Install', isWysiwyg = true)
+<pre class="highlight line-numbers language-javascript is-small"><code>npm i -g @adonisjs/cli\nadonis new yardstick\ncd yardstick\nadonis serve --dev</code></pre>
+@endcomponent
 
   @component('components.timeline-item', title = 'Commands', isWysiwyg = true)
     <p> Get list of available commands you can run to create controllers, models and so on </p>
