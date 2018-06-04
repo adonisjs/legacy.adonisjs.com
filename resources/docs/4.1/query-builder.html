@@ -653,6 +653,18 @@ The output of the <code>paginate</code> method is different from the <code>forPa
 }</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>total</code> key will be a string, if you are using <strong>PostgreSQL</strong> due to the fact that JavaScript is unable to handle <code>bigint</code> natively. See <a href="https://github.com/adonisjs/adonis-lucid/issues/339#issuecomment-387399508">this issue</a> for a recommended way to solve this.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
