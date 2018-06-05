@@ -54,20 +54,59 @@ const decrypted = Encryption.decrypt('encrypted value')</code></pre>
 <h2 id="_hashing_values"><a class="anchor" href="#_hashing_values"></a><a class="link" href="#_hashing_values">Hashing Values</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>AdonisJs hash provider makes use of <a href="https://en.wikipedia.org/wiki/Bcrypt" target="_blank" rel="noopener">bcrypt</a> to hash values, which is a slow algorithm to hash/verify a value.</p>
+<p>AdonisJs hash provider comes with multiple drivers to hash user data. By default it makes use of <a href="https://en.wikipedia.org/wiki/Bcrypt" target="_blank" rel="noopener">bcrypt</a>, however support Argon via <a href="https://npm.im/argon2" target="_blank" rel="noopener">argon2 npm package</a>.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>@adonisjs/framework</code> version <code>&gt;=5.0.8</code> supports multiple drivers. So make sure to upgrade the package for desired results.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_config"><a class="anchor" href="#_config"></a><a class="link" href="#_config">Config</a></h3>
 <div class="paragraph">
-<p>Bcrypt is commonly used to hash passwords, and since it is a slow algorithm, it makes it expensive(if not impossible) for attackers to crack a password. The slowness of the algorithm is based upon the number of <strong>rounds</strong> to be executed before returning the hashed value.</p>
+<p>The config is defined inside <code>config/hash.js</code> file and allows following values.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You will have to install <a href="https://npm.im/argon2" target="_blank" rel="noopener">argon2 npm package</a> package from npm if using <code>argon</code> driver.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">module.exports = {
+  driver: 'bcrypt',
+  bcrypt: {
+    rounds: 10
+  },
+  argon: {
+    type: 1
+  }
+}</code></pre>
+</div>
 </div>
 <div class="sect3">
-<h4 id="_make_value_rounds_10"><a class="anchor" href="#_make_value_rounds_10"></a><a class="link" href="#_make_value_rounds_10">make(value, [rounds=10])</a></h4>
+<h4 id="_make_value_config"><a class="anchor" href="#_make_value_config"></a><a class="link" href="#_make_value_config">make(value, [config])</a></h4>
+<div class="paragraph">
+<p>Hash a plain string value. Optionally inline config can be passed to override the defaults inside config file.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const Hash = use('Hash')
-const safePassword = await Hash.make(request.input('password'))
-
-// or
-const safePassword = await Hash.make(request.input('password'), 20)</code></pre>
+const safePassword = await Hash.make(request.input('password'))</code></pre>
 </div>
 </div>
 </div>
@@ -84,6 +123,7 @@ const isSame = await Hash.verify('plain-value', 'hashed-value')
 if (isSame) {
   // ...
 }</code></pre>
+</div>
 </div>
 </div>
 </div>
