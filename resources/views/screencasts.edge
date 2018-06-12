@@ -19,6 +19,19 @@
         <div class="columns is-multiline">
           <div class="column is-4">
             @component('components.screencast',
+              image = 'https://i.ytimg.com/vi/dfEZlcPvez8/hqdefault.jpg',
+              position = '0px -31px',
+              title = '',
+              url = 'https://www.bahdcasts.com/course/adonis-4-from-scratch-to-saas'
+            )
+              <p>
+                A 3hour long video with practical implementation of AdonisJs and Vue together to build a Todo list application.
+              </p>
+            @endcomponent
+          </div>
+
+          <div class="column is-4">
+            @component('components.screencast',
               image = 'https://i.vimeocdn.com/video/676185529.jpg?mw=1500&mh=3000&q=70',
               position = '-25px 16px',
               title = 'Adonis 4, From Scratch to Sass',
