@@ -6,7 +6,7 @@
     background-repeat: no-repeat;
 
     .title {
-      font-size: 3.4rem;
+      font-size: 3.6rem;
       color: #fff;
       font-weight: 900;
       margin: 0 0 50px 0;
@@ -17,7 +17,7 @@
       color: #fff;
       margin-bottom: 50px;
       line-height: 1.5;
-      font-size: 1.15rem;
+      font-size: 1.20rem;
     }
 
     @include until($desktop) {

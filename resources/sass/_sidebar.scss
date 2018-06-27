@@ -7,14 +7,14 @@
 }
 
 .menu {
-  margin-top: 15px;
+  margin-top: 40px;
 }
 
 .menu-label {
   font-family: $family-headings;
   font-weight: 600;
   color: #919eab;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
 }
 
@@ -22,7 +22,7 @@
   margin-bottom: 1.8em;
   a {
     padding: 0.3em 0;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 
     &:hover, &.is-active {
       background: transparent;
