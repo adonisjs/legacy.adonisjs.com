@@ -32,7 +32,7 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
     "bulma": "^0.7.1",
-    "bulma-timeline": "^2.0.3",
+    "bulma-timeline": "^3.0.0",
     "chalk": "^2.4.1",
     "cli-progress": "^2.0.0",
     "css-loader": "^0.28.11",
@@ -45,8 +45,8 @@
     "sass-loader": "^7.0.3",
     "through2": "^2.0.3",
     "watch": "^1.0.2",
-    "webpack": "^4.12.0",
-    "webpack-cli": "^3.0.4",
+    "webpack": "^4.12.2",
+    "webpack-cli": "^3.0.8",
     "webpack-shell-plugin": "^0.5.0",
     "zepto": "^1.2.0"
   }
