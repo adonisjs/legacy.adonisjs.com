@@ -1,4 +1,4 @@
-.sponsors-container {
+.patrons-container {
   padding: 100px 0;
 
   .splash {
@@ -20,20 +20,20 @@
     font-size: 1.15rem;
   }
 
-  .featured-sponsors {
+  .featured-patrons {
     margin: 80px 0;
     padding-top: 80px;
     border-top: 1px solid $gray;
   }
 
-  .sponsor-card {
+  .patron-card {
     color: $text;
     padding: 0;
     p {
       padding: 20px 50px 40px 50px;
     }
 
-    .sponsor-graphic {
+    .patron-graphic {
       height: 150px;
       background-repeat: no-repeat;
       background-size: contain;
