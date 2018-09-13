@@ -5,6 +5,7 @@
 <ul class="sectlevel1">
 <li><a href="#_basic_example">Basic example</a></li>
 <li><a href="#_multiple_file_uploads">Multiple file uploads</a></li>
+<li><a href="#_validation">Validation</a></li>
 <li><a href="#_errors">Errors</a></li>
 <li><a href="#_file_properties">File properties</a></li>
 <li><a href="#_streaming_files">Streaming files</a></li>
@@ -158,10 +159,69 @@ if (!profilePics.movedAll()) {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_validation"><a class="anchor" href="#_validation"></a><a class="link" href="#_validation">Validation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Perform validation on file uploads by defining allowed properties such as <strong>size</strong>, <strong>type</strong>, and <strong>extension</strong>. If a file fails validation it will throw an <a href="#_errors">error</a>.</p>
+</div>
+<div class="paragraph">
+<p>Below are validation properties and values that you can pass to the file request object.</p>
+</div>
+<div class="sect2">
+<h3 id="_file_size"><a class="anchor" href="#_file_size"></a><a class="link" href="#_file_size">Size</a></h3>
+<div class="paragraph">
+<p><code>size</code> is a human-readable string value depicting the file's maximum size. It accepts size units as defined in the documentation for <a href="https://github.com/visionmedia/bytes.js" target="_blank" rel="noopener">bytes.js</a></p>
+</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">
+Route.post('upload', async ({ request }) => {
+  const files = request.file('files', {
+    size: '20mb'
+  })
+  ...
+})</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_type"><a class="anchor" href="#_file_type"></a><a class="link" href="#_file_type">Type</a></h3>
+<div class="paragraph">
+<p><code>types</code> is an array of strings containing valid <a href="https://en.wikipedia.org/wiki/Media_type#Common_examples" target="_blank" rel="noopener">media types or subtypes</a>.</p>
+</div>
+<div class="paragraph">
+<p>Taking the full media type <code>image/png</code> as an example, the type would be <code>image</code>, which could restrict files to images only, and the subtype would be <code>png</code>, to restrict to png images only. Use subtype validation for stricter control.</p>
+</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">
+Route.post('upload', async ({ request }) => {
+  const files = request.file('files', {
+    types: ['image', 'html', 'audio']
+  })
+  ...
+})</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_extension"><a class="anchor" href="#_file_extension"></a><a class="link" href="#_file_extension">Extension</a></h3>
+<div class="paragraph">
+<p><code>extnames</code> is an array of strings containing allowed file extensions.</p>
+</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">
+Route.post('upload', async ({ request }) => {
+  const files = request.file('files', {
+    extnames: ['doc', 'xls', 'ppt', 'pdf', 'docx']
+  })
+  ...
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_errors"><a class="anchor" href="#_errors"></a><a class="link" href="#_errors">Errors</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Following is the list of formats in which error(s) are returned.</p>
+<p>The following is a list of formats in which error(s) are returned.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -183,6 +243,17 @@ When using <a href="https://github.com/adonisjs/adonis-bodyparser/blob/develop/s
   clientName: "GitHub-Mark.ai",
   message: "Invalid file type postscript or application. Only image is allowed",
   type: "type"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Extension error</div>
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+  fieldName: "profile_pic",
+  clientName: "GitHub-Mark.ai",
+  message: "Invalid file extension ai. Only png is allowed",
+  type: "extname"
 }</code></pre>
 </div>
 </div>
