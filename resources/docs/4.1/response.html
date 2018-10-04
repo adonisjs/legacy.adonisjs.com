@@ -235,7 +235,7 @@ response.plainCookie('cartTotal', 20)</code></pre>
 <p>Use one of the following methods to redirect requests to a different URL.</p>
 </div>
 <div class="sect3">
-<h4 id="_redirect_url_sendparams_false_status_302"><a class="anchor" href="#_redirect_url_sendparams_false_status_302"></a><a class="link" href="#_redirect_url_sendparams_false_status_302">redirect(url, sendParams = false, status = 302)</a></h4>
+<h4 id="_redirecturl_sendparams_false_status_302"><a class="anchor" href="#_redirecturl_sendparams_false_status_302"></a><a class="link" href="#_redirecturl_sendparams_false_status_302">redirect(url, sendParams = false, status = 302)</a></h4>
 <div class="paragraph">
 <p>Redirect request to a different url, by default it will set the status as <code>302</code>.</p>
 </div>
@@ -257,7 +257,7 @@ response.redirect('/url', false, 301)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_route_route_data_domain_sendparams_false_status_302"><a class="anchor" href="#_route_route_data_domain_sendparams_false_status_302"></a><a class="link" href="#_route_route_data_domain_sendparams_false_status_302">route(route, data, domain, sendParams = false, status = 302)</a></h4>
+<h4 id="_routeroute_data_domain_sendparams_false_status_302"><a class="anchor" href="#_routeroute_data_domain_sendparams_false_status_302"></a><a class="link" href="#_routeroute_data_domain_sendparams_false_status_302">route(route, data, domain, sendParams = false, status = 302)</a></h4>
 <div class="paragraph">
 <p>Redirect to a route. This method builds the URL automatically from the route name or controller method.</p>
 </div>
@@ -302,7 +302,7 @@ response.redirect('/url', false, 301)</code></pre>
 <p>The response object makes it super easy to stream files from your server to the client.</p>
 </div>
 <div class="sect3">
-<h4 id="_download_filepath"><a class="anchor" href="#_download_filepath"></a><a class="link" href="#_download_filepath">download(filePath)</a></h4>
+<h4 id="_downloadfilepath"><a class="anchor" href="#_downloadfilepath"></a><a class="link" href="#_downloadfilepath">download(filePath)</a></h4>
 <div class="paragraph">
 <p>Stream the file to the client. This method does not force the client to download the file as an attachment. For example, Browsers may choose to display the file in a new window.</p>
 </div>
@@ -313,7 +313,7 @@ response.redirect('/url', false, 301)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_attachment_filepath_name_disposition"><a class="anchor" href="#_attachment_filepath_name_disposition"></a><a class="link" href="#_attachment_filepath_name_disposition">attachment(filePath, name, disposition)</a></h4>
+<h4 id="_attachmentfilepath_name_disposition"><a class="anchor" href="#_attachmentfilepath_name_disposition"></a><a class="link" href="#_attachmentfilepath_name_disposition">attachment(filePath, name, disposition)</a></h4>
 <div class="paragraph">
 <p>Force download the file</p>
 </div>
@@ -351,7 +351,7 @@ response.redirect('/url', false, 301)</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Since the code to extend the <code>Response</code> needs to be executed once, you can make use of providers or ignitor hooks. Make sure to read <a href="">how to extend</a> guide before continuing.
+Since the code to extend the <code>Response</code> needs to be executed once, you can make use of providers or ignitor hooks. Make sure to read <a href="extending-adonisjs">how to extend</a> guide before continuing.
 </td>
 </tr>
 </table>

@@ -6,11 +6,11 @@
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_binding_dependencies">Binding dependencies</a></li>
 <li><a href="#_resolving_dependencies">Resolving dependencies</a></li>
-<li><a href="#_faq_s">FAQ&#8217;s</a></li>
+<li><a href="#_faqs">FAQ&#8217;s</a></li>
 </ul>
 </div>
 <div class="paragraph">
-<p>So far you have seen a bunch of examples using the IoC container and registering providers. In this guide, we take a step further and understand how exactly the IoC container works.</p>
+<p>So far you have seen a bunch of examples using the IoC container and registering providers. In this guide, we take a step further and understand how precisely the IoC container works.</p>
 </div>
 </div>
 </div>
@@ -26,7 +26,7 @@
 <p>Quite often you run into a situation, where you have to create useless abstractions for a library to manage its lifecycle.</p>
 </div>
 <div class="paragraph">
-<p>For example: To make sure database is only connected once, you move all database setup code to its file and <code>require</code> it everywhere inside your application.</p>
+<p>For example: To make sure the database is only connected once, you move all database setup code to its file and <code>require</code> it everywhere inside your application.</p>
 </div>
 <div class="listingblock">
 <div class="title">lib/database.js</div>
@@ -77,7 +77,7 @@ class Config {
 </div>
 </div>
 <div class="paragraph">
-<p>As you can see, each class is dependent on the other class. When using the <code>Session</code> class, we have to build them properly.</p>
+<p>As you can see, each class is dependent on the other class. When using the <code>Session</code> class, we have to build them correctly.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -138,7 +138,7 @@ module.exports = Redis</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>Config</code> is a constructor dependency and not an hardcoded <code>require</code> statement. It makes sure that our <code>Redis</code> class works fine until the <code>Config</code> object passed to the class has the same interface and output.</p>
+<p>The <code>Config</code> is a constructor dependency and not a hardcoded <code>require</code> statement. It makes sure that our <code>Redis</code> class works fine until the <code>Config</code> object passed to the class has the same interface and output.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s bind our class to the IoC container</p>
@@ -191,7 +191,7 @@ ioc.bind('My/Redis', function (app) {
 <p>There&#8217;s a problem with the <strong>Redis binding</strong> we just created. Now every time we fetch it from the IoC container, it gives us a new instance of it, which in turn creates a new connection to the redis server.</p>
 </div>
 <div class="paragraph">
-<p>To overcome this problem, IoC container let you define singletons.</p>
+<p>To overcome this problem, the IoC container let you define singletons.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -267,7 +267,7 @@ ioc.bind('My/Redis', function (app) {
 </ul>
 </div>
 <div class="paragraph">
-<p>It is quite hard to remember and type big namespaces. Instead, IoC container allows you to define <strong>aliases</strong> for them. The aliases are defined inside <code>start/app.js</code> file under the <code>aliases</code>.</p>
+<p>It is quite hard to remember and type significant namespaces. Instead, IoC container allows you to define <strong>aliases</strong> for them. The aliases are defined inside <code>start/app.js</code> file under the <code>aliases</code>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -327,7 +327,7 @@ module.exports = FooService</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If we require it normally, it has to be <code>require('../../Services/Foo')</code></p>
+<p>If we require it usually, it has to be <code>require('../../Services/Foo')</code></p>
 </div>
 <div class="paragraph">
 <p>So think of autoloading as a more readable and consistent way to require files. Also, you get a chance to define <code>fakes</code> for them too.</p>
@@ -336,7 +336,7 @@ module.exports = FooService</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_faq_s"><a class="anchor" href="#_faq_s"></a><a class="link" href="#_faq_s">FAQ&#8217;s</a></h2>
+<h2 id="_faqs"><a class="anchor" href="#_faqs"></a><a class="link" href="#_faqs">FAQ&#8217;s</a></h2>
 <div class="sectionbody">
 <div class="olist ol-spaced">
 <ol class="ol-spaced">

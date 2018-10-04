@@ -12,7 +12,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>AdonisJs has the first-class support for sessions and comes with a variety of inbuilt <strong>drivers</strong> to easily manage and store sessions. In this guide, we learn how to configure different drivers and use them.</p>
+<p>AdonisJs has the first-class support for sessions and comes with a variety of inbuilt <strong>drivers</strong> to efficiently manage and store sessions. In this guide, we learn how to configure different drivers and use them.</p>
 </div>
 </div>
 </div>
@@ -20,7 +20,7 @@
 <h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If session provider is not already setup, make sure to install it as defined below.</p>
+<p>If the session provider is not already set up, make sure to install it as defined below.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -65,12 +65,12 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The redis driver rely on <code>@adonisjs/redis</code> make sure to install the provider.
+The redis driver relies on <code>@adonisjs/redis</code> make sure to install the provider.
 </td>
 </tr>
 </table>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
 <col style="width: 20%;">
@@ -130,7 +130,7 @@ Route.get('/print', ({ session }) =&gt; {
 <p>Here is the list of methods.</p>
 </div>
 <div class="sect3">
-<h4 id="_put_key_value"><a class="anchor" href="#_put_key_value"></a><a class="link" href="#_put_key_value">put(key, value)</a></h4>
+<h4 id="_putkey_value"><a class="anchor" href="#_putkey_value"></a><a class="link" href="#_putkey_value">put(key, value)</a></h4>
 <div class="paragraph">
 <p>Add a key/value pair to the session store.</p>
 </div>
@@ -141,7 +141,7 @@ Route.get('/print', ({ session }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_get_key_defaultvalue"><a class="anchor" href="#_get_key_defaultvalue"></a><a class="link" href="#_get_key_defaultvalue">get(key, [defaultValue])</a></h4>
+<h4 id="_getkey_defaultvalue"><a class="anchor" href="#_getkey_defaultvalue"></a><a class="link" href="#_getkey_defaultvalue">get(key, [defaultValue])</a></h4>
 <div class="paragraph">
 <p>Returns the value for a given or the default value.</p>
 </div>
@@ -163,7 +163,7 @@ Route.get('/print', ({ session }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_increment_key_steps"><a class="anchor" href="#_increment_key_steps"></a><a class="link" href="#_increment_key_steps">increment(key, steps)</a></h4>
+<h4 id="_incrementkey_steps"><a class="anchor" href="#_incrementkey_steps"></a><a class="link" href="#_incrementkey_steps">increment(key, steps)</a></h4>
 <div class="paragraph">
 <p>Increment the value for a given key. Make sure the previous value is always a number.</p>
 </div>
@@ -177,7 +177,7 @@ session.increment('counter', 5)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_decrement_key_steps"><a class="anchor" href="#_decrement_key_steps"></a><a class="link" href="#_decrement_key_steps">decrement(key, steps)</a></h4>
+<h4 id="_decrementkey_steps"><a class="anchor" href="#_decrementkey_steps"></a><a class="link" href="#_decrementkey_steps">decrement(key, steps)</a></h4>
 <div class="paragraph">
 <p>Decrement the value for a given key. Make sure the previous value is always a number.</p>
 </div>
@@ -191,7 +191,7 @@ session.decrement('counter', 2)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_forget_key"><a class="anchor" href="#_forget_key"></a><a class="link" href="#_forget_key">forget(key)</a></h4>
+<h4 id="_forgetkey"><a class="anchor" href="#_forgetkey"></a><a class="link" href="#_forgetkey">forget(key)</a></h4>
 <div class="paragraph">
 <p>Remove key/value pair from the store</p>
 </div>
@@ -202,7 +202,7 @@ session.decrement('counter', 2)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pull_key_defaultvalue"><a class="anchor" href="#_pull_key_defaultvalue"></a><a class="link" href="#_pull_key_defaultvalue">pull(key, defaultValue)</a></h4>
+<h4 id="_pullkey_defaultvalue"><a class="anchor" href="#_pullkey_defaultvalue"></a><a class="link" href="#_pullkey_defaultvalue">pull(key, defaultValue)</a></h4>
 <div class="paragraph">
 <p>Remove the value from the store and get it back.</p>
 </div>
@@ -343,7 +343,7 @@ Route.post('users', ({ request, session, response }) =&gt; {
 <p>When using flash messages, you can use the following view helpers to read values from the flash session store.</p>
 </div>
 <div class="sect3">
-<h4 id="_old_key_defaultvalue"><a class="anchor" href="#_old_key_defaultvalue"></a><a class="link" href="#_old_key_defaultvalue">old(key, defaultValue)</a></h4>
+<h4 id="_oldkey_defaultvalue"><a class="anchor" href="#_oldkey_defaultvalue"></a><a class="link" href="#_oldkey_defaultvalue">old(key, defaultValue)</a></h4>
 <div class="paragraph">
 <p>Returns the value for a given key from the flash store.</p>
 </div>
@@ -359,7 +359,7 @@ Route.post('users', ({ request, session, response }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_haserrorfor_key"><a class="anchor" href="#_haserrorfor_key"></a><a class="link" href="#_haserrorfor_key">hasErrorFor(key)</a></h4>
+<h4 id="_haserrorforkey"><a class="anchor" href="#_haserrorforkey"></a><a class="link" href="#_haserrorforkey">hasErrorFor(key)</a></h4>
 <div class="paragraph">
 <p>Find if there is an error for a given field inside the flash store.</p>
 </div>
@@ -379,7 +379,7 @@ Route.post('users', ({ request, session, response }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_geterrorfor_key"><a class="anchor" href="#_geterrorfor_key"></a><a class="link" href="#_geterrorfor_key">getErrorFor(key)</a></h4>
+<h4 id="_geterrorforkey"><a class="anchor" href="#_geterrorforkey"></a><a class="link" href="#_geterrorforkey">getErrorFor(key)</a></h4>
 <div class="paragraph">
 <p>Returns the error message for a given key</p>
 </div>
@@ -392,7 +392,7 @@ Route.post('users', ({ request, session, response }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_flashmessage_key_defaultvalue"><a class="anchor" href="#_flashmessage_key_defaultvalue"></a><a class="link" href="#_flashmessage_key_defaultvalue">flashMessage(key, defaultValue)</a></h4>
+<h4 id="_flashmessagekey_defaultvalue"><a class="anchor" href="#_flashmessagekey_defaultvalue"></a><a class="link" href="#_flashmessagekey_defaultvalue">flashMessage(key, defaultValue)</a></h4>
 <div class="paragraph">
 <p>Returns the flash message for a given key</p>
 </div>

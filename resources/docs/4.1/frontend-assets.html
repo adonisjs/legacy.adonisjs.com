@@ -50,7 +50,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev webpack@3
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev webpack webpack-cli
 
 touch webpack.config.js</code></pre>
 </div>
@@ -63,7 +63,25 @@ touch webpack.config.js</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Run <code>./node_modules/.bin/webpack</code> to build your files. Also <code>--watch</code> flag can be passed to start a watcher.</p>
+<p>Run <code>./node_modules/.bin/webpack</code> to build your files.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the flag <code>--mode</code> to choose between production and development.</p>
+</li>
+<li>
+<p>To start the watcher, make use of <code>--watch</code> flag.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">./node_modules/.bin/webpack --mode development</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -73,7 +91,7 @@ touch webpack.config.js</code></pre>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev css-loader extract-text-webpack-plugin node-sass sass-loader</code></pre>
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">npm i --save-dev style-loader css-loader extract-text-webpack-plugin@next node-sass sass-loader</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -91,7 +109,11 @@ function sassRules () {
   return [
     {
       test: /\.(sass|scss)$/,
-      loader: extractSass.extract(['css-loader', 'sass-loader'])
+      use: ExtractTextPlugin.extract(
+        {
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
     }
   ]
 }

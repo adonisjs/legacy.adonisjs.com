@@ -28,7 +28,7 @@
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a><a class="link" href="#_introduction">Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The reason behind using Models over writing plain database queries is the ease of use and the powerful API to drive the data flow. Lucid models under the hood takes care of</p>
+<p>The reason behind using Models over writing plain database queries is the ease of use and the powerful API to drive the data flow. Lucid models under the hood take care of</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -86,7 +86,7 @@ Lucid models are not tied to your database schema and instead manages everything
 <div class="paragraph">
 <p>The lucid models are stored as ES6 classes inside <code>app/Models</code> directory, where each model represents a database table. For example</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -263,7 +263,7 @@ await user.save()</code></pre>
 <div class="sect3">
 <h4 id="_incrementing"><a class="anchor" href="#_incrementing"></a><a class="link" href="#_incrementing">incrementing</a></h4>
 <div class="paragraph">
-<p>Lucid assumes that each table associated with a Model has an auto incrementing primary key. You can disable this flag by return <code>false</code> from the incrementing getter.</p>
+<p>Lucid assumes that each table associated with a Model has an auto-incrementing primary key. You can disable this flag by return <code>false</code> from the incrementing getter.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -348,7 +348,7 @@ user.primaryKeyValue = uuid.v4()</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_setvisible_sethidden"><a class="anchor" href="#_setvisible_sethidden"></a><a class="link" href="#_setvisible_sethidden">setVisible/setHidden</a></h4>
+<h4 id="_setvisiblesethidden"><a class="anchor" href="#_setvisiblesethidden"></a><a class="link" href="#_setvisiblesethidden">setVisible/setHidden</a></h4>
 <div class="paragraph">
 <p>Also you can define <code>hidden/visible</code> fields for a single query using following methods.</p>
 </div>
@@ -551,7 +551,7 @@ await User.firstOrFail()</code></pre>
 <div class="sect3">
 <h4 id="_findorcreate_whereattributes_values"><a class="anchor" href="#_findorcreate_whereattributes_values"></a><a class="link" href="#_findorcreate_whereattributes_values">findOrCreate (whereAttributes, values)</a></h4>
 <div class="paragraph">
-<p>Find a record, if not found a new record will be created and returned back on the fly.</p>
+<p>Find a record, if not found a new record will be created and returned on the fly.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -564,7 +564,7 @@ const user = await User.findOrCreate(
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pick_rows_1"><a class="anchor" href="#_pick_rows_1"></a><a class="link" href="#_pick_rows_1">pick(rows = 1)</a></h4>
+<h4 id="_pickrows_1"><a class="anchor" href="#_pickrows_1"></a><a class="link" href="#_pickrows_1">pick(rows = 1)</a></h4>
 <div class="paragraph">
 <p>Pick <code>x</code> number of rows from the database table. By default it only selects <code>1</code> row.</p>
 </div>
@@ -576,7 +576,7 @@ await User.pick(3)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pickinverse_rows_1"><a class="anchor" href="#_pickinverse_rows_1"></a><a class="link" href="#_pickinverse_rows_1">pickInverse(rows = 1)</a></h4>
+<h4 id="_pickinverserows_1"><a class="anchor" href="#_pickinverserows_1"></a><a class="link" href="#_pickinverserows_1">pickInverse(rows = 1)</a></h4>
 <div class="paragraph">
 <p>Pick <code>x</code> number of rows from the database table from last. By default it only selects <code>1</code> row.</p>
 </div>
@@ -600,7 +600,7 @@ const userIds = await User.ids()</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pair_lhs_rhs"><a class="anchor" href="#_pair_lhs_rhs"></a><a class="link" href="#_pair_lhs_rhs">pair(lhs, rhs)</a></h4>
+<h4 id="_pairlhs_rhs"><a class="anchor" href="#_pairlhs_rhs"></a><a class="link" href="#_pairlhs_rhs">pair(lhs, rhs)</a></h4>
 <div class="paragraph">
 <p>Returns an object of key/value pair. The <code>lhs</code> field is the object key, and <code>rhs</code> is the value.</p>
 </div>
@@ -652,13 +652,13 @@ const users = await User.truncate()</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-These methods end the query builder chaining and returns a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.
+These methods end the query builder chaining and return a value. There is no need to call <code><a href="#_query_builder">fetch()</a></code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_getcount_columnname"><a class="anchor" href="#_getcount_columnname"></a><a class="link" href="#_getcount_columnname">getCount(columnName = '*')</a></h4>
+<h4 id="_getcountcolumnname"><a class="anchor" href="#_getcountcolumnname"></a><a class="link" href="#_getcountcolumnname">getCount(columnName = '*')</a></h4>
 <div class="paragraph">
 <p>Return a count of records in a given result set.</p>
 </div>
@@ -760,7 +760,7 @@ return view.render('users', { users: users.toJSON() })</code></pre>
   perPage: '',
   lastPage: '',
   page: '',
-  data: []
+  data: [{...}]
 }</code></pre>
 </div>
 </div>
@@ -862,7 +862,7 @@ const user = await User.create(userData)</code></pre>
 <div class="sect3">
 <h4 id="_createmany"><a class="anchor" href="#_createmany"></a><a class="link" href="#_createmany">createMany</a></h4>
 <div class="paragraph">
-<p>Just like <code>create</code> you can persist multiple instances of a model using the createMany method.</p>
+<p>Just like <code>create</code> you can persist multiple instances of a model at the same time using the createMany method.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -984,7 +984,9 @@ trx.commit()</code></pre>
 await User.create({ username: 'virk' }, trx)
 
 // once done commit the transaction
-trx.commit()</code></pre>
+await trx.commit()
+// or rollback the transaction
+await trx.rollback()</code></pre>
 </div>
 </div>
 <div class="listingblock">

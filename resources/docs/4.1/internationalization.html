@@ -5,6 +5,7 @@
 <ul class="sectlevel1">
 <li><a href="#_setup">Setup</a></li>
 <li><a href="#_locales_storage">Locales storage</a></li>
+<li><a href="#_accessing_locales">Accessing Locales</a></li>
 <li><a href="#_icu_message_syntax">ICU Message syntax</a></li>
 <li><a href="#_formatting_values">Formatting values</a></li>
 <li><a href="#_registering_formats">Registering formats</a></li>
@@ -44,7 +45,7 @@
 <div class="paragraph">
 <p>The configuration for locales is saved inside <code>config/app.js</code> file, with following options.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
 <col style="width: 20%;">
@@ -90,7 +91,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>You can also create a directory named <code>fallback</code> to store messages which are used when the message for current language is missing.</p>
+<p>You can also create a directory named <code>fallback</code> to store messages which are used when the message for the current language is missing.</p>
 </div>
 </div>
 <div class="sect2">
@@ -101,7 +102,7 @@
 <div class="paragraph">
 <p>The <code>adonis install</code> command does create the migration for the table. However, you can always reference the latest schema file from <a href="https://github.com/adonisjs/adonis-antl/blob/develop/templates/locales-schema.js" target="_blank" rel="noopener">github</a></p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 5%;">
 <col style="width: 5%;">
@@ -146,6 +147,24 @@ It is mandatory to define a <code>group</code> for each locale item.
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accessing_locales"><a class="anchor" href="#_accessing_locales"></a><a class="link" href="#_accessing_locales">Accessing Locales</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can access the current and default locale from the <code>Antl</code> object</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.currentLocale()</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Antl.defaultLocale()</code></pre>
 </div>
 </div>
 </div>
@@ -232,7 +251,7 @@ Antl.formatMessage(
 </div>
 </div>
 <div class="paragraph">
-<p>All we are doing here is calling <code>formatMessage</code> with 3 arguments.</p>
+<p>All we are doing here is calling <code>formatMessage</code> with three arguments.</p>
 </div>
 <div class="olist ol-shrinked">
 <ol class="ol-shrinked">
@@ -243,7 +262,7 @@ Antl.formatMessage(
 <p>Next the <code>data</code> to be passed</p>
 </li>
 <li>
-<p>Finally, we pass an <strong>Array</strong> of formats.</p>
+<p>Finally, we give an <strong>Array</strong> of formats.</p>
 </li>
 </ol>
 </div>
@@ -311,7 +330,7 @@ Try and edit the below message in your <a href="https://format-message.github.io
 <p>Below is the list of methods you can use to format <strong>messages</strong> or <strong>raw values</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="_formatmessage_key_data_formats"><a class="anchor" href="#_formatmessage_key_data_formats"></a><a class="link" href="#_formatmessage_key_data_formats">formatMessage(key, data, [formats])</a></h4>
+<h4 id="_formatmessagekey_data_formats"><a class="anchor" href="#_formatmessagekey_data_formats"></a><a class="link" href="#_formatmessagekey_data_formats">formatMessage(key, data, [formats])</a></h4>
 <div class="paragraph">
 <p>The <code>formatMessage</code> method, takes the <code>key</code> to be formatted with an object of data and formats to be used.</p>
 </div>
@@ -341,7 +360,7 @@ Antl.formatMessage(
 </div>
 </div>
 <div class="sect3">
-<h4 id="_formatnumber_value_options"><a class="anchor" href="#_formatnumber_value_options"></a><a class="link" href="#_formatnumber_value_options">formatNumber(value, options)</a></h4>
+<h4 id="_formatnumbervalue_options"><a class="anchor" href="#_formatnumbervalue_options"></a><a class="link" href="#_formatnumbervalue_options">formatNumber(value, options)</a></h4>
 <div class="paragraph">
 <p>Format value as a number. It also takes an object of options defined <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat" target="_blank" rel="noopener">here</a>.</p>
 </div>
@@ -363,7 +382,7 @@ Antl.formatNumber(10, {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_formatamount_value_currency_options"><a class="anchor" href="#_formatamount_value_currency_options"></a><a class="link" href="#_formatamount_value_currency_options">formatAmount(value, currency, options)</a></h4>
+<h4 id="_formatamountvalue_currency_options"><a class="anchor" href="#_formatamountvalue_currency_options"></a><a class="link" href="#_formatamountvalue_currency_options">formatAmount(value, currency, options)</a></h4>
 <div class="paragraph">
 <p>Format value with <code>style</code> set to currency.</p>
 </div>
@@ -374,7 +393,7 @@ Antl.formatNumber(10, {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_formatdate_value_options"><a class="anchor" href="#_formatdate_value_options"></a><a class="link" href="#_formatdate_value_options">formatDate(value, options)</a></h4>
+<h4 id="_formatdatevalue_options"><a class="anchor" href="#_formatdatevalue_options"></a><a class="link" href="#_formatdatevalue_options">formatDate(value, options)</a></h4>
 <div class="paragraph">
 <p>Format value as date.  It also takes an object of options defined <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat" target="_blank" rel="noopener">here</a>.</p>
 </div>
@@ -395,7 +414,7 @@ Antl.formatDate(new Date(), {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_formatrelative_value_options"><a class="anchor" href="#_formatrelative_value_options"></a><a class="link" href="#_formatrelative_value_options">formatRelative(value, options)</a></h4>
+<h4 id="_formatrelativevalue_options"><a class="anchor" href="#_formatrelativevalue_options"></a><a class="link" href="#_formatrelativevalue_options">formatRelative(value, options)</a></h4>
 <div class="paragraph">
 <p>Format a date relative to the current date/time. Here is the list of <a href="https://github.com/yahoo/intl-relativeformat#custom-options" target="_blank" rel="noopener">available options</a></p>
 </div>
@@ -443,7 +462,7 @@ Formats.add('usd', {
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>Formats.pass</code> takes 2 arguments.</p>
+<p>The <code>Formats.pass</code> takes two arguments.</p>
 </div>
 <div class="olist ol-shrinked">
 <ol class="ol-shrinked">

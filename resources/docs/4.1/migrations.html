@@ -9,7 +9,7 @@
 <li><a href="#_run_migrations">Run migrations</a></li>
 <li><a href="#_migrations_status">Migrations status</a></li>
 <li><a href="#_migrations_commands">Migrations commands</a></li>
-<li><a href="#_table_s_api">Table&#8217;s API</a></li>
+<li><a href="#_tables_api">Table&#8217;s API</a></li>
 <li><a href="#_extensions">Extensions</a></li>
 <li><a href="#_executing_arbitrary_code">Executing arbitrary code</a></li>
 <li><a href="#_schema_builder_api">Schema builder API</a></li>
@@ -19,7 +19,7 @@
 <p>Migrations are mutations to your database as you keep evolving your application. Think of them as step by step screenshot of your database schema, that you can roll back at any given point of time.</p>
 </div>
 <div class="paragraph">
-<p>Also, migrations make it easier to work as a team, where database changes from one developer are easily spotted and used by other developers in the team.</p>
+<p>Also, migrations make it easier to work as a team, where database changes from one developer are easily spotted and used by other developers in the organization.</p>
 </div>
 </div>
 </div>
@@ -105,7 +105,7 @@ module.exports = UsersSchema</code></pre>
 </dd>
 <dt class="hdlist1">down</dt>
 <dd>
-<p>The <code>down</code> method is the reverse of the up action. When <code>up</code> method creates a table, you simply drop it inside the down method.</p>
+<p>The <code>down</code> method is the reverse of the up action. When <code>up</code> method creates a table, you drop it inside the <code>down</code> method.</p>
 </dd>
 </dl>
 </div>
@@ -115,7 +115,7 @@ module.exports = UsersSchema</code></pre>
 <h2 id="_multiple_connections"><a class="anchor" href="#_multiple_connections"></a><a class="link" href="#_multiple_connections">Multiple connections</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The schema files can also make use of a different connection by defining a <code>connection</code> property on them. Also make sure that the same connection is defined inside <code>config/database.js</code> file.</p>
+<p>The schema files can also make use of a different connection by defining a <code>connection</code> property on them. Also, make sure that the same connection is defined inside <code>config/database.js</code> file.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -124,7 +124,7 @@ module.exports = UsersSchema</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-A table <code>adonis_schema</code> is created to manage the lifecycle of migrations. This table will always be created inside the primary connection database and there is no option to override it.
+A table <code>adonis_schema</code> is created to manage the lifecycle of migrations. This table will always be created inside the primary connection database, and there is no option to override it.
 </td>
 </tr>
 </table>
@@ -226,7 +226,7 @@ Do not create all tables in a single schema file, instead create a new file for 
 </div>
 <div class="sect2">
 <h3 id="_commands_list"><a class="anchor" href="#_commands_list"></a><a class="link" href="#_commands_list">Commands list</a></h3>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -281,6 +281,7 @@ Do not create all tables in a single schema file, instead create a new file for 
 Options:
   -f, --force   Forcefully run migrations in production
   -s, --silent  Silent the migrations output
+  --seed        Seed the database after migration finished
   --log         Log SQL queries instead of executing them
 
 About:
@@ -291,7 +292,7 @@ About:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_table_s_api"><a class="anchor" href="#_table_s_api"></a><a class="link" href="#_table_s_api">Table&#8217;s API</a></h2>
+<h2 id="_tables_api"><a class="anchor" href="#_tables_api"></a><a class="link" href="#_tables_api">Table&#8217;s API</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Below is the list of methods available to interact with database tables.</p>
@@ -325,7 +326,7 @@ About:
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rename_from_to"><a class="anchor" href="#_rename_from_to"></a><a class="link" href="#_rename_from_to">rename(from, to)</a></h4>
+<h4 id="_renamefrom_to"><a class="anchor" href="#_renamefrom_to"></a><a class="link" href="#_renamefrom_to">rename(from, to)</a></h4>
 <div class="paragraph">
 <p>Rename existing database table</p>
 </div>
@@ -436,7 +437,7 @@ Extension only works with PostgreSQL database.
 </table>
 </div>
 <div class="sect3">
-<h4 id="_createextension_extensionname"><a class="anchor" href="#_createextension_extensionname"></a><a class="link" href="#_createextension_extensionname">createExtension(extensionName)</a></h4>
+<h4 id="_createextensionextensionname"><a class="anchor" href="#_createextensionextensionname"></a><a class="link" href="#_createextensionextensionname">createExtension(extensionName)</a></h4>
 <div class="paragraph">
 <p>Create a database extension.</p>
 </div>
@@ -451,7 +452,7 @@ Extension only works with PostgreSQL database.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_createextensionifnotexists_extensionname"><a class="anchor" href="#_createextensionifnotexists_extensionname"></a><a class="link" href="#_createextensionifnotexists_extensionname">createExtensionIfNotExists(extensionName)</a></h4>
+<h4 id="_createextensionifnotexistsextensionname"><a class="anchor" href="#_createextensionifnotexistsextensionname"></a><a class="link" href="#_createextensionifnotexistsextensionname">createExtensionIfNotExists(extensionName)</a></h4>
 <div class="paragraph">
 <p>Only creates the extension if it does not exists, otherwise silently ignores the <strong>createExtension</strong> command.</p>
 </div>
@@ -466,7 +467,7 @@ Extension only works with PostgreSQL database.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_dropextension_extensioname"><a class="anchor" href="#_dropextension_extensioname"></a><a class="link" href="#_dropextension_extensioname">dropExtension(extensioName)</a></h4>
+<h4 id="_dropextensionextensioname"><a class="anchor" href="#_dropextensionextensioname"></a><a class="link" href="#_dropextensionextensioname">dropExtension(extensioName)</a></h4>
 <div class="paragraph">
 <p>Drop an existing database extension.</p>
 </div>
@@ -481,7 +482,7 @@ Extension only works with PostgreSQL database.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_dropextensionifexists_extensionname"><a class="anchor" href="#_dropextensionifexists_extensionname"></a><a class="link" href="#_dropextensionifexists_extensionname">dropExtensionIfExists(extensionName)</a></h4>
+<h4 id="_dropextensionifexistsextensionname"><a class="anchor" href="#_dropextensionifexistsextensionname"></a><a class="link" href="#_dropextensionifexistsextensionname">dropExtensionIfExists(extensionName)</a></h4>
 <div class="paragraph">
 <p>Drop database extension only if it exists, otherwise silently ignores the <strong>dropExtension</strong> command.</p>
 </div>
@@ -501,7 +502,7 @@ Extension only works with PostgreSQL database.
 <h2 id="_executing_arbitrary_code"><a class="anchor" href="#_executing_arbitrary_code"></a><a class="link" href="#_executing_arbitrary_code">Executing arbitrary code</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Commands written inside <code>up</code> and <code>down</code> methods are scheduled to be executed later inside a migration. In case you want to execute <strong>arbitrary</strong> database commands, you can wrap them inside the <code>schedule</code> function.</p>
+<p>Commands are written inside <code>up</code> and <code>down</code> methods are scheduled to be executed later inside a migration. In case you want to execute <strong>arbitrary</strong> database commands, you can wrap them inside the <code>schedule</code> function.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -510,7 +511,7 @@ Extension only works with PostgreSQL database.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The <code>schedule</code> method receives the <strong>transaction object</strong> and it is important to run all database commands inside the same transaction, otherwise queries will hang forever.
+The <code>schedule</code> method receives the <strong>transaction object</strong> and it is important to run all database commands inside the same transaction; otherwise queries will hang forever.
 </td>
 </tr>
 </table>
@@ -541,7 +542,7 @@ The <code>schedule</code> method receives the <strong>transaction object</strong
 <h2 id="_schema_builder_api"><a class="anchor" href="#_schema_builder_api"></a><a class="link" href="#_schema_builder_api">Schema builder API</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The schema builder API is exactly same as the <a href="http://knexjs.org/#Schema-Building">knex api</a>, so make sure to read their documentation.</p>
+<p>The schema builder API is the same as the <a href="http://knexjs.org/#Schema-Building">knex api</a>, so make sure to read their documentation.</p>
 </div>
 <div class="sect3">
 <h4 id="_fn_now"><a class="anchor" href="#_fn_now"></a><a class="link" href="#_fn_now">fn.now()</a></h4>

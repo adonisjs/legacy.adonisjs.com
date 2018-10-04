@@ -7,6 +7,7 @@
 <li><a href="#_basic_example">Basic Example</a></li>
 <li><a href="#_custom_chromium_path">Custom Chromium path</a></li>
 <li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_browser_api">Browser API</a></li>
 <li><a href="#_page_interactions">Page interactions</a></li>
 <li><a href="#_waiting_for_actions">Waiting for actions</a></li>
 <li><a href="#_reading_values">Reading values</a></li>
@@ -178,7 +179,7 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 <div class="sect3">
 <h4 id="_options"><a class="anchor" href="#_options"></a><a class="link" href="#_options">options</a></h4>
-<table class="tableblock frame-all grid-all spread resource-table">
+<table class="tableblock frame-all grid-all stretch resource-table">
 <colgroup>
 <col style="width: 30%;">
 <col style="width: 70%;">
@@ -215,6 +216,44 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_browser_api"><a class="anchor" href="#_browser_api"></a><a class="link" href="#_browser_api">Browser API</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdonisJs adds a wrapper on top of Puppeteer to make it more suitable for testing. The following is the API for the main browser and page objects.</p>
+</div>
+<div class="sect3">
+<h4 id="_browser_visit"><a class="anchor" href="#_browser_visit"></a><a class="link" href="#_browser_visit">browser.visit</a></h4>
+<div class="paragraph">
+<p>The <code>browser.visit</code> method calls <a href="https://pptr.dev/#?product=Puppeteer&amp;version=v1.8.0&amp;show=api-pagegotourl-options">page.goto</a> method of Puppeteer and has the same signature.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">test('Visit home page', async ({ browser }) =&gt; {
+  const page = await browser.visit('/', {
+    waitUntil: 'load'
+  })
+
+  await page.assertHas('Adonis')
+})</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can access the actual page object of Puppeteer by accessing the <code>page.page</code> property.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">test('Visit home page', async ({ browser }) =&gt; {
+  const page = await browser.visit('/')
+
+  // puppeteer page object
+  page.page.addScriptTag()
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_page_interactions"><a class="anchor" href="#_page_interactions"></a><a class="link" href="#_page_interactions">Page interactions</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -233,7 +272,7 @@ Browser client supports all <a href="https://developer.mozilla.org/en-US/docs/We
 </table>
 </div>
 <div class="sect3">
-<h4 id="_type_selector_value"><a class="anchor" href="#_type_selector_value"></a><a class="link" href="#_type_selector_value">type(selector, value)</a></h4>
+<h4 id="_typeselector_value"><a class="anchor" href="#_typeselector_value"></a><a class="link" href="#_typeselector_value">type(selector, value)</a></h4>
 <div class="paragraph">
 <p>Type inside an element with given selector.</p>
 </div>
@@ -263,7 +302,7 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_select_selector_value"><a class="anchor" href="#_select_selector_value"></a><a class="link" href="#_select_selector_value">select(selector, value)</a></h4>
+<h4 id="_selectselector_value"><a class="anchor" href="#_selectselector_value"></a><a class="link" href="#_selectselector_value">select(selector, value)</a></h4>
 <div class="paragraph">
 <p>Select value inside a select box</p>
 </div>
@@ -284,7 +323,7 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_radio_selector_value"><a class="anchor" href="#_radio_selector_value"></a><a class="link" href="#_radio_selector_value">radio(selector, value)</a></h4>
+<h4 id="_radioselector_value"><a class="anchor" href="#_radioselector_value"></a><a class="link" href="#_radioselector_value">radio(selector, value)</a></h4>
 <div class="paragraph">
 <p>Select a radio button, based of it&#8217;s value</p>
 </div>
@@ -296,7 +335,7 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_check_selector"><a class="anchor" href="#_check_selector"></a><a class="link" href="#_check_selector">check(selector)</a></h4>
+<h4 id="_checkselector"><a class="anchor" href="#_checkselector"></a><a class="link" href="#_checkselector">check(selector)</a></h4>
 <div class="paragraph">
 <p>Check a checkbox</p>
 </div>
@@ -308,7 +347,7 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_uncheck_selector"><a class="anchor" href="#_uncheck_selector"></a><a class="link" href="#_uncheck_selector">uncheck(selector)</a></h4>
+<h4 id="_uncheckselector"><a class="anchor" href="#_uncheckselector"></a><a class="link" href="#_uncheckselector">uncheck(selector)</a></h4>
 <div class="paragraph">
 <p>Uncheck a checkbox</p>
 </div>
@@ -320,7 +359,7 @@ test('Visit home page', async ({ browser }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_submitform_selector"><a class="anchor" href="#_submitform_selector"></a><a class="link" href="#_submitform_selector">submitForm(selector)</a></h4>
+<h4 id="_submitformselector"><a class="anchor" href="#_submitformselector"></a><a class="link" href="#_submitformselector">submitForm(selector)</a></h4>
 <div class="paragraph">
 <p>Submit a selected form</p>
 </div>
@@ -336,7 +375,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_click_selector"><a class="anchor" href="#_click_selector"></a><a class="link" href="#_click_selector">click(selector)</a></h4>
+<h4 id="_clickselector"><a class="anchor" href="#_clickselector"></a><a class="link" href="#_clickselector">click(selector)</a></h4>
 <div class="paragraph">
 <p>Click an element.</p>
 </div>
@@ -348,7 +387,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_doubleclick_selector"><a class="anchor" href="#_doubleclick_selector"></a><a class="link" href="#_doubleclick_selector">doubleClick(selector)</a></h4>
+<h4 id="_doubleclickselector"><a class="anchor" href="#_doubleclickselector"></a><a class="link" href="#_doubleclickselector">doubleClick(selector)</a></h4>
 <div class="paragraph">
 <p>Double click an element</p>
 </div>
@@ -360,7 +399,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rightclick_selector"><a class="anchor" href="#_rightclick_selector"></a><a class="link" href="#_rightclick_selector">rightClick(selector)</a></h4>
+<h4 id="_rightclickselector"><a class="anchor" href="#_rightclickselector"></a><a class="link" href="#_rightclickselector">rightClick(selector)</a></h4>
 <div class="paragraph">
 <p>Right click on an element</p>
 </div>
@@ -372,7 +411,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_clear_selector"><a class="anchor" href="#_clear_selector"></a><a class="link" href="#_clear_selector">clear(selector)</a></h4>
+<h4 id="_clearselector"><a class="anchor" href="#_clearselector"></a><a class="link" href="#_clearselector">clear(selector)</a></h4>
 <div class="paragraph">
 <p>Clear value of a given element.</p>
 </div>
@@ -384,7 +423,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_attach_selector_files"><a class="anchor" href="#_attach_selector_files"></a><a class="link" href="#_attach_selector_files">attach(selector, [files])</a></h4>
+<h4 id="_attachselector_files"><a class="anchor" href="#_attachselector_files"></a><a class="link" href="#_attachselector_files">attach(selector, [files])</a></h4>
 <div class="paragraph">
 <p>Attach one or multiple files</p>
 </div>
@@ -398,7 +437,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_screenshot_savetopath"><a class="anchor" href="#_screenshot_savetopath"></a><a class="link" href="#_screenshot_savetopath">screenshot(saveToPath)</a></h4>
+<h4 id="_screenshotsavetopath"><a class="anchor" href="#_screenshotsavetopath"></a><a class="link" href="#_screenshotsavetopath">screenshot(saveToPath)</a></h4>
 <div class="paragraph">
 <p>Take and save screenshot of the current state of webpage</p>
 </div>
@@ -433,7 +472,7 @@ await page
 <p>&nbsp;</p>
 </div>
 <div class="sect3">
-<h4 id="_waitforelement_selector_timeout_15000"><a class="anchor" href="#_waitforelement_selector_timeout_15000"></a><a class="link" href="#_waitforelement_selector_timeout_15000">waitForElement(selector, timeout = 15000)</a></h4>
+<h4 id="_waitforelementselector_timeout_15000"><a class="anchor" href="#_waitforelementselector_timeout_15000"></a><a class="link" href="#_waitforelementselector_timeout_15000">waitForElement(selector, timeout = 15000)</a></h4>
 <div class="paragraph">
 <p>Wait for a element to be present inside DOM. The default timeout is to <code>15 seconds</code>.</p>
 </div>
@@ -446,7 +485,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_waituntilmissing_selector"><a class="anchor" href="#_waituntilmissing_selector"></a><a class="link" href="#_waituntilmissing_selector">waitUntilMissing(selector)</a></h4>
+<h4 id="_waituntilmissingselector"><a class="anchor" href="#_waituntilmissingselector"></a><a class="link" href="#_waituntilmissingselector">waitUntilMissing(selector)</a></h4>
 <div class="paragraph">
 <p>Wait until an element disppears from the DOM.</p>
 </div>
@@ -473,7 +512,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_waitfor_closure"><a class="anchor" href="#_waitfor_closure"></a><a class="link" href="#_waitfor_closure">waitFor(closure)</a></h4>
+<h4 id="_waitforclosure"><a class="anchor" href="#_waitforclosure"></a><a class="link" href="#_waitforclosure">waitFor(closure)</a></h4>
 <div class="paragraph">
 <p>Wait until the <code>Closure</code> returns true. The closure is executed in browser context and has access to variables like <code>window</code>, <code>document</code> and so on.</p>
 </div>
@@ -487,7 +526,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pause_timeout_15000"><a class="anchor" href="#_pause_timeout_15000"></a><a class="link" href="#_pause_timeout_15000">pause(timeout = 15000)</a></h4>
+<h4 id="_pausetimeout_15000"><a class="anchor" href="#_pausetimeout_15000"></a><a class="link" href="#_pausetimeout_15000">pause(timeout = 15000)</a></h4>
 <div class="paragraph">
 <p>Pause the webpage for a given timeframe</p>
 </div>
@@ -506,7 +545,7 @@ await page
 <p>Below is the list of methods you can use to read the values from the web page.</p>
 </div>
 <div class="sect3">
-<h4 id="_gettext_selector"><a class="anchor" href="#_gettext_selector"></a><a class="link" href="#_gettext_selector">getText([selector])</a></h4>
+<h4 id="_gettextselector"><a class="anchor" href="#_gettextselector"></a><a class="link" href="#_gettextselector">getText([selector])</a></h4>
 <div class="paragraph">
 <p>Get text for a given element or the entire page</p>
 </div>
@@ -522,7 +561,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gethtml_selector"><a class="anchor" href="#_gethtml_selector"></a><a class="link" href="#_gethtml_selector">getHtml([selector])</a></h4>
+<h4 id="_gethtmlselector"><a class="anchor" href="#_gethtmlselector"></a><a class="link" href="#_gethtmlselector">getHtml([selector])</a></h4>
 <div class="paragraph">
 <p>Get HTML for a given element or entire web page</p>
 </div>
@@ -538,7 +577,7 @@ await page
 </div>
 </div>
 <div class="sect3">
-<h4 id="_isvisible_selector"><a class="anchor" href="#_isvisible_selector"></a><a class="link" href="#_isvisible_selector">isVisible(selector)</a></h4>
+<h4 id="_isvisibleselector"><a class="anchor" href="#_isvisibleselector"></a><a class="link" href="#_isvisibleselector">isVisible(selector)</a></h4>
 <div class="paragraph">
 <p>Find if a given element is visible on page or not.</p>
 </div>
@@ -552,7 +591,7 @@ assert.isFalse(isVisible)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_haselement_selector"><a class="anchor" href="#_haselement_selector"></a><a class="link" href="#_haselement_selector">hasElement(selector)</a></h4>
+<h4 id="_haselementselector"><a class="anchor" href="#_haselementselector"></a><a class="link" href="#_haselementselector">hasElement(selector)</a></h4>
 <div class="paragraph">
 <p>Find if an element exists in DOM.</p>
 </div>
@@ -566,7 +605,7 @@ assert.isFalse(hasElement)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ischecked_selector"><a class="anchor" href="#_ischecked_selector"></a><a class="link" href="#_ischecked_selector">isChecked(selector)</a></h4>
+<h4 id="_ischeckedselector"><a class="anchor" href="#_ischeckedselector"></a><a class="link" href="#_ischeckedselector">isChecked(selector)</a></h4>
 <div class="paragraph">
 <p>Find if a checkbox is checked</p>
 </div>
@@ -580,7 +619,7 @@ assert.isTrue(termsChecked)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getattribute_selector_name"><a class="anchor" href="#_getattribute_selector_name"></a><a class="link" href="#_getattribute_selector_name">getAttribute(selector, name)</a></h4>
+<h4 id="_getattributeselector_name"><a class="anchor" href="#_getattributeselector_name"></a><a class="link" href="#_getattributeselector_name">getAttribute(selector, name)</a></h4>
 <div class="paragraph">
 <p>Get value for a given attribute</p>
 </div>
@@ -592,7 +631,7 @@ assert.isTrue(termsChecked)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getattributes_selector"><a class="anchor" href="#_getattributes_selector"></a><a class="link" href="#_getattributes_selector">getAttributes(selector)</a></h4>
+<h4 id="_getattributesselector"><a class="anchor" href="#_getattributesselector"></a><a class="link" href="#_getattributesselector">getAttributes(selector)</a></h4>
 <div class="paragraph">
 <p>Get all attributes for a given element</p>
 </div>
@@ -604,7 +643,7 @@ assert.isTrue(termsChecked)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getvalue_selector"><a class="anchor" href="#_getvalue_selector"></a><a class="link" href="#_getvalue_selector">getValue(selector)</a></h4>
+<h4 id="_getvalueselector"><a class="anchor" href="#_getvalueselector"></a><a class="link" href="#_getvalueselector">getValue(selector)</a></h4>
 <div class="paragraph">
 <p>Get value for a given form element</p>
 </div>
@@ -642,7 +681,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getqueryparam_key"><a class="anchor" href="#_getqueryparam_key"></a><a class="link" href="#_getqueryparam_key">getQueryParam(key)</a></h4>
+<h4 id="_getqueryparamkey"><a class="anchor" href="#_getqueryparamkey"></a><a class="link" href="#_getqueryparamkey">getQueryParam(key)</a></h4>
 <div class="paragraph">
 <p>Get value for a single query param</p>
 </div>
@@ -674,7 +713,7 @@ assert.equal(value, 'virk')</code></pre>
 <p>One way to run assertions is to read the value for certain elements and then run assertions manually. Whereas the browser client bundles a bunch of helper methods to run inline assertions.</p>
 </div>
 <div class="sect3">
-<h4 id="_asserthas_expected"><a class="anchor" href="#_asserthas_expected"></a><a class="link" href="#_asserthas_expected">assertHas(expected)</a></h4>
+<h4 id="_asserthasexpected"><a class="anchor" href="#_asserthasexpected"></a><a class="link" href="#_asserthasexpected">assertHas(expected)</a></h4>
 <div class="paragraph">
 <p>Assert the webpage includes the expected text value</p>
 </div>
@@ -686,7 +725,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_asserthasin_selector_expected"><a class="anchor" href="#_asserthasin_selector_expected"></a><a class="link" href="#_asserthasin_selector_expected">assertHasIn(selector, expected)</a></h4>
+<h4 id="_asserthasinselector_expected"><a class="anchor" href="#_asserthasinselector_expected"></a><a class="link" href="#_asserthasinselector_expected">assertHasIn(selector, expected)</a></h4>
 <div class="paragraph">
 <p>Assert a given selector contains the expected value.</p>
 </div>
@@ -698,7 +737,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertattribute_selector_attribute_expected"><a class="anchor" href="#_assertattribute_selector_attribute_expected"></a><a class="link" href="#_assertattribute_selector_attribute_expected">assertAttribute(selector, attribute, expected)</a></h4>
+<h4 id="_assertattributeselector_attribute_expected"><a class="anchor" href="#_assertattributeselector_attribute_expected"></a><a class="link" href="#_assertattributeselector_attribute_expected">assertAttribute(selector, attribute, expected)</a></h4>
 <div class="paragraph">
 <p>Assert the value of an attribute is same as expected</p>
 </div>
@@ -710,7 +749,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertvalue_selector_expected"><a class="anchor" href="#_assertvalue_selector_expected"></a><a class="link" href="#_assertvalue_selector_expected">assertValue(selector, expected)</a></h4>
+<h4 id="_assertvalueselector_expected"><a class="anchor" href="#_assertvalueselector_expected"></a><a class="link" href="#_assertvalueselector_expected">assertValue(selector, expected)</a></h4>
 <div class="paragraph">
 <p>Assert value for a given form element.</p>
 </div>
@@ -722,7 +761,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertischecked_selector"><a class="anchor" href="#_assertischecked_selector"></a><a class="link" href="#_assertischecked_selector">assertIsChecked(selector)</a></h4>
+<h4 id="_assertischeckedselector"><a class="anchor" href="#_assertischeckedselector"></a><a class="link" href="#_assertischeckedselector">assertIsChecked(selector)</a></h4>
 <div class="paragraph">
 <p>Assert that checkbox is checked</p>
 </div>
@@ -734,7 +773,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertisnotchecked_selector"><a class="anchor" href="#_assertisnotchecked_selector"></a><a class="link" href="#_assertisnotchecked_selector">assertIsNotChecked(selector)</a></h4>
+<h4 id="_assertisnotcheckedselector"><a class="anchor" href="#_assertisnotcheckedselector"></a><a class="link" href="#_assertisnotcheckedselector">assertIsNotChecked(selector)</a></h4>
 <div class="paragraph">
 <p>Assert that checkbox is not checked</p>
 </div>
@@ -746,7 +785,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertisvisible_selector"><a class="anchor" href="#_assertisvisible_selector"></a><a class="link" href="#_assertisvisible_selector">assertIsVisible(selector)</a></h4>
+<h4 id="_assertisvisibleselector"><a class="anchor" href="#_assertisvisibleselector"></a><a class="link" href="#_assertisvisibleselector">assertIsVisible(selector)</a></h4>
 <div class="paragraph">
 <p>Assert element is visible</p>
 </div>
@@ -758,7 +797,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertisnotvisible_selector"><a class="anchor" href="#_assertisnotvisible_selector"></a><a class="link" href="#_assertisnotvisible_selector">assertIsNotVisible(selector)</a></h4>
+<h4 id="_assertisnotvisibleselector"><a class="anchor" href="#_assertisnotvisibleselector"></a><a class="link" href="#_assertisnotvisibleselector">assertIsNotVisible(selector)</a></h4>
 <div class="paragraph">
 <p>Assert element is not visible</p>
 </div>
@@ -770,7 +809,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertpath_value"><a class="anchor" href="#_assertpath_value"></a><a class="link" href="#_assertpath_value">assertPath(value)</a></h4>
+<h4 id="_assertpathvalue"><a class="anchor" href="#_assertpathvalue"></a><a class="link" href="#_assertpathvalue">assertPath(value)</a></h4>
 <div class="paragraph">
 <p>Assert the value of current path</p>
 </div>
@@ -782,7 +821,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertqueryparam_key_value"><a class="anchor" href="#_assertqueryparam_key_value"></a><a class="link" href="#_assertqueryparam_key_value">assertQueryParam(key, value)</a></h4>
+<h4 id="_assertqueryparamkey_value"><a class="anchor" href="#_assertqueryparamkey_value"></a><a class="link" href="#_assertqueryparamkey_value">assertQueryParam(key, value)</a></h4>
 <div class="paragraph">
 <p>Assert the value of a query param</p>
 </div>
@@ -794,7 +833,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertexists_selector"><a class="anchor" href="#_assertexists_selector"></a><a class="link" href="#_assertexists_selector">assertExists(selector)</a></h4>
+<h4 id="_assertexistsselector"><a class="anchor" href="#_assertexistsselector"></a><a class="link" href="#_assertexistsselector">assertExists(selector)</a></h4>
 <div class="paragraph">
 <p>Assert that an element exists inside DOM</p>
 </div>
@@ -806,7 +845,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertnotexists_selector"><a class="anchor" href="#_assertnotexists_selector"></a><a class="link" href="#_assertnotexists_selector">assertNotExists(selector)</a></h4>
+<h4 id="_assertnotexistsselector"><a class="anchor" href="#_assertnotexistsselector"></a><a class="link" href="#_assertnotexistsselector">assertNotExists(selector)</a></h4>
 <div class="paragraph">
 <p>Assert that an element does not exists inside DOM</p>
 </div>
@@ -818,7 +857,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertcount_selector_expectedcount"><a class="anchor" href="#_assertcount_selector_expectedcount"></a><a class="link" href="#_assertcount_selector_expectedcount">assertCount(selector, expectedCount)</a></h4>
+<h4 id="_assertcountselector_expectedcount"><a class="anchor" href="#_assertcountselector_expectedcount"></a><a class="link" href="#_assertcountselector_expectedcount">assertCount(selector, expectedCount)</a></h4>
 <div class="paragraph">
 <p>Assert over the number of elements for a given selector</p>
 </div>
@@ -830,7 +869,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_asserttitle_expected"><a class="anchor" href="#_asserttitle_expected"></a><a class="link" href="#_asserttitle_expected">assertTitle(expected)</a></h4>
+<h4 id="_asserttitleexpected"><a class="anchor" href="#_asserttitleexpected"></a><a class="link" href="#_asserttitleexpected">assertTitle(expected)</a></h4>
 <div class="paragraph">
 <p>Assert webpage title</p>
 </div>
@@ -842,7 +881,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_asserteval_selector_fn_args_expected"><a class="anchor" href="#_asserteval_selector_fn_args_expected"></a><a class="link" href="#_asserteval_selector_fn_args_expected">assertEval(selector, fn, [args], expected)</a></h4>
+<h4 id="_assertevalselector_fn_args_expected"><a class="anchor" href="#_assertevalselector_fn_args_expected"></a><a class="link" href="#_assertevalselector_fn_args_expected">assertEval(selector, fn, [args], expected)</a></h4>
 <div class="paragraph">
 <p>Assert the value of a function executed on a given selector. The <code>fn</code> is executed in browser context.</p>
 </div>
@@ -878,7 +917,7 @@ assert.equal(value, 'virk')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_assertfn_fn_args_expected"><a class="anchor" href="#_assertfn_fn_args_expected"></a><a class="link" href="#_assertfn_fn_args_expected">assertFn(fn, [args], expected)</a></h4>
+<h4 id="_assertfnfn_args_expected"><a class="anchor" href="#_assertfnfn_args_expected"></a><a class="link" href="#_assertfnfn_args_expected">assertFn(fn, [args], expected)</a></h4>
 <div class="paragraph">
 <p>Assert the output of a given function. The <code>fn</code> is executed in browser context.</p>
 </div>

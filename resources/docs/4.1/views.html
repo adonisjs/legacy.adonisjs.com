@@ -91,7 +91,7 @@ Make sure that the <code>ViewProvider</code> is registered as a provider inside 
 <p>The <code>view.render</code> method takes the relative path to the view file. There is no need to type <code>.edge</code> extension, since that is obvious.</p>
 </div>
 <div class="paragraph">
-<p>Also, you can render views from the sub folders with dot notation.</p>
+<p>Also, you can render views from the subfolders with dot notation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -136,7 +136,7 @@ view.render('users.list')</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ css('style') }}</code></pre>
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ style('style') }}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -144,7 +144,7 @@ view.render('users.list')</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ css('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css') }}</code></pre>
+<pre class="highlight line-numbers"><code class="language-edge" data-lang="edge">{{ style('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css') }}</code></pre>
 </div>
 </div>
 </div>
@@ -176,7 +176,7 @@ view.render('users.list')</code></pre>
 <p>Get actual URL for a route</p>
 </div>
 <div class="paragraph">
-<p>Expecting the route to be registered as following</p>
+<p>Expecting the route to be registered as follows</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -406,7 +406,7 @@ View.engine.tag(new MyTag())</code></pre>
 <div class="sect2">
 <h3 id="_runtime_values"><a class="anchor" href="#_runtime_values"></a><a class="link" href="#_runtime_values">Runtime values</a></h3>
 <div class="paragraph">
-<p>Quite often you want to share request specific values with your views, and same can be done by creating a middleware and sharing locals.</p>
+<p>Quite often you want to share request specific values with your views, and the same can be done by creating middleware and sharing locals.</p>
 </div>
 <div class="listingblock">
 <div class="content">

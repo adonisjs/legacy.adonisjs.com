@@ -113,7 +113,7 @@ module.exports = UserController</code></pre>
 <p>Below is the list of methods you can use to send emails.</p>
 </div>
 <div class="sect3">
-<h4 id="_send_views_data_callback"><a class="anchor" href="#_send_views_data_callback"></a><a class="link" href="#_send_views_data_callback">send(views, data, callback)</a></h4>
+<h4 id="_sendviews_data_callback"><a class="anchor" href="#_sendviews_data_callback"></a><a class="link" href="#_sendviews_data_callback">send(views, data, callback)</a></h4>
 <div class="paragraph">
 <p>Send email using one or multiple Edge views.</p>
 </div>
@@ -137,6 +137,9 @@ module.exports = UserController</code></pre>
 <div class="paragraph">
 <p>The view ending with <code>.text</code> is used as the plain text body of the email. In the same way, you can set the mail body for Apple watch.</p>
 </div>
+<div class="paragraph">
+<p>If you&#8217;re using edge as the template engine, you can also use <code>-text</code> instead of <code>.text</code> as the plain text body template suffix.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">await Mail.send(['welcome', 'welcome.text', 'welcome.watch'])</code></pre>
@@ -144,7 +147,7 @@ module.exports = UserController</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_raw_body_callback"><a class="anchor" href="#_raw_body_callback"></a><a class="link" href="#_raw_body_callback">raw(body, callback)</a></h4>
+<h4 id="_rawbody_callback"><a class="anchor" href="#_rawbody_callback"></a><a class="link" href="#_rawbody_callback">raw(body, callback)</a></h4>
 <div class="paragraph">
 <p>Use raw string to send the mail. The email <strong>HTML body</strong> will be set when the string is HTML, otherwise plain text email will be sent.</p>
 </div>
@@ -171,7 +174,7 @@ await Mail.raw('&lt;h1&gt; HTML email &lt;/h1&gt;', (message) =&gt; {
 <p>Below is the list of methods you can use to build message using fluent message API.</p>
 </div>
 <div class="sect3">
-<h4 id="_to_address_name"><a class="anchor" href="#_to_address_name"></a><a class="link" href="#_to_address_name">to(address, [name])</a></h4>
+<h4 id="_toaddress_name"><a class="anchor" href="#_toaddress_name"></a><a class="link" href="#_toaddress_name">to(address, [name])</a></h4>
 <div class="paragraph">
 <p>Set <code>to</code> address.</p>
 </div>
@@ -185,7 +188,7 @@ message.to(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_from_address_name"><a class="anchor" href="#_from_address_name"></a><a class="link" href="#_from_address_name">from(address, [name])</a></h4>
+<h4 id="_fromaddress_name"><a class="anchor" href="#_fromaddress_name"></a><a class="link" href="#_fromaddress_name">from(address, [name])</a></h4>
 <div class="paragraph">
 <p>Set <code>from</code> address.</p>
 </div>
@@ -199,7 +202,7 @@ message.from('team@yardstick.io', 'Yardstick')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_cc_address_name"><a class="anchor" href="#_cc_address_name"></a><a class="link" href="#_cc_address_name">cc(address, [name])</a></h4>
+<h4 id="_ccaddress_name"><a class="anchor" href="#_ccaddress_name"></a><a class="link" href="#_ccaddress_name">cc(address, [name])</a></h4>
 <div class="paragraph">
 <p>Add cc address on the email</p>
 </div>
@@ -213,7 +216,7 @@ message.cc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_bcc_address_name"><a class="anchor" href="#_bcc_address_name"></a><a class="link" href="#_bcc_address_name">bcc(address, [name])</a></h4>
+<h4 id="_bccaddress_name"><a class="anchor" href="#_bccaddress_name"></a><a class="link" href="#_bccaddress_name">bcc(address, [name])</a></h4>
 <div class="paragraph">
 <p>Add bcc address on the email.</p>
 </div>
@@ -226,11 +229,11 @@ message.bcc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Also, you can call the above methods for multiple times to defined multiple addresses.</p>
+<p>Also, you can call the above methods for multiple times to defined various addresses.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_replyto_address_name"><a class="anchor" href="#_replyto_address_name"></a><a class="link" href="#_replyto_address_name">replyTo(address, [name])</a></h4>
+<h4 id="_replytoaddress_name"><a class="anchor" href="#_replytoaddress_name"></a><a class="link" href="#_replytoaddress_name">replyTo(address, [name])</a></h4>
 <div class="paragraph">
 <p>Set <code>replyTo</code> email address</p>
 </div>
@@ -241,7 +244,7 @@ message.bcc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_inreplyto_messageid"><a class="anchor" href="#_inreplyto_messageid"></a><a class="link" href="#_inreplyto_messageid">inReplyTo(messageId)</a></h4>
+<h4 id="_inreplytomessageid"><a class="anchor" href="#_inreplytomessageid"></a><a class="link" href="#_inreplytomessageid">inReplyTo(messageId)</a></h4>
 <div class="paragraph">
 <p>Set email message id</p>
 </div>
@@ -252,7 +255,7 @@ message.bcc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_subject_value"><a class="anchor" href="#_subject_value"></a><a class="link" href="#_subject_value">subject(value)</a></h4>
+<h4 id="_subjectvalue"><a class="anchor" href="#_subjectvalue"></a><a class="link" href="#_subjectvalue">subject(value)</a></h4>
 <div class="paragraph">
 <p>Set email subject</p>
 </div>
@@ -263,7 +266,7 @@ message.bcc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_text_value"><a class="anchor" href="#_text_value"></a><a class="link" href="#_text_value">text(value)</a></h4>
+<h4 id="_textvalue"><a class="anchor" href="#_textvalue"></a><a class="link" href="#_textvalue">text(value)</a></h4>
 <div class="paragraph">
 <p>Manually set the plain text body for the email.</p>
 </div>
@@ -274,7 +277,7 @@ message.bcc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_attach_filepath_options"><a class="anchor" href="#_attach_filepath_options"></a><a class="link" href="#_attach_filepath_options">attach(filePath, options)</a></h4>
+<h4 id="_attachfilepath_options"><a class="anchor" href="#_attachfilepath_options"></a><a class="link" href="#_attachfilepath_options">attach(filePath, options)</a></h4>
 <div class="paragraph">
 <p>Attach file(s) with email.</p>
 </div>
@@ -297,7 +300,7 @@ message.bcc(user.email, user.name)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_attachdata_data_filename_options"><a class="anchor" href="#_attachdata_data_filename_options"></a><a class="link" href="#_attachdata_data_filename_options">attachData(data, filename, options)</a></h4>
+<h4 id="_attachdatadata_filename_options"><a class="anchor" href="#_attachdatadata_filename_options"></a><a class="link" href="#_attachdatadata_filename_options">attachData(data, filename, options)</a></h4>
 <div class="paragraph">
 <p>Attach raw data as a <code>String</code>, <code>Buffer</code> or <code>Stream</code>.</p>
 </div>
@@ -314,7 +317,7 @@ message.attachData(fs.createReadStream('hello.txt'), 'hello.txt')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_embed_filepath_cid_options"><a class="anchor" href="#_embed_filepath_cid_options"></a><a class="link" href="#_embed_filepath_cid_options">embed(filePath, cid, options)</a></h4>
+<h4 id="_embedfilepath_cid_options"><a class="anchor" href="#_embedfilepath_cid_options"></a><a class="link" href="#_embedfilepath_cid_options">embed(filePath, cid, options)</a></h4>
 <div class="paragraph">
 <p>Embed image into HTML body using <strong>content id</strong>. Make sure the <code>cid</code> is unique for each image for a given email.</p>
 </div>
@@ -333,7 +336,7 @@ message.attachData(fs.createReadStream('hello.txt'), 'hello.txt')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_driverextras_extras"><a class="anchor" href="#_driverextras_extras"></a><a class="link" href="#_driverextras_extras">driverExtras(extras)</a></h4>
+<h4 id="_driverextrasextras"><a class="anchor" href="#_driverextrasextras"></a><a class="link" href="#_driverextrasextras">driverExtras(extras)</a></h4>
 <div class="paragraph">
 <p>Pass an object of values to the current driver. The mail provider passes the object to the driver, and it is up to the driver to consume these values.</p>
 </div>
@@ -400,7 +403,7 @@ message.attachData(fs.createReadStream('hello.txt'), 'hello.txt')</code></pre>
 <div class="sect2">
 <h3 id="_sparkpost"><a class="anchor" href="#_sparkpost"></a><a class="link" href="#_sparkpost">SparkPost</a></h3>
 <div class="paragraph">
-<p>You can pass following extra options when using sparkpost as the driver.</p>
+<p>You can pass the following extra options when using sparkpost as the driver.</p>
 </div>
 <div class="paragraph">
 <p>Via config</p>
@@ -435,7 +438,7 @@ message.attachData(fs.createReadStream('hello.txt'), 'hello.txt')</code></pre>
 <div class="sect2">
 <h3 id="_mailgun"><a class="anchor" href="#_mailgun"></a><a class="link" href="#_mailgun">Mailgun</a></h3>
 <div class="paragraph">
-<p>You can pass following extra options when using mailgun as the driver.</p>
+<p>You can pass the following extra options when using mailgun as the driver.</p>
 </div>
 <div class="paragraph">
 <p>Via config</p>

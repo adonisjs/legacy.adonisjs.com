@@ -6,7 +6,7 @@
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_npm_package_as_a_service_provider">Npm package as a service provider</a></li>
 <li><a href="#_distributing_as_a_package">Distributing as a package</a></li>
-<li><a href="#_faq_s">FAQ&#8217;s</a></li>
+<li><a href="#_faqs">FAQ&#8217;s</a></li>
 </ul>
 </div>
 <div class="paragraph">
@@ -21,7 +21,7 @@
 <p>We know that <code>ioc.bind</code> method can be used to register bindings. However, there are no clear guidelines on where to call this method.</p>
 </div>
 <div class="paragraph">
-<p>It is where <strong>service providers</strong> comes into the picture. Service providers are simple ES6 classes with lifecycle methods that are used to register and bootstrap bindings.</p>
+<p>It is where <strong>service providers</strong> comes into the picture. Service providers are pure ES6 classes with lifecycle methods that are used to register and bootstrap bindings.</p>
 </div>
 <div class="paragraph">
 <p>For example</p>
@@ -167,7 +167,7 @@ module.exports = Queue</code></pre>
 <p>The above class only has one method called <code>get</code>, which returns an instance of the queue for a given <strong>queue name</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Following are the steps performed by the get method</p>
+<p>Following are the steps performed by the get method.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -243,7 +243,7 @@ Queue
 <h2 id="_distributing_as_a_package"><a class="anchor" href="#_distributing_as_a_package"></a><a class="link" href="#_distributing_as_a_package">Distributing as a package</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <a href="#_npm_package_as_a_service_provider">bee queue</a> provider we created lives in the same project struture. However, we can extract it into it&#8217;s own package.</p>
+<p>The <a href="#_npm_package_as_a_service_provider">bee queue</a> provider we created lives in the same project structure. However, we can extract it into its own package.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s create a new directory with following directory structure.</p>
@@ -262,7 +262,7 @@ Queue
 <p>All we did is moved the actual <code>Queue</code> implementation to the <code>src</code> directory and renamed the provider file to <code>QueueProvider.js</code></p>
 </div>
 <div class="paragraph">
-<p>Also we have to make following changes</p>
+<p>Also, we have to make the following changes.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -270,7 +270,7 @@ Queue
 <p>Since the <code>Queue/index.js</code> is in a different directory, we need to tweak the reference of this file inside our service provider.</p>
 </li>
 <li>
-<p>Rename <code>Bee/Queue</code> namespace to a more suited namespace, which has less changes of collision. For example, when creating this provider for AdonisJs, we will name it as <code>Adonis/Addons/Queue</code>.</p>
+<p>Rename <code>Bee/Queue</code> namespace to a more suited namespace, which has fewer chances of collision. For example, when creating this provider for AdonisJs, we will name it as <code>Adonis/Addons/Queue</code>.</p>
 </li>
 </ol>
 </div>
@@ -280,7 +280,7 @@ Queue
 
 class QueueProvider extends ServiceProvider {
   register () {
-    this.app.singleton('Bee/Queue', () =&gt; {
+    this.app.singleton('Adonis/Addons/Queue', () =&gt; {
       const Config = this.app.use('Adonis/Src/Config')
       return new (require('../src/Queue'))(Config)
     })
@@ -297,7 +297,7 @@ module.exports = QueueProvider</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Make sure you do not include <code>@adonisjs/fold</code> as a dependency for your provider. This should be installed by the main app only. For testing you can install it as a <strong>dev dependency</strong>.
+Make sure you do not include <code>@adonisjs/fold</code> as a dependency for your provider. This should be installed by the main app only. For testing, you can install it as a <strong>dev dependency</strong>.
 </td>
 </tr>
 </table>
@@ -305,10 +305,10 @@ Make sure you do not include <code>@adonisjs/fold</code> as a dependency for you
 <div class="sect2">
 <h3 id="_writing_provider_tests"><a class="anchor" href="#_writing_provider_tests"></a><a class="link" href="#_writing_provider_tests">Writing provider tests</a></h3>
 <div class="paragraph">
-<p>You can use any testing engine you want. However we officially use <a href="https://github.com/thetutlage/japa" target="_blank" rel="noopener">japa</a> as the testing engine to write tests for any providers.</p>
+<p>You can use any testing engine you want. However, we officially use <a href="https://github.com/thetutlage/japa" target="_blank" rel="noopener">japa</a> as the testing engine to write tests for any providers.</p>
 </div>
 <div class="paragraph">
-<p>Setting up japa is simple as shown below.</p>
+<p>Setting up japa is straightforward as shown below.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -332,7 +332,7 @@ Make sure you do not include <code>@adonisjs/fold</code> as a dependency for you
 </div>
 </div>
 <div class="paragraph">
-<p>But of course, you want to run all the test files together and for that you can make use of <code>japa-cli</code>.</p>
+<p>But of course, you want to run all the test files together, and for that, you can make use of <code>japa-cli</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -351,7 +351,7 @@ Make sure you do not include <code>@adonisjs/fold</code> as a dependency for you
 </div>
 </div>
 <div class="sect1">
-<h2 id="_faq_s"><a class="anchor" href="#_faq_s"></a><a class="link" href="#_faq_s">FAQ&#8217;s</a></h2>
+<h2 id="_faqs"><a class="anchor" href="#_faqs"></a><a class="link" href="#_faqs">FAQ&#8217;s</a></h2>
 <div class="sectionbody">
 <div class="olist ol-spaced">
 <ol class="ol-spaced">
@@ -359,7 +359,7 @@ Make sure you do not include <code>@adonisjs/fold</code> as a dependency for you
 <p><strong>Why not install <code>@adonisjs/fold</code> as a dependency?</strong><br>
 If you have ever worked with gulp, they also <a href="https://github.com/gulpjs/gulp/blob/master/docs/writing-a-plugin/guidelines.md">recommend (p:14)</a> not to install gulp as the dependency when creating plugins.<br>
 &nbsp;<br>
-It is required so that always the main application version of <code>@adonisjs/fold</code> is installed and your provider makes use of it. Otherwise, each provider will end up shipping it&#8217;s own version of IoC container.</p>
+It is required so that always the main application version of <code>@adonisjs/fold</code> is installed and your provider makes use of it. Otherwise, each provider will end up shipping its own version of IoC container.</p>
 </li>
 </ol>
 </div>

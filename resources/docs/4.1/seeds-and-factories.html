@@ -10,7 +10,7 @@
 <li><a href="#_model_factories_api">Model factories API</a></li>
 <li><a href="#_custom_data">Custom data</a></li>
 <li><a href="#_faker_api">Faker API</a></li>
-<li><a href="#_faq_s">FAQ&#8217;s</a></li>
+<li><a href="#_faqs">FAQ&#8217;s</a></li>
 </ul>
 </div>
 <div class="paragraph">
@@ -112,7 +112,7 @@ Factory.blueprint('App/Models/User', async (faker) =&gt; {
 <div class="sect2">
 <h3 id="_creating_relationships"><a class="anchor" href="#_creating_relationships"></a><a class="link" href="#_creating_relationships">Creating relationships</a></h3>
 <div class="paragraph">
-<p>It is so simple to use Lucid models and factories to setup associations. Let&#8217;s say we want to create a post and associate it with a user.</p>
+<p>It is so simple to use Lucid models and factories to set up associations. Let&#8217;s say we want to create a post and associate it with a user.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -175,7 +175,7 @@ await user.posts().save(post)</code></pre>
 <div class="paragraph">
 <p>Below is the list of available commands with their usage and description.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -197,7 +197,7 @@ await user.posts().save(post)</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">adonis seed</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>--files</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Execute seed files. Also, you can pass a comma separated list of files to be executed. Otherwise, all files get executed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execute seed files. Also, you can pass a comma-separated list of files to be executed. Otherwise, all files get executed.</p></td>
 </tr>
 </tbody>
 </table>
@@ -390,7 +390,7 @@ await user.posts().save(post)</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_faq_s"><a class="anchor" href="#_faq_s"></a><a class="link" href="#_faq_s">FAQ&#8217;s</a></h2>
+<h2 id="_faqs"><a class="anchor" href="#_faqs"></a><a class="link" href="#_faqs">FAQ&#8217;s</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Since factories and seeds fit into many different use cases, the chances are you may get confused on how and when to use them. So here is the list of some frequently asked questions.</p>
@@ -408,7 +408,7 @@ Yes. Just import the factory provider and use it.</p>
 </li>
 <li>
 <p><strong>How to run only selected seed files?</strong><br>
-You can pass <code>--files</code> with a list of comma separated file names to <code>adonis seed</code> command. It makes sure to run only those files.</p>
+You can pass <code>--files</code> with a list of comma-separated filenames to <code>adonis seed</code> command. It makes sure to run only those files.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">adonis seed --files='UsersSeeder.js, PostsSeeder.js'</code></pre>

@@ -28,7 +28,7 @@
 <p>Every AdonisJs project has an <code>ace</code> file in the project root, which is a regular Javascript file but without the <code>.js</code> extension.</p>
 </div>
 <div class="paragraph">
-<p>The <code>ace</code> file is used to execute project specific commands, and for reusable commands, you must bundle them as npm packages.</p>
+<p>The <code>ace</code> file is used to execute project-specific commands, and for reusable commands, you must bundle them as npm packages.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s run the following code to see the list of available commands.</p>
@@ -160,7 +160,7 @@ module.exports = Quote</code></pre>
 <h2 id="_command_signature"><a class="anchor" href="#_command_signature"></a><a class="link" href="#_command_signature">Command signature</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The command signature defines the command name, required/optional options and flags. The signature is defined as an expression string.</p>
+<p>The command signature defines the command name, required/optional options, and flags. The signature is defined as an expression string.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -199,7 +199,7 @@ module.exports = Quote</code></pre>
 <div class="sect3">
 <h4 id="_optional_arguments"><a class="anchor" href="#_optional_arguments"></a><a class="link" href="#_optional_arguments">Optional arguments</a></h4>
 <div class="paragraph">
-<p>The arguments can be optional by passing <code>?</code> to the name.</p>
+<p>The arguments can be optional by appending <code>?</code> to the name.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -298,7 +298,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 <p>Within your command, you can prompt users and accept values by asking interactive questions.</p>
 </div>
 <div class="sect3">
-<h4 id="_ask_question_defaultanswer"><a class="anchor" href="#_ask_question_defaultanswer"></a><a class="link" href="#_ask_question_defaultanswer">ask(question, [defaultAnswer])</a></h4>
+<h4 id="_askquestion_defaultanswer"><a class="anchor" href="#_askquestion_defaultanswer"></a><a class="link" href="#_askquestion_defaultanswer">ask(question, [defaultAnswer])</a></h4>
 <div class="paragraph">
 <p>Prompt for free text question.</p>
 </div>
@@ -316,7 +316,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_confirm_question"><a class="anchor" href="#_confirm_question"></a><a class="link" href="#_confirm_question">confirm(question)</a></h4>
+<h4 id="_confirmquestion"><a class="anchor" href="#_confirmquestion"></a><a class="link" href="#_confirmquestion">confirm(question)</a></h4>
 <div class="paragraph">
 <p>Prompt user for a <code>Yes/no</code> question.</p>
 </div>
@@ -328,7 +328,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_secure_question_defaultanswer"><a class="anchor" href="#_secure_question_defaultanswer"></a><a class="link" href="#_secure_question_defaultanswer">secure(question, [defaultAnswer])</a></h4>
+<h4 id="_securequestion_defaultanswer"><a class="anchor" href="#_securequestion_defaultanswer"></a><a class="link" href="#_securequestion_defaultanswer">secure(question, [defaultAnswer])</a></h4>
 <div class="paragraph">
 <p>Prompt user for a secure input like a password or some secret.</p>
 </div>
@@ -340,7 +340,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_multiple_title_choices_selected"><a class="anchor" href="#_multiple_title_choices_selected"></a><a class="link" href="#_multiple_title_choices_selected">multiple(title, choices, [selected])</a></h4>
+<h4 id="_multipletitle_choices_selected"><a class="anchor" href="#_multipletitle_choices_selected"></a><a class="link" href="#_multipletitle_choices_selected">multiple(title, choices, [selected])</a></h4>
 <div class="paragraph">
 <p>Prompt for a multiple choice question</p>
 </div>
@@ -373,7 +373,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="paragraph">
-<p>Also, you can pass an array of pre selected values</p>
+<p>Also, you can pass an array of preselected values.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -389,7 +389,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_choice_question_choices_selected"><a class="anchor" href="#_choice_question_choices_selected"></a><a class="link" href="#_choice_question_choices_selected">choice(question, choices, [selected])</a></h4>
+<h4 id="_choicequestion_choices_selected"><a class="anchor" href="#_choicequestion_choices_selected"></a><a class="link" href="#_choicequestion_choices_selected">choice(question, choices, [selected])</a></h4>
 <div class="paragraph">
 <p>choose one value from a list of options.</p>
 </div>
@@ -402,7 +402,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="paragraph">
-<p>Also can also be an object</p>
+<p>Also can also be an object.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -420,7 +420,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="paragraph">
-<p>Also, you can pre select one of the available options.</p>
+<p>Also, you can pre-select one of the available options.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -439,7 +439,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_openeditor_question_defaultvalue"><a class="anchor" href="#_openeditor_question_defaultvalue"></a><a class="link" href="#_openeditor_question_defaultvalue">openEditor(question, [defaultValue])</a></h4>
+<h4 id="_openeditorquestion_defaultvalue"><a class="anchor" href="#_openeditorquestion_defaultvalue"></a><a class="link" href="#_openeditorquestion_defaultvalue">openEditor(question, [defaultValue])</a></h4>
 <div class="paragraph">
 <p>Open default editor and get value on editor window exits</p>
 </div>
@@ -456,13 +456,13 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 <h2 id="_colorful_logs"><a class="anchor" href="#_colorful_logs"></a><a class="link" href="#_colorful_logs">Colorful logs</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Ace uses <a href="https://npmjs.org/package/chalk" target="_blank" rel="noopener">chalk</a> to output colorful messages on the terminal, you can access the instance of chalk as <code>this.chalk</code>.</p>
+<p>Ace uses <a href="https://npmjs.org/package/kleur" target="_blank" rel="noopener">kleur</a> to colorful output messages on the terminal, you can access the instance of kleur as <code>this.chalk</code>.</p>
 </div>
 <div class="paragraph">
 <p>Also, there are some helper methods to log consistently styled messages.</p>
 </div>
 <div class="sect3">
-<h4 id="_error_message"><a class="anchor" href="#_error_message"></a><a class="link" href="#_error_message">error(message)</a></h4>
+<h4 id="_errormessage"><a class="anchor" href="#_errormessage"></a><a class="link" href="#_errormessage">error(message)</a></h4>
 <div class="paragraph">
 <p>Log error message to <code>stderr</code> in red color.</p>
 </div>
@@ -473,7 +473,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_info_message"><a class="anchor" href="#_info_message"></a><a class="link" href="#_info_message">info(message)</a></h4>
+<h4 id="_infomessage"><a class="anchor" href="#_infomessage"></a><a class="link" href="#_infomessage">info(message)</a></h4>
 <div class="paragraph">
 <p>Log info message to <code>stdout</code> in cyan color.</p>
 </div>
@@ -484,7 +484,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_warn_message"><a class="anchor" href="#_warn_message"></a><a class="link" href="#_warn_message">warn(message)</a></h4>
+<h4 id="_warnmessage"><a class="anchor" href="#_warnmessage"></a><a class="link" href="#_warnmessage">warn(message)</a></h4>
 <div class="paragraph">
 <p>Log message in yellow color</p>
 </div>
@@ -495,7 +495,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_success_message"><a class="anchor" href="#_success_message"></a><a class="link" href="#_success_message">success(message)</a></h4>
+<h4 id="_successmessage"><a class="anchor" href="#_successmessage"></a><a class="link" href="#_successmessage">success(message)</a></h4>
 <div class="paragraph">
 <p>Log message in green color</p>
 </div>
@@ -506,7 +506,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_completed_action_message"><a class="anchor" href="#_completed_action_message"></a><a class="link" href="#_completed_action_message">completed(action, message)</a></h4>
+<h4 id="_completedaction_message"><a class="anchor" href="#_completedaction_message"></a><a class="link" href="#_completedaction_message">completed(action, message)</a></h4>
 <div class="paragraph">
 <p>Mark an action as completed</p>
 </div>
@@ -517,7 +517,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_failed_action_message"><a class="anchor" href="#_failed_action_message"></a><a class="link" href="#_failed_action_message">failed(action, message)</a></h4>
+<h4 id="_failedaction_message"><a class="anchor" href="#_failedaction_message"></a><a class="link" href="#_failedaction_message">failed(action, message)</a></h4>
 <div class="paragraph">
 <p>Unable to complete an action</p>
 </div>
@@ -528,7 +528,7 @@ All <strong>arguments</strong> and <strong>flags</strong> are passed in camel ca
 </div>
 </div>
 <div class="sect3">
-<h4 id="_table_head_body"><a class="anchor" href="#_table_head_body"></a><a class="link" href="#_table_head_body">table(head, body)</a></h4>
+<h4 id="_tablehead_body"><a class="anchor" href="#_tablehead_body"></a><a class="link" href="#_tablehead_body">table(head, body)</a></h4>
 <div class="paragraph">
 <p>Print tabular data</p>
 </div>
@@ -554,11 +554,11 @@ this.table(head, body, options)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_icon_type"><a class="anchor" href="#_icon_type"></a><a class="link" href="#_icon_type">icon(type)</a></h4>
+<h4 id="_icontype"><a class="anchor" href="#_icontype"></a><a class="link" href="#_icontype">icon(type)</a></h4>
 <div class="paragraph">
 <p>Print icon for one of the following types.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -603,7 +603,7 @@ this.table(head, body, options)</code></pre>
 <p>Ace makes it simple to interact with the file system by offering Promise first API.</p>
 </div>
 <div class="sect3">
-<h4 id="_writefile_location_contents"><a class="anchor" href="#_writefile_location_contents"></a><a class="link" href="#_writefile_location_contents">writeFile(location, contents)</a></h4>
+<h4 id="_writefilelocation_contents"><a class="anchor" href="#_writefilelocation_contents"></a><a class="link" href="#_writefilelocation_contents">writeFile(location, contents)</a></h4>
 <div class="paragraph">
 <p>Write file to a given location. Missing directories are created automatically.</p>
 </div>
@@ -614,7 +614,7 @@ this.table(head, body, options)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ensurefile_location"><a class="anchor" href="#_ensurefile_location"></a><a class="link" href="#_ensurefile_location">ensureFile(location)</a></h4>
+<h4 id="_ensurefilelocation"><a class="anchor" href="#_ensurefilelocation"></a><a class="link" href="#_ensurefilelocation">ensureFile(location)</a></h4>
 <div class="paragraph">
 <p>Ensure file exists at a given location, otherwise an empty file is created.</p>
 </div>
@@ -625,7 +625,7 @@ this.table(head, body, options)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ensuredir_location"><a class="anchor" href="#_ensuredir_location"></a><a class="link" href="#_ensuredir_location">ensureDir(location)</a></h4>
+<h4 id="_ensuredirlocation"><a class="anchor" href="#_ensuredirlocation"></a><a class="link" href="#_ensuredirlocation">ensureDir(location)</a></h4>
 <div class="paragraph">
 <p>Ensure directory exists at a given location, otherwise an empty directory is created.</p>
 </div>
@@ -636,7 +636,7 @@ this.table(head, body, options)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pathexists_location"><a class="anchor" href="#_pathexists_location"></a><a class="link" href="#_pathexists_location">pathExists(location)</a></h4>
+<h4 id="_pathexistslocation"><a class="anchor" href="#_pathexistslocation"></a><a class="link" href="#_pathexistslocation">pathExists(location)</a></h4>
 <div class="paragraph">
 <p>Find a path exists or not.</p>
 </div>
@@ -651,7 +651,7 @@ if (exists) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_removefile_location"><a class="anchor" href="#_removefile_location"></a><a class="link" href="#_removefile_location">removeFile(location)</a></h4>
+<h4 id="_removefilelocation"><a class="anchor" href="#_removefilelocation"></a><a class="link" href="#_removefilelocation">removeFile(location)</a></h4>
 <div class="paragraph">
 <p>Remove file from a given location</p>
 </div>
@@ -662,7 +662,7 @@ if (exists) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_removedir_location"><a class="anchor" href="#_removedir_location"></a><a class="link" href="#_removedir_location">removeDir(location)</a></h4>
+<h4 id="_removedirlocation"><a class="anchor" href="#_removedirlocation"></a><a class="link" href="#_removedirlocation">removeDir(location)</a></h4>
 <div class="paragraph">
 <p>Remove directory from a given location</p>
 </div>
@@ -673,7 +673,7 @@ if (exists) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_readfile_location"><a class="anchor" href="#_readfile_location"></a><a class="link" href="#_readfile_location">readFile(location)</a></h4>
+<h4 id="_readfilelocation"><a class="anchor" href="#_readfilelocation"></a><a class="link" href="#_readfilelocation">readFile(location)</a></h4>
 <div class="paragraph">
 <p>Read contents of a given file</p>
 </div>
@@ -684,7 +684,7 @@ if (exists) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_copy_src_dest"><a class="anchor" href="#_copy_src_dest"></a><a class="link" href="#_copy_src_dest">copy(src, dest)</a></h4>
+<h4 id="_copysrc_dest"><a class="anchor" href="#_copysrc_dest"></a><a class="link" href="#_copysrc_dest">copy(src, dest)</a></h4>
 <div class="paragraph">
 <p>Copy file/directory from one location to other</p>
 </div>
@@ -695,7 +695,7 @@ if (exists) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_move_src_dest"><a class="anchor" href="#_move_src_dest"></a><a class="link" href="#_move_src_dest">move(src, dest)</a></h4>
+<h4 id="_movesrc_dest"><a class="anchor" href="#_movesrc_dest"></a><a class="link" href="#_movesrc_dest">move(src, dest)</a></h4>
 <div class="paragraph">
 <p>Move file/directory from one location to other</p>
 </div>
@@ -738,7 +738,7 @@ class Quote extends Command {
     let quote = await Quote.query().orderByRaw('rand()').first()
     console.log(quote.content)
 
-    // This is the important line. Without it, the command runner will not exit.
+    // This is the crucial line. Without it, the command runner will not exit.
     Database.close()
   }
 }</code></pre>

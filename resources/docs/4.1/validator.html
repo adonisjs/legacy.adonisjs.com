@@ -12,7 +12,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>AdonisJs makes it so simple to validate the user&#8217;s input with the help of dedicated validation provider. In this guide you learn how to validate the data <strong>manually</strong> or via <strong>route validators</strong>.</p>
+<p>AdonisJs makes it so simple to validate the user&#8217;s input with the help of a dedicated validation provider. In this guide you learn how to verify the data <strong>manually</strong> or via <strong>route validators</strong>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -32,7 +32,7 @@ Adonisjs validator using <a href="http://indicative.adonisjs.com/">indicative</a
 <h2 id="_setup"><a class="anchor" href="#_setup"></a><a class="link" href="#_setup">Setup</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Follow the below instructions to setup the validation provider.</p>
+<p>Follow the below instructions to set up the validation provider.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -121,7 +121,7 @@ module.exports = UserController</code></pre>
 <p>First, we have defined the <code>rules</code> schema.</p>
 </li>
 <li>
-<p>Next, we make use of the <code>validate</code> method to validate the request data with our defined rules.</p>
+<p>Next, we make use of the <code>validate</code> method to validate the request data with our established rules.</p>
 </li>
 <li>
 <p>If validation fails, we flash all the errors and redirect the user back to the form.</p>
@@ -160,7 +160,7 @@ module.exports = UserController</code></pre>
 <p>Below is the list of available methods.</p>
 </div>
 <div class="sect3">
-<h4 id="_validate_data_rules_message_formatter"><a class="anchor" href="#_validate_data_rules_message_formatter"></a><a class="link" href="#_validate_data_rules_message_formatter">validate(data, rules, [message], [formatter])</a></h4>
+<h4 id="_validatedata_rules_message_formatter"><a class="anchor" href="#_validatedata_rules_message_formatter"></a><a class="link" href="#_validatedata_rules_message_formatter">validate(data, rules, [message], [formatter])</a></h4>
 <div class="paragraph">
 <p>Validate data with defined rules. Optionally, you can define custom <a href="http://indicative.adonisjs.com/docs/custom-messages" target="_blank" rel="noopener">error messages</a>.</p>
 </div>
@@ -177,7 +177,7 @@ if (validation.fails()) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_validateall_data_rules_message_formatter"><a class="anchor" href="#_validateall_data_rules_message_formatter"></a><a class="link" href="#_validateall_data_rules_message_formatter">validateAll(data, rules, [message], [formatter])</a></h4>
+<h4 id="_validatealldata_rules_message_formatter"><a class="anchor" href="#_validatealldata_rules_message_formatter"></a><a class="link" href="#_validatealldata_rules_message_formatter">validateAll(data, rules, [message], [formatter])</a></h4>
 <div class="paragraph">
 <p>Same as <code>validate</code> but validate&#8217;s all the fields, whereas the validate method stops on first error.</p>
 </div>
@@ -189,7 +189,7 @@ const validation = await validateAll(data, rules)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sanitize_data_rules"><a class="anchor" href="#_sanitize_data_rules"></a><a class="link" href="#_sanitize_data_rules">sanitize(data, rules)</a></h4>
+<h4 id="_sanitizedata_rules"><a class="anchor" href="#_sanitizedata_rules"></a><a class="link" href="#_sanitizedata_rules">sanitize(data, rules)</a></h4>
 <div class="paragraph">
 <p>This method returns a new object with sanitized data.</p>
 </div>
@@ -268,7 +268,7 @@ Route
 </div>
 </div>
 <div class="paragraph">
-<p>All we need to do is, define the rules on the validator</p>
+<p>All we need to do is, define the rules on the validator.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -290,7 +290,40 @@ module.exports = StoreUser</code></pre>
 <p>That is all! If the validation fails, the validator automatically set the errors as flash messages and redirects the user to the form.</p>
 </div>
 <div class="paragraph">
-<p>Whereas, it sends back the JSON response if request has <code>Accept: application/json</code> header set.</p>
+<p>Whereas, it sends back the JSON response if the request has <code>Accept: application/json</code> header set.</p>
+</div>
+<div class="sect2">
+<h3 id="_custom_error_messages"><a class="anchor" href="#_custom_error_messages"></a><a class="link" href="#_custom_error_messages">Custom error messages</a></h3>
+<div class="paragraph">
+<p>Default error messages can be confusing for the end user so you might want to create your custom validation error messages.
+Adonis provides you an effortless way to do this.
+You have to declare a <code>messages</code> method on your route validator and return an object with your messages per rule like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">'use strict'
+
+class StoreUser {
+  get rules () {
+    return {
+      email: 'required|email|unique:users',
+      password: 'required'
+    }
+  }
+
+  get messages () {
+    return {
+      'email.required': 'You must provide a email address.',
+      'email.email': 'You must provide a valid email address.',
+      'email.unique': 'This email is already registered.',
+      'password.required': 'You must provide a password'
+    }
+  }
+}
+
+module.exports = StoreUser</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_validate_all"><a class="anchor" href="#_validate_all"></a><a class="link" href="#_validate_all">Validate All</a></h3>
@@ -351,7 +384,7 @@ module.exports = StoreUser</code></pre>
 <div class="sect2">
 <h3 id="_custom_data_object"><a class="anchor" href="#_custom_data_object"></a><a class="link" href="#_custom_data_object">Custom data object</a></h3>
 <div class="paragraph">
-<p>At times you want to validate custom properties, which are not part of request body. For example validating some headers. Same can be done by defining <code>data</code> property on the validator instance.</p>
+<p>At times you want to validate custom properties, which are not part of the request body. For example, validating some headers. Same can be done by defining <code>data</code> property on the validator instance.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -440,7 +473,7 @@ module.exports = StoreUser</code></pre>
 <p>AdonisJs supports all the validation rules by Indicative but also adds a few who are specific to AdonisJs only. Below is the list of custom rules.</p>
 </div>
 <div class="sect3">
-<h4 id="_unique_tablename_fieldname_ignorefield_ignorevalue"><a class="anchor" href="#_unique_tablename_fieldname_ignorefield_ignorevalue"></a><a class="link" href="#_unique_tablename_fieldname_ignorefield_ignorevalue">unique(tableName, [fieldName], [ignoreField], [ignoreValue])</a></h4>
+<h4 id="_uniquetablename_fieldname_ignorefield_ignorevalue"><a class="anchor" href="#_uniquetablename_fieldname_ignorefield_ignorevalue"></a><a class="link" href="#_uniquetablename_fieldname_ignorefield_ignorevalue">unique(tableName, [fieldName], [ignoreField], [ignoreValue])</a></h4>
 <div class="paragraph">
 <p>Makes sure a given value is unique in a given database table.</p>
 </div>

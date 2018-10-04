@@ -4,12 +4,12 @@
 <div id="toctitle" class="title">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_where_to_write_code">Where to write code?</a></li>
-<li><a href="#_adding_macros_getters">Adding macros/getters</a></li>
+<li><a href="#_adding_macrosgetters">Adding macros/getters</a></li>
 <li><a href="#_extending_providers">Extending providers</a></li>
 </ul>
 </div>
 <div class="paragraph">
-<p>AdonisJs is fully extendible to the core. In this guide we learn about the ways, you can transparently extend parts of the framework</p>
+<p>AdonisJs is fully extendible to the core. In this guide we learn about the ways, you can transparently extend parts of the framework.</p>
 </div>
 </div>
 </div>
@@ -20,7 +20,7 @@
 <p>The easiest way to get started is to make use of <a href="ignitor#_hooks">applications hooks</a> and later move code inside a provider if you want to share your code as a package.</p>
 </div>
 <div class="paragraph">
-<p>The hooks lives inside <code>start/hooks.js</code> file and bunch of pre-existing hooks can be used to execute the code at a specific time.</p>
+<p>The hooks live inside <code>start/hooks.js</code> file and bunch of pre-existing hooks can be used to execute the code at a specific time.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -45,7 +45,7 @@ hooks.after.providersRegistered(() =&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>Providers lives inside the <code>providers</code> directory in the project root. Always make sure to register the provider inside the <code>start/app.js</code> file.</p>
+<p>Providers live inside the <code>providers</code> directory in the project root. Always make sure to register the provider inside the <code>start/app.js</code> file.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -64,7 +64,7 @@ const providers = [
 </div>
 </div>
 <div class="paragraph">
-<p>Generally providers are used to add functionality to your application by binding namespaces to the IoC container. However, you can use the providers to run some code when it has been booted.</p>
+<p>Generally, providers are used to adding functionality to your application by binding namespaces to the IoC container. However, you can use the providers to run some code when it has been booted.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -80,10 +80,10 @@ class AppProvider extends ServiceProvider {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_adding_macros_getters"><a class="anchor" href="#_adding_macros_getters"></a><a class="link" href="#_adding_macros_getters">Adding macros/getters</a></h2>
+<h2 id="_adding_macrosgetters"><a class="anchor" href="#_adding_macrosgetters"></a><a class="link" href="#_adding_macrosgetters">Adding macros/getters</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Macros let you add methods to the existing classes. A class must extend <a href="https://www.npmjs.com/package/macroable">Macroable</a> class in order to be extended.</p>
+<p>Macros let you add methods to the existing classes. A class must extend <a href="https://www.npmjs.com/package/macroable">Macroable</a> class to be extended.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -118,7 +118,7 @@ Response.macro('sendStatus', (status) =&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>In same way you can also add <code>getters</code> to the macroable classes.</p>
+<p>In the same way you can also add <code>getters</code> to the macroable classes.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -172,7 +172,7 @@ Make sure to refer the documentation of individual providers to understand the e
 </table>
 </div>
 <div class="paragraph">
-<p>To keep the extend interface simple and unified, you make use of <code>Ioc.extend</code> method to add new drivers or serializers.</p>
+<p>To keep the extend interface unified and simplistic, you make use of <code>Ioc.extend</code> method to add new drivers or serializers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -207,13 +207,13 @@ class MyProvider extends ServiceProvider {
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>The manager object must have a extend method on it. The values passed to <code>ioc.extend</code> will be forwaded to this method.</p>
+<p>The manager object must have a method <code>extend</code> on it. The values passed to <code>ioc.extend</code> will be forwarded to this method.</p>
 </li>
 <li>
 <p>The <code>namespace</code> must be same as the binding namespace.</p>
 </li>
 <li>
-<p>You have to manage the registeration/lifecycle of a driver.</p>
+<p>You have to manage the registration/lifecycle of a driver.</p>
 </li>
 </ol>
 </div>

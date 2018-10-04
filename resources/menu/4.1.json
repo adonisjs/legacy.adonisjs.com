@@ -1,381 +1,381 @@
 [
   {
-    "path": "content/4.1/01-introduction/01-about.adoc",
+    "path": "content/4.1/01-Preface/01-about.adoc",
     "title": "About AdonisJs",
     "permalink": "about",
-    "category": "introduction",
+    "category": "preface",
     "savePath": "resources/docs/4.1/about.html"
   },
   {
-    "path": "content/4.1/01-introduction/02-upgrade-guide.adoc",
+    "path": "content/4.1/01-Preface/02-upgrade-guide.adoc",
     "title": "Upgrading from 4.0",
     "permalink": "upgrade-guide",
-    "category": "introduction",
+    "category": "preface",
     "savePath": "resources/docs/4.1/upgrade-guide.html"
   },
   {
-    "path": "content/4.1/02-internals/01-ioc-container.adoc",
+    "path": "content/4.1/01-Preface/03-Contribution-Guide.adoc",
+    "title": "Contribution Guide",
+    "category": "Preface",
+    "permalink": "contribution-guide",
+    "savePath": "resources/docs/4.1/contribution-guide.html"
+  },
+  {
+    "path": "content/4.1/02-Concept/01-Request-Lifecycle.adoc",
+    "title": "Request Lifecycle",
+    "category": "concept",
+    "permalink": "request-lifecycle",
+    "savePath": "resources/docs/4.1/request-lifecycle.html"
+  },
+  {
+    "path": "content/4.1/02-Concept/02-ioc-container.adoc",
     "permalink": "ioc-container",
-    "title": "Ioc container",
-    "category": "internals",
+    "title": "IoC container",
+    "category": "concept",
     "savePath": "resources/docs/4.1/ioc-container.html"
   },
   {
-    "path": "content/4.1/02-internals/02-service-providers.adoc",
+    "path": "content/4.1/02-Concept/03-service-providers.adoc",
     "permalink": "service-providers",
     "title": "Service providers",
-    "category": "internals",
+    "category": "concept",
     "savePath": "resources/docs/4.1/service-providers.html"
   },
   {
-    "path": "content/4.1/02-internals/03-ignitor.adoc",
+    "path": "content/4.1/02-Concept/05-ignitor.adoc",
     "permalink": "ignitor",
     "title": "Ignitor",
-    "category": "internals",
+    "category": "concept",
     "savePath": "resources/docs/4.1/ignitor.html"
   },
   {
     "path": "content/4.1/03-getting-started/01-installation.adoc",
-    "permalink": "installation",
     "title": "Installation",
     "category": "getting-started",
+    "permalink": "installation",
     "savePath": "resources/docs/4.1/installation.html"
   },
   {
-    "path": "content/4.1/03-getting-started/02-folder-structure.adoc",
-    "permalink": "folder-structure",
-    "title": "Folder structure",
+    "path": "content/4.1/03-getting-started/02-Configuration.adoc",
+    "title": "Configuration",
     "category": "getting-started",
-    "savePath": "resources/docs/4.1/folder-structure.html"
-  },
-  {
-    "path": "content/4.1/03-getting-started/03-configuration-and-env.adoc",
     "permalink": "configuration-and-env",
-    "title": "Configuration and Env",
-    "category": "getting-started",
     "savePath": "resources/docs/4.1/configuration-and-env.html"
   },
   {
-    "path": "content/4.1/03-getting-started/04-number-guessing-game.adoc",
-    "permalink": "number-guessing-game",
-    "title": "Number guessing game",
+    "path": "content/4.1/03-getting-started/03-Directory-Structure.adoc",
+    "title": "Directory Structure",
     "category": "getting-started",
-    "savePath": "resources/docs/4.1/number-guessing-game.html"
+    "permalink": "folder-structure",
+    "savePath": "resources/docs/4.1/folder-structure.html"
   },
   {
-    "path": "content/4.1/03-getting-started/05-database.adoc",
-    "permalink": "database-basics",
-    "title": "Database",
-    "category": "getting-started",
-    "savePath": "resources/docs/4.1/database-basics.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/01-introduction.adoc",
-    "permalink": "http-context",
-    "title": "Introduction",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/http-context.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/02-routing.adoc",
+    "path": "content/4.1/04-Basics/01-Routing.adoc",
     "permalink": "routing",
     "title": "Routing",
-    "category": "http-lifecycle",
+    "category": "basics",
     "savePath": "resources/docs/4.1/routing.html"
   },
   {
-    "path": "content/4.1/04-http-lifecycle/03-request.adoc",
-    "permalink": "request",
-    "title": "Request",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/request.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/04-response.adoc",
-    "permalink": "response",
-    "title": "Response",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/response.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/05-views.adoc",
-    "permalink": "views",
-    "title": "Views",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/views.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/07-file-uploads.adoc",
-    "title": "File uploads",
-    "permalink": "file-uploads",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/file-uploads.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/08-middleware.adoc",
-    "permalink": "middleware",
+    "path": "content/4.1/04-Basics/02-Middleware.adoc",
     "title": "Middleware",
-    "category": "http-lifecycle",
+    "category": "basics",
+    "permalink": "middleware",
     "savePath": "resources/docs/4.1/middleware.html"
   },
   {
-    "path": "content/4.1/04-http-lifecycle/09-sessions.adoc",
+    "path": "content/4.1/04-Basics/03-Controllers.adoc",
+    "title": "Controllers",
+    "category": "basics",
+    "permalink": "controllers",
+    "savePath": "resources/docs/4.1/controllers.html"
+  },
+  {
+    "path": "content/4.1/04-Basics/04-Request.adoc",
+    "permalink": "request",
+    "title": "Request",
+    "category": "basics",
+    "savePath": "resources/docs/4.1/request.html"
+  },
+  {
+    "path": "content/4.1/04-Basics/05-Response.adoc",
+    "permalink": "response",
+    "title": "Response",
+    "category": "basics",
+    "savePath": "resources/docs/4.1/response.html"
+  },
+  {
+    "path": "content/4.1/04-Basics/06-Views.adoc",
+    "permalink": "views",
+    "title": "Views",
+    "category": "basics",
+    "savePath": "resources/docs/4.1/views.html"
+  },
+  {
+    "path": "content/4.1/04-Basics/07-Sessions.adoc",
     "permalink": "sessions",
     "title": "Sessions",
-    "category": "http-lifecycle",
+    "category": "basics",
     "savePath": "resources/docs/4.1/sessions.html"
   },
   {
-    "path": "content/4.1/04-http-lifecycle/10-authentication.adoc",
-    "permalink": "authentication",
-    "title": "Authentication",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/authentication.html"
+    "path": "content/4.1/04-Basics/08-Validation.adoc",
+    "title": "Validator",
+    "permalink": "validator",
+    "category": "basics",
+    "savePath": "resources/docs/4.1/validator.html"
   },
   {
-    "path": "content/4.1/04-http-lifecycle/11-social-auth.adoc",
-    "title": "Social authentication",
-    "permalink": "social-auth",
-    "category": "http-lifecycle",
-    "savePath": "resources/docs/4.1/social-auth.html"
-  },
-  {
-    "path": "content/4.1/04-http-lifecycle/12-handling-exceptions.adoc",
+    "path": "content/4.1/04-Basics/09-Error-Handling.adoc",
     "permalink": "exceptions",
-    "title": "Handling Exceptions",
-    "category": "http-lifecycle",
+    "title": "Error Handling",
+    "category": "basics",
     "savePath": "resources/docs/4.1/exceptions.html"
   },
   {
-    "path": "content/4.1/06-database/01-introduction.adoc",
+    "path": "content/4.1/04-Basics/10-Logger.adoc",
+    "title": "Logger",
+    "permalink": "logger",
+    "category": "basics",
+    "savePath": "resources/docs/4.1/logger.html"
+  },
+  {
+    "path": "content/4.1/05-Security/01-Getting-Started.adoc",
+    "permalink": "security-introduction",
     "title": "Introduction",
+    "category": "security",
+    "savePath": "resources/docs/4.1/security-introduction.html"
+  },
+  {
+    "path": "content/4.1/05-Security/02-Authentication.adoc",
+    "permalink": "authentication",
+    "title": "Authentication",
+    "category": "security",
+    "savePath": "resources/docs/4.1/authentication.html"
+  },
+  {
+    "path": "content/4.1/05-Security/04-CORS.adoc",
+    "permalink": "cors",
+    "title": "CORS",
+    "category": "security",
+    "savePath": "resources/docs/4.1/cors.html"
+  },
+  {
+    "path": "content/4.1/05-Security/05-CSRF-Protection.adoc",
+    "permalink": "csrf",
+    "title": "CSRF protection",
+    "category": "security",
+    "savePath": "resources/docs/4.1/csrf.html"
+  },
+  {
+    "path": "content/4.1/05-Security/06-Encryption.adoc",
+    "title": "Encryption and Hashing",
+    "permalink": "encryption-and-hashing",
+    "category": "security",
+    "savePath": "resources/docs/4.1/encryption-and-hashing.html"
+  },
+  {
+    "path": "content/4.1/05-Security/08-Shield-Middleware.adoc",
+    "permalink": "shield",
+    "title": "Shield middleware",
+    "category": "security",
+    "savePath": "resources/docs/4.1/shield.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/01-Ace-Commands.adoc",
+    "title": "Ace commands",
+    "permalink": "ace",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/ace.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/02-Events.adoc",
+    "title": "Events",
+    "permalink": "events",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/events.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/03-Extending-the-Core.adoc",
+    "permalink": "extending-adonisjs",
+    "title": "Extending the Core",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/extending-adonisjs.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/03-File-Uploads.adoc",
+    "title": "File Uploads",
+    "permalink": "file-uploads",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/file-uploads.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/04-File-Storage.adoc",
+    "title": "File Storage",
+    "permalink": "file-system",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/file-system.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/05-Helpers.adoc",
+    "title": "Helpers",
+    "permalink": "helpers",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/helpers.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/06-Internationalization.adoc",
+    "title": "Internationalization",
+    "permalink": "internationalization",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/internationalization.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/07-Mails.adoc",
+    "title": "Mails",
+    "permalink": "mail",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/mail.html"
+  },
+  {
+    "path": "content/4.1/06-Digging-Deeper/08-Social-Authentication.adoc",
+    "title": "Social Authentication",
+    "permalink": "social-auth",
+    "category": "digging-deeper",
+    "savePath": "resources/docs/4.1/social-auth.html"
+  },
+  {
+    "path": "content/4.1/07-Database/01-Getting-Started.adoc",
+    "title": "Getting Started",
     "permalink": "database",
     "category": "database",
     "savePath": "resources/docs/4.1/database.html"
   },
   {
-    "path": "content/4.1/06-database/02-query-builder.adoc",
+    "path": "content/4.1/07-Database/02-Query-Builder.adoc",
     "permalink": "query-builder",
     "title": "Query builder",
     "category": "database",
     "savePath": "resources/docs/4.1/query-builder.html"
   },
   {
-    "path": "content/4.1/06-database/03-migrations.adoc",
+    "path": "content/4.1/07-Database/03-Migrations.adoc",
     "permalink": "migrations",
     "title": "Migrations",
     "category": "database",
     "savePath": "resources/docs/4.1/migrations.html"
   },
   {
-    "path": "content/4.1/06-database/04-seeds.adoc",
+    "path": "content/4.1/07-Database/04-Seeding.adoc",
     "title": "Seeds & Factories",
     "permalink": "seeds-and-factories",
     "category": "database",
     "savePath": "resources/docs/4.1/seeds-and-factories.html"
   },
   {
-    "path": "content/4.1/06-database/05-redis.adoc",
+    "path": "content/4.1/07-Database/05-Redis.adoc",
     "title": "Redis",
     "permalink": "redis",
     "category": "database",
     "savePath": "resources/docs/4.1/redis.html"
   },
   {
-    "path": "content/4.1/07-lucid/01-model.adoc",
-    "title": "Lucid Models",
+    "path": "content/4.1/08-Lucid-ORM/01-Getting-Started.adoc",
+    "title": "Getting Started",
     "permalink": "lucid",
-    "category": "lucid",
+    "category": "lucid-orm",
     "savePath": "resources/docs/4.1/lucid.html"
   },
   {
-    "path": "content/4.1/07-lucid/02-lucid-hooks.adoc",
+    "path": "content/4.1/08-Lucid-ORM/02-Hooks.adoc",
     "title": "Hooks",
     "permalink": "database-hooks",
-    "category": "lucid",
+    "category": "lucid-orm",
     "savePath": "resources/docs/4.1/database-hooks.html"
   },
   {
-    "path": "content/4.1/07-lucid/03-getters-and-setters.adoc",
-    "permalink": "database-getters-setters",
-    "title": "Getters & Setters",
-    "category": "lucid",
-    "savePath": "resources/docs/4.1/database-getters-setters.html"
-  },
-  {
-    "path": "content/4.1/07-lucid/04-relationships.adoc",
-    "title": "Relationships",
-    "permalink": "relationships",
-    "category": "lucid",
-    "savePath": "resources/docs/4.1/relationships.html"
-  },
-  {
-    "path": "content/4.1/07-lucid/05-serializers.adoc",
-    "title": "Serializers",
-    "permalink": "serializers",
-    "category": "lucid",
-    "savePath": "resources/docs/4.1/serializers.html"
-  },
-  {
-    "path": "content/4.1/07-lucid/06-traits.adoc",
+    "path": "content/4.1/08-Lucid-ORM/03-Traits.adoc",
     "title": "Traits",
     "permalink": "traits",
-    "category": "lucid",
+    "category": "lucid-orm",
     "savePath": "resources/docs/4.1/traits.html"
   },
   {
-    "path": "content/4.1/08-websockets/01-introduction.adoc",
-    "title": "Introduction",
+    "path": "content/4.1/08-Lucid-ORM/04-Mutators.adoc",
+    "permalink": "database-getters-setters",
+    "title": "Mutators",
+    "category": "lucid-orm",
+    "savePath": "resources/docs/4.1/database-getters-setters.html"
+  },
+  {
+    "path": "content/4.1/08-Lucid-ORM/05-Relationships.adoc",
+    "title": "Relationships",
+    "permalink": "relationships",
+    "category": "lucid-orm",
+    "savePath": "resources/docs/4.1/relationships.html"
+  },
+  {
+    "path": "content/4.1/08-Lucid-ORM/06-Serialization.adoc",
+    "title": "Serialization",
+    "permalink": "serializers",
+    "category": "lucid-orm",
+    "savePath": "resources/docs/4.1/serializers.html"
+  },
+  {
+    "path": "content/4.1/09-WebSockets/01-Getting-Started.adoc",
+    "title": "Getting Started",
     "permalink": "websocket",
     "category": "websockets",
     "savePath": "resources/docs/4.1/websocket.html"
   },
   {
-    "path": "content/4.1/08-websockets/02-philosophy.adoc",
+    "path": "content/4.1/09-WebSockets/02-Philosophy.adoc",
     "title": "Philosophy",
     "permalink": "websocket-philosophy",
     "category": "websockets",
     "savePath": "resources/docs/4.1/websocket-philosophy.html"
   },
   {
-    "path": "content/4.1/08-websockets/03-server.adoc",
-    "title": "Websocket server",
+    "path": "content/4.1/09-WebSockets/03-Server-API.adoc",
+    "title": "Server API",
     "permalink": "websocket-server",
     "category": "websockets",
     "savePath": "resources/docs/4.1/websocket-server.html"
   },
   {
-    "path": "content/4.1/08-websockets/04-client.adoc",
-    "title": "Websocket client",
+    "path": "content/4.1/09-WebSockets/04-Client-API.adoc",
+    "title": "Client API",
     "permalink": "websocket-client",
     "category": "websockets",
     "savePath": "resources/docs/4.1/websocket-client.html"
   },
   {
-    "path": "content/4.1/09-cookbooks/01-validator.adoc",
-    "title": "Validator",
-    "permalink": "validator",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/validator.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/02-encryption-and-hashing.adoc",
-    "title": "Encryption and Hashing",
-    "permalink": "encryption-and-hashing",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/encryption-and-hashing.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/03-ace-commands.adoc",
-    "title": "Ace commands",
-    "permalink": "ace",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/ace.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/04-mail.adoc",
-    "title": "Mail",
-    "permalink": "mail",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/mail.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/05-events.adoc",
-    "title": "Events",
-    "permalink": "events",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/events.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/06-file-system.adoc",
-    "title": "File System",
-    "permalink": "file-system",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/file-system.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/07-logger.adoc",
-    "title": "Logger",
-    "permalink": "logger",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/logger.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/08-internationalization.adoc",
-    "title": "Internationalization",
-    "permalink": "internationalization",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/internationalization.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/09-helpers.adoc",
-    "title": "Helpers",
-    "permalink": "helpers",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/helpers.html"
-  },
-  {
-    "path": "content/4.1/09-cookbooks/10-extending-adonisjs.adoc",
-    "permalink": "extending-adonisjs",
-    "title": "Extending AdonisJs",
-    "category": "cookbooks",
-    "savePath": "resources/docs/4.1/extending-adonisjs.html"
-  },
-  {
-    "path": "content/4.1/10-testing/01-introduction.adoc",
+    "path": "content/4.1/10-testing/01-Getting-Started.adoc",
     "permalink": "testing",
-    "title": "Introduction",
+    "title": "Getting Started",
     "category": "testing",
     "savePath": "resources/docs/4.1/testing.html"
   },
   {
-    "path": "content/4.1/10-testing/02-api-tests.adoc",
+    "path": "content/4.1/10-testing/02-HTTP-Tests.adoc",
     "permalink": "api-tests",
-    "title": "REST API tests",
+    "title": "HTTP Tests",
     "category": "testing",
     "savePath": "resources/docs/4.1/api-tests.html"
   },
   {
     "path": "content/4.1/10-testing/03-browser-tests.adoc",
     "permalink": "browser-tests",
-    "title": "Browser tests",
+    "title": "Browser Tests",
     "category": "testing",
     "savePath": "resources/docs/4.1/browser-tests.html"
   },
   {
-    "path": "content/4.1/10-testing/04-testing-fakes.adoc",
+    "path": "content/4.1/10-testing/05-Fakes.adoc",
     "permalink": "testing-fakes",
-    "title": "Testing fakes and Helpers",
+    "title": "Fakes",
     "category": "testing",
     "savePath": "resources/docs/4.1/testing-fakes.html"
-  },
-  {
-    "path": "content/4.1/11-web-security/01-introduction.adoc",
-    "permalink": "security-introduction",
-    "title": "Introduction",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/security-introduction.html"
-  },
-  {
-    "path": "content/4.1/11-web-security/02-csrf.adoc",
-    "permalink": "csrf",
-    "title": "CSRF protection",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/csrf.html"
-  },
-  {
-    "path": "content/4.1/11-web-security/03-cors.adoc",
-    "permalink": "cors",
-    "title": "CORS",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/cors.html"
-  },
-  {
-    "path": "content/4.1/11-web-security/04-shield-middleware.adoc",
-    "permalink": "shield",
-    "title": "Shield middleware",
-    "category": "web-security",
-    "savePath": "resources/docs/4.1/shield.html"
   },
   {
     "path": "content/4.1/recipes/01-nginx-proxy.adoc",
@@ -411,5 +411,12 @@
     "title": "Using Https",
     "category": "recipes",
     "savePath": "resources/docs/4.1/using-https.html"
+  },
+  {
+    "path": "content/4.1/recipes/06-number-guessing-game.adoc",
+    "permalink": "number-guessing-game",
+    "title": "Number guessing game",
+    "category": "recipes",
+    "savePath": "resources/docs/4.1/number-guessing-game.html"
   }
 ]

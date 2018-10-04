@@ -94,7 +94,7 @@ ws.connect()</code></pre>
 </div>
 <div class="sect3">
 <h4 id="_options"><a class="anchor" href="#_options"></a><a class="link" href="#_options">options</a></h4>
-<table class="tableblock frame-all grid-all spread resource-table">
+<table class="tableblock frame-all grid-all stretch resource-table">
 <colgroup>
 <col style="width: 30%;">
 <col style="width: 10%;">
@@ -185,7 +185,7 @@ chat.on('close', () =&gt; {
 <p>Following is the list of methods to be used for sending/receiving messages.</p>
 </div>
 <div class="sect3">
-<h4 id="_emit_event_data"><a class="anchor" href="#_emit_event_data"></a><a class="link" href="#_emit_event_data">emit(event, data)</a></h4>
+<h4 id="_emitevent_data"><a class="anchor" href="#_emitevent_data"></a><a class="link" href="#_emitevent_data">emit(event, data)</a></h4>
 <div class="paragraph">
 <p>Send event to the server</p>
 </div>
@@ -199,7 +199,7 @@ chat.on('close', () =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_on_event_callback"><a class="anchor" href="#_on_event_callback"></a><a class="link" href="#_on_event_callback">on(event, callback)</a></h4>
+<h4 id="_onevent_callback"><a class="anchor" href="#_onevent_callback"></a><a class="link" href="#_onevent_callback">on(event, callback)</a></h4>
 <div class="paragraph">
 <p>Bind event listener</p>
 </div>
@@ -211,7 +211,7 @@ chat.on('new:user', () =&gt; {})</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_off_event_callback"><a class="anchor" href="#_off_event_callback"></a><a class="link" href="#_off_event_callback">off(event, callback)</a></h4>
+<h4 id="_offevent_callback"><a class="anchor" href="#_offevent_callback"></a><a class="link" href="#_offevent_callback">off(event, callback)</a></h4>
 <div class="paragraph">
 <p>Remove event listener</p>
 </div>
@@ -312,7 +312,7 @@ chat.close()</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getsubscription_topic"><a class="anchor" href="#_getsubscription_topic"></a><a class="link" href="#_getsubscription_topic">getSubscription(topic)</a></h4>
+<h4 id="_getsubscriptiontopic"><a class="anchor" href="#_getsubscriptiontopic"></a><a class="link" href="#_getsubscriptiontopic">getSubscription(topic)</a></h4>
 <div class="paragraph">
 <p>Returns instance of a subscription for a given topic. If there is no subscription <code>null</code> will be returned.</p>
 </div>
@@ -326,7 +326,7 @@ ws.getSubscription('chat').on('message', () =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_subscribe_topic"><a class="anchor" href="#_subscribe_topic"></a><a class="link" href="#_subscribe_topic">subscribe(topic)</a></h4>
+<h4 id="_subscribetopic"><a class="anchor" href="#_subscribetopic"></a><a class="link" href="#_subscribetopic">subscribe(topic)</a></h4>
 <div class="paragraph">
 <p>Subscribe to a topic. Subscribing to the same topic twice, will raise an exception.</p>
 </div>
@@ -357,7 +357,7 @@ If you are using sessions, then user will be authenticated automatically, if the
 </table>
 </div>
 <div class="sect3">
-<h4 id="_withbasicauth_username_password"><a class="anchor" href="#_withbasicauth_username_password"></a><a class="link" href="#_withbasicauth_username_password">withBasicAuth(username, password)</a></h4>
+<h4 id="_withbasicauthusername_password"><a class="anchor" href="#_withbasicauthusername_password"></a><a class="link" href="#_withbasicauthusername_password">withBasicAuth(username, password)</a></h4>
 <div class="paragraph">
 <p>Authenticate user using basic auth</p>
 </div>
@@ -372,7 +372,7 @@ ws
 </div>
 </div>
 <div class="sect3">
-<h4 id="_withapitoken_token"><a class="anchor" href="#_withapitoken_token"></a><a class="link" href="#_withapitoken_token">withApiToken(token)</a></h4>
+<h4 id="_withapitokentoken"><a class="anchor" href="#_withapitokentoken"></a><a class="link" href="#_withapitokentoken">withApiToken(token)</a></h4>
 <div class="paragraph">
 <p>Authenticate user using api token</p>
 </div>
@@ -387,7 +387,7 @@ ws
 </div>
 </div>
 <div class="sect3">
-<h4 id="_withjwttoken_token"><a class="anchor" href="#_withjwttoken_token"></a><a class="link" href="#_withjwttoken_token">withJwtToken(token)</a></h4>
+<h4 id="_withjwttokentoken"><a class="anchor" href="#_withjwttokentoken"></a><a class="link" href="#_withjwttokentoken">withJwtToken(token)</a></h4>
 <div class="paragraph">
 <p>Authenticate user using JWT token</p>
 </div>

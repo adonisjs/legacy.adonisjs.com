@@ -18,7 +18,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you find any security bug, make sure to share it via <a href="mailto:virk@adonisjs.com">email</a>. Please do not create a GitHub issue, since it may impact the applications running in production. We disclose the issue after pushing the patch for the bug.
+If you find any security bug, make sure to share it via <a href="mailto:virk@adonisjs.com">email</a>. Please do not create a GitHub issue, since it may impact the applications running in production. We disclose the problem after pushing the patch for the bug.
 </td>
 </tr>
 </table>
@@ -109,7 +109,7 @@ If you find any security bug, make sure to share it via <a href="mailto:virk@ado
 <p>Not only files are uploaded to acquire the server access; often you find people trying to upload huge files so that your server stays busy in uploading files and start throwing <strong>TIMEOUT</strong> errors for other requests.</p>
 </div>
 <div class="paragraph">
-<p>To overcome this situation, AdonisJs let you define the <strong>maximum upload size</strong> to be processed by the server which means any file greater than the specified size are denied without processing and keeps your server in a healthy state.</p>
+<p>To overcome this situation, AdonisJs let you define the <strong>maximum upload size</strong> to be processed by the server which means any file larger than the specified size are denied without processing and keeps your server in a healthy state.</p>
 </div>
 <div class="ulist ul-spaced">
 <ul class="ul-spaced">
@@ -130,7 +130,7 @@ If you find any security bug, make sure to share it via <a href="mailto:virk@ado
 <p>Always rename files before uploading.</p>
 </li>
 <li>
-<p>Never share the actual location of the file with the end users. Instead, try to save the file reference inside the database with a <strong>unique id</strong> and setup a route to serve the file using the <code>id</code>.</p>
+<p>Never share the actual location of the file with the end users. Instead, try to save the file reference inside the database with a <strong>unique id</strong> and set up a route to serve the file using the <code>id</code>.</p>
 <div class="listingblock">
 <div class="title">Example</div>
 <div class="content">

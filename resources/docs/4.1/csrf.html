@@ -14,7 +14,7 @@
 <p><a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery ( CSRF )</a> allows an attacker to perform actions on behalf of another user without their knowledge or permission.</p>
 </div>
 <div class="paragraph">
-<p>AdonisJs protects your application from CSRF attacks by denying unidentified requests. HTTP requests with <strong>POST, PUT and DELETE</strong> methods are checked to make sure that these requests are invoked by right people from right place.</p>
+<p>AdonisJs protects your application from CSRF attacks by denying unidentified requests. HTTP requests with <strong>POST, PUT and DELETE</strong> methods are checked to make sure that right people from right place invoke these requests.</p>
 </div>
 </div>
 </div>
@@ -40,7 +40,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>And, finally register the global middleware inside <code>start/kernel.js</code> file.</p>
+<p>And finally, register the global middleware inside <code>start/kernel.js</code> file.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -49,7 +49,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Shield middleware relies on <a href="sessions">sessions</a>, so make sure they are setup correctly.
+Shield middleware relies on <a href="sessions">sessions</a>, so make sure they are set up correctly.
 </td>
 </tr>
 </table>
@@ -79,7 +79,7 @@ Shield middleware relies on <a href="sessions">sessions</a>, so make sure they a
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">

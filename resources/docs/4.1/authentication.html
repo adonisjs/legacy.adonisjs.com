@@ -14,6 +14,7 @@
 <li><a href="#_personal_api_tokens">Personal API tokens</a></li>
 <li><a href="#_switching_authenticators">Switching authenticators</a></li>
 <li><a href="#_auth_middleware">Auth middleware</a></li>
+<li><a href="#_guest_middleware">Guest middleware</a></li>
 <li><a href="#_helpers">Helpers</a></li>
 <li><a href="#_revoking_tokens">Revoking tokens</a></li>
 <li><a href="#_tokens_encryption">Tokens encryption</a></li>
@@ -76,7 +77,7 @@
 <p>Authentication is divided into two broad categories of <strong>Stateful authentication</strong> and <strong>Stateless authentication</strong>.</p>
 </li>
 <li>
-<p>Session based authentication is considered <strong>Stateful Authentication</strong> since once logged in the user can navigate to different areas of the application without resending the credentials.</p>
+<p>Session-based authentication is considered <strong>Stateful Authentication</strong> since once logged in the user can navigate to different areas of the application without resending the credentials.</p>
 </li>
 <li>
 <p><strong>Stateless Authentication</strong> requires the end-user to send the credentials on each HTTP request which is very common with REST API&#8217;s.</p>
@@ -127,7 +128,8 @@
 ]
 
 const namedMiddleware = {
-  auth: 'Adonis/Middleware/Auth'
+  auth: 'Adonis/Middleware/Auth',
+  guest: 'Adonis/Middleware/AllowGuestOnly'
 }</code></pre>
 </div>
 </div>
@@ -154,7 +156,7 @@ const namedMiddleware = {
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 18.1818%;">
 <col style="width: 36.3636%;">
@@ -181,7 +183,7 @@ const namedMiddleware = {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Database field name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database field to be used as unique identifier for a given user.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database field to be used as a unique identifier for a given user.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">password</p></td>
@@ -191,7 +193,7 @@ const namedMiddleware = {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">model</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Model Namespace <strong>(Lucid Only)</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Applicable only when using Lucid serializer. Given model is used for querying the database.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Applicable only when using Lucid serializer. Given the model is used for querying the database.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">table</p></td>
@@ -214,7 +216,9 @@ const namedMiddleware = {
   .get('users/:id', 'UserController.show')
   .middleware('auth')
 
-Route.post('login', 'UserController.login')</code></pre>
+Route
+  .post('login', 'UserController.login')
+  .middleware('guest')</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -281,7 +285,7 @@ Route.post('login', 'UserController.login')</code></pre>
 <p>The <strong>session authenticator</strong> exposes following methods to login or authenticate a user.</p>
 </div>
 <div class="sect3">
-<h4 id="_attempt_uid_password"><a class="anchor" href="#_attempt_uid_password"></a><a class="link" href="#_attempt_uid_password">attempt(uid, password)</a></h4>
+<h4 id="_attemptuid_password"><a class="anchor" href="#_attemptuid_password"></a><a class="link" href="#_attemptuid_password">attempt(uid, password)</a></h4>
 <div class="paragraph">
 <p>Attempt to log in a user using their <code>uid</code> and <code>password</code>. It throws an exception if unable to find the user or if password mismatch.</p>
 </div>
@@ -292,7 +296,7 @@ Route.post('login', 'UserController.login')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_login_user_2"><a class="anchor" href="#_login_user_2"></a><a class="link" href="#_login_user_2">login(user)</a></h4>
+<h4 id="_loginuser"><a class="anchor" href="#_loginuser"></a><a class="link" href="#_loginuser">login(user)</a></h4>
 <div class="paragraph">
 <p>Login a user using the <code>user</code> model instance. This method does not verify anything and simply mark the user as logged in.</p>
 </div>
@@ -305,7 +309,7 @@ await auth.login(user)</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_loginviaid_id"><a class="anchor" href="#_loginviaid_id"></a><a class="link" href="#_loginviaid_id">loginViaId(id)</a></h4>
+<h4 id="_loginviaidid"><a class="anchor" href="#_loginviaidid"></a><a class="link" href="#_loginviaidid">loginViaId(id)</a></h4>
 <div class="paragraph">
 <p>Login a user using their id. This method queries the database to make sure the user exists.</p>
 </div>
@@ -470,7 +474,7 @@ Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticat
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Additional Options</caption>
 <colgroup>
 <col style="width: 25%;">
@@ -526,7 +530,7 @@ Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticat
 </tbody>
 </table>
 <div class="sect3">
-<h4 id="_attempt_uid_password_jwtpayload"><a class="anchor" href="#_attempt_uid_password_jwtpayload"></a><a class="link" href="#_attempt_uid_password_jwtpayload">attempt(uid, password, [jwtPayload])</a></h4>
+<h4 id="_attemptuid_password_jwtpayload"><a class="anchor" href="#_attemptuid_password_jwtpayload"></a><a class="link" href="#_attemptuid_password_jwtpayload">attempt(uid, password, [jwtPayload])</a></h4>
 <div class="paragraph">
 <p>Validate the user credentials and generate a JWT token in exchange.</p>
 </div>
@@ -547,7 +551,7 @@ Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticat
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generate_user_jwtpayload"><a class="anchor" href="#_generate_user_jwtpayload"></a><a class="link" href="#_generate_user_jwtpayload">generate(user, [jwtPayload])</a></h4>
+<h4 id="_generateuser_jwtpayload"><a class="anchor" href="#_generateuser_jwtpayload"></a><a class="link" href="#_generateuser_jwtpayload">generate(user, [jwtPayload])</a></h4>
 <div class="paragraph">
 <p>Generate JWT token for a given user. Optionally you can pass a custom object to be encoded within the token. Passing <code>jwtPayload=true</code> encodes the user object within the token.</p>
 </div>
@@ -663,7 +667,7 @@ Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticat
 </table>
 </div>
 <div class="sect3">
-<h4 id="_attempt_uid_password_2"><a class="anchor" href="#_attempt_uid_password_2"></a><a class="link" href="#_attempt_uid_password_2">attempt(uid, password)</a></h4>
+<h4 id="_attemptuid_password_2"><a class="anchor" href="#_attemptuid_password_2"></a><a class="link" href="#_attemptuid_password_2">attempt(uid, password)</a></h4>
 <div class="paragraph">
 <p>Generate a new token by validating the user credentials</p>
 </div>
@@ -683,7 +687,7 @@ Set the <code>Authorization = Bearer &lt;token&gt;</code>  header to authenticat
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generate_user"><a class="anchor" href="#_generate_user"></a><a class="link" href="#_generate_user">generate(user)</a></h4>
+<h4 id="_generateuser"><a class="anchor" href="#_generateuser"></a><a class="link" href="#_generateuser">generate(user)</a></h4>
 <div class="paragraph">
 <p>Generate token for a given user</p>
 </div>
@@ -785,6 +789,32 @@ const auth
 </div>
 </div>
 <div class="sect1">
+<h2 id="_guest_middleware"><a class="anchor" href="#_guest_middleware"></a><a class="link" href="#_guest_middleware">Guest middleware</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>guest</code> middleware verify that you are not authenticated. The middleware is registered as a name middleware inside <code>start/kernel.js</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">const namedMiddleware = {
+  guest: 'Adonis/Middleware/AllowGuestOnly'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Usage</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-javascript" data-lang="javascript">// We don't want our logged-in user to access this view
+Route
+  .get('login', 'AuthController.login')
+  .middleware(['guest'])</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_helpers"><a class="anchor" href="#_helpers"></a><a class="link" href="#_helpers">Helpers</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -822,7 +852,7 @@ const auth
 <h2 id="_revoking_tokens"><a class="anchor" href="#_revoking_tokens"></a><a class="link" href="#_revoking_tokens">Revoking tokens</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>jwt</code> and <code>api</code> schemes exposes methods to revoke tokens using the <code>auth</code> interface.</p>
+<p>The <code>jwt</code> and <code>api</code> schemes expose methods to revoke tokens using the <code>auth</code> interface.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -837,7 +867,7 @@ For jwt scheme only refresh tokens are revoked, since actual tokens are never sa
 </table>
 </div>
 <div class="sect3">
-<h4 id="_revoketokens_tokens_delete_false"><a class="anchor" href="#_revoketokens_tokens_delete_false"></a><a class="link" href="#_revoketokens_tokens_delete_false">revokeTokens(tokens, delete = false)</a></h4>
+<h4 id="_revoketokenstokens_delete_false"><a class="anchor" href="#_revoketokenstokens_delete_false"></a><a class="link" href="#_revoketokenstokens_delete_false">revokeTokens(tokens, delete = false)</a></h4>
 <div class="paragraph">
 <p>The following method will revoke the token by setting the flag inside the <code>tokens</code> table. However, you can pass <code>true</code> for the 2nd argument and row will be deleted from the database.</p>
 </div>
@@ -846,7 +876,7 @@ For jwt scheme only refresh tokens are revoked, since actual tokens are never sa
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const refreshToken = '' // get it from user
 
 await auth
-  .scheme('jwt')
+  .authenticator('jwt')
   .revokeTokens([refreshToken])</code></pre>
 </div>
 </div>
@@ -858,7 +888,7 @@ await auth
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const refreshToken = '' // get it from user
 
 await auth
-  .scheme('jwt')
+  .authenticator('jwt')
   .revokeTokens([refreshToken], true)</code></pre>
 </div>
 </div>
@@ -868,7 +898,7 @@ await auth
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">await auth
-  .scheme('jwt')
+  .authenticator('jwt')
   .revokeTokens()</code></pre>
 </div>
 </div>
@@ -881,13 +911,13 @@ await auth
 const apiToken = auth.getAuthHeader()
 
 await auth
-  .scheme('api')
+  .authenticator('api')
   .revokeTokens([apiToken])</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_revoketokensforuser_user_tokens_delete_false"><a class="anchor" href="#_revoketokensforuser_user_tokens_delete_false"></a><a class="link" href="#_revoketokensforuser_user_tokens_delete_false">revokeTokensForUser(user, tokens, delete = false)</a></h4>
+<h4 id="_revoketokensforuseruser_tokens_delete_false"><a class="anchor" href="#_revoketokensforuseruser_tokens_delete_false"></a><a class="link" href="#_revoketokensforuseruser_tokens_delete_false">revokeTokensForUser(user, tokens, delete = false)</a></h4>
 <div class="paragraph">
 <p>This method works same as the <code>revokeTokens</code> method, but instead you can specify the user yourself.</p>
 </div>
@@ -896,7 +926,7 @@ await auth
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const user = await User.find(1)
 
 await auth
-  .scheme('jwt')
+  .authenticator('jwt')
   .revokeTokensForUser(user)</code></pre>
 </div>
 </div>

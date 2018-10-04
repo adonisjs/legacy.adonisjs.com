@@ -6,7 +6,7 @@
 <li><a href="#_setup">Setup</a></li>
 <li><a href="#_basic_example">Basic example</a></li>
 <li><a href="#_commands">Commands</a></li>
-<li><a href="#_pub_sub">Pub/Sub</a></li>
+<li><a href="#_pubsub">Pub/Sub</a></li>
 <li><a href="#_multiple_connections">Multiple connections</a></li>
 </ul>
 </div>
@@ -57,7 +57,7 @@ Configuration, events API and all the methods from IoRedis are 100% supported. M
 <h2 id="_basic_example"><a class="anchor" href="#_basic_example"></a><a class="link" href="#_basic_example">Basic example</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let’s start with a basic example of caching users inside redis. The following example may not be the best way to cache data, but does give you an idea on how to make use of redis.</p>
+<p>Let’s start with a basic example of caching users inside redis. The following example may not be the best way to cache data but does give you an idea on how to make use of redis.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -108,7 +108,7 @@ const user = await Redis.hmget('users', user.username)</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_pub_sub"><a class="anchor" href="#_pub_sub"></a><a class="link" href="#_pub_sub">Pub/Sub</a></h2>
+<h2 id="_pubsub"><a class="anchor" href="#_pubsub"></a><a class="link" href="#_pubsub">Pub/Sub</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Redis has built-in support for Pub/Sub to share messages on same or across multiple servers. AdonisJs offers a clean API on top of redis pub/sub to subscribe to different events and act upon them.</p>
@@ -155,7 +155,7 @@ You can only have one subscriber for a given channel.
 </table>
 </div>
 <div class="sect3">
-<h4 id="_subscribe_channel_listener"><a class="anchor" href="#_subscribe_channel_listener"></a><a class="link" href="#_subscribe_channel_listener">subscribe(channel, listener)</a></h4>
+<h4 id="_subscribechannel_listener"><a class="anchor" href="#_subscribechannel_listener"></a><a class="link" href="#_subscribechannel_listener">subscribe(channel, listener)</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">Redis.subscribe('music', (track) {
@@ -185,7 +185,7 @@ Music.newTrack = (track) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_psubscribe_pattern_listener"><a class="anchor" href="#_psubscribe_pattern_listener"></a><a class="link" href="#_psubscribe_pattern_listener">psubscribe(pattern, listener)</a></h4>
+<h4 id="_psubscribepattern_listener"><a class="anchor" href="#_psubscribepattern_listener"></a><a class="link" href="#_psubscribepattern_listener">psubscribe(pattern, listener)</a></h4>
 <div class="paragraph">
 <p>Subscribe to a pattern</p>
 </div>
@@ -200,7 +200,7 @@ Redis.publish('hallo')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_publish_channel_message"><a class="anchor" href="#_publish_channel_message"></a><a class="link" href="#_publish_channel_message">publish(channel, message)</a></h4>
+<h4 id="_publishchannel_message"><a class="anchor" href="#_publishchannel_message"></a><a class="link" href="#_publishchannel_message">publish(channel, message)</a></h4>
 <div class="paragraph">
 <p>Publish message to a given channel</p>
 </div>
@@ -215,7 +215,7 @@ Redis.publish('hallo')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_unsubscribe_channel"><a class="anchor" href="#_unsubscribe_channel"></a><a class="link" href="#_unsubscribe_channel">unsubscribe(channel)</a></h4>
+<h4 id="_unsubscribechannel"><a class="anchor" href="#_unsubscribechannel"></a><a class="link" href="#_unsubscribechannel">unsubscribe(channel)</a></h4>
 <div class="paragraph">
 <p>Unsubscribe from a given channel</p>
 </div>
@@ -226,7 +226,7 @@ Redis.publish('hallo')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_punsubscribe_channel"><a class="anchor" href="#_punsubscribe_channel"></a><a class="link" href="#_punsubscribe_channel">punsubscribe(channel)</a></h4>
+<h4 id="_punsubscribechannel"><a class="anchor" href="#_punsubscribechannel"></a><a class="link" href="#_punsubscribechannel">punsubscribe(channel)</a></h4>
 <div class="paragraph">
 <p>Unsubscribe from a given pattern</p>
 </div>
@@ -263,7 +263,7 @@ Redis.publish('hallo')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_connection_name"><a class="anchor" href="#_connection_name"></a><a class="link" href="#_connection_name">connection(name)</a></h4>
+<h4 id="_connectionname"><a class="anchor" href="#_connectionname"></a><a class="link" href="#_connectionname">connection(name)</a></h4>
 <div class="paragraph">
 <p>Use a different connection to make redis queries.</p>
 </div>
@@ -280,7 +280,7 @@ await secondaryConnection.get('users')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_quit_name"><a class="anchor" href="#_quit_name"></a><a class="link" href="#_quit_name">quit(name)</a></h4>
+<h4 id="_quitname"><a class="anchor" href="#_quitname"></a><a class="link" href="#_quitname">quit(name)</a></h4>
 <div class="paragraph">
 <p>The redis provider creates a connections pool and reuses the existing connections. You can quit a connection by calling the quit method with a single or an array of connections.</p>
 </div>

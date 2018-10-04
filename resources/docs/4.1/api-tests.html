@@ -105,7 +105,7 @@ test('get list of posts', async ({ client }) =&gt; {
 <p>Below is the list of available methods you can call when making HTTP requests.</p>
 </div>
 <div class="sect3">
-<h4 id="_get_url"><a class="anchor" href="#_get_url"></a><a class="link" href="#_get_url">get(url)</a></h4>
+<h4 id="_geturl"><a class="anchor" href="#_geturl"></a><a class="link" href="#_geturl">get(url)</a></h4>
 <div class="paragraph">
 <p>Make an HTTP <code>GET</code> request to a given url.</p>
 </div>
@@ -119,7 +119,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_header_key_value"><a class="anchor" href="#_header_key_value"></a><a class="link" href="#_header_key_value">header(key, value)</a></h4>
+<h4 id="_headerkey_value"><a class="anchor" href="#_headerkey_value"></a><a class="link" href="#_headerkey_value">header(key, value)</a></h4>
 <div class="paragraph">
 <p>Set <code>key/value</code> pair as an header when making the HTTP request.</p>
 </div>
@@ -132,7 +132,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_send_body"><a class="anchor" href="#_send_body"></a><a class="link" href="#_send_body">send(body)</a></h4>
+<h4 id="_sendbody"><a class="anchor" href="#_sendbody"></a><a class="link" href="#_sendbody">send(body)</a></h4>
 <div class="paragraph">
 <p>Send request body when making the HTTP request.</p>
 </div>
@@ -148,7 +148,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_query_queryobject"><a class="anchor" href="#_query_queryobject"></a><a class="link" href="#_query_queryobject">query(queryObject)</a></h4>
+<h4 id="_queryqueryobject"><a class="anchor" href="#_queryqueryobject"></a><a class="link" href="#_queryqueryobject">query(queryObject)</a></h4>
 <div class="paragraph">
 <p>Set query string</p>
 </div>
@@ -161,7 +161,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_type_type"><a class="anchor" href="#_type_type"></a><a class="link" href="#_type_type">type(type)</a></h4>
+<h4 id="_typetype"><a class="anchor" href="#_typetype"></a><a class="link" href="#_typetype">type(type)</a></h4>
 <div class="paragraph">
 <p>Set request content type.</p>
 </div>
@@ -174,7 +174,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_accept_type"><a class="anchor" href="#_accept_type"></a><a class="link" href="#_accept_type">accept(type)</a></h4>
+<h4 id="_accepttype"><a class="anchor" href="#_accepttype"></a><a class="link" href="#_accepttype">accept(type)</a></h4>
 <div class="paragraph">
 <p>Set the data type you want to accept from the server.</p>
 </div>
@@ -187,7 +187,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_cookie_key_value"><a class="anchor" href="#_cookie_key_value"></a><a class="link" href="#_cookie_key_value">cookie(key, value)</a></h4>
+<h4 id="_cookiekey_value"><a class="anchor" href="#_cookiekey_value"></a><a class="link" href="#_cookiekey_value">cookie(key, value)</a></h4>
 <div class="paragraph">
 <p>Set request cookies. Since all cookies are encrypted in AdonisJs, this method makes sure to encrypt the values properly, so that AdonisJs server can parse them.</p>
 </div>
@@ -200,7 +200,7 @@ test('get list of posts', async ({ client }) =&gt; {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_plaincookie_key_value"><a class="anchor" href="#_plaincookie_key_value"></a><a class="link" href="#_plaincookie_key_value">plainCookie(key, value)</a></h4>
+<h4 id="_plaincookiekey_value"><a class="anchor" href="#_plaincookiekey_value"></a><a class="link" href="#_plaincookiekey_value">plainCookie(key, value)</a></h4>
 <div class="paragraph">
 <p>Set a cookie which doesn&#8217;t get encrypted</p>
 </div>
@@ -425,6 +425,28 @@ test('get list of posts', async ({ client }) =&gt; {
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertPlainCookie('key', 'value')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertcookieexists"><a class="anchor" href="#_assertcookieexists"></a><a class="link" href="#_assertcookieexists">assertCookieExists</a></h4>
+<div class="paragraph">
+<p>Assert that the server set a cookie with the given name</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertCookieExists('key')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_assertplaincookieexists"><a class="anchor" href="#_assertplaincookieexists"></a><a class="link" href="#_assertplaincookieexists">assertPlainCookieExists</a></h4>
+<div class="paragraph">
+<p>Assert that the plain cookie given exists</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">response.assertPlainCookieExists('key')</code></pre>
 </div>
 </div>
 </div>

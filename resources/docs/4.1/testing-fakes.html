@@ -101,8 +101,8 @@ test('register user', async ({ assert }) =&gt; {
   // write your test
 
   const recentEmail = Mail.pullRecent()
-  assert.equal(recentEmail.to.address, 'joe@example.com')
-  assert.equal(recentEmail.to.name, 'Joe')
+  assert.equal(recentEmail.message.to[0].address, 'joe@example.com')
+  assert.equal(recentEmail.message.to[0].name, 'Joe')
 
   Mail.restore()
 })</code></pre>

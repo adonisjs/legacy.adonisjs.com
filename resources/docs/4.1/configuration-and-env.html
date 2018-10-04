@@ -3,48 +3,21 @@
 <div id="toc" class="toc">
 <div id="toctitle" class="title">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_configuration_debt">Configuration debt</a></li>
-<li><a href="#_getting_started">Getting started</a></li>
-<li><a href="#_environment_variables">Environment variables</a></li>
+<li><a href="#_config_provider">Config Provider</a></li>
+<li><a href="#_env_provider">Env Provider</a></li>
 </ul>
 </div>
-<div class="paragraph">
-<p>In this guide, we learn how AdonisJs handles the application configuration and environment variables. By the end of this guide, you will know how to keep sensitive information secure and avoid configuration debt.</p>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_configuration_debt"><a class="anchor" href="#_configuration_debt"></a><a class="link" href="#_configuration_debt">Configuration debt</a></h2>
+<h2 id="_config_provider"><a class="anchor" href="#_config_provider"></a><a class="link" href="#_config_provider">Config Provider</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before getting started, let&#8217;s understand the concept of configuration debt. Many Node.js applications face the issue of scattered configuration inside multiple files. For example:</p>
-</div>
-<div class="olist ol-shrinked">
-<ol class="ol-shrinked">
-<li>
-<p>Defining middleware config with the routes file.</p>
-</li>
-<li>
-<p>Defining email setup details with in the service that sends the email.</p>
-</li>
-</ol>
+<p>The first step towards having a maintainable codebase is to find a dedicated place for storing application configuration.
+AdonisJs makes use of the <code>config</code> directory where all files are loaded at boot time.</p>
 </div>
 <div class="paragraph">
-<p>For a new user working on the code base for the first time, it becomes a nightmare to find all the configuration, and they keep juggling within multiple files/directories.</p>
-</div>
-<div class="paragraph">
-<p>To avoid this behavior a dedicated directory <code>config</code> is used to store configuration at one place.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a><a class="link" href="#_getting_started">Getting started</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In AdonisJs, we store all the configuration inside a separate directory called <code>config</code>. All of the configuration files are loaded at boot time, and values can be accessed using the <strong>Config provider</strong>.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s say we want to read the <code>appSecret</code> from <code>config/app.js</code> file.</p>
+<p>You can access all values using the <strong>Config Provider</strong>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -53,50 +26,76 @@ const appSecret = Config.get('app.appSecret')</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The values are fetched by defining the <code>fileName.key</code>. Nested values can be fetched using dot-notation.</p>
+<p>The values are fetched using <code>Config.get()</code>. It takes as argument a string referencing the key you want, <code>fileName.key</code>. You can go deeper and fetch nested values using a dot-notation.</p>
 </div>
 <div class="listingblock">
-<div class="title">config/database.js</div>
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">{
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">// Example of a configuration - database.js
+{
   mysql: {
-    host: '127.0.0.1'
-  }
-}</code></pre>
+    host: '127.0.0.1',
+  },
+}
+
+// You retrieve it using...
+Config.get('database.mysql.host')</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now, access it as</p>
+<p>If you aren&#8217;t sure that the key is defined in your configuration you can supply a second argument that will be the default value.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Config.get('database.mysql.host')
-
-// or with default value
-Config.get('database.mysql.host', '127.0.0.1')</code></pre>
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Config.get('database.mysql.host', '127.0.0.1')</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Also you can update the in-memory config value for a key as shown below.</p>
+<p>If you want to change the in-memory configuration values, you should make use of <code>Config.set()</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">Config.set('database.mysql.host', 'db.example.com')</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This only change the value in-memory. It will not write the new value on your config file.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_environment_variables"><a class="anchor" href="#_environment_variables"></a><a class="link" href="#_environment_variables">Environment variables</a></h2>
+<h2 id="_env_provider"><a class="anchor" href="#_env_provider"></a><a class="link" href="#_env_provider">Env Provider</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Quite often you want to have a different configuration based upon the environment your code is running in. For example: Using <strong>sandbox secrets</strong> for a 3rd party service in development.</p>
+<p>When you are building an application, it happens quite often that you want to have a different configuration based upon the environment your code is running in.</p>
 </div>
 <div class="paragraph">
-<p>Also from the security point of view, you should never share your production credentials with all of the developers working on a codebase.</p>
+<p>To fulfill this requirement, AdonisJs make use of the library <a href="https://github.com/motdotla/dotenv" target="_blank" rel="noopener">dotenv</a>.
+Inside the root of every brand new AdonisJs project, you will find a <code>.env.example</code> file.
+If you used Adonis CLI to install your application, this file has been automatically copied to <code>.env</code>. Otherwise, you should copy it manually.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The <code>.env</code> file should never be committed to your source control or shared with other people.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Instead, these credentials are stored as environment variables on your production server and defined inside <code>.env</code> file when developing the app locally.</p>
+<p>This file has a simple <code>key=value</code> syntax.</p>
 </div>
 <div class="listingblock">
 <div class="title">env</div>
@@ -107,31 +106,21 @@ DB_USER=root</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now you can access those variable by using the <code>Env</code> provider.</p>
+<p>You can access all values using the <strong>Env Provider</strong>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Env = use('Env')
-Env.get('APP_SECRET')</code></pre>
+const appSecret = Env.get('APP_SECRET')</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<code>Env.get</code> always returns a string. If you want to get a boolean value you&#8217;ll need to check it as follows.<br>
-  <code>Env.get('&#8230;&#8203;') === 'true'</code>
-</td>
-</tr>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_raising_errors_if_required_environment_variable_does_not_exist"><a class="anchor" href="#_raising_errors_if_required_environment_variable_does_not_exist"></a><a class="link" href="#_raising_errors_if_required_environment_variable_does_not_exist">Raising errors if required environment variable does not exist</a></h4>
 <div class="paragraph">
-<p>When you have an environment variable that is required for running the application, you may use a <code>getOrFail</code> method which will throw an error, if the variable is not set.</p>
+<p>Like the <strong>Config Provider</strong>, you can provide a default value in the second argument.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Env.get('DB_USER', 'root')</code></pre>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -140,62 +129,77 @@ Env.get('APP_SECRET')</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you want your application to fail quickly at boot time, if environment variable is missing, then limit access to environment variables from inside the configuration files only and do not to use <code>Env</code> provider anywhere else in the app. This is a highly recommended approach.
+<code>Env.get()</code> always return a <code>string</code>. If you want it to act like boolean you will need to create a condition.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock">
 <div class="content">
+<pre class="highlight line-numbers"><code class="language-js" data-lang="js">Env.get('...') === 'true'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>[/NOTE]</p>
+</div>
+<div class="sect2">
+<h3 id="_raising_errors_if_required_environment_variable_does_not_exist"><a class="anchor" href="#_raising_errors_if_required_environment_variable_does_not_exist"></a><a class="link" href="#_raising_errors_if_required_environment_variable_does_not_exist">Raising errors if required environment variable does not exist</a></h3>
+<div class="paragraph">
+<p>When you have an environment variable that is required for running the application, you may use <code>Env.getOrFail()</code> which will throw an error, if the variable is not set.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you want your application to fail quickly at boot time when an environment variable is missing, limit access to environment variables from inside the configuration files only and do not to use Env provider anywhere else in the app.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>This is a highly recommended approach</strong>.
+[/TIP]</p>
+</div>
+<div class="listingblock">
+<div class="content">
 <pre class="highlight line-numbers"><code class="language-js" data-lang="js">const Env = use('Env')
+// Throw "Make sure to define APP_SECRET inside .env file."
 Env.getOrFail('APP_SECRET')</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_location_of_env_file"><a class="anchor" href="#_location_of_env_file"></a><a class="link" href="#_location_of_env_file">Location of .env file</a></h3>
 <div class="paragraph">
-<p>If <code>APP_SECRET</code> is not set, then an error will be thrown:</p>
-</div>
-<div class="listingblock">
-<div class="title">Error</div>
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">Make sure to define APP_SECRET inside .env file.</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_different_env_file"><a class="anchor" href="#_different_env_file"></a><a class="link" href="#_different_env_file">Different .env file</a></h4>
-<div class="paragraph">
-<p>At times you may want to load a different <code>.env</code> file stored on your server at a different location. Same can be done as follows.</p>
+<p>You may want to load a different <code>.env</code> file.
+This can be done by using the <code>ENV_PATH</code> environment variable.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">ENV_PATH=/user/.env node server.js</code></pre>
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">&gt; ENV_PATH=/user/.env adonis serve</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_disabling_env_file"><a class="anchor" href="#_disabling_env_file"></a><a class="link" href="#_disabling_env_file">Disabling .env file</a></h4>
+<div class="sect2">
+<h3 id="_disabling_the_env_file"><a class="anchor" href="#_disabling_the_env_file"></a><a class="link" href="#_disabling_the_env_file">Disabling the .env file</a></h3>
 <div class="paragraph">
-<p>If <code>.env</code> file is missing, AdonisJs throws an exception by default. However, you turn off the exception as follows.</p>
+<p>You may want to directly use the environment variable of your server instead of relaying to a file.
+This can be done by using the <code>ENV_SILENT</code> environment variable.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">ENV_SILENT=true node server.js</code></pre>
+<pre class="highlight line-numbers"><code class="language-bash" data-lang="bash">&gt; ENV_SILENT=true adonis serve</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_testing_variables"><a class="anchor" href="#_testing_variables"></a><a class="link" href="#_testing_variables">Testing variables</a></h4>
+<div class="sect2">
+<h3 id="_testing_environment"><a class="anchor" href="#_testing_environment"></a><a class="link" href="#_testing_environment">Testing Environment</a></h3>
 <div class="paragraph">
-<p>If your application is started with <code>NODE_ENV=testing</code>, AdonisJs attempts to load <code>.env.testing</code> file from the root of your application.</p>
-</div>
-<div class="paragraph">
-<p>This file overrides the values from <code>.env</code> file, so that you can have slightly different configuration when running tests.</p>
-</div>
-<div class="listingblock">
-<div class="title">env.testing</div>
-<div class="content">
-<pre class="highlight line-numbers"><code class="language-env" data-lang="env">DB_CONNECTION=sqlite</code></pre>
-</div>
+<p>If you are starting your application with the environment variable <code>NODE_ENV</code> with <code>testing</code>, AdonisJs will load the file <code>.env.testing</code> that will merge values set in <code>.env</code>.
+This could be useful if you want to use different credentials while testing your codebase.</p>
 </div>
 </div>
 </div>

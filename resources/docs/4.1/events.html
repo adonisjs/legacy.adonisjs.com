@@ -37,7 +37,7 @@ Event.on('new::user', 'User.registered')</code></pre>
 </div>
 </li>
 <li>
-<p>The <code>app/Listeners</code> directory is dedicated for storing Event listeners.</p>
+<p>The <code>app/Listeners</code> directory is storing Event listeners.</p>
 </li>
 <li>
 <p>When binding listeners to the events, you are not required to enter the entire namespace. For example, A listener stored as <code>app/Listeners/User.js</code> is referenced as <code>User.&lt;method&gt;</code>.</p>
@@ -122,9 +122,9 @@ Event.on('new::user', async (user) =&gt; {
 <p>Below is the list of methods that can be used to interact with the <strong>Event provider</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="_on_event_listener"><a class="anchor" href="#_on_event_listener"></a><a class="link" href="#_on_event_listener">on(event, listener)</a></h4>
+<h4 id="_onevent_listener"><a class="anchor" href="#_onevent_listener"></a><a class="link" href="#_onevent_listener">on(event, listener)</a></h4>
 <div class="paragraph">
-<p>Bind a single or multiple listeners for a given event. The <code>listener</code> can be a function or reference to the IoC container binding.</p>
+<p>Bind single or multiple listeners for a given event. The <code>listener</code> can be a function or reference to the IoC container binding.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -144,7 +144,7 @@ Event.on('new::user', ['Mailer.sendEmail', 'SalesForce.trackLead'])</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_once_event_listener"><a class="anchor" href="#_once_event_listener"></a><a class="link" href="#_once_event_listener">once(event, listener)</a></h4>
+<h4 id="_onceevent_listener"><a class="anchor" href="#_onceevent_listener"></a><a class="link" href="#_onceevent_listener">once(event, listener)</a></h4>
 <div class="paragraph">
 <p>Same as <a href="#_on_event_listener">on</a>, but instead called only for one time.</p>
 </div>
@@ -157,7 +157,7 @@ Event.on('new::user', ['Mailer.sendEmail', 'SalesForce.trackLead'])</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_onany_listener"><a class="anchor" href="#_onany_listener"></a><a class="link" href="#_onany_listener">onAny(listener)</a></h4>
+<h4 id="_onanylistener"><a class="anchor" href="#_onanylistener"></a><a class="link" href="#_onanylistener">onAny(listener)</a></h4>
 <div class="paragraph">
 <p>Bind listener for any event.</p>
 </div>
@@ -173,7 +173,7 @@ Event.onAny('EventsLogger.track')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_times_number"><a class="anchor" href="#_times_number"></a><a class="link" href="#_times_number">times(number)</a></h4>
+<h4 id="_timesnumber"><a class="anchor" href="#_timesnumber"></a><a class="link" href="#_timesnumber">times(number)</a></h4>
 <div class="paragraph">
 <p>The <code>times</code> is chained with <code>on</code> or <code>when</code> to limit the number of times the listener should be fired.</p>
 </div>
@@ -188,7 +188,7 @@ Event.onAny('EventsLogger.track')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_emit_event_data"><a class="anchor" href="#_emit_event_data"></a><a class="link" href="#_emit_event_data">emit(event, data)</a></h4>
+<h4 id="_emitevent_data"><a class="anchor" href="#_emitevent_data"></a><a class="link" href="#_emitevent_data">emit(event, data)</a></h4>
 <div class="paragraph">
 <p>Emit an event with optional data. Also, you can use <code>fire</code> method, which is an alias for <code>emit</code>.</p>
 </div>
@@ -199,7 +199,7 @@ Event.onAny('EventsLogger.track')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_removelistener_event_listener"><a class="anchor" href="#_removelistener_event_listener"></a><a class="link" href="#_removelistener_event_listener">removeListener(event, listener)</a></h4>
+<h4 id="_removelistenerevent_listener"><a class="anchor" href="#_removelistenerevent_listener"></a><a class="link" href="#_removelistenerevent_listener">removeListener(event, listener)</a></h4>
 <div class="paragraph">
 <p>Remove listener(s) for a given event.</p>
 </div>
@@ -228,7 +228,7 @@ Event.removeListener('new::user', 'User.registered')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_removealllisteners_event"><a class="anchor" href="#_removealllisteners_event"></a><a class="link" href="#_removealllisteners_event">removeAllListeners(event)</a></h4>
+<h4 id="_removealllistenersevent"><a class="anchor" href="#_removealllistenersevent"></a><a class="link" href="#_removealllistenersevent">removeAllListeners(event)</a></h4>
 <div class="paragraph">
 <p>Remove all listeners for a given event.</p>
 </div>
@@ -239,7 +239,7 @@ Event.removeListener('new::user', 'User.registered')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_listenerscount_event"><a class="anchor" href="#_listenerscount_event"></a><a class="link" href="#_listenerscount_event">listenersCount(event)</a></h4>
+<h4 id="_listenerscountevent"><a class="anchor" href="#_listenerscountevent"></a><a class="link" href="#_listenerscountevent">listenersCount(event)</a></h4>
 <div class="paragraph">
 <p>Returns the number of listeners for a given event.</p>
 </div>
@@ -250,7 +250,7 @@ Event.removeListener('new::user', 'User.registered')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getlisteners_event"><a class="anchor" href="#_getlisteners_event"></a><a class="link" href="#_getlisteners_event">getListeners(event)</a></h4>
+<h4 id="_getlistenersevent"><a class="anchor" href="#_getlistenersevent"></a><a class="link" href="#_getlistenersevent">getListeners(event)</a></h4>
 <div class="paragraph">
 <p>Returns an array of listeners for a given event.</p>
 </div>
@@ -261,7 +261,7 @@ Event.removeListener('new::user', 'User.registered')</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_haslisteners_event"><a class="anchor" href="#_haslisteners_event"></a><a class="link" href="#_haslisteners_event">hasListeners(event)</a></h4>
+<h4 id="_haslistenersevent"><a class="anchor" href="#_haslistenersevent"></a><a class="link" href="#_haslistenersevent">hasListeners(event)</a></h4>
 <div class="paragraph">
 <p>Find if there are any listeners for a given event.</p>
 </div>
