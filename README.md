@@ -9,26 +9,26 @@ This repo contains the source code of [adonisjs.com](http://adonisjs.com). Feel 
 Start by cloning this repo using the following command:
 
 ```bash
-git clone https://github.com/adonisjs/adonisjs.com.git
+> git clone https://github.com/adonisjs/adonisjs.com.git
 ```
 
 The docs ( markup files ) are referenced as submodules, so make sure to clone the submodules too:
 
 ```bash
-git submodule init 
-git submodule update
+> git submodule init
+> git submodule update
 ```
 
 Next, install the dependencies from npm:
 
 ```bash
-npm install
+> npm install
 ```
 
 After that copy the `.env.example` file as `.env` and generate the secret key:
 
 ```bash
-adonis key:generate
+> adonis key:generate
 ```
 
 ## Start server
@@ -36,17 +36,17 @@ adonis key:generate
 The server is started using the `adonis serve` command:
 
 ```bash
-adonis serve --dev
+> adonis serve --dev
 ```
 
 ## Compile docs
 
-The docs are compiled at runtime, which means there is no build process to run the website. 
+The docs are compiled at runtime, which means there is no build process to run the website.
 
 But, a menu file is generated to create the **sidebar** in the docs view. For that, you have to run the following command:
 
 ```bash
-adonis compile:docs -v 4.0
+> adonis compile:docs -v 4.0
 ```
 
 The `-v` flag takes the version for which the menu file should be generated.
@@ -54,29 +54,19 @@ The `-v` flag takes the version for which the menu file should be generated.
 You can also watch for changes, so that the menu file is re-generated every time you change something:
 
 ```bash
-adonis compile:docs -v 4.0 --watch
+> adonis compile:docs -v 4.0 --watch
 ```
 
-## Compile styles
+## Compile Styles & Scripts
 
 All of the styles are saved inside of the `resources/sass` folder. Make sure to not edit the css files inside of the `public` directory - work on the sass files only.
-
-```bash
-npm run compile:styles
-
-# with watcher
-npm run styles
-```
-
-## Compile scripts
-
 The scripts are compiled using webpack and saved inside the `resources/scripts` folder.
 
-```js
-npm run compile:scripts
+```bash
+> npm run build
 
 # with watcher
-npm run scripts
+> npm run build -- -w
 ```
 
 ## License
