@@ -49,7 +49,7 @@ But, a menu file is generated to create the **sidebar** in the docs view. For th
 > adonis compile:docs --forVersion 4.0
 ```
 
-The `-v` flag takes the version for which the menu file should be generated.
+The `--forVersion` flag takes the version for which the menu file should be generated.
 
 You can also watch for changes, so that the menu file is re-generated every time you change something:
 
