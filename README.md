@@ -46,7 +46,7 @@ The docs are compiled at runtime, which means there is no build process to run t
 But, a menu file is generated to create the **sidebar** in the docs view. For that, you have to run the following command:
 
 ```bash
-> adonis compile:docs -v 4.0
+> adonis compile:docs --forVersion 4.0
 ```
 
 The `-v` flag takes the version for which the menu file should be generated.
@@ -54,7 +54,7 @@ The `-v` flag takes the version for which the menu file should be generated.
 You can also watch for changes, so that the menu file is re-generated every time you change something:
 
 ```bash
-> adonis compile:docs -v 4.0 --watch
+> adonis compile:docs --forVersion 4.0 --watch
 ```
 
 ## Compile Styles & Scripts
