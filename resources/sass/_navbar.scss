@@ -120,14 +120,26 @@
   }
 }
 
-
-#notifications-handle {
+.header-icon {
   position: relative;
   width: 39px;
   display: block;
   height: 30px;
   margin-top: 30px;
+}
 
+.github-icon {
+  width: 30px;
+  margin-right: 10px;
+  opacity: 0.7;
+  transition: opacity .3s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+#notifications-handle {
   img {
     position: absolute;
     max-width: 17px;
