@@ -28,7 +28,7 @@
     <select id="docs-switch">
       <option value=""> Select A Topic </option>
       @each((items, group) in menu)
-        <option value=""> --- </option>
+        <option value=""> --- {{ humanize(group) }}</option>
         @each(item in items)
           <option value="{{ item.permalink }}" {{ item.permalink === doc.permalink ? 'selected' : '' }}>
             {{ item.title }}
