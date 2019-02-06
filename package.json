@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "compile:docs": "adonis compile:docs",
-    "watch:docs": "adonis compile:docs --watch",
+    "compile:docs": "node ace compile:docs",
+    "watch:docs": "node ace compile:docs --watch",
     "dev": "START_SERVER=true webpack --watch"
   },
   "keywords": [
