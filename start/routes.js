@@ -20,5 +20,6 @@ Route.get('docs/:version?/:permalink?', 'GuideController.render').as('guides')
 Route.get('recipes/:version?/:permalink?', 'GuideController.renderRecipes').as('recipes')
 Route.on('packages').render('packages')
 Route.on('screencasts').render('screencasts')
-Route.on('sponsors').render('sponsors')
+
+Route.get('sponsors', 'SponsorController.handle')
 Route.get('patrons/:format', 'PatronController.handle')
