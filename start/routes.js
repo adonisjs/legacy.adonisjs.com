@@ -22,4 +22,4 @@ Route.on('packages').render('packages')
 Route.on('screencasts').render('screencasts')
 
 Route.get('sponsors', 'SponsorController.handle')
-Route.get('patrons/:format', 'PatronController.handle')
+Route.get('patrons/:format(markdown|json)', 'PatronController.handle')
