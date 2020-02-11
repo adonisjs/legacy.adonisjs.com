@@ -6,6 +6,13 @@ This repo contains two sub-projects [frontend](frontend) and [docs](docs) and as
 - The `frontend` is the Gridsome website
 - The `docs` are the Markdown files compiled using [dimer](https://github.com/dimerapp/cli).
 
+## Quick Start
+Before we get into the philosophy of how everything works together, let's get you up and running. Assuming you have cloned the repo, run the following instructions.
+
+- `cd <clone-path>`
+- Run `chmod +x setup.sh` and then execute `./setup.sh` file to setup the project.
+- Run `./develop.sh` to start the development server.
+
 ## Why Gridsome?
 If you are familiar with Gridsome or even Gatsby, then you would know that many people choose either of them for their GraphQL API. However, we didn't choose it for GraphQL at all. 
 
