@@ -26,7 +26,7 @@ export default {
   .feature-title {
     color: var(--black);
     margin-bottom: 10px;
-    font-size: 1.9rem;
+    font-size: 2.1rem;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -35,7 +35,7 @@ export default {
 
   @media (min-width: 1024px) {
     .feature-title {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
     }
   }
 </style>

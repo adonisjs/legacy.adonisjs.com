@@ -20,11 +20,11 @@ const WEBSITE_VERSION = 'master'
  * Returns an array of zones and their respective version. Each
  * zone has a single version only.
  */
-export function getZones () {
+async function getZones () {
   const { data } = await axios.get(`${BASE_URL}/zones.json`)
-  return data.map(({ name, slug }) => {
+  return data.map(({ name, slug, versions }) => {
     const component = ZONE_TEMPLATE_MAPPING[slug]
-    const version = zone.versions.find((version) => version.no === WEBSITE_VERSION)
+    const version = versions.find((version) => version.no === WEBSITE_VERSION)
 
     if (!component) {
       throw new Error(
@@ -49,7 +49,7 @@ export function getZones () {
  * Returns a tree of categories and optionally their docs with complete
  * content.
  */
-export function getZoneCategories (zoneSlug, versionNo, includeContent) {
+async function getZoneCategories (zoneSlug, versionNo, includeContent) {
   if (!zoneSlug || !versionNo) {
     throw new Error(
       `Cannot fetch categories. zoneSlug and versionNo are required.`
@@ -68,7 +68,7 @@ export function getZoneCategories (zoneSlug, versionNo, includeContent) {
 /**
  * Returns the content for a doc
  */
-export function getDoc (zoneSlug, versionNo, permalink) {
+async function getDoc (zoneSlug, versionNo, permalink) {
   if (!zoneSlug || !versionNo || !permalink) {
     throw new Error(
       `Cannot fetch doc. "zoneSlug", "versionNo" and "permalink" are required.`
@@ -77,4 +77,38 @@ export function getDoc (zoneSlug, versionNo, permalink) {
 
   const { data } = await axios(`${BASE_URL}/${zoneSlug}/versions/${versionNo}/${permalink}.json`)
   return data
+}
+
+/**
+ * Returns the page data for the doc
+ */
+function getDocPageData (zone, doc, categories) {
+  if (!zone) {
+    throw new Error('Make sure to define the zone when getting page data')
+  }
+
+  if (!zone.component) {
+    throw new Error('The zone must have a component property in order to generate page data')
+  }
+
+  const docCategory = categories.find(({ docs }) => {
+    return docs.find(({ permalink }) => permalink === doc.permalink)
+  })
+
+  return {
+    path: `/${doc.permalink}`,
+    component: zone.component,
+    context: {
+      doc: doc,
+      categories,
+      category: docCategory,
+    },
+  }
+}
+
+module.exports = {
+  getZones: getZones,
+  getZoneCategories: getZoneCategories,
+  getDoc: getDoc,
+  getDocPageData: getDocPageData,
 }

@@ -67,13 +67,14 @@
 <style scoped>
   .codegroup-tabs {
     overflow: scroll;
+    position: relative;
   }
 
   .codegroup-tab-container {
-    border-bottom: 2px solid rgba(102, 105, 118, 0.34);
     padding: 0 20px;
     display: flex;
     position: relative;
+    border-bottom: 2px solid rgba(102, 105, 118, 0.34);
   }
 
   .codegroup .highlighter {
@@ -87,11 +88,16 @@
   .codegroup-tab {
     padding: 13px 15px;
     margin-right: 20px;
-    font-family: var(--font-secondary);
-    letter-spacing: 1.4px;
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
     text-transform: uppercase;
     font-size: 1.3rem;
     color: var(--inactive);
     font-weight: 600;
+  }
+
+  .codegroup-content-container {
+    height: 330px;
+    overflow: scroll;
   }
 </style>

@@ -10,9 +10,9 @@
 
 <style scoped>
   .subtitle {
-    font-size: 1.8rem;
+    font-size: 2.1rem;
     font-weight: 500;
-    line-height: 28px;
+    line-height: 26px;
   }
 
   .subtitle.light {
@@ -21,7 +21,7 @@
 
   @media (min-width: 1024px) {
     .subtitle {
-      font-size: 2rem;
+      font-size: 2.4rem;
     }
   }
 </style>

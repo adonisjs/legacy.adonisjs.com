@@ -22,7 +22,7 @@
                 href="#"
                 @click.prevent="activeCategoryIndex = index"
               >
-                {{ category.node.title }}
+                <span>{{ category.node.title }}</span>
               </a>
             </div>
           </div>
@@ -125,7 +125,7 @@
     background: var(--grey-light);
     border-radius: 4px;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--black);
     letter-spacing: 1px;
     line-height: 22px;
@@ -133,6 +133,11 @@
   .features-list-nav div.active a {
     background: var(--brand);
     color: #fff;
+  }
+
+  .features-list-nav a span {
+    display: block;
+    margin-top: 4px;
   }
 
   .features-list-content {

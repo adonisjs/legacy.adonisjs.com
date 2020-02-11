@@ -65,17 +65,17 @@
   }
 
   .title {
-    font-size: 4.2rem;
+    font-size: 4.7rem;
     color: var(--black);
     font-weight: 700;
-    line-height: 46px;
-    margin-bottom: 34px;
+    line-height: 43px;
+    margin-bottom: 26px;
   }
 
   .subtitle {
     font-weight: 500;
-    font-size: 1.9rem;
-    line-height: 30px;
+    font-size: 2.4rem;
+    line-height: 27px;
     margin-bottom: 40px;
     color: var(--grey);
   }
@@ -138,7 +138,7 @@
     }
 
     .title {
-      font-size: 6.4rem;
+      font-size: 6.6rem;
       line-height: 62px;
       padding: 0 80px;
     }

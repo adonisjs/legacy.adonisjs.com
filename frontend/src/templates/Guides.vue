@@ -3,7 +3,7 @@
     <a-header />
     <section class="main">
       <div class="container">
-        <a-sidebar :category="this.$context.tree" />
+        <a-sidebar :category="this.$context.category" :categories="this.$context.categories" />
         <div class="docs-wrapper" :key="$route.fullPath">
           <a-doc :doc="$context.doc" />
         </div>

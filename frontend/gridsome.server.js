@@ -5,54 +5,14 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
-const axios = require('axios')
-const WebSocket = require('ws')
-const { cyan, green, red, yellow } = require('kleur')
+const { cyan, green, red, yellow, dim } = require('kleur')
+const api = require('./api')
 
 const config = require('./config.js')
-
 const BASE_URL = 'http://localhost:5000'
 
-/**
- * Returns a collection of categories and their docs
- */
-async function getCategoriesWithContent (zone, version) {
-  const { data } = await axios(`${BASE_URL}/${zone}/versions/${version}.json?load_content=true`)
-  return data
-}
-
-/**
- * Returns a collection of categories and their docs
- */
-async function getCategories (zone, version) {
-  const { data } = await axios(`${BASE_URL}/${zone}/versions/${version}.json`)
-  return data
-}
-
-/**
- * Get doc
- */
-async function getDoc (zone, version, permalink) {
-  const { data } = await axios(`${BASE_URL}/${zone}/versions/${version}/${permalink}.json`)
-  return data
-}
-
-/**
- * Returns page data for a given doc and it's categories
- */
-async function getDocPageData (doc, category) {
-  return {
-    path: `/${doc.permalink}`,
-    component: './src/templates/Tutorials.vue',
-    context: {
-      doc: doc,
-      tree: category,
-    },
-  }
-}
-
-module.exports = function (api) {
-  api.loadSource(async ({ addCollection }) => {
+module.exports = function (gsApi) {
+  gsApi.loadSource(async ({ addCollection }) => {
     const hero = addCollection({ typeName: 'Hero' })
     const header = addCollection({ typeName: 'HeaderMenu' })
     const footer = addCollection({ typeName: 'FooterMenu' })
@@ -62,6 +22,9 @@ module.exports = function (api) {
     const secondaryFeatures = addCollection({ typeName: 'SecondaryFeatures' })
     const secondaryFeaturesSection = addCollection({ typeName: 'SecondaryFeaturesSection' })
 
+    /**
+     * Using the static config file to feed the graphQL database.
+     */
     hero.addNode(config.hero)
     mainVideo.addNode(config.mainVideo)
     secondaryFeaturesSection.addNode(config.secondaryFeaturesSection)
@@ -73,55 +36,26 @@ module.exports = function (api) {
     config.secondaryFeatures.forEach((item) => secondaryFeatures.addNode(item))
   })
 
-  api.createManagedPages(async ({ createPage, removePageByPath }) => {
-    const guides = await getCategoriesWithContent('guides', 'master')
-    const ws = new WebSocket('ws://localhost:5000')
+  gsApi.createManagedPages(async ({ createPage, removePageByPath }) => {
+    const zones = await api.getZones()
 
-    ws.on('error', () => {
-      console.log(red('unable to make WebSocket connection. Instant builds will not work'))
-    })
-    ws.on('open', () => {
-      console.log(cyan('Connected to WebSocket server. Listening for events for instant builds'))
-    })
+    /**
+     * After this loop, we will have an initial set of pages for all
+     * zones
+     */
+    for (let zone of zones) {
+      const zoneCategories = await api.getZoneCategories(zone.slug, zone.version.no, true)
+      console.log(dim(`using layout: ${zone.component}`))
 
-    ws.on('message', async (message) => {
-      try {
-        const parsedMessage = JSON.parse(message)
-        console.log(cyan(parsedMessage.event))
-
-        if (parsedMessage.event !== 'change:doc') {
-          console.log(yellow(`Skip event ${parsedMessage.event}`))
-          return
-        }
-
-        const version = parsedMessage.data.version
-        const zone = parsedMessage.data.zone
-        const permalink = parsedMessage.data.permalink
-
-        const doc = await getDoc(zone, version, permalink)
-        const categories = await getCategories(zone, version)
-        const docCategory = categories.find((category) => {
-          return category.docs.find((doc) => doc.permalink === permalink)
+      zoneCategories.forEach((category) => {
+        category.docs.forEach((doc) => {
+          const pageData = api.getDocPageData(zone, doc, zoneCategories)
+          console.log(
+            green(`create page ${pageData.path}`),
+          )
+          createPage(pageData)
         })
-
-        const newPage = await getDocPageData(doc, docCategory)
-        console.log(yellow(`remove page ${newPage.path}`))
-        removePageByPath(`/${permalink}`)
-
-        console.log(green(`create page ${newPage.path}`))
-        createPage(newPage)
-      } catch (error) {
-        console.log(red('received error when trying to re-create the page'))
-        console.log(error)
-      }
-    })
-
-    for (category of guides) {
-      for (doc of category.docs) {
-        const page = await getDocPageData(doc, category)
-        console.log(green(`create page ${page.path}`))
-        createPage(page)
-      }
+      })
     }
   })
 }

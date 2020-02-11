@@ -11,8 +11,8 @@
 
 <style scoped>
   .title {
-    font-size: 3.4rem;
-    line-height: 34px;
+    font-size: 4.2rem;
+    line-height: 38px;
     margin-bottom: 16px;
     margin-top: 40px;
     color: var(--black);

@@ -3,7 +3,7 @@
 </template>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Space+Mono:400,700&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap');
 
   :root {
     --black: #17161A;
@@ -12,6 +12,7 @@
     --grey: rgba(102, 105, 118, 0.75);
     --inactive: #B1BACC;
     --outlines: #D7DEEB;
+    --selection: #e6e2ff;
     --grey-moderate: #A8A6B8;
     --grey-light: #F0F3F9;
     --grey-lighter: #F7F8FA;
@@ -23,8 +24,9 @@
     --red: #DF4A4A;
 
     --font-base: "Calibre";
-    --font-secondary: "BitxMap Font tfb", cursive;
-    --font-mono: 'Space Mono';
+    --font-interface: 'Poppins', sans-serif;
+    --font-secondary: Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+    --font-mono: Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
 
     --header-height: 56px;
   }
@@ -61,7 +63,7 @@
   }
 
   ::selection {
-    background: #e6e2ff;
+    background: var(--selection);
   }
 
   .container {

@@ -49,13 +49,14 @@ export default {
     text-transform: uppercase;
     text-decoration: none;
     transition: background-color 200ms ease;
+    font-family: var(--font-interface);
   }
 
   .button.big {
     font-weight: 600;
-    padding: 11px 34px 11px 34px;
-    font-size: 1.4rem;
-    letter-spacing: 0.7px;
+    padding: 9px 30px 9px 30px;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
   }
 
   .button.small {
@@ -91,11 +92,12 @@ export default {
 
   @media (min-width: 1024px) {
     .button.big {
+      padding: 10px 32px 10px 32px;
       font-size: 1.6rem;
     }
 
     .button.small {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
     }
   }
 </style>

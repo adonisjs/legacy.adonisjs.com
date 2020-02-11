@@ -25,11 +25,14 @@
     margin: 0 30px;
     border-bottom: 1px solid rgba(102, 105, 118, 0.34);
     font-family: var(--font-secondary);
-    letter-spacing: 0.7px;
-    font-size: 1.3rem;
+    letter-spacing: 0.8px;
+    font-size: 1.4rem;
     color: var(--inactive);
     font-weight: 600;
     display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .code-highlight .title + pre {

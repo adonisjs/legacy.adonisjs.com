@@ -13,19 +13,28 @@
 <style scoped>
   .doc {
     max-width: 100%;
-    padding: 40px 0;
+    padding: 60px 0;
     color: #4f525d;
-    font-size: 2rem;
+    line-height: 1.3;
   }
 
   .wysiwyg h1, .wysiwyg h2, .wysiwyg h3, .wysiwyg h4 {
     color: var(--black);
     font-weight: 700;
+    position: relative;
   }
 
   .wysiwyg h1 {
-    font-size: 5rem;
+    font-size: 4.8rem;
+    line-height: 48px;
     margin-bottom: 2.2rem;
+  }
+
+  .wysiwyg .bookmark {
+    top: -60px;
+    position: absolute;
+    display: block;
+    visibility: hidden;
   }
 
   .wysiwyg h2 {
@@ -118,6 +127,10 @@
       -0.15rem 0 var(--grey-light);
   }
 
+  .wysiwyg strong {
+    font-weight: 600;
+  }
+
   .wysiwyg ol li:before {
     position: absolute;
     top: 0;
@@ -194,13 +207,13 @@
     .wysiwyg .code-highlight {
       margin-left: auto;
       margin-right: auto;
-      border-radius: inherit;
+      border-radius: 4px;
     }
   }
 
   @media (min-width: 1024px) {
     .doc {
-      padding: 60px 0 0 100px;
+      padding: 80px 0 60px 100px;
       max-width: 760px;
     }
   }
