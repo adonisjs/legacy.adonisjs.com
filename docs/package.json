@@ -1,0 +1,25 @@
+{
+  "name": "adonisjs-docs-content",
+  "version": "1.0.0",
+  "description": "The dimer server for AdonisJS docs",
+  "main": "index.js",
+  "private": true,
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "serve": "dimer serve",
+    "build": "dimer build"
+  },
+  "author": "virk",
+  "license": "MIT",
+  "dependencies": {
+    "@dimerapp/http-server": "^2.0.3",
+    "ws": "^7.2.1"
+  },
+  "devDependencies": {
+    "@dimerapp/cli": "^1.0.14",
+    "parse-numeric-range": "0.0.2",
+    "prismjs": "^1.19.0"
+  }
+}

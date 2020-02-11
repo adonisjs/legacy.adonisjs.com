@@ -1,0 +1,19 @@
+{
+  "domain": "",
+  "cname": "",
+  "zones": {
+    "guides": {
+      "versions": {
+        "master": "docs/guides"
+      }
+    }
+  },
+  "websiteOptions": {
+  },
+  "compilerOptions": {
+    "apiUrl": "http://localhost:5000",
+    "detectAssets": true,
+    "createSearchIndex": true,
+    "extensions": ["extensions/compileCode.js"]
+  }
+}

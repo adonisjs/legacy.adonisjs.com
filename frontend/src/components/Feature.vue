@@ -1,0 +1,41 @@
+<template>
+  <div class="feature">
+    <h2 class="feature-title">
+      <span v-html="icon" class="icon"></span>
+      <span>{{ title }}</span>
+    </h2>
+    <p><slot></slot></p>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['title', 'content', 'icon']
+}
+</script>
+
+<style scoped>
+  .feature {
+    background: #FFFFFF;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.05), 0 10px 40px 0 rgba(0,0,0,0.05);
+    border-radius: 6px;
+    padding: 44px 40px;
+    height: 100%;
+  }
+
+  .feature-title {
+    color: var(--black);
+    margin-bottom: 10px;
+    font-size: 1.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+  }
+
+  @media (min-width: 1024px) {
+    .feature-title {
+      font-size: 2.2rem;
+    }
+  }
+</style>
