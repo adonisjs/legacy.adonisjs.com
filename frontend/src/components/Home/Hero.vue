@@ -7,7 +7,7 @@
 
         <div class="cta">
           <!-- @hardcoded -->
-          <a-button title="Get Started" href="/tutorials/first-steps/introduction" />
+          <a-button title="Get Started" href="/guides/first-steps/introduction" />
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">

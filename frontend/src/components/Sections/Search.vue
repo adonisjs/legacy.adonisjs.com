@@ -55,12 +55,6 @@ export default {
               title: 'Guides',
               results: [],
             },
-            // {
-            //   zone: 'reference',
-            //   version: 'master',
-            //   title: 'Reference',
-            //   results: [],
-            // }
           ]
         }
       }
@@ -104,12 +98,21 @@ export default {
     padding-left: 20px;
   }
 
+  .search-input svg {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+  }
+
   .search-input input {
     color: var(--black);
     font-family: inherit;
     font-size: 1.6rem;
     margin-left: 8px;
     width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .search-input:focus-within {
