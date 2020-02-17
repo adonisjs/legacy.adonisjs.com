@@ -84,26 +84,24 @@
 </static-query>
 
 <style scoped>
+  .navbar {
+    height: 100%;
+    padding: 20px 10px 0 10px;
+  }
+
   .navbar ul {
     list-style: none;
   }
 
   .navbar a {
-    text-decoration: none;
-    color: var(--dark-grey);
+    color: var(--grey-800);
     font-weight: 500;
     transition: color 300ms ease;
     display: flex;
-    align-items: center;
-    font-size: 1.6rem;
-  }
-  .navbar a:hover {
-    color: var(--black);
   }
 
   .navbar > ul {
-    display: flex;
-    flex-direction: column;
+    height: 100%;
   }
 
   .navbar > ul > li {
@@ -112,44 +110,48 @@
   }
 
   .navbar > ul > li.dropdown > a {
-    color: var(--inactive);
+    color: var(--grey-600);
     font-family: var(--font-mono);
+    letter-spacing: 1px;
     font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 5px;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
   }
 
   .navbar > ul > li.dropdown > a svg {
     display: none;
   }
 
-  .navbar > ul > li.dropdown ul {
-    background: #FFFFFF;
-  }
-
   .navbar > ul > li.dropdown ul li a {
     display: block;
     white-space: nowrap;
+    margin-bottom: 3px;
   }
 
   @media (min-width: 1024px) {
+    .navbar {
+      padding: 0;
+    }
+
     .navbar > ul {
-      flex-direction: row;
+      display: flex;
       align-items: center;
     }
 
     .navbar > ul > li {
-      margin: 0;
+      margin-bottom: 0;
     }
 
     .navbar > ul > li > a {
-      padding: 16px 17px 15px 17px;
+      align-items: center;
+      padding: 18px 17px 18px 17px;
     }
 
     .navbar > ul > li.dropdown > a {
-      color: var(--grey-dark);
+      color: var(--grey-800);
+      letter-spacing: normal;
       font-family: inherit;
-      font-size: 1.6rem;
+      font-size: inherit;
       font-weight: 500;
       margin: 0;
     }
@@ -157,7 +159,7 @@
     .navbar > ul > li.dropdown > a svg {
       display: block;
       margin-left: 4px;
-      margin-top: 1px;
+      margin-top: 2px;
       transition: 100ms transform ease;
     }
     .navbar > ul > li.dropdown.active > a svg {
@@ -166,6 +168,7 @@
 
     .navbar > ul > li.dropdown ul {
       position: absolute;
+      background: #fff;
       top: 100%;
       margin-top: 0px;
       padding-bottom: 15px;
@@ -185,18 +188,18 @@
     }
 
     .navbar > ul > li.dropdown ul li a {
-      padding: 10px 34px 10px 26px;
+      padding: 9px 34px 9px 26px;
       display: block;
     }
 
     .navbar > ul > li a:hover,
     .navbar > ul > li.dropdown.active > a,
     .navbar > ul > li a.active {
-      color: var(--black);
+      color: var(--grey-900);
     }
 
     .navbar > ul > li.dropdown ul li a:hover {
-      background: var(--grey-lighter);
+      background: var(--grey-300);
     }
   }
 </style>
