@@ -1,6 +1,12 @@
-prod
+.DS_Store
+*.log
+
 frontend/node_modules
+frontend/src/.temp
+frontend/dist
+frontend/.cache
+
 docs/node_modules
 docs/dist
-frontend/.cache
-frontend/src/.temp
+
+prod
