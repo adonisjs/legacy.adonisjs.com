@@ -3,32 +3,35 @@
 </template>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro|VT323&display=swap');
 
   :root {
-    --black: #17161A;
-    --dark-grey: #666976;
+    --grey-900: #17161A; /** black */
+    --grey-800: #46444c;
+    /** --grey-800: rgba(102, 105, 118, 0.75);  grey */
+    --grey-700: #666976; /** dark-grey */
+    --grey-600: #91939F; /** --grey-lightest */
+    --grey-500: #A8A6B8; /** --grey-moderate */
+    --grey-400: #F0F3F9; /** --grey-light */
+    --grey-300: #F7F8FA; /** grey-lighter */
+    --grey-200: #B1BACC; /** inactive */
+    --grey-100: #D7DEEB; /** outlines */
+
     --pre-bg: #1e1e3f;
-    --grey: rgba(102, 105, 118, 0.75);
-    --inactive: #B1BACC;
-    --outlines: #D7DEEB;
     --selection: #e6e2ff;
-    --grey-moderate: #A8A6B8;
-    --grey-light: #F0F3F9;
-    --grey-lighter: #F7F8FA;
-    --grey-lightest: #91939F;
-    --white: #fff;
     --brand: #5A45FF;
     --brand-darker: #3f2dbd;
     --green: #70D787;
     --red: #DF4A4A;
 
-    --font-base: "Calibre";
-    --font-interface: 'Poppins', sans-serif;
-    --font-secondary: Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
-    --font-mono: Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+    --font-base: 'Calibre';
+    --font-secondary: 'BitxMap Font Tfb', monospace;
+    --font-mono: 'Anonymous Pro', monospace;
 
     --header-height: 56px;
+    --base-text-size: 1.9rem;
+    --base-line-height: 1.1;
+    --loose-line-height: 1.3;
   }
 
   * {
@@ -48,18 +51,18 @@
 
   body {
     font-family: var(--font-base);
-    font-size: 1.9rem;
+    font-size: var(--base-text-size);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     vertical-align: text-bottom;
-    color: var(--dark-grey);
-    /* line-height: 1.2; */
+    color: var(--grey-700);
     font-weight: 400;
+    line-height: var(--base-line-height);
     background: #fff;
   }
 
   ::-moz-selection {
-    background: var(--brand);
+    background: var(--selection);
   }
 
   ::selection {
@@ -89,5 +92,6 @@
   .feature-icon {
     margin-right: 16px;
     width: 30px;
+    display: block;
   }
 </style>

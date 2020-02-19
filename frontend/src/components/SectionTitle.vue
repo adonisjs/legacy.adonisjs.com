@@ -11,11 +11,12 @@
 
 <style scoped>
   .title {
-    font-size: 4.2rem;
-    line-height: 38px;
-    margin-bottom: 16px;
+    font-size: 5rem;
+    line-height: 48px;
+    margin-bottom: 20px;
     margin-top: 40px;
-    color: var(--black);
+    font-weight: 900;
+    color: var(--grey-900);
   }
 
   .title.light {

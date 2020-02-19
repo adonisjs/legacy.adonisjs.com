@@ -7,11 +7,11 @@
 
         <div class="cta">
           <!-- @hardcoded -->
-          <a-button title="Get Started" href="/guides/first-steps/introduction" />
+          <a-button title="Get Started" href="/guides/http/introduction" />
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">
-          <code-group :sections="codeHighlightSections" />
+          <a-code-group :sections="codeHighlightSections" />
         </div>
       </div>
     </div>
@@ -21,10 +21,10 @@
 
 <script>
   import AButton from '~/components/Button.vue'
-  import CodeGroup from '~/components/CodeGroup.vue'
+  import ACodeGroup from '~/components/Home/CodeGroup.vue'
 
   export default {
-    components: { AButton, CodeGroup },
+    components: { AButton, ACodeGroup },
     data () {
       return {
         codeHighlightSections: []
@@ -59,25 +59,23 @@
 
 <style scoped>
   .hero-container {
-    max-width: 800px;
-    margin: auto;
     padding-top: 80px;
   }
 
   .title {
-    font-size: 4.7rem;
-    color: var(--black);
+    font-size: 5rem;
+    color: var(--grey-900);
     font-weight: 700;
-    line-height: 43px;
-    margin-bottom: 26px;
+    line-height: 46px;
+    margin-bottom: 34px;
   }
 
   .subtitle {
     font-weight: 500;
     font-size: 2.4rem;
-    line-height: 27px;
+    line-height: 28px;
     margin-bottom: 40px;
-    color: var(--grey);
+    color: var(--grey-700);
   }
 
   .code-showcase-wrapper {
@@ -93,18 +91,19 @@
 
   @media (min-width: 768px) {
     .hero-container {
-      max-width: 660px;
+      max-width: 620px;
       text-align: center;
+      margin: auto;
     }
 
     .title {
-      font-size: 4.8rem;
-      line-height: 52px;
+      font-size: 5.4rem;
+      line-height: 48px;
       padding: 0 30px;
     }
 
     .subtitle {
-      font-size: 2rem;
+      font-size: 2.4rem;
     }
   }
 
@@ -132,22 +131,22 @@
     }
 
     .hero-container {
-      text-align: center;
       padding-top: 120px;
       max-width: 800px;
     }
 
     .title {
-      font-size: 6.6rem;
-      line-height: 62px;
+      font-size: 6.2rem;
+      line-height: 60px;
       padding: 0 80px;
+      margin-bottom: 28px;
     }
 
     .subtitle {
       padding: 0 30px;
       line-height: 32px;
-      font-size: 2.7rem;
-      margin-bottom: 50px;
+      font-size: 2.6rem;
+      margin-bottom: 70px;
     }
 
     .code-showcase-wrapper {

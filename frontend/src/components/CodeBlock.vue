@@ -17,7 +17,6 @@
 	  background: var(--pre-bg);
     text-align: left;
     border-radius: 4px;
-    line-height: 1.4;
   }
 
   .code-highlight .title {
@@ -42,7 +41,7 @@
   .code-highlight pre {
     display: block;
     padding: 30px 30px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     overflow: auto;
     width: 100%;
     max-width: 100%;

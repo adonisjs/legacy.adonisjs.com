@@ -1,10 +1,10 @@
 <template>
-  <div class="codegroup">
-    <div class="codegroup-tabs">
-      <div class="codegroup-tab-container">
+  <div class="hero-codegroup">
+    <div class="hero-codegroup-tabs">
+      <div class="hero-codegroup-tab-container">
         <span class="highlighter" ref="tabsHighlighter"></span>
         <a
-          class="codegroup-tab"
+          class="hero-codegroup-tab"
           href="#"
           v-for="(section, index) in sections"
           :key="index"
@@ -15,9 +15,9 @@
         </a>
       </div>
     </div>
-    <div class="codegroup-contents">
+    <div class="hero-codegroup-contents">
       <div
-        class="codegroup-content-container"
+        class="hero-codegroup-content-container"
         v-for="(section, index) in sections" :key="index"
         v-show="index === activeIndex"
       >
@@ -65,19 +65,19 @@
 </script>
 
 <style scoped>
-  .codegroup-tabs {
+  .hero-codegroup-tabs {
     overflow: scroll;
     position: relative;
   }
 
-  .codegroup-tab-container {
+  .hero-codegroup-tab-container {
     padding: 0 20px;
     display: flex;
     position: relative;
     border-bottom: 2px solid rgba(102, 105, 118, 0.34);
   }
 
-  .codegroup .highlighter {
+  .hero-codegroup .highlighter {
     position: absolute;
     bottom: -2px;
     height: 2px;
@@ -85,19 +85,14 @@
     transition: left 200ms ease;
   }
 
-  .codegroup-tab {
+  .hero-codegroup-tab {
     padding: 13px 15px;
     margin-right: 20px;
-    font-family: var(--font-mono);
+    font-family: var(--font-secondary);
     letter-spacing: 1px;
     text-transform: uppercase;
     font-size: 1.3rem;
-    color: var(--inactive);
+    color: var(--grey-200);
     font-weight: 600;
-  }
-
-  .codegroup-content-container {
-    height: 330px;
-    overflow: scroll;
   }
 </style>

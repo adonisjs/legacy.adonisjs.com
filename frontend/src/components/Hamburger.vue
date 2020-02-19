@@ -23,7 +23,7 @@
 
   .hamburger span {
     border-radius: 1.3px;
-    background-color: var(--dark-grey);
+    background-color: var(--grey-700);
     height: 2px;
     width: 17px;
     display: block;
@@ -46,7 +46,7 @@
   }
 
   .hamburger.expanded span {
-    background-color: var(--black);
+    background-color: var(--grey-900);
   }
 
   .hamburger.expanded .hamburger-top-bun {

@@ -38,7 +38,7 @@
 
 <style scoped>
   .features {
-    background-color: var(--grey-lighter);
+    background-color: var(--grey-300);
     padding: 80px 0;
     margin-top: -48px;
   }
@@ -49,7 +49,6 @@
   }
 
   .col {
-    flex: 1;
     padding: 12px 0;
   }
 
@@ -72,6 +71,7 @@
     }
 
     .col {
+      flex: 1;
       padding: 0 12px;
     }
   }

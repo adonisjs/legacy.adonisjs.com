@@ -12,10 +12,19 @@
             @keyup="searchScope.triggerSearch"
           />
         </div>
+
         <div class="search-results">
           <div class="search-result-tabs">
-            <span class="highlighter"></span>
-            <a href="" v-for="row in model.data" :key="row.zone"> {{ row.title }} </a>
+            <span class="highlighter" ref="tabsHighlighter"></span>
+            <a
+              href=""
+              v-for="(row, tabIndex) in model.data"
+              :key="tabIndex"
+              ref="tabs"
+              :class="{ active: tabIndex === activeIndex }"
+            >
+              {{ row.title }}
+            </a>
           </div>
 
           <div class="search-result-items">
@@ -64,7 +73,21 @@ export default {
         this.hideResults()
       },
     },
+    mounted () {
+      this.updateHighlighterPosition()
+    },
     methods: {
+      updateHighlighterPosition () {
+        const activeTab = this.$refs.tabs[this.activeIndex]
+        if (!activeTab) {
+          return
+        }
+
+        const highlighter = this.$refs.tabsHighlighter
+        highlighter.style.left = `${activeTab.offsetLeft}px`
+        highlighter.style.width = `${activeTab.clientWidth}px`
+      },
+
       hideResults () {
         this.model.query = ''
       }
@@ -78,7 +101,7 @@ export default {
     z-index: 3;
     left: 0;
     right: 0;
-    top: calc(var(--header-height) + 7px);
+    top: calc(var(--header-height) + 6px);
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -93,30 +116,45 @@ export default {
     position: relative;
     display: flex;
     align-items: center;
-    color: var(--inactive);
+    color: var(--grey-200);
     width: 200px;
-    padding-left: 20px;
+    padding: 0 20px;
+    height: var(--header-height);
   }
 
   .search-input svg {
     width: 20px;
     height: 20px;
-    position: absolute;
     left: 0;
+    top: 1px;
   }
 
   .search-input input {
-    color: var(--black);
+    color: var(--grey-900);
     font-family: inherit;
-    font-size: 1.6rem;
+    font-size: inherit;
+    line-height: inherit;
     margin-left: 8px;
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
+    background: transparent;
+  }
+  ::-webkit-input-placeholder {
+    color: var(--grey-200);
+  }
+
+  :-ms-input-placeholder {
+    color: var(--grey-200);
+  }
+
+  ::placeholder {
+    color: var(--grey-200);
   }
 
   .search-input:focus-within {
-    color: var(--black);
+    background: var(--grey-300);
+    color: var(--grey-900);
   }
 
   .search-results {
@@ -126,7 +164,7 @@ export default {
       0px 20px 40px rgba(0, 0, 0, 0.02),
       0px -1px 0px #F5F5F5;
     right: 0;
-    width: 400px;
+    width: 450px;
     z-index: 4;
     bottom: 0;
     top: calc(var(--header-height) + 7px);
@@ -135,7 +173,6 @@ export default {
     transform: translateX(200px);
     transition: 140ms transform ease, opacity 160ms ease;
     pointer-events: none;
-    font-family: var(--font-base);
   }
   .search.active .search-results {
     opacity: 1;
@@ -144,68 +181,56 @@ export default {
     pointer-events: inherit;
   }
 
-  .search-result-items {
-    padding: 30px 24px;
+  .search-result-tabs {
+    display: flex;
+    background: var(--grey-300);
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .search-result-tabs a {
+    padding: 16px 14px;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+    color: var(--grey-700);
+  }
+
+  .search-result-tabs a.active {
+    color: var(--grey-900);
   }
 
   .search-result-item {
-    padding: 20px 16px;
-    color: inherit;
+    color: var(--grey-700);
+    padding: 20px 30px;
     display: block;
-    font-size: 1.7rem;
-    border-radius: 3px;
+    font-size: 1.8rem;
   }
-
-  .search-result-item p strong {
-    font-weight: 400;
-    background: var(--selection);
-  }
-
   .search-result-item:hover {
-    background: var(--grey-lighter);
-  }
-
-  .search-result-item .title {
-    color: var(--black);
-    font-size: 1.9rem;
-    margin-bottom: 8px;
-  }
-
-  .search-result-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--outlines);
-    position: relative;
+    background: var(--grey-300);
   }
 
   .search-result-tabs .highlighter {
     position: absolute;
-    height: 3px;
+    bottom: -2px;
+    height: 2px;
     background: var(--brand);
-    bottom: 0;
+    transition: left 200ms ease;
   }
 
-  .search-result-tabs a {
-    padding: 14px 14px 14px 14px;
-    color: inherit;
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    flex: 1;
-    letter-spacing: 0.4px;
-    text-align: center;
+  .search-result-item .title {
+    color: var(--grey-900);
+    font-size: 2rem;
+    margin-bottom: 8px;
   }
 
-  ::-webkit-input-placeholder {
-    color: var(--inactive);
+  .search-result-item p {
+    margin-bottom: 10px;
   }
 
-  :-ms-input-placeholder {
-    color: var(--inactive);
-  }
-
-  ::placeholder {
-    color: var(--inactive);
+  .search-result-item p strong {
+    font-weight: 400;
+    color: var(--brand);
   }
 
   @media (min-width: 1260px) {

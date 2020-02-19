@@ -2,9 +2,12 @@
   <section class="video">
     <div class="container">
       <div class="video-container">
+
         <span class="label"> {{ $static.video.edges[0].node.label }} </span>
 
-        <a-section-title theme="light">{{ $static.video.edges[0].node.title }}</a-section-title>
+        <a-section-title theme="light">
+          {{ $static.video.edges[0].node.title }}
+        </a-section-title>
 
         <a-section-sub-title theme="light">
           {{ $static.video.edges[0].node.subtitle }}
@@ -74,8 +77,6 @@
   }
 
   .video-container {
-    max-width: 800px;
-    margin: auto;
     padding-top: 100px;
   }
 
@@ -87,6 +88,7 @@
     .video-container {
       max-width: 600px;
       text-align: center;
+      margin: auto;
     }
   }
 

@@ -24,13 +24,20 @@ export default {
   }
 
   .feature-title {
-    color: var(--black);
+    color: var(--grey-900);
     margin-bottom: 10px;
     font-size: 2.1rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    line-height: 18px;
+  }
+
+  .feature-title span {
+    display: block;
+  }
+
+  .feature p {
+    line-height: var(--loose-line-height);
   }
 
   @media (min-width: 1024px) {
