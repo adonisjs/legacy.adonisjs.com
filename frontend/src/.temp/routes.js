@@ -8,15 +8,7 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
-    path: "/guides/first-steps/views-and-templates/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
-    path: "/guides/first-steps/using-lucid-models/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
-    path: "/guides/first-steps/routing-and-controllers/",
+    path: "/guides/http/sessions/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
@@ -28,15 +20,11 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
-    path: "/guides/first-steps/installing-lucid-orm/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
     path: "/guides/http/introduction/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
-    path: "/guides/first-steps/introduction/",
+    path: "/guides/http/http-hooks/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
@@ -44,7 +32,7 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
-    path: "/guides/first-steps/deploying-to-digital-ocean/",
+    path: "/guides/http/file-uploads/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
@@ -52,15 +40,7 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
-    path: "/guides/first-steps/creating-a-new-app/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
-    path: "/guides/first-steps/database-and-migrations/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
-    path: "/guides/http/context/",
+    path: "/guides/http/components-in-depth/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {

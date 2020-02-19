@@ -17,6 +17,7 @@
 	  background: var(--pre-bg);
     text-align: left;
     border-radius: 4px;
+    line-height: 1.4;
   }
 
   .code-highlight .title {
@@ -26,7 +27,7 @@
     font-family: var(--font-secondary);
     letter-spacing: 0.8px;
     font-size: 1.4rem;
-    color: var(--inactive);
+    color: var(--grey-100);
     font-weight: 600;
     display: block;
     white-space: nowrap;
@@ -66,7 +67,7 @@
   }
 
   .code-highlight .token.comment {
-    color: #484867;
+    color: #6c6c90;
   }
 
   .code-highlight .token.prolog,

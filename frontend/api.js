@@ -1,5 +1,5 @@
 const axios = require('axios')
-const WebSocket = require('ws')
+const { utils } = require('dimer-vue')
 const BASE_URL = 'http://localhost:5000'
 
 /**
@@ -95,11 +95,18 @@ function getDocPageData (zone, doc, categories) {
     return docs.find(({ permalink }) => permalink === doc.permalink)
   })
 
+  const toc = utils.extractNode(doc.content, (node) => {
+    return node.tag === 'div'
+      && node.props.className
+      && node.props.className.includes('toc-container')
+  })
+
   return {
     path: `/${doc.permalink}`,
     component: zone.component,
     context: {
       doc: doc,
+      toc,
       categories,
       category: docCategory,
     },

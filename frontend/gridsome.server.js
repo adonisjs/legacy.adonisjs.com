@@ -7,9 +7,9 @@
 
 const { cyan, green, red, yellow, dim } = require('kleur')
 const api = require('./api')
+const ws = require('./ws')
 
 const config = require('./config.js')
-const BASE_URL = 'http://localhost:5000'
 
 module.exports = function (gsApi) {
   gsApi.loadSource(async ({ addCollection }) => {
@@ -50,12 +50,29 @@ module.exports = function (gsApi) {
       zoneCategories.forEach((category) => {
         category.docs.forEach((doc) => {
           const pageData = api.getDocPageData(zone, doc, zoneCategories)
-          console.log(
-            green(`create page ${pageData.path}`),
-          )
+          console.log(green(`create page ${pageData.path}`))
           createPage(pageData)
         })
       })
     }
+
+    ws.connect(async (message) => {
+      const zoneSlug = message.zone
+      const versionNo = message.version
+      const permalink = message.permalink
+
+      const zoneCategories = await api.getZoneCategories(zoneSlug, versionNo, false)
+      const doc = await api.getDoc(zoneSlug, versionNo, permalink)
+      const zone = zones.find((one) => one.slug === zoneSlug)
+
+      const pageData = api.getDocPageData(zone, doc, zoneCategories)
+
+      console.log(green(`create page ${pageData.path}`))
+      await removePageByPath(pageData.path)
+      createPage(pageData)
+    }, (error) => {
+      console.log('Ws error')
+      console.log(red(error))
+    })
   })
 }

@@ -2,17 +2,18 @@
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 
 import DefaultLayout from '~/layouts/Default.vue'
-import { Dimer, DimerTree, DimerSearch } from 'dimer-vue'
+import { Dimer, DimerTree, DimerSearch, DimerTabs } from 'dimer-vue'
 import CodeBlock from '~/components/CodeBlock.vue'
 import '~/assets/stylesheet.css'
+import Tabs from '~/components/Tabs'
 
 export default function (Vue, { router, head, isClient }) {
   Dimer.addRenderer(function (node, rerender, createElement) {
     /**
-     * Do not display toc-container
+     * Wrapping tabs inside a custom component
      */
-    if (node.tag === 'div' && node.props.className && node.props.className.includes('toc-container')) {
-      return false
+    if (node.props.className && node.props.className.indexOf('tabs') > -1) {
+      return createElement(Tabs, { props: { node } })
     }
 
     if (['h2', 'h3', 'h4'].includes(node.tag)) {
@@ -62,6 +63,7 @@ export default function (Vue, { router, head, isClient }) {
 
   Dimer.use(DimerTree)
   Dimer.use(DimerSearch)
+  Dimer.use(DimerTabs)
   Vue.use(Dimer)
 
   // Set default layout as a global component

@@ -18,7 +18,7 @@
     "ws": "^7.2.1"
   },
   "devDependencies": {
-    "@dimerapp/cli": "^1.0.14",
+    "@dimerapp/cli": "^1.0.15",
     "parse-numeric-range": "0.0.2",
     "prismjs": "^1.19.0"
   }

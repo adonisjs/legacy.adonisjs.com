@@ -30,7 +30,7 @@
 
     --header-height: 56px;
     --base-text-size: 1.9rem;
-    --base-line-height: 1.1;
+    --base-line-height: 1.2;
     --loose-line-height: 1.3;
   }
 
@@ -82,6 +82,8 @@
 
   code {
     font-family: var(--font-mono);
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
   }
 
   /**
@@ -93,5 +95,9 @@
     margin-right: 16px;
     width: 30px;
     display: block;
+  }
+
+  .tab-item .title {
+    display: none !important;
   }
 </style>
