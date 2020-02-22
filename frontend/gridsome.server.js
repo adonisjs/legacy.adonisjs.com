@@ -5,7 +5,7 @@
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
-const { cyan, green, red, yellow, dim } = require('kleur')
+const { green, red, dim } = require('kleur')
 const api = require('./api')
 const ws = require('./ws')
 
@@ -44,14 +44,16 @@ module.exports = function (gsApi) {
      * zones
      */
     for (let zone of zones) {
-      const zoneCategories = await api.getZoneCategories(zone.slug, zone.version.no, true)
+      const zoneGroupsCategories = await api.getZoneGroupsAndCategories(zone.slug, zone.version.no, true)
       console.log(dim(`using layout: ${zone.component}`))
 
-      zoneCategories.forEach((category) => {
-        category.docs.forEach((doc) => {
-          const pageData = api.getDocPageData(zone, doc, zoneCategories)
-          console.log(green(`create page ${pageData.path}`))
-          createPage(pageData)
+      zoneGroupsCategories.forEach((group) => {
+        group.categories.forEach((category) => {
+          category.docs.forEach((doc) => {
+            const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
+            console.log(green(`create page ${pageData.path}`))
+            createPage(pageData)
+          })
         })
       })
     }
@@ -61,11 +63,11 @@ module.exports = function (gsApi) {
       const versionNo = message.version
       const permalink = message.permalink
 
-      const zoneCategories = await api.getZoneCategories(zoneSlug, versionNo, false)
+      const zoneGroupsCategories = await api.getZoneGroupsAndCategories(zoneSlug, versionNo, false)
       const doc = await api.getDoc(zoneSlug, versionNo, permalink)
       const zone = zones.find((one) => one.slug === zoneSlug)
 
-      const pageData = api.getDocPageData(zone, doc, zoneCategories)
+      const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
 
       console.log(green(`create page ${pageData.path}`))
       await removePageByPath(pageData.path)

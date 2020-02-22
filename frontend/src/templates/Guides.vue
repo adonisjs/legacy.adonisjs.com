@@ -1,14 +1,20 @@
 <template>
   <Layout>
     <a-header />
-    <section class="main" :key="$route.path">
+    <section class="main">
       <div class="container">
-        <a-sidebar :category="this.$context.category" :categories="this.$context.categories" />
-        <div class="docs-wrapper">
-          <a-doc :doc="$context.doc" />
-        </div>
-        <div class="toc-wrapper" v-if="$context.toc">
-          <a-toc :node="$context.toc" />
+        <a-sidebar
+         :groups="this.$context.groups"
+         :group="this.$context.doc.group"
+         :categories="this.$context.categories"
+         />
+        <div :key="$route.path">
+          <div class="docs-wrapper">
+            <a-doc :doc="$context.doc" />
+          </div>
+          <div class="toc-wrapper" v-if="$context.toc">
+            <a-toc :node="$context.toc" />
+          </div>
         </div>
       </div>
     </section>

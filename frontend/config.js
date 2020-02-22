@@ -29,31 +29,32 @@ exports.header = [
   },
   {
     title: 'Learn',
-    permalink: '',
+    permalink: '/guides/quick-start',
     isExternal: false,
-    children: [
-      {
-        title: 'Guides',
-        permalink: '/guides/first-steps/introduction',
-        isExternal: false
-      },
-      {
-        title: 'Reference',
-        permalink: '/reference-guides/introduction',
-        isExternal: false
-      },
-      {
-        title: 'API Docs',
-        permalink: '/api-docs/introduction',
-        isExternal: false
-      }
-    ]
+    children: [],
+    // children: [
+    //   {
+    //     title: 'Guides',
+    //     permalink: '/guides/first-steps/introduction',
+    //     isExternal: false
+    //   },
+    //   {
+    //     title: 'Reference',
+    //     permalink: '/reference-guides/introduction',
+    //     isExternal: false
+    //   },
+    //   {
+    //     title: 'API Docs',
+    //     permalink: '/api-docs/introduction',
+    //     isExternal: false
+    //   }
+    // ]
   },
   {
-    title: 'Packages',
-    permalink: '/packages',
-    isExternal: false,
-    children: []
+    title: 'Roadmap',
+    permalink: 'https://trello.com/b/3klaHbfP',
+    children: [],
+    isExternal: true
   },
   {
     title: 'Community',
@@ -122,39 +123,44 @@ exports.footer = [
     children: [
       {
         title: 'Guides',
-        permalink: '/guides/first-steps/introduction',
+        permalink: '/guides/quick-start',
         isExternal: false
       },
-      {
-        title: 'Reference',
-        permalink: '/reference-guides/introduction',
-        isExternal: false
-      },
-      {
-        title: 'API Docs',
-        permalink: '/api-docs/introduction',
-        isExternal: false
-      }
+      // {
+      //   title: 'Reference',
+      //   permalink: '/reference-guides/introduction',
+      //   isExternal: false
+      // },
+      // {
+      //   title: 'API Docs',
+      //   permalink: '/api-docs/introduction',
+      //   isExternal: false
+      // }
     ]
   },
   {
-    title: 'Packages',
-    permalink: '/packages',
+    title: 'About',
+    permalink: '',
     isExternal: false,
     children: [
       {
-        title: 'Edge',
-        permalink: '/packages/edge',
+        title: 'Security',
+        permalink: '/security',
         isExternal: false
       },
       {
-        title: 'Gage',
-        permalink: '/packages/gage',
+        title: 'Code of Conduct',
+        permalink: '/code-of-conduct',
         isExternal: false
       },
       {
-        title: 'Ace',
-        permalink: '/packages/ace',
+        title: 'Release Process',
+        permalink: '/release-process',
+        isExternal: false
+      },
+      {
+        title: 'Legals',
+        permalink: '/legals',
         isExternal: false
       }
     ]

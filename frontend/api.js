@@ -1,3 +1,4 @@
+const { red } = require('kleur')
 const axios = require('axios')
 const { utils } = require('dimer-vue')
 const BASE_URL = 'http://localhost:5000'
@@ -49,7 +50,7 @@ async function getZones () {
  * Returns a tree of categories and optionally their docs with complete
  * content.
  */
-async function getZoneCategories (zoneSlug, versionNo, includeContent) {
+async function getZoneGroupsAndCategories (zoneSlug, versionNo, includeContent) {
   if (!zoneSlug || !versionNo) {
     throw new Error(
       `Cannot fetch categories. zoneSlug and versionNo are required.`
@@ -62,7 +63,41 @@ async function getZoneCategories (zoneSlug, versionNo, includeContent) {
   }
 
   const { data } = await axios(`${BASE_URL}/${zoneSlug}/versions/${versionNo}.json`, { params })
-  return data
+  const groups = []
+
+  /**
+   * Looping over categories to group them by their group
+   */
+  data.filter((category) => {
+    category.docs.forEach((doc) => {
+      if (!doc.group) {
+        console.log(red(`${doc.permalink} is ignored, since it has no group`))
+        return
+      }
+
+      let group = groups.find(({ name }) => name === doc.group)
+      if (!group) {
+        group = {
+          name: doc.group,
+          categories: []
+        }
+        groups.push(group)
+      }
+
+      let category = group.categories.find(({ name }) => name === doc.category)
+      if (!category) {
+        category = {
+          name: doc.category,
+          docs: []
+        }
+        group.categories.push(category)
+      }
+
+      category.docs.push(doc)
+    })
+  })
+
+  return groups
 }
 
 /**
@@ -82,7 +117,7 @@ async function getDoc (zoneSlug, versionNo, permalink) {
 /**
  * Returns the page data for the doc
  */
-function getDocPageData (zone, doc, categories) {
+function getDocPageData (zone, doc, groups) {
   if (!zone) {
     throw new Error('Make sure to define the zone when getting page data')
   }
@@ -91,10 +126,9 @@ function getDocPageData (zone, doc, categories) {
     throw new Error('The zone must have a component property in order to generate page data')
   }
 
-  const docCategory = categories.find(({ docs }) => {
-    return docs.find(({ permalink }) => permalink === doc.permalink)
-  })
-
+  /**
+   * Extracting toc from the doc content
+   */
   const toc = utils.extractNode(doc.content, (node) => {
     return node.tag === 'div'
       && node.props.className
@@ -106,16 +140,16 @@ function getDocPageData (zone, doc, categories) {
     component: zone.component,
     context: {
       doc: doc,
-      toc,
-      categories,
-      category: docCategory,
+      toc: toc,
+      groups: groups,
+      categories: groups.find(({ name }) => name === doc.group).categories,
     },
   }
 }
 
 module.exports = {
   getZones: getZones,
-  getZoneCategories: getZoneCategories,
+  getZoneGroupsAndCategories: getZoneGroupsAndCategories,
   getDoc: getDoc,
   getDocPageData: getDocPageData,
 }

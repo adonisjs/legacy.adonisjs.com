@@ -94,7 +94,7 @@
   }
 
   .navbar a {
-    color: var(--grey-800);
+    color: var(--grey-700);
     font-weight: 500;
     transition: color 300ms ease;
     display: flex;
@@ -144,11 +144,11 @@
 
     .navbar > ul > li > a {
       align-items: center;
-      padding: 18px 17px 18px 17px;
+      padding: 17px 17px 17px 17px;
     }
 
     .navbar > ul > li.dropdown > a {
-      color: var(--grey-800);
+      color: var(--grey-700);
       letter-spacing: normal;
       font-family: inherit;
       font-size: inherit;
