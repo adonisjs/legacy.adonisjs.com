@@ -11,7 +11,7 @@ Controllers are the defacto way of handling HTTP requests in AdonisJS. Unlike ma
 In this guide, we will go through the API surface of controllers and also answer certain questions around the simplicity of controllers in AdonisJS.
 
 ## Using Controllers
-Controllers live inside the `app/Controllers/Http` directory and each file must be used to declare and export a single controller class. Consider the following example of generating a new controller and passing it's reference to a given route.
+Controllers lives inside the `app/Controllers/Http` directory and each file must be used to declare and export a single controller class. Consider the following example of generating a new controller and passing it's reference to a given route.
 
 [codegroup]
 
@@ -38,12 +38,11 @@ Route.get('users', 'UsersController.index')
 
 #### Things to note
 
-- Controllers are always referenced as a string on the route. This enables AdonisJS to lazy load the controller file and keeps the routes file free from dozens of import statements.
-- Since AdonisJS knows that the controllers conventionally lives inside `app/Controllers/Http` directory, you don't have to define the complete path.
-- You need to reference the filename on the route and not the class name.
+- Controllers are always referenced as a string on the route. This enables AdonisJS to lazy load controllers and keep the routes file free from dozens of import statements.
+- Since AdonisJS knows that the controllers conventionally lives inside `app/Controllers/Http` directory, you don't have to type the complete path inside your routes file.
 
 [tip]
-The Vscode extension of AdonisJS autosuggests the controller and method names as you reference them within your routes.
+The Vscode extension of AdonisJS autosuggests the controller and method names as you type them within your routes.
 [/tip]
 
 ## Reusing Controllers?

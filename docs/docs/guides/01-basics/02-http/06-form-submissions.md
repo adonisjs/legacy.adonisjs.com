@@ -51,7 +51,7 @@ For example, following is the HTML form to create a new blog post by accepting t
 </html>
 ```
 
-As you can notice, the entire document is vanilla HTML with no special syntax inside it. However, we can replace the hardcoded form action `/posts`  with a helper method `route`.
+As you can notice, the entire document is vanilla HTML with no special syntax inside it. However, you can replace the hardcoded form action `/posts`  with a helper method `route`.
 
 Assuming the following route declarations. 
 
@@ -91,7 +91,7 @@ Once the middleware is in place, you can use one of the following request method
 - `request.only([field1, field2])` returns an object of cherry picked fields.
 - `request.except([field1, field2])` is the opposite of `request.only`.
 
-For demonstration, `console.log` the post title and the body using the `request.only` method.
+For demonstration, lets `console.log` the post title and the body using the `request.only` method.
 
 ```ts{9-10}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
@@ -115,7 +115,6 @@ If you visit [http://localhost:3333/posts/create](http://localhost:3333/posts/cr
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582289486/adonisjs.com/form-submission_nlwu2x.gif)
 
 ## Validating Form Data
-
 AdonisJS makes it super simple to validate the form data using the inbuilt form validator. You start by defining a schema of the data that you expect from the end user and then use `request.validate` method to validate the form values against the pre-defined schema.
 
 Continuing with our blog post example, following is the schema to validate the **post title** and **body**.
@@ -146,9 +145,7 @@ export default class PostsController {
 ```
 
 [tip]
-
 Along with the runtime validations, the schema also returns **type information** of the validated data.
-
 [/tip]
 
 - The `schema.create` method initiates a new schema definition.
@@ -159,8 +156,7 @@ Along with the runtime validations, the schema also returns **type information**
 
 
 ### Displaying Validation Errors
-
-The `request.validate` method uses [flash messages](/concepts/flash-messages) to set the validation errors before redirecting the user back to the form. The flash messages are made available to the views using the `flashMessages` global object.
+The `request.validate` method uses [flash messages](sessions#flash-messages) to pass the validation errors to the template. You can access them using the `flashMessages` global object.
 
 Following is an example of displaying the error messages next to the input fields.
 
@@ -206,8 +202,7 @@ If you submit the form with empty fields, you will see the validation errors nex
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582289924/adonisjs.com/form-validation-basics_af9pse.gif)
 
 ### Retaining Form Input Values
-
-Currently, after the validation failure, the form inputs losses their old values and the user will have to fill the form again. However, you can prevent this behavior by reading the input values from the `flashMessages` global object.
+Currently, after the validation failure, the form inputs losses their old values and the user will have to fill the form again. However, you can prevent this behavior by also reading the input values from the `flashMessages` global object.
 
 ```html{13,23}
 <!DOCTYPE html>
@@ -247,22 +242,25 @@ Currently, after the validation failure, the form inputs losses their old values
 ```
 
 ### Showing Success Message
-
-You can also set the flash messages manually by using the `session.flash` method. So, let's use this method to set the success message and redirect the user back to the form.
+You can also set your own custom flash messages by using the `session.flash` method inside the controller action. So, let's use this method to set the success message and redirect the user back to the form.
 
 [codegroup]
 
-```ts{9-10}{Controller}
-public async store ({ request, session, response }: HttpContextContract) {
-  const data = await request.validateAll(schema.new({
+```ts{}{Controller}
+public async store ({ request }: HttpContextContract) {
+  const postSchema = validator.compile(schema.create({
     title: schema.string(),
     body: schema.string(),
   }))
 
-  console.log(data)
+  const data = await request.validate({
+    schema: postSchema,
+  })
 
+  // highlight-start
   session.flash('success', 'Post created successfully')
   response.redirect('back')
+  // highlight-end
 }
 ```
 
@@ -309,44 +307,92 @@ public async store ({ request, session, response }: HttpContextContract) {
 
 [/codegroup]
 
-This time if you submit the form with the post title and the body, you will see the success message being displayed after the redirect.
+This time if you submit the form with the valid post title and body, you will see the success message being displayed after the redirect.
 
 ### Using Custom Messages
+Currently the validation error messages are not so descriptive and neither human friendly. However, you can define your own custom messages and pass them to the `request.validate` method, as shown below.
 
-Currently, we are displaying the default (not so helpful) validation error messages. We can customize them by passing a custom set of messages to `request.validate` method.
-
-```ts{9-10}
-public async store ({ request, session, response }: HttpContextContract) {
-  const data = await request.validateAll(schema.new({
+```ts
+public async store ({ request }: HttpContextContract) {
+  const postSchema = validator.compile(schema.create({
     title: schema.string(),
     body: schema.string(),
   }))
 
-  console.log(data)
+  const data = await request.validate({
+    schema: postSchema,
+    // highlight-start
+    messages: {
+      'title.required': 'Please enter post title',
+      'body.required': 'Please enter post body',
+    }
+    // highlight-end
+  })
 
   session.flash('success', 'Post created successfully')
   response.redirect('back')
 }
 ```
 
-## Validations for the API Server
+The errors messages can also target nested fields using the dot notation syntax. For example: `profile.user.name.required`.
 
-When creating an API server, you likely will be using Ajax or fetch for form submissions and hence displaying validation errors using **sessions or flash message is not an option** for following reasons.
+## Using Validator Classes
+In order to keep the controllers clean and small, you can extract the validator schema and custom messages to its own dedicated validator class. So let's create a new validator by running the following ace command.
 
-- A JSON API server must always respond with JSON and not with redirects. In fact, you cannot redirect the user from an AJAX response.
-- Cookies are a concept of Browsers and native apps running on Android or iOS have no inbuilt support for managing cookies.
+```sh
+node ace make:validator Post
 
-In other words, the job of the validator must be to return the validation errors as JSON with appropriate status code (422).
+# ✔  create    app/Validators/PostValidator.ts
+```
 
-AdonisJS uses [content negotiation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation) to decide the behavior of the `request.validateAll` method. When [Accept](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept) header is set to `application/json`, then AdonisJS will return the error messages as JSON.
+Open the newly created file and paste the following contents to it.
 
-![](/validator-json-errors.png)
+```ts
+import { schema, validator } from '@ioc:Adonis/Core/Validator'
 
+class PostValidator {
+  public schema = validator.compile(schema.create({
+    title: schema.string(),
+    body: schema.string(),
+  }))
+
+  public messages = {
+    'title.required': 'Please enter post title',
+    'body.required': 'Please enter post body',
+  }
+}
+
+export default new PostValidator()
+```
+
+Finally, you can remove the schema related code from the controller method and instead reference this newly created validator.
+
+```ts
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema, validator } from '@ioc:Adonis/Core/Validator'
+// highlight-start
+import PostValidator from 'App/Validators/PostValidator'
+// highlight-end
+
+export default class PostsController {
+  public async create ({ view }: HttpContextContract) {
+    return view.render('posts/create')
+  }
+
+  // highlight-start
+  public async store ({ request }: HttpContextContract) {
+    const data = await request.validate(PostValidator)
+
+    session.flash('success', 'Post created successfully')
+    response.redirect('back')
+  }
+  // highlight-end
+}
+```
 
 ## Next Steps
 
-We have just scratched the surface with form validation and flash messages. We recommend you to read the dedicated guides on the following topics.
+We have just scratched the surface with form validation and flash messages. We also recommend you to read the dedicated guides on the following topics.
 
-- Crash course on [Flash messages](session#flash-messages)
-- [Validator deep dive](validator)
-- [Sanitizing form data](sanitizor)
+- Crash course on [Flash messages](sessions#flash-messages)
+- [Validator deep dive](guides/validator/introduction)

@@ -22,7 +22,6 @@ The default application created using `npx` or `yarn create` is pre-configured t
 {
   "providers": [
     "@adonisjs/core",
-    "@adonisjs/bodyparser",
     "@adonisjs/view"
   ]
 }
@@ -60,7 +59,7 @@ The views are stored inside `resources/views` directory with files ending in `.e
 Let's start by creating a view to render a list of posts on the blog homepage.
 
 ```sh
-❯ node ace make:view posts/index
+node ace make:view posts/index
 # ✔  create    resources/views/posts/index.edge
 ```
 
@@ -87,7 +86,7 @@ Make sure to start the HTTP server using `node ace serve --watch` command.
 If you visit [http://localhost:3333/posts](http://localhost:3333/posts), you will be greeted with `Hello world`.
 
 ## Passing data to the views
-The goal of Edge is to allow composing documents using **runtime data**, **conditionals** and **loops**. You can pass data as 2nd argument to `view.render` method.
+You can pass data from your route handlers to the views during `view.render` method call, as shown below.
 
 [codegroup]
 
@@ -95,25 +94,25 @@ The goal of Edge is to allow composing documents using **runtime data**, **condi
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/posts', async ({ view }) => {
-  return view.render('posts/index', {
-    post: [
-      {
-        id: 1,
-        title: 'Getting Started with AdonisJS',
-        body: '',
-      },
-      {
-        id: 2,
-        title: 'Covering Basics of Lucid ORM',
-        body: '',
-      },
-      {
-        id: 3,
-        title: 'Understanding Build Process',
-        body: '',
-      }
-    ]
-  })
+  const posts = [
+    {
+      id: 1,
+      title: 'Getting Started with AdonisJS',
+      body: '',
+    },
+    {
+      id: 2,
+      title: 'Covering Basics of Lucid ORM',
+      body: '',
+    },
+    {
+      id: 3,
+      title: 'Understanding Build Process',
+      body: '',
+    }
+  ]
+
+  return view.render('posts/index', { posts })
 })
 ```
 
@@ -132,17 +131,16 @@ If you visit the registered route `/posts`, you must see the following output on
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582279633/adonisjs.com/view-render-static-posts_dsd1hk.png)
 
 #### What just happened?
-1. The `/posts` route is handled by the `PostsController`.
-2. The controller's `index` method renders the `posts/index.edge` view and pass along an array of `posts` to it.
-3. Since, all Edge templates always ends with `.edge` extension, you don't have to type the extension when calling `view.render` method.
-4. We loop over the posts array using the edge `@each` tag and spit out an h2 with an anchor tag for each post.
+1. The route handler renders the `posts/index.edge` template and passes along an array of `posts` to it.
+2. There is no need to type the `.edge` extension when using `view.render` method.
+3. The template loops over the array of posts using the `@each` tag. The `@each` tag is part of the Edge templating syntax.
 
-As you can see that the Edge syntax doesn't interfere with HTML, you can use all of your creativity to create beautiful looking webpages with dynamic data inside them. Infact, Edge gives you all the necessary tooling to structure and re-use your HTML using **Layouts**, **Partials** and **Components**.
+As you can see, Edge syntax doesn't interfere with your HTML. You can use all of your creativity to create beautiful looking webpages with dynamic data inside them. Infact, Edge gives you all the necessary tooling to structure and re-use your HTML using **Layouts**, **Partials** and **Components**.
 
 ## Using Layouts
 As the name suggests, the layouts let you define the overall structure of a web page with placeholders to replace markup that is different for every single page.
 
-Continuing with the blog posts listing page, let's create a master layout that can be used across the website.
+Continuing with the blog posts listing page, let's create a master layout for our blog.
 
 ```sh
 node ace make:view layouts/master
@@ -153,7 +151,7 @@ node ace make:view layouts/master
 
 Open the newly created file `(resources/views/layouts/master.edge)` and paste the following contents inside it.
 
-```html
+```edge
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,7 +178,7 @@ Open the newly created file `(resources/views/layouts/master.edge)` and paste th
   </section>
 
   <section>
-    <!-- ANY VIEW CAN INJECT CONTENT HERE 👇 -->
+    <!-- ANY TEMPLATE CAN INJECT CONTENT HERE 👇 -->
     @section('main')
     @endsection
   </section>
@@ -189,11 +187,11 @@ Open the newly created file `(resources/views/layouts/master.edge)` and paste th
 </html>
 ```
 
-Along with the standard HTML markup, we are also using the `@section` tag. The sections are the named placeholders in which other views can inject their content.
+Along with the standard HTML markup, there is also a `@section` block. The sections are placeholders with unique names in which other templates can inject content.
 
-Let's open the `resources/views/posts/index.edge` and make it use the `master` layout.
+Let's open the `resources/views/posts/index.edge` file and make it use the `master` layout.
 
-```html
+```edge
 @layout('layouts/master')
 
 @section('main')
@@ -211,7 +209,7 @@ Let's open the `resources/views/posts/index.edge` and make it use the `master` l
 
 If you re-visit the `/posts` URL, you must see the following output on the browser screen.
 
-![](/view-layouts.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582373292/adonisjs.com/view-layouts_jllnte.png)
 
 #### How does layout and sections work?
 - The `@layout` tag takes the path to the layout file. The path is relative from the `views` directory.
@@ -222,7 +220,7 @@ If you re-visit the `/posts` URL, you must see the following output on the brows
 Partials are one of the best ways to have fragments of re-usable markup. The great thing about partials is, they have access to all the data from the parent template and hence no extra work needs to be done when creating partials.
 
 ### When to use partials?
-Partials have no technical advantage over keeping all the markup inside a single file. However, they do help in organizing the code in a better way, as you can keep dedicated pieces of markup in their own files over having a giant HTML file.
+Partials have no technical advantage over keeping all the markup inside a single file. However, they do help in organizing the code in a better way, as you can keep dedicated pieces of markup in their own files over having a single giant HTML file.
 
 ### Extract header to it's own partial
 Continuing with the blog example. Let's move the `<header>` tag to it's own partial and include it inside the `master` layout.
@@ -236,7 +234,7 @@ node ace make:view partials/header
 
 Open the `resources/views/partials/header.edge` and paste the following contents inside it.
 
-```html
+```edge
 <header>
   <div>
     <a href="/posts">
@@ -253,7 +251,7 @@ Open the `resources/views/partials/header.edge` and paste the following contents
 
 Finally, edit the `resources/views/layouts/master.edge` and make it include the header partial.
 
-```html
+```edge
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -283,36 +281,10 @@ Finally, edit the `resources/views/layouts/master.edge` and make it include the 
 - All the state of the parent template is shared with the partial.
 
 ## Using Components
-Components are like partials, but with their own state. Since partials share the state of the parent template, they are limited to the use cases they can serve. For example:
-
-You want to create a **button partial**, but with the ability to change it's class names and text on every usage.
-
-**partials/button.edge**
-
-```html
-<button class="button {{ type }}">{{ text }}</button>
-```
-
-The parent template has no way to pass dynamic `type` and `text` to this partial. One thing you can do is update the state of the parent template just before including the partial.
-
-
-```html
-@set('type', 'primary')
-@set('text', 'Submit Form')
-@include('partials/button')
-
-<!-- Update state and then include the partial again -->
-@set('type', 'secondary')
-@set('text', 'Cancel')
-@include('partials/button')
-```
-
-Even though the above example works, it looks more like a hack than a feature. Components are meant to solve exactly this problem by accepting parameters from the parent template.
+Components are just like partials, but with their own state. Since partials share the state of the parent template, they are limited to the use cases they can serve. On the other hand, components can accept data and have isolated state of their own.
 
 ### Using Components to Create a Form
 Let's create a signup form using components. Assuming that you are now familiar with the ace commands and `view.render` method, we will do the initial setup without explaining every step.
-
-[div class="steps"]
 
 1. Create `button` and `input` components.
   ```sh
@@ -333,20 +305,20 @@ Let's create a signup form using components. Assuming that you are now familiar 
   ```
 
 4. Add markup to `components/button.edge` file.
-  ```html
+  ```edge
   <button type="{{ type }}"> {{ text }} </button>
   ```
 
 5. Add markup to `components/input.edge` file.
-  ```html
+  ```edge
   <div>
     <label for="{{ name }}">{{ text }}</label>
     <input type="{{ type }}" name="{{ name }}" />
   </div>
   ```
 
-6. Finally use the components to create the signup form.
-  ```html
+6. Finally use the `@component` tag to include the components inside the signup form.
+  ```edge
   <form action="">
     @!component('components/input', {
       name: 'username',
@@ -367,11 +339,9 @@ Let's create a signup form using components. Assuming that you are now familiar 
   </form>
   ```
 
-[/div]
-
 If you visit [http://localhost:3333/signup](http://localhost:3333/signup), you must a form similar to the following screenshot.
 
-![](/edge-components-form.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582374471/adonisjs.com/edge-components-form_ckmhhd.png)
 
 #### How does components work?
 - The `@component` tag accepts path to a given template, similar to the `@include` tag. But it also accepts an object of values called the component state.
@@ -384,7 +354,7 @@ Templates won't be fun, if you cannot conditionally render HTML or loop over an 
 
 Just like Javascript, you can write `if`, `elseif` and `else` statements in Edge using the dedicated conditional tags.
 
-```html
+```edge
 @if(username)
   <h1> Hello {{ username }}! </h1>
 @else
@@ -395,7 +365,7 @@ Just like Javascript, you can write `if`, `elseif` and `else` statements in Edge
 Using `elseif`
 
 
-```html
+```edge
 @if(user.role === 'admin')
   <h1> You can delete users </h1>
 @elseif (user.role === 'staff')
@@ -415,7 +385,7 @@ As you can experience, the syntax of conditionals is very close to Javascript. I
 
 Edge also has `@unless` tag, which is opossite of `@if` tag. Sometimes writing `unless` feels more natural than writing a `negative if`.
 
-```html
+```edge
 <!-- Show the login button unless user property exists -->
 @unless(user)
   <a href="/login"> Login </a>
@@ -425,7 +395,7 @@ Edge also has `@unless` tag, which is opossite of `@if` tag. Sometimes writing `
 ### Loops
 The `@each` tag of Edge allows you to loop over `Arrays` and `Objects` both.
 
-```html
+```edge
 <!-- Setting users array inline. This can come from controller too -->
 @set('users', [
   {
@@ -446,7 +416,7 @@ The `@each` tag of Edge allows you to loop over `Arrays` and `Objects` both.
 
 Loop over object
 
-```html
+```edge
 @set('food', {
   'ketchup': '5 tbsp',
   'mustard': '1 tbsp',
@@ -458,15 +428,10 @@ Loop over object
 @endeach
 ```
 
-Following is the output of the above template.
-
-![](/edge-loop-objects.png)
-
 ## What's next?
-We have just sratched the surface with templates and there is more to learn. We recommend reading the following guides for better understanding.
+We have just scratched the surface with templates and there is more to learn. We recommend reading the following guides for better understanding.
 
-- [In-depth guide on view components](components-in-depth)
-- [Views API](/api/views)
-- [Templates API](/api/templates)
-- [View tags](/api/view-tags)
-- [View globals](/api/view-globals)
+- [In-depth guide on view components](/guides/views/components)
+- [Views API](/guides/views/api)
+- [View tags](/guides/views/if-tag)
+- [View globals](/guides/views/request-global)

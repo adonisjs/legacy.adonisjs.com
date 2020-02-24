@@ -5,12 +5,12 @@ group: Basics
 
 # Quick Start
 
-The quick start is intended for users familiar with Node.js and AdonisJS. If you are new to the framework, we recommend reading the [getting started tutorial](tutorials/getting-started/introduction).
+The quick start is intended for users familiar with Node.js and AdonisJS. If you are new to the framework, we recommend reading the [getting started tutorial](tutorials/getting-started/introduction) first.
 
 [video url="blob:https://egghead.io/b2292c57-a44b-4a35-85f3-90fa32fa5162"]
 
 ## Creating a New Project
-AdonisJS requires `Node.js` version 12.0.0 or greater, along with `npm` version 6.0.0 or greater. You can also use yarn, but do note, that AdonisJS is not tested against the pnp feature of yarn 2 yet.
+AdonisJS requires `Node.js >= 12.0.0`, along with `npm >= 6.0.0`. You can also use yarn, but do note, that AdonisJS is not tested against the pnp feature of yarn 2 yet.
 
 Run the following command to create a new project.
 

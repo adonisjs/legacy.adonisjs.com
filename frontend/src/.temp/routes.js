@@ -36,6 +36,10 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
+    path: "/guides/orm/serializing-models/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
     path: "/guides/views/loops/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
@@ -181,10 +185,6 @@ export default [
   },
   {
     path: "/guides/http/exception-handling/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
-    path: "/guides/http/components-in-depth/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {

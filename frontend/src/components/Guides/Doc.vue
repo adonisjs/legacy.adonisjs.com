@@ -51,6 +51,10 @@
     padding-top: 4rem;
   }
 
+  .wysiwyg h2 code {
+    font-size: 2.6rem;
+  }
+
   .wysiwyg h3 {
     font-size: 2.4rem;
     margin-top: 4rem;
@@ -130,8 +134,9 @@
     border-bottom: 1px solid var(--grey-100);
   }
 
-  .wysiwyg img {
+  .wysiwyg img, .wysiwyg video {
     max-width: 100%;
+    border-radius: 5px;
     margin: auto;
     background-color: var(--grey-100);
   }
@@ -214,6 +219,10 @@
   }
 
   @media (min-width: 768px) {
+    .wysiwyg > div > p+.code-highlight {
+      margin-top: -1.8rem;
+    }
+
     .wysiwyg .code-highlight, .wysiwyg .codegroup {
       margin-left: auto;
       margin-right: auto;
