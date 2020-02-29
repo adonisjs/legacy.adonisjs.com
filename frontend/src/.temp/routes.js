@@ -148,6 +148,10 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
+    path: "/guides/database/setup/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
     path: "/guides/validation/alpha/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
@@ -192,6 +196,10 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
+    path: "/guides/deployment/introduction/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
     path: "/guides/http/content-negotiation/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
@@ -205,6 +213,10 @@ export default [
   },
   {
     path: "/guides/config/environment-variables/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
+    path: "/guides/deployment/digital-ocean/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
@@ -240,6 +252,14 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
+    path: "/guides/health-check/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
+    path: "/guides/directory-structure/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
     path: "/guides/events/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
@@ -248,12 +268,16 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--pages--why-adonisjs-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/WhyAdonisjs.vue")
   },
   {
+    path: "/security/",
+    component: () => import(/* webpackChunkName: "page--src--pages--security-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/Security.vue")
+  },
+  {
     path: "/release-process/",
     component: () => import(/* webpackChunkName: "page--src--pages--release-process-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/ReleaseProcess.vue")
   },
   {
-    path: "/legals/",
-    component: () => import(/* webpackChunkName: "page--src--pages--legals-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/Legals.vue")
+    path: "/code-of-conduct/",
+    component: () => import(/* webpackChunkName: "page--src--pages--code-of-conduct-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/CodeOfConduct.vue")
   },
   {
     name: "404",

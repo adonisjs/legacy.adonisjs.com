@@ -2,11 +2,11 @@
   <div class="main-features">
     <div class="container">
       <div class="main-features-container">
-        <a-section-title>{{ $static.section.edges[0].node.title }}</a-section-title>
+        <a-section-title>What's included?</a-section-title>
 
         <div class="subtitle-container">
           <a-section-sub-title>
-            {{ $static.section.edges[0].node.subtitle }}
+            No need to download a gazillion of packages to create a meaningful application. AdonisJS comes with ton of features for every corner of your app, aiming to make you productive from day one.
           </a-section-sub-title>
         </div>
 
@@ -68,14 +68,6 @@
 
 <static-query>
   query {
-    section: allSecondaryFeaturesSection {
-      edges {
-        node {
-          title
-          subtitle
-        }
-      }
-    }
     categories: allSecondaryFeatures(order: ASC) {
       edges {
         node {
@@ -121,14 +113,13 @@
     display: inline-block;
     transition: background 200ms ease;
     text-transform: uppercase;
-    padding: 11px 32px;
+    padding: 15px 32px;
     background: var(--grey-400);
     border-radius: 4px;
     font-weight: 600;
     font-size: 1.4rem;
     color: var(--grey-900);
     letter-spacing: 1px;
-    line-height: 22px;
   }
   .features-list-nav div.active a {
     background: var(--brand);

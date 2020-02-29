@@ -1,56 +1,86 @@
 <template>
   <Layout>
     <a-header />
-    <main>
-      <div class="container">
+
+    <a-article>
+      <template v-slot:hero>
         <h1>Release Process</h1>
-        <p>
-          Starting with version 5.0, we decided to have an official release process for the framework.AdonisJS will follow a 6 week release cycle and a strong commitment to <a href="https://semver.org">Semantic Versioning</a>.
-        </p>
+        <h3 class="lede">
+          Starting with version 5.0, we decided to have an official release process for the framework. AdonisJS will follow a 6 week release cycle and a strong commitment to <a href="https://semver.org">Semantic Versioning</a>.
+        </h3>
+      </template>
 
-        <p>
-          The framework is a combination of several first party packages and the mentioned release cycle is just for the <a href="https://github.com/adonisjs/adonis-framework">core of the framework</a>. The other packages will also follow semantic versioning, but they may or may not get new releases every 6 weeks.
-        </p>
+      <h2> How is AdonisJS structured? </h2>
+      <p>
+        AdonisJS is a collection of several first party packages built around the <a href="https://github.com/adonisjs/adonis-framework">core of the framework</a>. Whenever, you hear us mentioning the AdonisJS version, just assume that we are talking about the version of the framework core.
+      </p>
 
-        <h2> Goals </h2>
-        <p>Following are the goals, we want to achieve with our release process. </p>
+      <p>
+        Every other package like <code>@adonisjs/lucid</code>, or <code>@adonisjs/mail</code> have their own independent versions and they are free to have their own release cycle.
+      </p>
 
-        <ul>
-          <li> Add new features in a way that doesn't break existing apps. </li>
-          <li> Ship security and bug fixes every week and bump the <code>patch</code> version of the framework </li>
-          <li> Make a minor release about every six weeks. This is the time when we ship new feature, without disturbing existing features or APIs. </li>
-          <li> Plan breaking changes ahead of time and deprecate them before deciding to remove them officially. </li>
-          <li> Let every deprecated API live in the codebase until the next major release. This gives enough time to the teams to make changes to their code. </li>
-        </ul>
+      <h2> Goals </h2>
+      <p>Following is the list of goals we want to achieve with our release process.</p>
 
-        <h2> Shipping Breaking Changes </h2>
-        <p>
-          Semver advocates to bump the major version number for every breaking change. It means, if a package ships three breaking changes in a week, the package author can safely bump the major version number every time.
-        </p>
-        <p>
-          However, in order to keep the major releases less frequent, we follow the approach of deprecating APIs, before removing them or changing their behavior completely. In other words, the major releases of AdonisJS will not contain any breaking changes, which were not deprecated previously.
-        </p>
+      <ul>
+        <li>
+          Add new features in a way that doesn't break existing apps.
+        </li>
 
-        <h2> Shipping New Features </h2>
-        <p>
-          The framework will have a minor release every 6 weeks, containing all the new features, without breaking any existing functionality. If you want to use the unreleased and undocumented changes before hand, you can install them using <code>@next</code> tag.
-        </p>
+        <li>
+          Ship security and bug fixes every week and bump the <code>patch</code> version of the framework
+        </li>
 
-        <h2>LTS</h2>
-        <p>
-          Most of the work on AdonisJS is still done by a single person. So, we are not in a position to offer LTS as of today.
-        </p>
-      </div>
-    </main>
+        <li>
+          Make a minor release about every six weeks. This is the time when we ship new feature, without disturbing existing features or APIs.
+        </li>
+
+        <li>
+          Plan breaking changes ahead of time and deprecate them before they get removed.
+        </li>
+
+        <li>
+          Let every deprecated API live in the codebase until the next major release. This gives enough time to the teams to make changes to their code.
+        </li>
+      </ul>
+
+      <h2> Shipping Breaking Changes </h2>
+      <p>
+        As per the semver, a package should only have a major release when there is a breaking change and vice-versa.
+      </p>
+
+      <p>
+        However, with AdonisJS, we follow a slightly different approach of not releasing breaking changes right away, but instead following the depreciation policy.
+      </p>
+
+      <ul>
+        <li>
+          Everytime there is a breaking change, we will first depereciate the old API and implement the breaking change behavior as a new API.
+        </li>
+        <li>
+          Everyone using AdonisJS will receive depreciation warnings for the older API and they can apply fixes at their own convience.
+        </li>
+        <li>
+          Once, we are confident about the stability of the newer API, we will rollout a major release just removing the depreciated code.
+        </li>
+      </ul>
+
+      <h2> Shipping New Features </h2>
+      <p>
+        We follow a 6 weeks release cycle for shipping new features. If you are interested in using the unreleased and undocumented features, then you can install the <code>@next</code> version of the desired package from npm registry.
+      </p>
+    </a-article>
     <a-footer />
   </Layout>
 </template>
 
+
 <script>
-  import AFooter from '~/components/Sections/Footer.vue'
   import AHeader from '~/components/Sections/Header.vue'
+  import AFooter from '~/components/Sections/Footer.vue'
+  import AArticle from '~/components/Article.vue'
 
   export default {
-    components: { AHeader, AFooter },
+    components: { AHeader, AArticle, AFooter },
   }
 </script>

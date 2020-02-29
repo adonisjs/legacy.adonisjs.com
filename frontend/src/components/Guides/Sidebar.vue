@@ -1,9 +1,11 @@
 <template>
   <div class="sidebar-wrapper">
     <div>
-      <select name="docs-menu" class="menu-select-box">
+      <select name="docs-menu" class="menu-select-box" @change="openUrl($event)">
         <optgroup v-for="(category, index) in categories" :key="index" :label="category.name">
-          <option v-for="doc in category.docs" :key="doc.permalink">{{ doc.title }}</option>
+          <option v-for="doc in category.docs" :key="doc.permalink" :value="`/${doc.permalink}`">
+            {{ doc.title }}
+          </option>
         </optgroup>
       </select>
     </div>
@@ -24,7 +26,7 @@
             <div class="dropdown-options">
               <g-link
                 v-for="group in groups"
-                :to="group.categories[0].docs[0].permalink"
+                :to="`/${group.categories[0].docs[0].permalink}`"
                 :key="group.name"
               >
                 <span @click="isExpanded = false"> {{ group.name }} </span>
@@ -37,7 +39,7 @@
               <div v-for="(category, index) in categories" :key="index">
                 <h3 class="title" v-if="category.name !== 'root'">{{ category.name }}</h3>
                 <li v-for="doc in category.docs" :key="doc.permalink">
-                  <g-link :to="doc.permalink">
+                  <g-link :to="`/${doc.permalink}`">
                     <span class="label"> {{ doc.title }} </span>
                   </g-link>
                 </li>
@@ -64,6 +66,11 @@
         this.isExpanded = false
       },
     },
+    methods: {
+      openUrl (event) {
+        this.$router.push(event.target.value)
+      },
+    }
   }
 </script>
 

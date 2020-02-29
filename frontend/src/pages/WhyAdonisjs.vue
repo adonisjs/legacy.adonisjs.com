@@ -1,147 +1,108 @@
 <template>
   <Layout>
     <a-header />
-    <a-hero />
-    <div class="doctrine">
-      <div class="container">
-        <div class="doctrine-container">
-          <p>AdonisJS was started as an open source project in early 2016. The framework was <strong>intentionally created</strong> to serve as an alternative to other frameworks in the Node.js ecosystem.</p>
 
-          <p>
-            I (Harminder Virk) had past experience of working with Laravel (from PHP), and after pivoting to Node.js, I was unable to find a framework that was close enough to Laravel or Rails.
-          </p>
+    <a-article>
+      <template v-slot:hero>
+        <h1> Why AdonisJS? </h1>
+        <h3 class="lede">
+          Choosing a framework is a tricky business. So, let’s hold hands together and see what makes AdonisJS different from other Node.js frameworks.
+        </h3>
+      </template>
 
-          <ul>
-            <li>
-              Frameworks like Express, Koa are mainly routing libraries with great support for middleware.
-            </li>
-            <li>
-              Frameworks like SailsJS are badly architected. Understanding the statement is harsh, but <a href="https://kevin.burke.dev/kevin/dont-use-sails-or-waterline/">that's the truth</a>.
-            </li>
-            <li>
-              A common theme across frameworks is to wrap ExpressJs in a glorified app object and marketing it as the Rails for Node.
-            </li>
-          </ul>
+      <h2> History </h2>
+      <p>
+        AdonisJS was started as an open source project in early 2016. The framework was <strong>intentionally created</strong> to serve as an alternative to other frameworks in the Node.js ecosystem.
+      </p>
 
-          <p>
-            On the other hand, AdonisJS has been created from ground up with strong principles and clear goals in mind.
-          </p>
+      <p>
+        I (the author) had past experience of working with Laravel (which was fun). After pivoting to Node.js, I had a hard time finding a framework which was joy to work with.
+      </p>
 
-          <div class="section">
-            <h2 class="section-title">Optimize for Programmer Happiness</h2>
-          </div>
+      <ul>
+        <li>
+          Frameworks like Express, Koa are mainly routing libraries with support for middleware
+        </li>
+        <li>
+          Frameworks like SailsJS are <a href="https://kevin.burke.dev/kevin/dont-use-sails-or-waterline/">badly architected</a>.
+        </li>
+        <li>
+          Meteor unnecessarily takes everything to the next level all together. For example, their own package manager.
+        </li>
+      </ul>
 
-          <div class="section">
-            <h2 class="section-title">Resistence for the shiny new thing</h2>
-            <p>
-              The Node.js and Javascript eco-system is going through the phase of rapid innovation. You will see new tools, frameworks and programming patterns appearing every day and it is very easy to fall into the trap of supporting every tool, idiom in the framework.
-            </p>
+      <p>
+        To summarize: A common theme among all the frameworks is to stay super small and unopinionated. Of course, libraries like Koa and Express are useful in certain use cases, but there is huge section of people who can benefit from a full stack framework like Rails or Laravel, but for Node.js.
+      </p>
 
-            <p>
-              A great example of this is Typescript. AdonisJS took a lot of time before making Typescript as a first class citizen in the framework.  We waited to make sure that Typescript is here to stay and can be used in real world projects vs dying as a concept in its early days.
-            </p>
-          </div>
+      <p>
+        Also, I have never been a fan of <strong>duck taping</strong> and hence AdonisJS is not a wrapper on top of ExpressJs, over selling the idea of re-using the Express middleware. AdonisJS is written from ground up with strong principles and clear goals in mind.
+      </p>
 
-          <div class="section">
-            <h2 class="section-title">Value integrated systems</h2>
-          </div>
-        </div>
-      </div>
-    </div>
+      <h2>Value Integrated Systems</h2>
+      <p>
+        At AdonisJS we highly believe in integrated systems. Instead of pointing you to 10 different libraries and saying <span class="quote">“you can choose whatever you want”</span>, we have invested in creating first class primitives for every corner of your app.
+      </p>
 
-    <div class="features-section">
-      <div class="features-section-container">
-        <h2>Developer Experience</h2>
+      <p>
+        The statement <span class="quote">“you can choose whatever you want”</span> is a nice way of saying <span class="quote">“please do all the hard work yourself, we have curated a list of libraries for you”</span>.
+      </p>
 
-        <div class="grid">
-          <div class="col">
-            <a-feature title="Typescript support" icon="">
-              Type safety is baked into the framework with first class support for Typescript. No need to install any additional build tools, Typescript just works with AdonisJS.
-            </a-feature>
-          </div>
+      <p>
+        Well, a curated list is not bad, but a framework has a bigger job to accomplish. Also, when frameworks doesn’t value integrated systems, they leave you alone in the land of <a href="https://en.wikipedia.org/wiki/Glue_code">glue code</a>.
+      </p>
 
-          <div class="col">
-            <a-feature title="Extensive Documentation" icon="">
-              Type safety is baked into the framework with first class support for Typescript. No need to install any additional build tools, Typescript just works with AdonisJS.
-            </a-feature>
-          </div>
+      <p>Let’s go through a small example and see how glue code makes its way into your code.</p>
 
-          <div class="col">
-            <a-feature title="Powerful CLI" icon="">
-              Type safety is baked into the framework with first class support for Typescript. No need to install any additional build tools, Typescript just works with AdonisJS.
-            </a-feature>
-          </div>
-        </div>
-      </div>
-    </div>
+      <ul>
+        <li>You choose a main framework that does only the routing for you. </li>
+        <li>Then you pick the popular body parser to access form input and uploaded files.</li>
+        <li>Next step maybe is to use a validation engine to validate the form. But wait, the validation engine has no idea about the properties that exists on the file object created by the bodyparser. Hmmmm, let’s write some <strong>glue code</strong> between both of them.</li>
+        <li>Wait, you also want to validate the email address to ensure it’s unique inside the database. Again, the validation engine has no idea about your Database ORM. So, another glue?</li>
+      </ul>
+
+      <p>Well, the reality is, a working real world application always have overlapping parts and without an integrated system, you will always find yourself writing more glue code than the actual code.</p>
+
+      <p>Also, do not mistake integrated systems with hardcoded features. AdonisJS itself treats its ORM and the validation engine as two separate modules. The fact, we believe in integrated systems, we created extensible API’s, which allows the <span class="quote">module authors to write the glue code and not the module consumers</span>.</p>
+
+      <h2>Optimize for Developer Experience</h2>
+      <p>At AdonisJS, we put a lot of emphasis on improving the developer experience. Adopting Typescript, CLI commands and extensive documentation are all that contributes to this goal.</p>
+
+      <p>Also, it is not only about the tooling, we give similar care to the aesthetics of the code as well. Every part of the framework feels like a member of the same family. In fact, this is one of the reasons for writing AdonisJS from ground up vs wrapping existing frameworks in our own packaging.</p>
+
+      <h2>Features Highlights</h2>
+      <p>
+        Being a complete web framework, AdonisJS has ton of features that you can explore through documentation. Following are some of the handpicked one's.
+      </p>
+
+      <ul>
+        <li>
+          A well thought and robust SQL ORM. It comes with a Query builder, Migrations and Active Record Models.
+        </li>
+        <li>
+          One of the most advanced HTTP router with features like: Route groups, subdomains, pattern matching and resourceful routes.
+        </li>
+        <li>
+          Form validator that provides type information, along with the runtime validations. There is no need to maintain separate interfaces for HTTP request body.
+        </li>
+        <li>
+          Inbuilt health check module that you can use with orchestrators like Kubernetes.
+        </li>
+        <li>
+          A strong emphasis of Web security. We guard for websites against many of the common web attacks.
+        </li>
+      </ul>
+    </a-article>
+    <a-footer />
   </Layout>
 </template>
 
 <script>
   import AHeader from '~/components/Sections/Header.vue'
-  import AHero from '~/components/WhyAdonis/Hero.vue'
-  import AFeature from '~/components/Feature'
+  import AFooter from '~/components/Sections/Footer.vue'
+  import AArticle from '~/components/Article.vue'
 
   export default {
-    components: { AHeader, AHero, AFeature },
+    components: { AHeader, AArticle, AFooter },
   }
 </script>
-
-<style>
-  .doctrine-container {
-    width: 620px;
-    margin: auto;
-    color: var(--grey-800);
-    font-size: 2rem;
-    line-height: 1.3;
-    padding: 80px 0;
-  }
-
-  .doctrine-container p {
-    margin-bottom: 4rem;
-  }
-
-  .doctrine-container ul {
-    list-style: none;
-    margin-bottom: 5rem;
-  }
-
-  .doctrine-container li {
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 20px;
-  }
-
-  .doctrine-container li:before {
-    content: '—';
-    width: 15px;
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-  }
-
-  h2.section-title {
-    color: var(--grey-900);
-  }
-
-  .features-section {
-    background-color: var(--grey-300);
-    padding: 80px 0;
-  }
-
-  .features-section-container {
-    max-width: 960px;
-    margin: auto;
-  }
-
-  .grid {
-    display: flex;
-    max-width: none;
-    margin: 0 -12px;
-  }
-
-  .col {
-    flex: 1;
-    padding: 0 12px;
-  }
-</style>

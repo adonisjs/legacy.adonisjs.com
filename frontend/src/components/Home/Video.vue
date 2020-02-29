@@ -3,14 +3,11 @@
     <div class="container">
       <div class="video-container">
 
-        <span class="label"> {{ $static.video.edges[0].node.label }} </span>
-
-        <a-section-title theme="light">
-          {{ $static.video.edges[0].node.title }}
-        </a-section-title>
+        <span class="label"> AdonisJS in Action </span>
+        <a-section-title theme="light"> Build a Blog in 15 Mins </a-section-title>
 
         <a-section-sub-title theme="light">
-          {{ $static.video.edges[0].node.subtitle }}
+          Inspired by the popular Ruby on Rails demo, let's create a blog together to feel the essence of the framework.
         </a-section-sub-title>
 
         <div class="embed-player" ref="embed-player">
@@ -42,20 +39,6 @@
     }
   }
 </script>
-
-<static-query>
-  query {
-    video: allMainVideo {
-      edges {
-        node {
-          label
-          title
-          subtitle
-        }
-      }
-    },
-  }
-</static-query>
 
 <style scoped>
   .video {

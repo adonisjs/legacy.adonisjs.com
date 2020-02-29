@@ -30,7 +30,7 @@ Lucid will round robin between the read servers and all of the read queries will
 Learn more about [Read-write replicas]()
 
 ## Database Query Builder
-Lucid comes a database query builder (built on top of [knex](https://knexjs.org/)) that you can use in order to construct SQL queries. For example:
+Lucid comes a database query builder (built on top of [knex](https://knexjs.org/)), that you can use in order to construct SQL queries. For example:
 
 [codegroup]
 
@@ -80,6 +80,8 @@ The database query builder offers a rich API to construct SQL queries, ranging f
 
 However, at times, the standard query builder API may not be able express the queries you want to construct. For example: Using the native database methods like `YEAR`, `LOWER` and so on.
 
+In scanerios like these, you can opt in for the Raw query builder.
+
 [codegroup]
 
 ```ts{4}{Raw where clause}
@@ -105,7 +107,7 @@ const response = await Database
 Learn more about [Raw query builder]()
 
 ## Support for Transactions & Save Points
-Being a SQL ORM, Lucid has first class support for transactions and save points. The transaction object created by Lucid itself is a fully featured query client, which means you can use it directly to construct and execute sql queries.
+Being a SQL ORM, Lucid has first class support for transactions and save points. The transaction object created by Lucid itself is a fully featured query client and you can use it directly to construct and execute sql queries.
 
 ```ts
 const trx = await Database.transaction()
@@ -176,7 +178,7 @@ Learn more about [Lucid Models]()
 
 ## Database Migrations
 
-Database migrations is a way of evolving the database schema using code. Instead of manually logging into the GUI applications and altering tables, you express database operations by writing Javascript code. 
+Database migrations is a way of evolving the database schema using code. Instead of manually creating tables using a GUI application, you express database operations by writing Javascript code. 
 
 For example: The following code snippet creates a new database table called `users`.
 
@@ -191,7 +193,7 @@ export default class Users extends BaseSchema {
       table.increments('id').notNullable().primary()
       table.string('username', 100).notNullable().unique()
       table.boolean('email', 255).notNullable().unique()
-      table.timestamps()
+      table.timestamps(true)
     })
   }
 
@@ -201,7 +203,5 @@ export default class Users extends BaseSchema {
 }
 ```
 
-## Database Seeders
-
 ## Health Checks
-Lucid uses the [health check system]() of AdonisJS and registers the health check service that checks for the connectivity with your database server.
+Lucid has inbuilt support for health checks. It will run a sample query on your configured database connection to check its connectivity. All you need to do is enable the `healthcheck` flag inside the config file and then use the AdonisJS central [health check](/guides/basics/health-checks) system to see the status.

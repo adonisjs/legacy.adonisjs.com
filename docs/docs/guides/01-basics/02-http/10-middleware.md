@@ -149,13 +149,22 @@ The first step is to create and register the middleware inside `start/kernel.ts`
     .get('posts', async () => {
       return 'List posts'
     })
-    .middleware('acl', ['user', 'moderator'])
+    .middleware('acl:user,moderator')
 
   Route
     .get('subscribers', async () => {
       return 'List subscribers'
     })
-    .middleware('acl', ['moderator', 'admin'])
+    .middleware('acl:moderator,admin')
   ```
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582467510/adonisjs.com/route-named-middleware.gif)
+
+### How it works?
+
+- A route middleware has to be registered first using `Server.middleware.registerNamed` method and then you can use it on routes.
+- When calling `Route.middleware`, you can pass arguments to the middleware by seperating them with a colon `:` expression.
+- The arguments are passed to the `handle` function as a 3rd argument.
+
+## What's Next?
+The HTTP middleware flow has certain limitations on the use cases it can serve. We recommend you to also read the [HTTP hooks](http-hooks) guide for a better understanding of the middleware flow and when to use hooks in place of middleware.

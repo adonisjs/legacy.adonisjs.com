@@ -6,16 +6,15 @@
   @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro|VT323&display=swap');
 
   :root {
-    --grey-900: #17161A; /** black */
+    --grey-900: #17161A;
     --grey-800: #46444c;
-    /** --grey-800: rgba(102, 105, 118, 0.75);  grey */
-    --grey-700: #666976; /** dark-grey */
-    --grey-600: #91939F; /** --grey-lightest */
-    --grey-500: #A8A6B8; /** --grey-moderate */
-    --grey-400: #F0F3F9; /** --grey-light */
-    --grey-300: #F7F8FA; /** grey-lighter */
-    --grey-200: #B1BACC; /** inactive */
-    --grey-100: #D7DEEB; /** outlines */
+    --grey-700: #666976;
+    --grey-600: #91939F;
+    --grey-500: #A8A6B8;
+    --grey-400: #F0F3F9;
+    --grey-300: #F7F8FA;
+    --grey-200: #B1BACC;
+    --grey-100: #D7DEEB;
 
     --pre-bg: #1e1e3f;
     --selection: #e6e2ff;
@@ -82,6 +81,7 @@
 
   code {
     font-family: var(--font-mono);
+    font-weight: 600;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
   }

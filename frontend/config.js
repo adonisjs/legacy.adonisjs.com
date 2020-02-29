@@ -1,18 +1,5 @@
 /*
 |--------------------------------------------------------------------------
-| Hero
-|--------------------------------------------------------------------------
-|
-| Title and subtitle for the hero area
-|
-*/
-exports.hero = {
-  title: 'A Modern Web Framework for Node.js',
-  subtitle: 'AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or microservices.'
-}
-
-/*
-|--------------------------------------------------------------------------
 | Site header
 |--------------------------------------------------------------------------
 |
@@ -32,23 +19,6 @@ exports.header = [
     permalink: '/guides/quick-start',
     isExternal: false,
     children: [],
-    // children: [
-    //   {
-    //     title: 'Guides',
-    //     permalink: '/guides/first-steps/introduction',
-    //     isExternal: false
-    //   },
-    //   {
-    //     title: 'Reference',
-    //     permalink: '/reference-guides/introduction',
-    //     isExternal: false
-    //   },
-    //   {
-    //     title: 'API Docs',
-    //     permalink: '/api-docs/introduction',
-    //     isExternal: false
-    //   }
-    // ]
   },
   {
     title: 'Roadmap',
@@ -68,7 +38,7 @@ exports.header = [
       },
       {
         title: 'Discord Chat',
-        permalink: 'https://forum.adonisjs.com/',
+        permalink: 'https://discord.gg/vDcEjq6?',
         isExternal: true
       },
       {
@@ -97,11 +67,6 @@ exports.header = [
         permalink: '/release-process',
         isExternal: false
       },
-      {
-        title: 'Legals',
-        permalink: '/legals',
-        isExternal: false
-      }
     ]
   }
 ]
@@ -122,20 +87,20 @@ exports.footer = [
     isExternal: false,
     children: [
       {
-        title: 'Guides',
+        title: 'Quick Start',
         permalink: '/guides/quick-start',
         isExternal: false
       },
-      // {
-      //   title: 'Reference',
-      //   permalink: '/reference-guides/introduction',
-      //   isExternal: false
-      // },
-      // {
-      //   title: 'API Docs',
-      //   permalink: '/api-docs/introduction',
-      //   isExternal: false
-      // }
+      {
+        title: 'Handling HTTP Requests',
+        permalink: '/guides/http/introduction',
+        isExternal: false
+      },
+      {
+        title: 'Validator',
+        permalink: '/guides/validator/introduction',
+        isExternal: false
+      },
     ]
   },
   {
@@ -158,11 +123,6 @@ exports.footer = [
         permalink: '/release-process',
         isExternal: false
       },
-      {
-        title: 'Legals',
-        permalink: '/legals',
-        isExternal: false
-      }
     ]
   },
   {
@@ -177,7 +137,7 @@ exports.footer = [
       },
       {
         title: 'Discord Chat',
-        permalink: 'https://forum.adonisjs.com/',
+        permalink: 'https://discord.gg/vDcEjq6?',
         isExternal: true
       },
       {
@@ -195,7 +155,7 @@ exports.footer = [
 |--------------------------------------------------------------------------
 |
 | Following is an array of showcase tabs with title and their codeblocks.
-| The codeblocks are pre-formatted using the dimer API and manually
+| The codeblocks are pre-formatted using the Dimer API and manually
 | copied to this file.
 |
 | Feel free to reach us on Github, if you want to make modifications
@@ -246,7 +206,7 @@ Route<span class="token punctuation">.</span><span class="token function">post</
     title: 'Models',
     code: `<pre><code><span class="token keyword">import</span> <span class="token punctuation">{</span> BaseModel<span class="token punctuation">,</span> column <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@ioc:Adonis/Lucid/Orm'</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">Post</span> <span class="token punctuation">{</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">Post</span> <span class="token keyword">extends</span> <span class="token class-name">BaseModel</span> <span class="token punctuation">{</span>
   @<span class="token function">column</span><span class="token punctuation">(</span><span class="token punctuation">{</span> isPrimary<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
   <span class="token keyword">public</span> id<span class="token operator">:</span> <span class="token builtin">number</span>
 
@@ -285,26 +245,6 @@ exports.primaryFeatures = [
     body: `Stop spending hours to find the perfect NPM packages. AdonisJS comes with a ton of first party packages with unified API semantics.`
   }
 ]
-
-/*
-|--------------------------------------------------------------------------
-| The Main Video
-|--------------------------------------------------------------------------
-|
-| The embed video on the home page showcasing the functionality of the
-| framework by creating a blog.
-|
-*/
-exports.mainVideo = {
-  label: 'AdonisJS in Action',
-  title: 'Build a Blog in 15 Mins',
-  subtitle: `Inspired by the popular Ruby on Rails demo, let's create a blog together to feel the essence of the framework.`,
-}
-
-exports.secondaryFeaturesSection = {
-  title: `What's included?`,
-  subtitle: `No need to download a gazillion of packages to create a meaningful application. AdonisJS comes with ton of features for every corner of your app, aiming to make you productive from day one.`,
-}
 
 /*
 |--------------------------------------------------------------------------

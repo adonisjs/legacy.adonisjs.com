@@ -2,12 +2,16 @@
   <section class="hero">
     <div class="container">
       <div class="hero-container">
-        <h1 class="title"> {{ $static.hero.edges[0].node.title }} </h1>
-        <h3 class="subtitle"> {{ $static.hero.edges[0].node.subtitle }} </h3>
+        <h1 class="title">
+          A Modern Web Framework for Node.js
+        </h1>
+        <h3 class="subtitle">
+          AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or microservices.
+        </h3>
 
         <div class="cta">
           <!-- @hardcoded -->
-          <a-button title="Get Started" href="/guides/http/introduction" />
+          <a-button title="Get Started" href="/guides/quick-start" />
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">
@@ -38,14 +42,6 @@
 
 <static-query>
   query {
-    hero: allHero {
-      edges {
-        node {
-          title
-          subtitle
-        }
-      }
-    },
     showCaseTabs: allShowCaseTabs(order: ASC) {
       edges {
         node {

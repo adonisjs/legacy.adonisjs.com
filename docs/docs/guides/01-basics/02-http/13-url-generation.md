@@ -115,7 +115,7 @@ Route.makeUrl('homepage')
 ## Generating Signed URLs
 Signed URLs provides a neat way to generate URLs with hash signature appended to them. The hash ensures that the generated URL is not modified or tampered.
 
-A great use case of signed URLs is email verification. Instead of generating and storing email verification tokens inside the database, you can opt for signed URLs. 
+A great use case of signed URLs is email verification. Instead of generating and storing email verification tokens inside the database, you can opt-in for signed URLs. 
 
 For demonstration, let's create a dummy app to verify the user email address using a signed URL.
 
@@ -153,7 +153,7 @@ For demonstration, let's create a dummy app to verify the user email address usi
 #### What just happened?
 
 - As you can notice, we directly pass the user email address to the URL, without worrying about someone changing it.
-- The `request.hasValidSignature()` tests the route signature and ensures that any part of the URL is not tampered.
+- The `request.hasValidSignature()` tests the route signature and ensures that the URL is not tampered.
 - Just like `params`, you can also add `query string` to the signed URL's and it will just work fine.
 
 ### Expiring Signed URLs

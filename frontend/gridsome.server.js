@@ -13,22 +13,15 @@ const config = require('./config.js')
 
 module.exports = function (gsApi) {
   gsApi.loadSource(async ({ addCollection }) => {
-    const hero = addCollection({ typeName: 'Hero' })
     const header = addCollection({ typeName: 'HeaderMenu' })
     const footer = addCollection({ typeName: 'FooterMenu' })
     const primaryFeatures = addCollection({ typeName: 'PrimaryFeatures' })
     const showCaseTabs = addCollection({ typeName: 'ShowCaseTabs' })
-    const mainVideo = addCollection({ typeName: 'MainVideo' })
     const secondaryFeatures = addCollection({ typeName: 'SecondaryFeatures' })
-    const secondaryFeaturesSection = addCollection({ typeName: 'SecondaryFeaturesSection' })
 
     /**
      * Using the static config file to feed the graphQL database.
      */
-    hero.addNode(config.hero)
-    mainVideo.addNode(config.mainVideo)
-    secondaryFeaturesSection.addNode(config.secondaryFeaturesSection)
-
     config.header.forEach((item) => header.addNode(item))
     config.footer.forEach((item) => footer.addNode(item))
     config.showCaseTabs.forEach((item) => showCaseTabs.addNode(item))

@@ -38,6 +38,11 @@
     position: relative;
   }
 
+  .wysiwyg hr {
+    height: 1px;
+    background: var(--grey-100);
+  }
+
   .wysiwyg h1 {
     margin-bottom: 3rem;
     font-size: 4.6rem;
@@ -143,7 +148,9 @@
 
   .wysiwyg code {
     font-size: 1.6rem;
-    background-color: var(--grey-300);
+    border-radius: 3px;
+    padding: 0 4px;
+    background-color: var(--grey-400);
   }
 
   .wysiwyg a {
@@ -219,8 +226,8 @@
   }
 
   @media (min-width: 768px) {
-    .wysiwyg > div > p+.code-highlight {
-      margin-top: -1.8rem;
+    .wysiwyg > div > p+.code-highlight, .wysiwyg > div > p+.codegroup {
+      margin-top: -1.4rem;
     }
 
     .wysiwyg .code-highlight, .wysiwyg .codegroup {

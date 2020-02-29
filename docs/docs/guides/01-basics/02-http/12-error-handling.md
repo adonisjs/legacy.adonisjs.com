@@ -68,47 +68,6 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 }
 ```
 
-## Status Pages
-The base exception handler let you to configure templates to be rendered for specific status codes. For example: Defining a template for `404` status code and a template for series of `500` status codes.
-
-```ts
-import Logger from '@ioc:Adonis/Core/Logger'
-import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
-
-export default class ExceptionHandler extends HttpExceptionHandler {
-  // highlight-start
-  protected statusPages = {
-    '404': 'errors.not-found',
-    '500..599': 'errors.server-error',
-  }
-  // highlight-end
-
-  constructor () {
-    super(Logger)
-  }
-}
-```
-
-- The exception handler will render `errors.not-found` template everytime an exception with status code `404` is raised.
-- Using the range expression `..`, we assign `errors.server-error` template for `500` to `599` status codes.
-
-By default the status pages are not rendered during development. However, you can turn them on using `disableStatusPagesInDevelopment` flag.
-
-```ts{2}
-export default class ExceptionHandler extends HttpExceptionHandler {
-  protected disableStatusPagesInDevelopment = false
-
-  protected statusPages = {
-    '404': 'errors.not-found',
-    '500..599': 'errors.server-error',
-  }
-
-  constructor () {
-    super(Logger)
-  }
-}
-```
-
 ## Error Reporting
 The default `report` method will report all the exceptions reaching the global exception handler. Getting notified about every exception can get annoying, specially, when there is no need to act on them. For this very same reason, the base exception handler allows you to blacklist the error codes or the status codes from being reported.
 
@@ -183,3 +142,47 @@ Route.get('/', async () => {
 If you visit [http://localhost:3333](http://localhost:3333), you must see a message similar to the following screenshot.
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582479120/adonisjs.com/self-handled-exception.png)
+
+
+## Status Pages
+The base exception handler let you to configure templates to be rendered for specific status codes. For example: Defining a template for `404` status code and a template for series of `500` status codes.
+
+```ts
+import Logger from '@ioc:Adonis/Core/Logger'
+import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
+
+export default class ExceptionHandler extends HttpExceptionHandler {
+  // highlight-start
+  protected statusPages = {
+    '404': 'errors.not-found',
+    '500..599': 'errors.server-error',
+  }
+  // highlight-end
+
+  constructor () {
+    super(Logger)
+  }
+}
+```
+
+- The exception handler will render `errors.not-found` template everytime an exception with status code `404` is raised.
+- Using the range expression `..`, we assign `errors.server-error` template for `500` to `599` status codes.
+
+By default the status pages are not rendered during development. However, you can turn them on using `disableStatusPagesInDevelopment` flag.
+
+```ts{2}
+export default class ExceptionHandler extends HttpExceptionHandler {
+  protected disableStatusPagesInDevelopment = false
+
+  protected statusPages = {
+    '404': 'errors.not-found',
+    '500..599': 'errors.server-error',
+  }
+
+  constructor () {
+    super(Logger)
+  }
+}
+```
+
+## Development Pages
