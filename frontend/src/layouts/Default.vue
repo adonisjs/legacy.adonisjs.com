@@ -24,8 +24,8 @@
     --red: #DF4A4A;
 
     --font-base: 'Calibre';
-    --font-secondary: 'BitxMap Font Tfb', monospace;
-    --font-mono: 'Anonymous Pro', monospace;
+    --font-secondary: 'JetBrains Mono', monospace;
+    --font-mono: 'JetBrains Mono', monospace;
 
     --header-height: 56px;
     --base-text-size: 1.9rem;
@@ -81,7 +81,6 @@
 
   code {
     font-family: var(--font-mono);
-    font-weight: 600;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
   }
