@@ -1,7 +1,7 @@
 // This is the main.js file. Import global CSS and scripts here.
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 
-import '~/assets/stylesheet.css'
+import '~/assets/fonts/calibre.css'
 import '~/assets/fonts/jetbrains.css'
 import DefaultLayout from '~/layouts/Default.vue'
 import { Dimer, DimerTree, DimerSearch, DimerTabs } from 'dimer-vue'

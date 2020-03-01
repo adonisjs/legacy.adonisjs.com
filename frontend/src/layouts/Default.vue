@@ -3,8 +3,6 @@
 </template>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro|VT323&display=swap');
-
   :root {
     --grey-900: #17161A;
     --grey-800: #46444c;
