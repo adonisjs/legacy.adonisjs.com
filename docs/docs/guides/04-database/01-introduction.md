@@ -17,7 +17,7 @@ Also, the lifecycle of these connections is entirely managed by Lucid and hence 
 Learn more about [Connections management]()
 
 ## Connection pooling
-Connection pooling is a way to optimize queries and also limit the number of concurrent connections a database server can handle. Inside your database config file, you can define the **min** and **max** number of pool connections for AdonisJS to maintain. 
+Connection pooling is a way to optimize queries and also limit the number of concurrent connections a database server can handle. Inside your database config file, you can define the **min** and **max** number of pool connections for AdonisJS to maintain.
 
 - The `min` number ensures that these many connections are always alive, even when the application is idle. Since, creating a new connection is an expensive operation, you do want to make sure that a couple of connections are always alive to execute queries.
 - The `max` number ensures that you are not overwhelming your database with too many concurrent connections.
@@ -180,7 +180,7 @@ Learn more about [Lucid Models]()
 
 ## Database Migrations
 
-Database migrations is a way of evolving the database schema using code. Instead of manually creating tables using a GUI application, you express database operations by writing Javascript code. 
+Database migrations is a way of evolving the database schema using code. Instead of manually creating tables using a GUI application, you express database operations by writing Javascript code.
 
 For example: The following code snippet creates a new database table called `users`.
 
@@ -194,7 +194,7 @@ export default class Users extends BaseSchema {
     this.schema.createTable(this.$tableName, (table) => {
       table.increments('id').notNullable().primary()
       table.string('username', 100).notNullable().unique()
-      table.boolean('email', 255).notNullable().unique()
+      table.string('email', 255).notNullable().unique()
       table.timestamps(true)
     })
   }
