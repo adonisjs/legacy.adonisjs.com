@@ -84,6 +84,11 @@ async function getZoneGroupsAndCategories (zoneSlug, versionNo, includeContent) 
         groups.push(group)
       }
 
+      if (!group.under_progress && doc.under_progress) {
+        group.under_progress = true
+        group.last_updated_on = doc.last_updated_on
+      }
+
       let category = group.categories.find(({ name }) => name === doc.category)
       if (!category) {
         category = {
@@ -135,14 +140,23 @@ function getDocPageData (zone, doc, groups) {
       && node.props.className.includes('toc-container')
   })
 
+  const docGroup = groups.find(({ name }) => name === doc.group) || {}
+
   return {
     path: `/${doc.permalink}`,
     component: zone.component,
     context: {
-      doc: doc,
+      doc: {
+        title: doc.title,
+        content: doc.content,
+        group: doc.group,
+        permalink: doc.permalink,
+      },
       toc: toc,
       groups: groups,
-      categories: groups.find(({ name }) => name === doc.group).categories,
+      under_progress: docGroup.under_progress,
+      last_updated_on: docGroup.last_updated_on,
+      categories: docGroup.categories,
     },
   }
 }

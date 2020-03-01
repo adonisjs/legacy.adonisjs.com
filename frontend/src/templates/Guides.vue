@@ -12,12 +12,12 @@
 
         <div :key="$route.path">
           <div class="docs-wrapper">
-            <div class="in-progress-notification" v-if="$context.doc.under_progress">
+            <div class="in-progress-notification" v-if="$context.under_progress">
               <p>
                 The guides for <strong>{{ $context.doc.group }}</strong> are in progress and will be updated regularly.
               </p>
               <p class="notification-timestamp">
-                <span> Last updated: </span> {{ $context.doc.last_updated_on }}
+                <span> Last updated: </span> {{ $context.last_updated_on }}
               </p>
             </div>
             <a-doc :doc="$context.doc" />
