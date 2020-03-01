@@ -30,6 +30,13 @@
     line-height: 1.3;
   }
 
+  .article code {
+    font-size: 1.6rem;
+    border-radius: 3px;
+    padding: 0 4px;
+    background-color: var(--grey-400);
+  }
+
   .hero {
     background: var(--grey-300);
     padding: 80px 0;

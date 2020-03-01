@@ -57,7 +57,7 @@
   }
 
   .wysiwyg h2 code {
-    font-size: 2.6rem;
+    font-size: 2.4rem;
   }
 
   .wysiwyg h3 {
@@ -147,7 +147,7 @@
   }
 
   .wysiwyg code {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     border-radius: 3px;
     padding: 0 4px;
     background-color: var(--grey-400);
