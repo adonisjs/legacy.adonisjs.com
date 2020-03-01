@@ -12,6 +12,14 @@ Middleware area series of functions that are executed before an HTTP request rea
 3. A middleware to log HTTP requests.
 4. Or a middleware to transform the response body.
 
+## Middleware Flow
+
+![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582969262/adonisjs.com/http-middleware_wvb8mg.png)
+
+- Middleware are executed on every new HTTP request.
+- They are executed in sequence from left to right. 
+- If one middleware decided to abort the request, then all other middleware along with the route handler are not executed.
+
 ## Global middleware
 Global middleware are executed on every HTTP request in the same order as they are registered. You create global middleware for actions that you want to execute on every request.
 
@@ -165,6 +173,3 @@ The first step is to create and register the middleware inside `start/kernel.ts`
 - A route middleware has to be registered first using `Server.middleware.registerNamed` method and then you can use it on routes.
 - When calling `Route.middleware`, you can pass arguments to the middleware by seperating them with a colon `:` expression.
 - The arguments are passed to the `handle` function as a 3rd argument.
-
-## What's Next?
-The HTTP middleware flow has certain limitations on the use cases it can serve. We recommend you to also read the [HTTP hooks](http-hooks) guide for a better understanding of the middleware flow and when to use hooks in place of middleware.
