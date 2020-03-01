@@ -9,6 +9,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install up
+          command: curl -sf https://up.apex.sh/install | BINDIR=. sh
+      - run:
+          name: Install Netlify CI
+          command: npm install netlify-cli -g
+      - run:
           name: Setup
           command: ./setup.sh
       - run:
