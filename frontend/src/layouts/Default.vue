@@ -37,6 +37,7 @@
     box-sizing: border-box;
     border: 0;
     outline: 0;
+    scrollbar-width: none;
   }
 
   html {
