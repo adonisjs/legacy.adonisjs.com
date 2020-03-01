@@ -86,12 +86,12 @@
 
   .codegroup_tabs_head .codegroup_tab {
     cursor: pointer;
-    padding: 13px 15px;
+    padding: 14px 15px 12px 15px;
     margin-right: 20px;
     font-family: var(--font-secondary);
     letter-spacing: 1px;
     text-transform: uppercase;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: var(--grey-200);
     font-weight: 600;
   }

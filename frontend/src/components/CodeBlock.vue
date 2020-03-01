@@ -17,7 +17,7 @@
 	  background: var(--pre-bg);
     text-align: left;
     border-radius: 4px;
-    line-height: 1.4;
+    line-height: 1.6;
   }
 
   .code-highlight .title {
@@ -26,7 +26,7 @@
     border-bottom: 1px solid rgba(102, 105, 118, 0.34);
     font-family: var(--font-secondary);
     letter-spacing: 0.8px;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: var(--grey-100);
     font-weight: 600;
     display: block;
@@ -42,11 +42,11 @@
   .code-highlight pre {
     display: block;
     padding: 30px 30px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     overflow: auto;
     width: 100%;
     max-width: 100%;
-	  color: #d6deeb;
+    color: #d6deeb;
     white-space: pre-wrap;
     word-break: break-word;
   }
