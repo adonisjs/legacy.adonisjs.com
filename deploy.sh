@@ -8,7 +8,7 @@ sh ./tasks.sh
 echo "---- Deploying API ----"
 cp up.json prod/api
 export AWS_PROFILE=adonis_prod
-(cd prod/api && up)
+(cd prod/api && ../../up)
 
 echo "---- Deploying Frontend ----"
-netlify deploy --dir=prod/public --prod
+npx netlify-cli deploy --dir=prod/public --prod
