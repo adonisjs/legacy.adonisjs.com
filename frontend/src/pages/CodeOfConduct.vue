@@ -58,7 +58,7 @@
 
       <h2>Attribution</h2>
       <p>
-        This Code of Conduct is adapted from the <a href="https://www.contributor-covenant.org/">Contributor Covenant</a>, version 1.4, available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html">https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a>
+        This Code of Conduct is adapted from the <a href="https://www.contributor-covenant.org/" target="_blank" rel="noreferrer">Contributor Covenant</a>, version 1.4, available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html" target="_blank" rel="noreferrer">https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a>
       </p>
 
     </a-article>

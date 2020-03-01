@@ -24,7 +24,7 @@
           Frameworks like Express, Koa are mainly routing libraries with support for middleware
         </li>
         <li>
-          Frameworks like SailsJS are <a href="https://kevin.burke.dev/kevin/dont-use-sails-or-waterline/">badly architected</a>.
+          Frameworks like SailsJS are <a href="https://kevin.burke.dev/kevin/dont-use-sails-or-waterline/" target="_blank" rel="noreferrer">badly architected</a>.
         </li>
         <li>
           Meteor unnecessarily takes everything to the next level all together. For example, their own package manager.
@@ -49,7 +49,7 @@
       </p>
 
       <p>
-        Well, a curated list is not bad, but a framework has a bigger job to accomplish. Also, when frameworks doesn’t value integrated systems, they leave you alone in the land of <a href="https://en.wikipedia.org/wiki/Glue_code">glue code</a>.
+        Well, a curated list is not bad, but a framework has a bigger job to accomplish. Also, when frameworks doesn’t value integrated systems, they leave you alone in the land of <a href="https://en.wikipedia.org/wiki/Glue_code" target="_blank" rel="noreferrer">glue code</a>.
       </p>
 
       <p>Let’s go through a small example and see how glue code makes its way into your code.</p>

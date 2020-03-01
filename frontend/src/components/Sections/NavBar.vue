@@ -34,7 +34,7 @@
         <!-- Dropdown -->
         <ul v-if="item.node.children.length">
           <li v-for="(child, index) in item.node.children" :key="index">
-            <a :href="child.permalink" v-if="child.isExternal" target="_blank">
+            <a :href="child.permalink" v-if="child.isExternal" target="_blank" rel="noreferrer">
               {{ child.title }}
             </a>
             <g-link :to="child.permalink" v-else>{{ child.title }}</g-link>

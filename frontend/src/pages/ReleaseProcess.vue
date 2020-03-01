@@ -6,13 +6,13 @@
       <template v-slot:hero>
         <h1>Release Process</h1>
         <h3 class="lede">
-          Starting with version 5.0, we decided to have an official release process for the framework. AdonisJS will follow a 6 week release cycle and a strong commitment to <a href="https://semver.org">Semantic Versioning</a>.
+          Starting with version 5.0, we decided to have an official release process for the framework. AdonisJS will follow a 6 week release cycle and a strong commitment to <a href="https://semver.org" target="_blank" rel="noreferrer">Semantic Versioning</a>.
         </h3>
       </template>
 
       <h2> How is AdonisJS structured? </h2>
       <p>
-        AdonisJS is a collection of several first party packages built around the <a href="https://github.com/adonisjs/adonis-framework">core of the framework</a>. Whenever, you hear us mentioning the AdonisJS version, just assume that we are talking about the version of the framework core.
+        AdonisJS is a collection of several first party packages built around the <a href="https://github.com/adonisjs/adonis-framework" target="_blank" rel="noreferrer">core of the framework</a>. Whenever, you hear us mentioning the AdonisJS version, just assume that we are talking about the version of the framework core.
       </p>
 
       <p>
