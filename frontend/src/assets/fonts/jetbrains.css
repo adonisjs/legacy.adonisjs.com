@@ -9,64 +9,9 @@
 
 @font-face {
   font-family: 'JetBrains Mono';
-  src: local('JetBrains Mono Bold'), local('JetBrainsMono-Bold'),
-      url('./JetBrains/JetBrainsMono-Bold.woff2') format('woff2'),
-      url('./JetBrains/JetBrainsMono-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: local('JetBrains Mono Medium Italic'), local('JetBrainsMono-MediumItalic'),
-      url('./JetBrains/JetBrainsMono-MediumItalic.woff2') format('woff2'),
-      url('./JetBrains/JetBrainsMono-MediumItalic.woff') format('woff');
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: local('JetBrains Mono ExtraBold'), local('JetBrainsMono-ExtraBold'),
-      url('./JetBrains/JetBrainsMono-ExtraBold.woff2') format('woff2'),
-      url('./JetBrains/JetBrainsMono-ExtraBold.woff') format('woff');
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: local('JetBrains Mono ExtraBold Italic'), local('JetBrainsMono-ExtraBoldItalic'),
-      url('./JetBrains/JetBrainsMono-ExtraBoldItalic.woff2') format('woff2'),
-      url('./JetBrains/JetBrainsMono-ExtraBoldItalic.woff') format('woff');
-  font-weight: 800;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: local('JetBrains Mono Italic'), local('JetBrainsMono-Italic'),
-      url('./JetBrains/JetBrainsMono-Italic.woff2') format('woff2'),
-      url('./JetBrains/JetBrainsMono-Italic.woff') format('woff');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
   src: local('JetBrains Mono Regular'), local('JetBrainsMono-Regular'),
       url('./JetBrains/JetBrainsMono-Regular.woff2') format('woff2'),
       url('./JetBrains/JetBrainsMono-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: local('JetBrains Mono Bold Italic'), local('JetBrainsMono-BoldItalic'),
-      url('./JetBrains/JetBrainsMono-BoldItalic.woff2') format('woff2'),
-      url('./JetBrains/JetBrainsMono-BoldItalic.woff') format('woff');
-  font-weight: bold;
-  font-style: italic;
-}
-
