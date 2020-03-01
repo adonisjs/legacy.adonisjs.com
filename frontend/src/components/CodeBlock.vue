@@ -28,15 +28,11 @@
     letter-spacing: 0.8px;
     font-size: 1.2rem;
     color: var(--grey-100);
-    font-weight: 600;
+    font-weight: 500;
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-
-  .code-highlight .title + pre {
-    padding-top: 20px;
   }
 
   .code-highlight pre {
@@ -146,7 +142,7 @@
   }
 
   .code-highlight .token.bold {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   .code-highlight .token.italic {

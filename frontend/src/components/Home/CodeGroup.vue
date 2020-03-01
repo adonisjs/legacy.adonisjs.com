@@ -93,6 +93,6 @@
     text-transform: uppercase;
     font-size: 1.3rem;
     color: var(--grey-200);
-    font-weight: 600;
+    font-weight: 500;
   }
 </style>
