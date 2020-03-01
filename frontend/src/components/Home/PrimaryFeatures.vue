@@ -5,7 +5,7 @@
         <div class="grid">
           <div class="col" v-for="feature in $static.features.edges" :key="feature.node.id">
             <a-feature :title="feature.node.title" :icon="feature.node.icon">
-              <p v-html="feature.node.body"></p>
+              <div v-html="feature.node.body"></div>
             </a-feature>
           </div>
         </div>

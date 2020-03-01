@@ -36,7 +36,7 @@
                  :key="feature.title"
               >
                 <a-feature :title="feature.title" :icon="feature.icon">
-                  <p v-html="feature.body"></p>
+                  <div v-html="feature.body"></div>
                 </a-feature>
               </div>
             </div>

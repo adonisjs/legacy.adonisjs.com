@@ -38,9 +38,9 @@
                 :to="row.url"
               >
                 <h2 class="title"><component :is="searchScope.renderMark(row.title.marks)" /></h2>
-                <p v-for="(sec, index) in row.body" :key="index">
+                <div v-for="(sec, index) in row.body" :key="index">
                   <component :is="searchScope.renderMark(sec.marks)" />
-                </p>
+                </div>
               </g-link>
             </div>
           </div>

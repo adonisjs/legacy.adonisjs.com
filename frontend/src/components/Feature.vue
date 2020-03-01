@@ -1,10 +1,10 @@
 <template>
   <div class="feature">
     <h2 class="feature-title">
-      <span v-html="icon" class="icon"></span>
+      <div v-html="icon" class="icon"></div>
       <span>{{ title }}</span>
     </h2>
-    <p><slot></slot></p>
+    <div><slot></slot></div>
   </div>
 </template>
 
