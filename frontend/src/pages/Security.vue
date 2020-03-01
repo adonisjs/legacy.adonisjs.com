@@ -46,6 +46,9 @@
   import AArticle from '~/components/Article.vue'
 
   export default {
+    metaInfo: {
+      title: 'Security',
+    },
     components: { AHeader, AArticle, AFooter },
   }
 </script>

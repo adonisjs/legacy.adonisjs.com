@@ -103,6 +103,9 @@
   import AArticle from '~/components/Article.vue'
 
   export default {
+    metaInfo: {
+      title: 'Why AdonisJS?',
+    },
     components: { AHeader, AArticle, AFooter },
   }
 </script>

@@ -73,6 +73,9 @@
   import AArticle from '~/components/Article.vue'
 
   export default {
+    metaInfo: {
+      title: 'Code of Conduct',
+    },
     components: { AHeader, AArticle, AFooter },
   }
 </script>

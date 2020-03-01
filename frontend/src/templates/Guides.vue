@@ -33,6 +33,12 @@
 
   export default {
     components: { AHeader, ASidebar, ADoc, AToc },
+
+    metaInfo () {
+      return {
+        title: this.$context.doc.title
+      }
+    },
   }
 </script>
 

@@ -18,7 +18,6 @@ export default function (Vue, { router, head, isClient }) {
     }
 
     // Handles correctly any external link
-    console.log(node)
     if (node.tag === 'a' && /^http(s)?/.test(node.props.href)) {
       node.props.target = '_blank'
       node.props.rel = 'noreferrer'
