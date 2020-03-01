@@ -49,3 +49,8 @@ You can also write standard conditional statements within your templates.
   <p> Hello Guest </p>
 @endif
 ```
+
+The `else if`
+
+```
+```
