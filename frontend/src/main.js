@@ -4,7 +4,7 @@
 import '~/assets/fonts/calibre.css'
 import '~/assets/fonts/jetbrains.css'
 import DefaultLayout from '~/layouts/Default.vue'
-import { Dimer, DimerTree, DimerSearch, DimerTabs } from 'dimer-vue'
+import { Dimer, DimerTree, DimerSearch, DimerTabs, utils } from 'dimer-vue'
 import CodeBlock from '~/components/CodeBlock.vue'
 import Tabs from '~/components/Tabs'
 
@@ -15,6 +15,18 @@ export default function (Vue, { router, head, isClient }) {
      */
     if (node.props.className && node.props.className.indexOf('tabs') > -1) {
       return createElement(Tabs, { props: { node } })
+    }
+
+    // Handles correctly any external link
+    console.log(node)
+    if (node.tag === 'a' && /^http(s)?/.test(node.props.href)) {
+      node.props.target = '_blank'
+      node.props.rel = 'noreferrer'
+
+      const attrs = utils.propsToAttrs(node.props)
+      const children = node.children.map(rerender)
+
+      return createElement('a', { attrs }, children)
     }
 
     if (['h2', 'h3', 'h4'].includes(node.tag)) {

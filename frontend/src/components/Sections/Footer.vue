@@ -10,7 +10,7 @@
             <h3 class="title">{{ item.node.title }}</h3>
             <ul>
               <li v-for="child in item.node.children" :key="child.id">
-                <a :href="child.permalink" v-if="child.isExternal" target="_blank">
+                <a :href="child.permalink" v-if="child.isExternal" target="_blank" rel="noreferrer">
                   {{ child.title }}
                 </a>
                 <g-link :to="child.permalink" v-else>{{ child.title }}</g-link>
@@ -25,9 +25,9 @@
       <div class="container">
         <div class="footer-bottom-container">
           <p>
-            &copy; {{ new Date().getFullYear() }}. AdonisJS is a registered trademark of <a href="https://twitter.com/AmanVirk1" target="_blank">Harminder Virk</a>
+            &copy; {{ new Date().getFullYear() }}. AdonisJS is a registered trademark of <a href="https://twitter.com/AmanVirk1" target="_blank" rel="noreferrer">Harminder Virk</a>
           </p>
-          <p>Website Designed by <a href="http://frederikwilhelm.de/" target="_blank">Frederik Wilhelm</a></p>
+          <p>Website Designed by <a href="http://frederikwilhelm.de/" target="_blank" rel="noreferrer">Frederik Wilhelm</a></p>
         </div>
       </div>
     </div>

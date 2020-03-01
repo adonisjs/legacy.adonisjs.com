@@ -24,7 +24,7 @@
         </a>
 
         <!-- Use anchor tag when top level link is external -->
-        <a :href="item.node.permalink" v-else-if="item.node.isExternal" target="_blank">
+        <a :href="item.node.permalink" v-else-if="item.node.isExternal" target="_blank" rel="noreferrer">
           {{ item.node.title }}
         </a>
 
