@@ -51,23 +51,29 @@ module.exports = function (gsApi) {
       })
     }
 
-    ws.connect(async (message) => {
-      const zoneSlug = message.zone
-      const versionNo = message.version
-      const permalink = message.permalink
+    /**
+     * Listen for websockets events on dimer server and rebuild
+     * docs
+     */
+    if (process.env.NODE_ENV === 'development') {
+      ws.connect(async (message) => {
+        const zoneSlug = message.zone
+        const versionNo = message.version
+        const permalink = message.permalink
 
-      const zoneGroupsCategories = await api.getZoneGroupsAndCategories(zoneSlug, versionNo, false)
-      const doc = await api.getDoc(zoneSlug, versionNo, permalink)
-      const zone = zones.find((one) => one.slug === zoneSlug)
+        const zoneGroupsCategories = await api.getZoneGroupsAndCategories(zoneSlug, versionNo, false)
+        const doc = await api.getDoc(zoneSlug, versionNo, permalink)
+        const zone = zones.find((one) => one.slug === zoneSlug)
 
-      const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
+        const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
 
-      console.log(green(`create page ${pageData.path}`))
-      await removePageByPath(pageData.path)
-      createPage(pageData)
-    }, (error) => {
-      console.log('Ws error')
-      console.log(red(error))
-    })
+        console.log(green(`create page ${pageData.path}`))
+        await removePageByPath(pageData.path)
+        createPage(pageData)
+      }, (error) => {
+        console.log('Ws error')
+        console.log(red(error))
+      })
+    }
   })
 }

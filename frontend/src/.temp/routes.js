@@ -64,10 +64,6 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
-    path: "/guides/views/introduction/",
-    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
-  },
-  {
     path: "/guides/orm/many-to-many-relation/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
@@ -76,7 +72,15 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
+    path: "/guides/views/introduction/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
     path: "/guides/http/url-generate/",
+    component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
+  },
+  {
+    path: "/guides/views/else-if-tag/",
     component: () => import(/* webpackChunkName: "page--src--templates--guides-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/templates/Guides.vue")
   },
   {
@@ -268,12 +272,12 @@ export default [
     component: () => import(/* webpackChunkName: "page--src--pages--why-adonisjs-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/WhyAdonisjs.vue")
   },
   {
-    path: "/security/",
-    component: () => import(/* webpackChunkName: "page--src--pages--security-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/Security.vue")
-  },
-  {
     path: "/release-process/",
     component: () => import(/* webpackChunkName: "page--src--pages--release-process-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/ReleaseProcess.vue")
+  },
+  {
+    path: "/security/",
+    component: () => import(/* webpackChunkName: "page--src--pages--security-vue" */ "/Users/virk/code/adonis-final/adonisjs.com/frontend/src/pages/Security.vue")
   },
   {
     path: "/code-of-conduct/",
