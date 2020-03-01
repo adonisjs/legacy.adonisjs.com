@@ -58,6 +58,10 @@
     background: #fff;
   }
 
+  input, select {
+    font-family: var(--font-base);
+  }
+
   ::-moz-selection {
     background: var(--selection);
   }
