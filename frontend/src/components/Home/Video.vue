@@ -71,7 +71,8 @@
     justify-content: space-around;
     background: var(--pre-bg);
     font-size: 2.5rem;
-    font-family: var(--font-pre);
+    font-family: var(--font-mono);
+    color: #7a7b90;
     z-index: 1;
     position: relative;
   }
