@@ -163,7 +163,7 @@
     appearance: none;
     height: 4rem;
     padding-left: 2rem;
-    padding-right: 2rem;
+    width: 100%;
   }
 
   .menu-select-box--wrapper svg {
