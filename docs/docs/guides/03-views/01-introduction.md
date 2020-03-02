@@ -15,7 +15,7 @@ AdonisJS comes with a home grown template engine called [Edge](https://www.npmjs
 - Extensible API to add your own custom tags to extend the template engine.
 
 ## Setup
-Edge comes pre-installed with **Web Application** project structure created using the `create-adonis-ts-app` binary. However, installing it seperately is also pretty straight forward.
+Edge comes pre-installed with **Web Application** project structure created using the `create-adonis-ts-app` binary. However, installing it separately is also pretty straight forward.
 
 Open the `.adonisrc.json` file to check if it is installed and registered under the provider array or not.
 

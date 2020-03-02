@@ -5,7 +5,7 @@ group: Basics
 ---
 
 # Exception Handling
-AdonisJS allows you to globally handle exceptions that are occured during an HTTP request. By the end of this guide, you will know:
+AdonisJS allows you to globally handle exceptions that occurred during an HTTP request. By the end of this guide, you will know:
 
 - How to catch all exceptions at a single location.
 - Using exceptions as control flow.

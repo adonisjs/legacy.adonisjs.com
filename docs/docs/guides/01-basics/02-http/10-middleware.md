@@ -5,7 +5,7 @@ group: Basics
 ---
 
 # Middleware
-Middleware area series of functions that are executed before an HTTP request reaches the route handler. Using middleware, you can perform different actions like:
+Middleware are a series of functions that are executed before an HTTP request reaches the route handler. Using middleware, you can perform different actions like:
 
 1. An auth middleware to check whether a user is logged in or not. If not, then cancel the request, before it reaches the controller.
 2. A middleware to find the user country from their ip address and then pass it along to the controller.

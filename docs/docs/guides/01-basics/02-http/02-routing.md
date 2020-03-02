@@ -76,7 +76,7 @@ Route.route('/', ['TRACE'], async () => {
 ```
 
 ## Route Handlers
-Every routes must have a corresponding handler to handle the request. Handlers can be inline closures or reference to a controller method.
+Every route must have a corresponding handler to handle the request. Handlers can be inline closures or reference to a controller method.
 
 The inline closures are functions, directly attached on the route definition. They are great for quickly testing out some code. However, we highly recommend keeping the routes file clean by using Controllers.
 

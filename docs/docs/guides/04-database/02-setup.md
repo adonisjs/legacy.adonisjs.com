@@ -182,7 +182,7 @@ DB_PASSWORD=password
 DB_NAME=lucid
 ```
 
-With PostgreSQL, you can also pass the connection string instead of defining every connection property seperately.
+With PostgreSQL, you can also pass the connection string instead of defining every connection property separately.
 
 ```ts
 {
