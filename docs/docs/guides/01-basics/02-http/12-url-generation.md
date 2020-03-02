@@ -32,7 +32,7 @@ Route.get('users/:id', 'UsersController.show')
 Then, inside your controller or the view template, you can generate a URL by referencing the `Controller.action` name.
 
 [codegroup]
-```ts{}{Inside Javascript Code}
+```ts{}{Inside JavaScript Code}
 import Route from '@ioc:Adonis/Core/Route'
 
 export default class UsersController {

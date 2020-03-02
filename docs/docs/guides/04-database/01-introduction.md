@@ -180,7 +180,7 @@ Learn more about [Lucid Models]()
 
 ## Database Migrations
 
-Database migrations is a way of evolving the database schema using code. Instead of manually creating tables using a GUI application, you express database operations by writing Javascript code.
+Database migrations is a way of evolving the database schema using code. Instead of manually creating tables using a GUI application, you express database operations by writing JavaScript code.
 
 For example: The following code snippet creates a new database table called `users`.
 

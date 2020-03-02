@@ -40,10 +40,10 @@ By the end of this guide, you will have a fairly good understanding of the proje
 The root of the project has all the necessary config/meta files to setup the development workspace. Let's skim through the list of files and their purpose.
 
 #### tsconfig.json
-The `tsconfig.json` contains the configuration for the [Typescript compiler](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html). This file must exist in order for AdonisJS to compile your code to Javascript. Also, your text editor may use this same file for features like intellisense, auto imports and error detection.
+The `tsconfig.json` contains the configuration for the [TypeScript compiler](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html). This file must exist in order for AdonisJS to compile your code to JavaScript. Also, your text editor may use this same file for features like intellisense, auto imports and error detection.
 
 #### .eslintrc.json and .eslintignore
-These files are created to lint your Typescript code using [eslint](https://eslint.org/). You can run `npm run lint` command to run the linter or install the eslint plugin for your text editor for a tighter feedback loop.
+These files are created to lint your TypeScript code using [eslint](https://eslint.org/). You can run `npm run lint` command to run the linter or install the eslint plugin for your text editor for a tighter feedback loop.
 
 #### .adonisrc.json
 The `.adonisrc.json` file configures the workspace for AdonisJS projects. The application runtime, the CLI commands and your project dependencies rely on this file to understand the requirements of your project.
@@ -95,7 +95,7 @@ All of the application runtime configuration is stored inside the `config` direc
 As your application will grow, you can also use this directory to store additional configuration files.
 
 ## The `contracts` directory
-Applicable to Typescript projects. The `contracts` directory stores the **interfaces**, **types**, **enums** or any other Typescript constructs.
+Applicable to TypeScript projects. The `contracts` directory stores the **interfaces**, **types**, **enums** or any other TypeScript constructs.
 
 ## The `start` directory
 The `start` directory contains the files that must be loaded only once during the initial boot process.
@@ -103,7 +103,7 @@ The `start` directory contains the files that must be loaded only once during th
 Even though the framework doesn't automatically load these files, keeping them in a separate directory indicates a clear purpose.
 
 ## The `resources` directory
-The `resources` directory is dedicated for storing view templates, uncompiled/raw frontend assets like **SASS files** or **frontend Javascript** and so on.
+The `resources` directory is dedicated for storing view templates, uncompiled/raw frontend assets like **SASS files** or **frontend JavaScript** and so on.
 
 After compiling the frontend assets, you must move them to the `public` directory, since the `resources` directory is not exposed to the internet.
 
@@ -131,7 +131,7 @@ node ace make:command Greet
 ```
 
 ## The `server.ts` file
-The `server.ts` is the entry point for booting the application and starting the HTTP server. If required, you can also start the HTTP server by running this file directly. However, do make sure to compile the Typescript source to Javascript first. For example:
+The `server.ts` is the entry point for booting the application and starting the HTTP server. If required, you can also start the HTTP server by running this file directly. However, do make sure to compile the TypeScript source to JavaScript first. For example:
 
 ```sh
 node ace build

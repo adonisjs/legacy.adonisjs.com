@@ -6,12 +6,12 @@ group: Views & Templates
 # Interpolation & Conditionals
 Just like any other template engine, Edge also has support for interpolation and conditionals. By the end of this guide, you will know:
 
-- How to write Javascript expressions
+- How to write JavaScript expressions
 - How to use conditionals inside your templates
 - The difference between mustache and safe mustache braces
 
 ## Interpolation
-Interpolation allows you to write Javascript expressions within your HTML markup. In Edge, the expressions are inclosed within the mustache braces `{{ }}`. For example:
+Interpolation allows you to write JavaScript expressions within your HTML markup. In Edge, the expressions are inclosed within the mustache braces `{{ }}`. For example:
 
 ```edge
 <p>
@@ -23,7 +23,7 @@ Interpolation allows you to write Javascript expressions within your HTML markup
 </p>
 ```
 
-You are not only limited to simple variable reference or arithmetic operations. Infact, you can use any valid [Javascript expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Expressions) inside the mustache braces.
+You are not only limited to simple variable reference or arithmetic operations. Infact, you can use any valid [JavaScript expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#Expressions) inside the mustache braces.
 
 [codegroup]
 ```edge{}{Array.Map}

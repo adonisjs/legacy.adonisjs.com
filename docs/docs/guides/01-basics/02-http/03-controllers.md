@@ -6,7 +6,7 @@ group: Basics
 
 # Controllers
 
-Controllers are the defacto way of handling HTTP requests in AdonisJS. Unlike many other frameworks, controllers in AdonisJS are not magical, infact they are plain Javascript classes with no logic attached to them.
+Controllers are the defacto way of handling HTTP requests in AdonisJS. Unlike many other frameworks, controllers in AdonisJS are not magical, infact they are plain JavaScript classes with no logic attached to them.
 
 In this guide, we will go through the API surface of controllers and also answer certain questions around the simplicity of controllers in AdonisJS.
 
@@ -53,7 +53,7 @@ If you want to re-use some logic within your application, then that piece of cod
 We strongly recommend you to treat your controllers as traffic hops, whose job is to accept the HTTP request, assign work to the other parts of the application and return a response. All of the reusable logic must live outside the controller.
 
 ## What Controllers don't do?
-In AdonisJS, controllers are vanilla Javascript classes with no inherited behavior. The main purpose of controllers is to move the inline route handlers to dedicated classes and keep the code structured.
+In AdonisJS, controllers are vanilla JavaScript classes with no inherited behavior. The main purpose of controllers is to move the inline route handlers to dedicated classes and keep the code structured.
 
 Many MVC framework also uses controllers as the hotspot for configuring routes and defining middleware using decorators or instance properties. For example:
 

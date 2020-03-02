@@ -74,7 +74,7 @@ declare module '@ioc:Adonis/Core/Event' {
 }
 ```
 
-Now, if you attempt to emit the `id` as a string to the `new:user` event, the Typescript compiler will complain about it.
+Now, if you attempt to emit the `id` as a string to the `new:user` event, the TypeScript compiler will complain about it.
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582564270/adonisjs.com/Screen_Shot_2020-02-24_at_10.40.53_PM_x0a3tn.png)
 

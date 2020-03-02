@@ -352,7 +352,7 @@ Templates won't be fun, if you cannot conditionally render HTML or loop over an 
 
 ### Conditionals
 
-Just like Javascript, you can write `if`, `elseif` and `else` statements in Edge using the dedicated conditional tags.
+Just like JavaScript, you can write `if`, `elseif` and `else` statements in Edge using the dedicated conditional tags.
 
 ```edge
 @if(username)
@@ -381,7 +381,7 @@ Using `elseif`
 
 [/tip]
 
-As you can experience, the syntax of conditionals is very close to Javascript. Infact, one of the goals of Edge is to stay closer to the Javascript syntax for smaller learning curve.
+As you can experience, the syntax of conditionals is very close to JavaScript. Infact, one of the goals of Edge is to stay closer to the JavaScript syntax for smaller learning curve.
 
 Edge also has `@unless` tag, which is opossite of `@if` tag. Sometimes writing `unless` feels more natural than writing a `negative if`.
 

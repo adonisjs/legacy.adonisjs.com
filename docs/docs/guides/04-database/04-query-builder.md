@@ -4,7 +4,7 @@ group: Database
 ---
 
 # Query Builder
-The Database query builder provides you the Javascript API for constructing single to advanced SQL queries. By the end of this guide, you will know:
+The Database query builder provides you the JavaScript API for constructing single to advanced SQL queries. By the end of this guide, you will know:
 
 - How to construct and execute SQL queries
 - Different types of query builders
