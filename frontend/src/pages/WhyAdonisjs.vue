@@ -12,7 +12,7 @@
 
       <h2> History </h2>
       <p>
-        AdonisJS was started as an open source project in early 2016. The framework was <strong>intentionally created</strong> to serve as an alternative to other frameworks in the Node.js ecosystem.
+        AdonisJS was started as an open source project in the later half of 2015. The framework was <strong>intentionally created</strong> to serve as an alternative to other frameworks in the Node.js ecosystem.
       </p>
 
       <p>

@@ -44,7 +44,14 @@
 
     metaInfo () {
       return {
-        title: this.$context.doc.title
+        title: this.$context.doc.title,
+        meta: [
+          { name: 'description', content: 'AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or microservices.' },
+          { name: 'keywords', content: 'adonis, framework, node.js, mvc, javascript' },
+          { property: 'og:title', content: `${this.$context.doc.title} - AdonisJS Framework` },
+          { property: 'og:description', content: 'AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or microservices.' },
+          { property: 'og:image', content: 'https://preview.adonisjs.com/adonis-readme.jpg' },
+        ]
       }
     },
   }
