@@ -2,6 +2,21 @@
 // Header nav items //
 //////////////////////
 
+.pinned-alert {
+  align-items: center;
+  background-color: $footer-background-color;
+  border-bottom: 1px solid $light-gray;
+  font-family: $family-code;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  text-transform: uppercase;
+
+  p {
+    font-feature-settings: normal !important;
+  }
+}
+
 .navbar>.container .navbar-brand {
   margin-left: 0;
 
