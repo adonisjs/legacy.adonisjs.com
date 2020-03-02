@@ -204,7 +204,7 @@ export class AuthMiddleware {
 
 ## Http Context
 
-AdonisJs creates a unqiue context object for every HTTP request it receives. The Context (aka `ctx`) is then passed to every middleware and finally to the route handler. 
+AdonisJs creates a unique context object for every HTTP request it receives. The Context (aka `ctx`) is then passed to every middleware and finally to the route handler. 
 
 The purpose of the context is to hold the information related to the current request. For example: 
 
