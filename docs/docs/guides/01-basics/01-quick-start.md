@@ -7,7 +7,7 @@ group: Basics
 Welcome to AdonisJS! The guides are designed to help you get up and running with AdonisJS, even if this is your first time using it. Couple of points to note, before we get started.
 
 - The guides only covers the topics which are ready and shipped for the v5 preview release.
-- The code examples are in Typescript, so we expect you to have some familarity with it.
+- The code examples are in TypeScript, so we expect you to have some familarity with it.
 
 [note]
 The core of the framework under the preview release is quite stable and ready for production use. It's just that some of the old AdonisJS packages are not migrated to work with new core.
@@ -72,10 +72,10 @@ You can start the development server by running the following `ace` command.
 node ace serve --watch
 ```
 
-The `serve` command first compiles the typescript code to Javascript and then starts the HTTP server from the compiled code. The `--watch` flag is meant to watch the file system for changes.
+The `serve` command first compiles the TypeScript code to Javascript and then starts the HTTP server from the compiled code. The `--watch` flag is meant to watch the file system for changes.
 
 [note]
-Since all of the AdonisJS runtime behavior relies on the compiled Javascript code. It is advised to always have a terminal session compiling the Typescript source.
+Since all of the AdonisJS runtime behavior relies on the compiled Javascript code. It is advised to always have a terminal session compiling the TypeScript source.
 [/note]
 
 ## Compiling For Production
@@ -87,7 +87,7 @@ node ace build --production
 
 The above command performs the following steps in sequence.
 
-1. Compile Typescript source files.
+1. Compile TypeScript source files.
 2. Copy `metaFiles` mentioned inside `.adonisrc.json` to the `build` folder.
 3. Copy `package.json`, along with `package-lock.json` or `yarn.lock` inside the `build` folder.
 

@@ -66,7 +66,7 @@
       <p>Also, do not mistake integrated systems with hardcoded features. AdonisJS itself treats its ORM and the validation engine as two separate modules. The fact, we believe in integrated systems, we created extensible API’s, which allows the <span class="quote">module authors to write the glue code and not the module consumers</span>.</p>
 
       <h2>Optimize for Developer Experience</h2>
-      <p>At AdonisJS, we put a lot of emphasis on improving the developer experience. Adopting Typescript, CLI commands and extensive documentation are all that contributes to this goal.</p>
+      <p>At AdonisJS, we put a lot of emphasis on improving the developer experience. Adopting TypeScript, CLI commands and extensive documentation are all that contributes to this goal.</p>
 
       <p>Also, it is not only about the tooling, we give similar care to the aesthetics of the code as well. Every part of the framework feels like a member of the same family. In fact, this is one of the reasons for writing AdonisJS from ground up vs wrapping existing frameworks in our own packaging.</p>
 

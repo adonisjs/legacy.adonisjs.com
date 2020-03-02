@@ -232,7 +232,7 @@ exports.primaryFeatures = [
   {
     title: 'Type-safe',
     icon: `<svg class="feature-icon" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h40v40H0z"/><g transform="translate(1.25 1.25)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><path d="M37.5 17.5C37.5 7.5 28.683 0 18.75 0 8.818 0 .71 7.73.062 17.5H15v6.25C15 29.962 20.038 35 26.25 35S37.5 29.962 37.5 23.75V17.5z" stroke="#17161A"/><path stroke="#5A45FF" d="M0 22.5v10L12.5 30"/><circle stroke="#5A45FF" cx="26.25" cy="23.75" r="3.75"/></g></g></svg>`,
-    body: `Type safety is baked into the framework with first class support for Typescript. No need to install any additional build tools, Typescript just works with AdonisJS.`
+    body: `Type safety is baked into the framework with first class support for TypeScript. No need to install any additional build tools, TypeScript just works with AdonisJS.`
   },
   {
     title: 'Extensible',
@@ -266,7 +266,7 @@ exports.secondaryFeatures = [
       {
         title: 'Form Validator',
         icon: `<svg class="feature-icon" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h40v40H0z"/><g transform="translate(1 5)"><rect stroke="#5A45FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" x=".667" y=".667" width="37" height="13.333" rx="1"/><circle fill="#17161A" cx="7.5" cy="7.5" r="2.5"/><circle fill="#17161A" cx="15.5" cy="7.5" r="2.5"/><circle fill="#17161A" cx="23.5" cy="7.5" r="2.5"/><circle fill="#17161A" cx="31.5" cy="7.5" r="2.5"/><rect stroke="#17161A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" x="17.333" y="21" width="20" height="8" rx="1"/></g></g></svg>`,
-        body: `Being a Typescript first framework, AdonisJS exposes the API to define runtime validations on the request body and also extract the static type information at the same time.`,
+        body: `Being a TypeScript first framework, AdonisJS exposes the API to define runtime validations on the request body and also extract the static type information at the same time.`,
       },
       {
         title: 'Template Engine',

@@ -79,16 +79,16 @@ For demonstration, let's create a middleware for finding the user country from t
 A lot is going on above, let's decode it step by step.
 
 - Using the `geoip-lite`, we attempt lookup the user country from their ip address.
-- Next, we set the `country` on the `request` object. You will get a typescript error when trying to add a dynamic property, but let's ignore that for now and we will fix it later.
+- Next, we set the `country` on the `request` object. You will get a TypeScript error when trying to add a dynamic property, but let's ignore that for now and we will fix it later.
 - After the job of middleware is completed, you must call the `next` function. Doing so, will execute the next middleware in the chain and finally the route handler.
 - Finally, you will have to register the middleware inside the `start/kernel.ts`. Just like controllers, there is no need to import the middleware file, you can pass it as a string reference.
 
 ## Extending Types
-If you are following along this guide, you would have noticed that Typescript complains when trying to add a runtime property `country` to the request object as shown in the following image.
+If you are following along this guide, you would have noticed that TypeScript complains when trying to add a runtime property `country` to the request object as shown in the following image.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582462569/adonisjs.com/typescript-request-extend-complain.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582462569/adonisjs.com/TypeScript-request-extend-complain.png)
 
-If you have used Typescript previously, you may have faced a similar situation when trying to extend values at runtime. Infact, this is true for any statically typed language.
+If you have used TypeScript previously, you may have faced a similar situation when trying to extend values at runtime. Infact, this is true for any statically typed language.
 
 Since, one of the goals of AdonisJS is to be extensible, we have put enough thoughts into letting you easily extend static types. To do so, let's create a new file `request.ts` inside the `contracts` folder.
 
@@ -96,7 +96,7 @@ Since, one of the goals of AdonisJS is to be extensible, we have put enough thou
 touch contracts/request.ts
 ```
 
-Open the newly created file and paste the following code snippet inside it. After that, Typescript will stop complaining.
+Open the newly created file and paste the following code snippet inside it. After that, TypeScript will stop complaining.
 
 ```ts
 declare module '@ioc:Adonis/Core/Request' {
@@ -109,7 +109,7 @@ declare module '@ioc:Adonis/Core/Request' {
 #### How it works?
 
 - In order for any object or a class to be extendible, you will have to type it to an interface. This concept is also known as **programming to an interface** or **loosely coupled code**.
-- Next, you can leverage the [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) feature of Typescript to merge properties of two interfaces that belongs to a single module and has same name.
+- Next, you can leverage the [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html) feature of TypeScript to merge properties of two interfaces that belongs to a single module and has same name.
 - Voila!, you have successfully extended a type. All of the AdonisJS codebase is loosely coupled and can be extended in the same fashion.
 
 ## Route Middleware
