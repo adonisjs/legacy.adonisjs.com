@@ -58,8 +58,8 @@
     background: #fff;
   }
 
-  input, select {
-    font-family: var(--font-base);
+  input, select, optgroup, option {
+    font-family: var(--font-base), sans-serif;
   }
 
   ::-moz-selection {
