@@ -66,7 +66,7 @@
 
 <style scoped>
   .hero-codegroup-tabs {
-    overflow: scroll;
+    overflow: auto;
     position: relative;
   }
 

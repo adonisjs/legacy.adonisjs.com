@@ -88,7 +88,7 @@
 
   .sidebar-container {
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
     width: 250px;
     padding: 0;
   }
