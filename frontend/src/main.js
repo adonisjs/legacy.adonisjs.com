@@ -8,6 +8,24 @@ import { Dimer, DimerTree, DimerSearch, DimerTabs, utils } from 'dimer-vue'
 import CodeBlock from '~/components/CodeBlock.vue'
 import Tabs from '~/components/Tabs'
 
+console.log(`
+ ______     _____     ______     __   __     __     ______       __     ______
+/\\  __ \\   /\\  __-.  /\\  __ \\   /\\ "-.\\ \\   /\\ \\   /\\  ___\\     /\\ \\   /\\  ___\\
+\\ \\  __ \\  \\ \\ \\/\\ \\ \\ \\ \\/\\ \\  \\ \\ \\-.  \\  \\ \\ \\  \\ \\___  \\   _\\_\\ \\  \\ \\___  \\
+ \\ \\_\\ \\_\\  \\ \\____-  \\ \\_____\\  \\ \\_ \\"\\_\\  \\ \\_\\  \\/\\_____\\ /\\_____\\  \\/\\_____\\
+  \\/_/\\/_/   \\/____/   \\/_____/   \\/_/ \\/_/   \\/_/   \\/_____/ \\/_____/   \\/_____/
+
+Hey there!
+
+You are interested in the source code of this project, or you find something that should be fixed?
+
+Lucky you... the website is open source!
+Feel free to make any suggestion in an issue or PR directly your change(s). 🤗
+
+🔗 https://github.com/adonisjs/adonisjs.com
+
+`)
+
 export default function (Vue, { router, head, isClient }) {
   Dimer.addRenderer(function (node, rerender, createElement) {
     /**
