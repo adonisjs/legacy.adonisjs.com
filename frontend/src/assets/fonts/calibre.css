@@ -5,6 +5,7 @@
       url('./Calibre/Calibre-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -14,6 +15,7 @@
       url('./Calibre/Calibre-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -23,5 +25,6 @@
       url('./Calibre/Calibre.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
