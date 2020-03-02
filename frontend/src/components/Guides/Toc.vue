@@ -27,7 +27,7 @@
   .toc-content {
     height: 100%;
     width: 300px;
-    overflow: scroll;
+    overflow: auto;
     padding: 60px 90px 60px 55px;
   }
 

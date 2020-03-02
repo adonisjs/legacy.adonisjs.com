@@ -100,7 +100,7 @@
   .features-list-nav {
     padding: 40px 0;
     display: flex;
-    overflow: scroll;
+    overflow: auto;
   }
 
   .features-list-nav div {
