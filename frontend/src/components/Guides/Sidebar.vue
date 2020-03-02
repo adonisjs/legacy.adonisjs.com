@@ -179,7 +179,7 @@
       display: block;
     }
 
-    .sidebar-wrapper .menu-select-box {
+    .sidebar-wrapper .menu-select-box--wrapper {
       display: none;
     }
 

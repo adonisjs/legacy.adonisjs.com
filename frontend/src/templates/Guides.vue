@@ -74,7 +74,6 @@
     background: var(--grey-300);
     padding: 12px 10px 12px 45px;
     max-width: 640px;
-    margin-left: 100px;
     border-bottom: 4px solid var(--red);
     margin-top: 40px;
   }
@@ -95,6 +94,12 @@
     position: absolute;
     top: -4px;
     bottom: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .in-progress-notification {
+      margin-left: 100px;
+    }
   }
 
   @media (min-width: 1260px) {
