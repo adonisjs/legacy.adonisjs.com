@@ -296,7 +296,7 @@ exports.secondaryFeatures = [
       {
         title: 'Migrations',
         icon: `<svg class="feature-icon" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h40v40H0z"/><g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><path stroke="#5A45FF" d="M20 37.5v-20M13.75 23.75L20 17.5l6.25 6.25"/><path d="M25 28.75h7.5c3.5-.375 6.25-3.25 6.25-6.875S36 15.375 32.5 15c-.625-6.25-6-11.25-12.5-11.25-5.625 0-10.375 3.75-12 8.875-3.75.625-6.75 4-6.75 8 0 4.25 3.25 7.75 7.5 8.125H15" stroke="#17161A"/></g></g></svg>`,
-        body: `AdonisJS has in-built support for database migrations. As your application evolves, you can <strong>create</strong> and <strong>alter</strong> the database schema using the Javascript code.`,
+        body: `AdonisJS has in-built support for database migrations. As your application evolves, you can <strong>create</strong> and <strong>alter</strong> the database schema using the JavaScript code.`,
       },
       {
         title: 'Seeds & Factories',

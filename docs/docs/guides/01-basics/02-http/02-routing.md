@@ -106,7 +106,7 @@ Now, if you will visit the http://localhost:3333/posts/1, you will see the follo
 
 - The `:id` is an expression **(known as route parameters)** that tells AdonisJS to accept any value and store it as `id` under the `params` object.
 - You can give any name to the parameter, just make sure that it starts with `:` (a colon).
-- The `params` property exists on the `ctx` object. You can access it as `ctx.params` or use the [Javascript destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring) as shown in the above example.
+- The `params` property exists on the `ctx` object. You can access it as `ctx.params` or use the [JavaScript destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring) as shown in the above example.
 
 ### Optional parameters
 

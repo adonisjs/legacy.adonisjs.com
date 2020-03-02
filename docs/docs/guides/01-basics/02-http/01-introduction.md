@@ -61,7 +61,7 @@ Route.get('/', async ({ view }) => {
 
 #### JSON Response
 
-You can send JSON response by simply returning a Javascript object from the route handler.
+You can send JSON response by simply returning a JavaScript object from the route handler.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -137,7 +137,7 @@ All that fancy syntax `@set`, `@each` are part of the Edge templating syntax. Ma
 
 ## Models
 
-Models represents the database layer of your application. AdonisJS has inbuilt support for data models built on top of [Active Record pattern](https://en.wikipedia.org/wiki/Active_record_pattern). You can describe your database tables as Javascript classes and use Javascript methods for reading, writing and deleting rows. For example:
+Models represents the database layer of your application. AdonisJS has inbuilt support for data models built on top of [Active Record pattern](https://en.wikipedia.org/wiki/Active_record_pattern). You can describe your database tables as JavaScript classes and use JavaScript methods for reading, writing and deleting rows. For example:
 
 [codegroup]
 

@@ -72,10 +72,10 @@ You can start the development server by running the following `ace` command.
 node ace serve --watch
 ```
 
-The `serve` command first compiles the TypeScript code to Javascript and then starts the HTTP server from the compiled code. The `--watch` flag is meant to watch the file system for changes.
+The `serve` command first compiles the TypeScript code to JavaScript and then starts the HTTP server from the compiled code. The `--watch` flag is meant to watch the file system for changes.
 
 [note]
-Since all of the AdonisJS runtime behavior relies on the compiled Javascript code. It is advised to always have a terminal session compiling the TypeScript source.
+Since all of the AdonisJS runtime behavior relies on the compiled JavaScript code. It is advised to always have a terminal session compiling the TypeScript source.
 [/note]
 
 ## Compiling For Production

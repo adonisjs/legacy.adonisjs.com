@@ -27,7 +27,7 @@ Global middleware are executed on every HTTP request in the same order as they a
 AdonisJS does not execute global middleware for requests that does not have a registered route. This means, if you create a global middleware and a request comes in for an non-existing route, then the middleware will never be executed. You can use [HTTP hooks](http-hooks), if you want to run code for requests with non-existing routes.
 [/note]
 
-For demonstration, let's create a middleware for finding the user country from their IP address. The middleware lives inside `app/Middleware` directory and just like controllers, they are also vanilla Javascript classes.
+For demonstration, let's create a middleware for finding the user country from their IP address. The middleware lives inside `app/Middleware` directory and just like controllers, they are also vanilla JavaScript classes.
 
 1. Run the following ace command to create a new middleware file.
   ```sh

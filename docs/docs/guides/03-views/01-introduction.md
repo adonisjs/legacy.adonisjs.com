@@ -11,7 +11,7 @@ AdonisJS comes with a home grown template engine called [Edge](https://www.npmjs
 
 - Support for components, layouts and partials.
 - Runtime debugging using chrome devtools.
-- View presenters to encapsulate the views logic to a dedicated Javascript class.
+- View presenters to encapsulate the views logic to a dedicated JavaScript class.
 - Extensible API to add your own custom tags to extend the template engine.
 
 ## Setup
