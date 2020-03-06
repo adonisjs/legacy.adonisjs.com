@@ -102,7 +102,7 @@
     }
   }
 
-  @media (min-width: 1260px) {
+  @media (min-width: 1350px) {
     .toc-wrapper {
        display: block;
     }
