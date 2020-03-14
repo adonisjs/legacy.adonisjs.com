@@ -11,7 +11,7 @@
   "websiteOptions": {
   },
   "compilerOptions": {
-    "apiUrl": "http://localhost:5000",
+    "apiUrl": "http://localhost:4444",
     "detectAssets": true,
     "createSearchIndex": true,
     "extensions": ["extensions/compileCode.js"]

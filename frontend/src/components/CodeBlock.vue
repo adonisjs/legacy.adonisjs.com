@@ -150,11 +150,15 @@
   }
 
   .code-highlight .token.inserted {
-    background: #00ff00;
+    background: #a5e2a5;
+    display: block;
+    color: #103c10;
   }
 
   .code-highlight .token.deleted {
-    background: #ff000d;
+    background: #e6acaf;
+    color: #48181b;
+    display: block;
   }
 
   .code-highlight .language-css .token.property,
