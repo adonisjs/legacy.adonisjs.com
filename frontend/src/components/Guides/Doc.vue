@@ -32,7 +32,11 @@
     margin-bottom: 5rem;
   }
 
-  .wysiwyg h1, .wysiwyg h2, .wysiwyg h3, .wysiwyg h4 {
+  .wysiwyg ul ul, .wysiwyg ul ol, .wysiwyg ol ul, .wysiwyg ol ol {
+    margin-bottom: 2rem;
+  }
+
+.wysiwyg h1, .wysiwyg h2, .wysiwyg h3, .wysiwyg h4 {
     font-weight: 700;
     color: var(--grey-900);
     position: relative;

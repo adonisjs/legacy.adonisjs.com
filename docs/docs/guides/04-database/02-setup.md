@@ -6,7 +6,7 @@ group: Database
 # Setup
 The default application created using `npx` or `yarn create` doesn't install Lucid and hence an extra step is required to set it up.
 
-Install the package from npm registry using the following command.
+Install the package from npm registry by running the following command.
 
 [note]
 The `@alpha` tag is required during the preview release.
@@ -195,6 +195,21 @@ With PostgreSQL, you can also pass the connection string instead of defining eve
   }
 }
 ```
+
+## Other Database Servers
+We haven't covered the setup for all possible databases. However, the process remains same for every other database server.
+
+- Get the database server up and running.
+- Install the driver from npm. Following is the list of drivers.
+  ```sh
+  npm install pg
+  npm install sqlite3
+  npm install mysql
+  npm install mysql2
+  npm install oracledb
+  npm install mssql
+  ```
+- Finally, define a new connection inside the `config/database.ts` file
 
 ## Health Checks
 Lucid has inbuilt support for health checks and it works across all database backends. All you need to do is, enable the `healthCheck` flag on the database connection and then use the AdonisJS global Health check API for checking the status.

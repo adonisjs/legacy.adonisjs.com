@@ -4,7 +4,7 @@ group: Database
 ---
 
 # Query Builder
-The Database query builder provides you the JavaScript API for constructing single to advanced SQL queries. By the end of this guide, you will know:
+The Database query builder provides you a fluent Javascript API for constructing SQL queries. By the end of this guide, you will know:
 
 - How to construct and execute SQL queries
 - Different types of query builders
@@ -42,7 +42,7 @@ const users = await Database
 ```
 [/codegroup]
 
-Well, above is a very simple example of the query builder. You can also create complex queries using **joins**, **sub queries**, **aggregates** and lot more.
+Well, above is a very simple example of the query builder. You can also create complex queries using **joins**, **sub queries**, **aggregates** and a lot more.
 
 ### Switching Connections
 The query builder instances uses the default connection defined inside the `config/database.ts` file. However, you can switch connections before creating a new query builder instance. For example:
@@ -77,4 +77,100 @@ The `Database.from` method creates a query builder instance for selecting, updat
   Database.rawQuery('select * from users;')
   ```
 
-## Selecting Columns
+## Fetching Rows
+Fetching rows is as sample as executing a select query using the Database query builder. The result of a query is always an array of objects, even when a single row is returned from the database.
+
+```ts
+const users = await Database.query().select('*').from('users')
+// an array of users
+```
+
+If you always want a single row from the result set, then you can make use of the `first` method.
+
+[note]
+The `first` method applies a `LIMIT` clause to the query.
+[/note]
+
+```ts
+const user = await Database.query().select('*').from('users').first()
+```
+
+## Inserting Rows
+You make use of the insert query builder for inserting new rows to the database. For example:
+
+```ts
+await Database
+  .insertQuery() // 👈gives an instance of insert query builder
+  .table('users')
+  .insert({ username: 'virk', email: 'virk@adonisjs.com' })
+```
+
+The return value of the `insert` query is dependent on the database server in use.
+
+- MySQL and SQLite will return the last inserted row id as an array with just one item. For example:
+  ```ts
+  const [ lastInsertId ] = await Database.table('users').insert({})
+  ```
+- For PostgreSQL, MSSQL and Oracle, you can make use of the `returning` method. The returning method can return a single column or multiple columns. For example:
+  ```ts
+  const [ id ] = await Database
+    .table('users')
+    .returning('id') 👈
+    .insert({})
+
+  // multiple columns
+  const [{ username, id }] = await Database
+    .table('users')
+    .returning(['id', 'username']) 👈
+    .insert({})
+  ```
+
+### Multi Insert
+You can also bulk insert rows using the `multiInsert` method.
+
+[note]
+MySQL and SQLite only returns the id for the last row and not all the rows.
+[/note]
+
+```ts
+await Database.table('users').multiInsert([
+  { username: 'virk' },
+  { username: 'romain' },
+])
+```
+
+## Updating and Deleting Rows
+You can update and delete rows by using the standard query builder. For example:
+
+```ts
+await Database
+  .from('users')
+  .where('username', 'virk')
+  .update({ account_status: 'verified' })
+```
+
+Or delete
+
+```ts
+await Database
+  .from('posts')
+  .where('slug', 'dummy-post')
+  .delete()
+```
+
+## Executing Raw Queries
+You can also execute raw SQL queries by using the raw query builder.
+
+[note]
+Unlike the standard query builder response, the response of the `rawQuery` is not normalized. You must read the documentation of the underlying npm driver for same. 
+[/note]
+
+```ts
+import Database from '@ioc:Adonis/Lucid/Database'
+
+const user = await Database
+  .rawQuery('select * from users where id = ?', [1])
+```
+
+## What's Next?
+This guide introduces you to the concept of Query builder and how to use it inside your application. However, the API surface of the query builder is quite big and we recommend you reading the [API docs](/api/database/query-builder) for same.

@@ -66,7 +66,8 @@
   .hero-container h1 {
     font-size: 5rem;
     color: var(--grey-900);
-    margin-bottom: 15px;
+    line-height: 50px;
+    margin-bottom: 30px;
   }
 
   .hero-container h3.lede {
@@ -113,7 +114,7 @@
     left: 0;
   }
 
-  .article-container .quote {
-    background: var(--selection);
+  .article-container strong {
+    font-weight: 600;
   }
 </style>

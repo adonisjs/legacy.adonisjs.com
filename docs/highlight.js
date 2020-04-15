@@ -64,3 +64,45 @@ export default class Post extends BaseModel {
     'language-ts'
   )))
 }
+
+if (args[0] === 'edge:conditionals') {
+  console.log(wrapPre(higlight(`<body>
+  @if(user)
+    <p> Hello {{ user.username }} </p>
+  @endif
+</body>`,
+    'language-edge'
+  )))
+}
+
+if (args[0] === 'edge:mmustache') {
+  console.log(wrapPre(higlight(`<body>
+  {{
+    user.earnings.map((earning) => {
+      return earning * 100
+    }).join(',')
+  }}
+</body>`,
+    'language-edge'
+  )))
+  // console.log(higlight(`user.earnings.map((earning) => {
+  //   return earning * 100
+  // }).join(',')`, 'language-js'))
+}
+
+if (args[0] === 'edge:components') {
+  console.log(wrapPre(higlight(`<body>
+  @component('components/modal', { title: 'Are you sure?' })
+    @slot('body')
+      <p> Select yes, will delete the blog post permanently </p>
+    @endslot
+
+    @slot('actions')
+      <a href=""> Cancel </a>
+      <a href=""> Yes, delete it </a>
+    @endslot
+  @endcomponent
+</body>`,
+    'language-edge'
+  )))
+}

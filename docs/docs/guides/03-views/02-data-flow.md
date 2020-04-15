@@ -4,7 +4,7 @@ group: Views & Templates
 ---
 
 # Data Flow
-You can pass data to templates at different stages and each stage defines the scope at which the data will be accessible inside the templates. By the end this guide, you will know:
+You can pass data to the templates at different stages and each stage defines the scope at which the data will be accessible inside the templates. By the end this guide, you will know:
 
 - Different API's to pass data to a template
 - The scope of data at which it is accessible to the templates
@@ -38,7 +38,7 @@ Route.get('users/:id', async ({ view }) => {
 The state of the template is shared among the `partials` and the `layout`, but not with the `components`, since components have their own state.
 
 ## Global State
-Templates also have a global state, which is shared among all the templates and even the components. This is a great place to store the helper methods or some configuration.
+Templates also have a global state, which is shared among all the templates and **even the components**. This is a great place to store the helper methods or some shared configuration.
 
 ### Defining globals
 The globals must be defined only once. So keeping them inside a provider is a great option. Open `providers/AppProvider.ts` file and paste the following code snippet inside it.
@@ -68,13 +68,13 @@ Now, you can access the `timestamp` method inside your templates.
 ```
 
 ## Shared State
-Finally, the templates can also have shared state. The shared state is similar to the globals, but it is specific to a single instance of a view. The shared state is helpful, when you want to have globals, but isolated between HTTP requests.
+Finally, the templates can also have shared state. The shared state is similar to globals, but it is specific to a single instance of a view. The shared state is helpful, when you want to have globals, but isolated between HTTP requests.
 
-For example: The `request` and `auth` variables added by AdonisJS are also part of the shared state.
+For example: The `request` and `auth` variables added by AdonisJS are part of the shared state.
 
 [codegroup]
 
-```ts{}{Sharing data}
+```ts{2}{Sharing data}
 Route.get('/', async ({ view, request }) => {
   view.share({ locale: request.language(['en', 'fr', 'it']) })
 
@@ -89,3 +89,14 @@ Route.get('/', async ({ view, request }) => {
 [/codegroup]
 
 The above example uses a Route for simpler explaination. However, you can `share` data from middleware as well and it will be isolated among multiple HTTP requests.
+
+## Conclusion
+Before passing all the data to a template, Edge will deep merge all these objects in the following order.
+
+- Globals
+- Shared state
+- Template state
+
+```ts
+const finalState = deepMerge(globals, sharedState, templateState)
+```

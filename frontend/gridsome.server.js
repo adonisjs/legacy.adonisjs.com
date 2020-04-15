@@ -16,7 +16,8 @@ module.exports = function (gsApi) {
     const header = addCollection({ typeName: 'HeaderMenu' })
     const footer = addCollection({ typeName: 'FooterMenu' })
     const primaryFeatures = addCollection({ typeName: 'PrimaryFeatures' })
-    const showCaseTabs = addCollection({ typeName: 'ShowCaseTabs' })
+    const homePageShowCaseTabs = addCollection({ typeName: 'HomePageShowCaseTabs' })
+    const edgeShowCaseTabs = addCollection({ typeName: 'EdgeShowCaseTabs' })
     const secondaryFeatures = addCollection({ typeName: 'SecondaryFeatures' })
 
     /**
@@ -24,7 +25,8 @@ module.exports = function (gsApi) {
      */
     config.header.forEach((item) => header.addNode(item))
     config.footer.forEach((item) => footer.addNode(item))
-    config.showCaseTabs.forEach((item) => showCaseTabs.addNode(item))
+    config.homePageShowCaseTabs.forEach((item) => homePageShowCaseTabs.addNode(item))
+    config.edgeShowCaseTabs.forEach((item) => edgeShowCaseTabs.addNode(item))
     config.primaryFeatures.forEach((item) => primaryFeatures.addNode(item))
     config.secondaryFeatures.forEach((item) => secondaryFeatures.addNode(item))
   })

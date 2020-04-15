@@ -1,23 +1,21 @@
 ---
 permalink: guides/views/introduction
 group: Views & Templates
-under_progress: true
-last_updated_on: 1st March, 2020
 ---
 
 # Introduction
+AdonisJS uses [Edge](/packages/edge) as its template engine. It is a fully featured template engine written for the modern day. It has out of the box support for:
 
-AdonisJS comes with a home grown template engine called [Edge](https://www.npmjs.com/package/edge.js). Edge is written for the modern day and has lots of exiciting features like:
-
-- Support for components, layouts and partials.
-- Runtime debugging using chrome devtools.
-- View presenters to encapsulate the views logic to a dedicated JavaScript class.
-- Extensible API to add your own custom tags to extend the template engine.
+- Conditionals and loops
+- Components, layouts and partials
+- Runtime debugging using Chrome DevTools
+- Stack traces that points to the original filename and the line number
+- Extensible API to add your own custom Edge tags
 
 ## Setup
-Edge comes pre-installed with **Web Application** project structure created using the `create-adonis-ts-app` binary. However, installing it separately is also pretty straight forward.
+Edge comes pre-installed with the **Web Application** project structure created using the `create-adonis-ts-app` binary. However, installing it separately is also pretty straight forward.
 
-Open the `.adonisrc.json` file to check if it is installed and registered under the provider array or not.
+Open the `.adonisrc.json` file to check if it is installed and registered under the providers array or not.
 
 ```json{4}{.adonisrc.json}
 "providers": [
@@ -59,7 +57,7 @@ Route.get('/', async ({ view }) => {
 })
 ```
 
-Next step is to create the `home.edge` template. Template lives inside the `resources/views` directory of your project root. You can manually create a file inside this folder, or use the following ace command to create one for now.
+Next step is to create the `home.edge` template. Template lives inside the `resources/views` directory of your project root. You can manually create a file inside this folder, or use the following ace command to create one.
 
 ```sh
 node ace make:view home
@@ -69,45 +67,89 @@ node ace make:view home
 
 Let's open the newly created file and paste the following code snippet inside it.
 
-```edge
+```edge{}{resources/views/home.edge}
 <p> Hello world. You are viewing the {{ request.url() }} page </p>
 ```
 
-Make sure to start the development server `node ace serve --watch` and visit [http://localhost:3333](http://localhost:3333) to view the contents of the template file.
+Make sure to start the development server by running `node ace serve --watch` and visit [http://localhost:3333](http://localhost:3333) to view the contents of the template file.
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1583063256/adonisjs.com/view-usage.png)
 
-### The Route render method
-The Router module also exposes a shorthand to render a views without defining a closure or the controller method. The following example results in the same output as the earlier route definition.
+### How it works?
+- Every route handler receives an instance of `view` that is used to render template files.
+- The `view.render` method accepts a relative path from the `resources/views` directory.
+- During the `view.render` call, you can pass the template state/data as 2nd argument.
+  ```ts
+  view.render('home', { greeting: 'Hello world' })
+  ```
 
-```ts
-Route.on('/').render('home')
+## Syntax Guide
+Before learning about the features of Edge, it is very important to understand the Edge syntax at the fundamental level, since everything else is layers on top of these fundamentals.
+
+There are basically two distinct ways of writing Javascript or logic inside your templates.
+
+### The Curly Braces
+The curly braces (or mustache braces) are commonly used across many different template engines. Edge also uses the same syntax for interpolation.
+
+```edge
+{{ username }}
+{{ username.toUpperCase() }}
+
+{{ users[0].username }}
+{{ users.length ? users[0].username : 'Guest' }}
+
+{{-- Multiline --}}
+{{
+  users.map((user) => {
+    return user.username
+  }).join(',')
+}}
 ```
 
-### Using Outside the HTTP Requests
-Rendering views during an HTTP request is a very common task and hence AdonisJS passes an instance of the view to the route handlers. 
+### The Edge tags
+A fully featured template engine needs many more features than just outputting Javascript expressions. For example: Including partials, writing conditionals and so on. These features are added using the **tags API** of Edge.
 
-However, it doesn't mean that you cannot render views outside the context of an HTTP request. Consider the following example.
-
-```ts
-import View from '@ioc:Adonis/Core/View'
-const html = View.render('home')
+The following is the `include` tag for including partials.
+```edge
+@include('header')
 ```
 
-- You can import the `@ioc:Adonis/Core/View` module anywhere inside your app and then run `View.render` method to render a template.
-- But do make sure that you cannot access the `request` or the `auth` variables when rendering outside the context of the HTTP request.
+The following is an `each` tag for iterating for an array of items. However, the each tag accepts additional markup inside the opening and closing expressions.
 
-## Customizing Views Location
-You can customize the location of views by defining a custom location inside the `.adonisrc.json` file.
+```edge
+@each(user in users)
+  - {{ user.username }}
+@endeach
+```
 
-[tip]
-You can run `node ace dump:rcfile` command to view an expanded version of the config.
-[/tip]
+Similarly, there are many more tags to enrich the templating experience. The great thing is, Edge also [exposes the API](creating-custom-tags) for creating your own tags.
+
+### Comments
+Finally, you can also write comments inside your templates.
+
+```edge
+{{-- A block level comment --}}
+
+{{--
+  A multiline comment
+--}}
+
+Hello {{-- inline comment --}} everyone!
+```
+
+Most of the times, you will be generating HTML from your edge templates, so using the standard HTML comments is also fine. However, the Edge comments becomes helpful, when you are using them inside a language that doesn't have comments, like **JSON** or **Markdown**.
+
+```edge
+{
+  {{-- The main account username --}}
+  "username": "{{ username }}"
+}
+```
+
+Output
 
 ```json
 {
-  "directories": {
-    "views": "./my-dir/views"
-  }
+  "username": "virk"
 }
 ```
