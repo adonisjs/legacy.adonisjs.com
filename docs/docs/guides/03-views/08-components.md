@@ -157,6 +157,17 @@ Well, writing HTML inside nested objects isn't fun. This is why, Edge comes with
 
 The `username` is not accessible by the component, but the slots can access it.
 
+### The main slot
+Every component has a main slot, which doesn't need to be defined explicitly. In the following example, the markup within the opening and the closing statements is part of the main slot.
+
+```edge
+@component('components/modal')
+  <p> This will become part of the main slot </p>
+@endcomponent
+```
+
+In other words, every line of code that is not nested inside a named slot is added to the `main` slot.
+
 ### Passing data to the slots
 The component can pass custom data to the slots at the time of rendering them. For example:
 
