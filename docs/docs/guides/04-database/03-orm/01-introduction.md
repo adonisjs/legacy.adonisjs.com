@@ -1,13 +1,14 @@
 ---
-permalink: guides/orm/models
-category: Lucid ORM
+permalink: guides/models/introduction
+category: Data Models
 group: Database
 ---
 
-# Models
+# Introduction
 Along with the Database query builder, Lucid also comes with an implementation of [Active record pattern](https://en.wikipedia.org/wiki/Active_record_pattern) to simplify the database interactions. By the end of this guide, you will know:
 
 - More about the Active record pattern
+- Difference between Data models and Database query builder
 - The API exposed by Lucid to manipulate data stored in a relational database
 - Working with dates and times inside Lucid models
 
@@ -29,7 +30,7 @@ import { DateTime } from 'luxon'
 const users = await Database.from('users').select('*')
 
 return users.map((user) => {
-  user.dob = DateTime.fromJSDate(user.job).toFormat('dd LLL yyyy')
+  user.dob = DateTime.fromJSDate(user.dob).toFormat('dd LLL yyyy')
   return user
 })
 ```
@@ -52,7 +53,7 @@ And use it as follows:
 
 ```ts
 const users = await User.all()
-return users.toJSON() // date is formatted during `toJSON` call
+return users.map((user) => user.toJSON()) // date is formatted during `toJSON` call
 ```
 
 This is just one example, but it does convey the gist of using Models.
@@ -60,12 +61,12 @@ This is just one example, but it does convey the gist of using Models.
 ## Lucid implementation
 Lucid offers you a rich API for modeling your database interactions and relationships using data models. It has the ability to:
 
-1. Define models and persist, fetch or delete their data.
+1. Define models and **persist**, **fetch** or **delete** their data.
 2. Handle relationships between multiple models.
 3. Serialize models to JSON with option to customize the serialization process.
-4. Hook into the database operations life-cycle to simplify repetitive tasks. 
+4. Exposes API to hook into the database operations life-cycle.
 
-## Getting Started
+## Creating your first model
 Assuming you already have lucid [setup](/guides/database/setup), run the following command to create your first data model.
 
 ```sh
@@ -74,7 +75,7 @@ node ace make:model User
 # ✔  create    app/Models/User.ts
 ```
 
-Open the newly created file and replace its content with the following code snippet.
+The `make:model` command creates a new model inside `app/Models` directory with the following contents inside it.
 
 ```ts
 import { DateTime } from 'luxon'
@@ -84,12 +85,6 @@ export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column()
-  public username: string
-
-  @column()
-  public password: string
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -98,7 +93,27 @@ export default class User extends BaseModel {
 }
 ```
 
-- The `User` model will conventionally query the `users` table. You can customize the table name by defining `public static table = 'my_users'` property.
-- All properties using `@column` decorator are the table column names. This is required for Lucid to distinguish between standard model properties and the table columns.
+- Every model must extend the `BaseModel` class.
+- The table name is the **all lowercase** and **plural form** of the model name. However, you can define it manually as well.
+  ```ts
+  export default class User extends BaseModel {
+    public static table = 'auth_users'
+  }
+  ```  
+- The properties using the `@column` decorator are the table column names. They are defined as `camelCase` inside the model and as `snake_case` inside the table, but can also be customized.
+  ```ts
+  export default class User extends BaseModel {
+    @column({ isPrimary: true, columnName: 'user_id' })
+    public id: number
+  }
+  ```
 
-The Model itself doesn't
+## FAQ's
+
+[collapse title="Does models creates the database tables automatically?"]
+  No. We do not sync your models with the database. Creating/altering tables must be done using migrations. Make sure to read this [RFC]() for reasoning behind the decision.
+[/collapse]
+
+[collapse title="I am coming from TypeORM, how should I define column types?"]
+  You do not. We follow the approach of lean models and do 
+[/collapse]

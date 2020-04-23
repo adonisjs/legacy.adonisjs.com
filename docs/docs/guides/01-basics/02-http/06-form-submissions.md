@@ -51,7 +51,7 @@ For example, following is the HTML form to create a new blog post by accepting t
 </html>
 ```
 
-As you can notice, the entire document is vanilla HTML with no special syntax inside it. However, you can replace the hardcoded form action `/posts`  with a helper method `route`.
+As you can notice, the entire document is vanilla HTML with no special syntax inside it. However, you can replace the hard coded form action `/posts`  with a helper method `route`.
 
 Assuming the following route declarations. 
 

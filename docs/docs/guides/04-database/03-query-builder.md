@@ -4,59 +4,32 @@ group: Database
 ---
 
 # Query Builder
-The Database query builder provides you a fluent Javascript API for constructing SQL queries. By the end of this guide, you will know:
+The Database query builder is the first step towards constructing and executing SQL queries. Instead of writing SQL DSL by hand, you make use of the Javascript API for constructing queries.
+
+By the end of this guide, you will know:
 
 - How to construct and execute SQL queries
-- Different types of query builders
-- How to debug SQL queries
+- Using different types of query builders for executing insert, select or raw queries
 
 ## Using the Query Builder
-You can obtain an instance of query builder using the Database module. For example:
-
-[codegroup]
-
-```ts{}{Select All}
-import Database from '@ioc:Adonis/Lucid/Database'
-
-const users = await Database
-  .from('users')
-  .select('*')
-```
-
-```ts{}{Where Clause}
-import Database from '@ioc:Adonis/Lucid/Database'
-
-const users = await Database
-  .from('users')
-  .where('account_status', 'ACTIVE')
-```
-
-```ts{}{Limit and Offset}
-import Database from '@ioc:Adonis/Lucid/Database'
-
-const users = await Database
-  .from('users')
-  .where('account_status', 'ACTIVE')
-  .limit(20)
-  .offset(0)
-```
-[/codegroup]
-
-Well, above is a very simple example of the query builder. You can also create complex queries using **joins**, **sub queries**, **aggregates** and a lot more.
-
-### Switching Connections
-The query builder instances uses the default connection defined inside the `config/database.ts` file. However, you can switch connections before creating a new query builder instance. For example:
+You can get an instance of query builder using the Database module. For example:
 
 ```ts
-const mysql = Database.connection('mysql')
-const users = await mysql
-  .query()
-  .from('users')
-  .select('*')
+import Database from '@ioc:Adonis/Lucid/Database'
+const users = await Database.query().select('*').from('users')
 ```
 
+- The `Database.query` method creates a new query builder instance.
+- The `select` method is used to select the columns.
+- Finally the `from` method specifies the database table for the query.
+- The result of the query is always an array of objects, unless the `.first` method is used.
+
+Just like the `select` and the `from` methods, there are many more methods on the query builder to construct advanced and complex SQL queries.
+
 ## Types of Query Builders
-The `Database.from` method creates a query builder instance for selecting, updating or deleting rows. Also, this method is shortcut for `Database.query().from('<TABLE>')` method. Following is the list different query builders instances.
+The `Database.query` method creates a query builder instance for **selecting**, **updating** or **deleting** rows. Whereas, to insert new data, you have to make use of the `insert query builder`.
+
+Following is the list different query builders instances.
 
 - Query builder for selecting, updating or deleting rows.
   ```ts
@@ -111,7 +84,7 @@ The return value of the `insert` query is dependent on the database server in us
   ```ts
   const [ lastInsertId ] = await Database.table('users').insert({})
   ```
-- For PostgreSQL, MSSQL and Oracle, you can make use of the `returning` method. The returning method can return a single column or multiple columns. For example:
+- For PostgreSQL, MSSQL and Oracle, you can make use of the `returning` method. The returning method can return value for a single column or multiple columns. For example:
   ```ts
   const [ id ] = await Database
     .table('users')
@@ -126,7 +99,7 @@ The return value of the `insert` query is dependent on the database server in us
   ```
 
 ### Multi Insert
-You can also bulk insert rows using the `multiInsert` method.
+You can also perform bulk inserts using the `multiInsert` method.
 
 [note]
 MySQL and SQLite only returns the id for the last row and not all the rows.
@@ -159,10 +132,10 @@ await Database
 ```
 
 ## Executing Raw Queries
-You can also execute raw SQL queries by using the raw query builder.
+Raw queries allows to execute a SQL from a string input. This is usually helpful, when you want to execute complex queries that are not supported by the standard query builder.
 
 [note]
-Unlike the standard query builder response, the response of the `rawQuery` is not normalized. You must read the documentation of the underlying npm driver for same. 
+Unlike the standard query builder response, the response of the `rawQuery` is not normalized. You must read the documentation of the underlying npm driver for same.
 [/note]
 
 ```ts
@@ -170,6 +143,25 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 const user = await Database
   .rawQuery('select * from users where id = ?', [1])
+```
+
+## Aggregates
+The aggregate methods like `count`, `min`, `avg` returns an array with the aggregate key and its value. For example:
+
+```ts
+const total = Database.query().count('*').from('users')
+
+// SQLITE: [{ "count(*)": 4 }]
+// POSTGRESQL: [{ "count": "4" }]
+```
+
+As you can notice, the output of `PostgreSQL` and `SQLite` is different and hence not predictable. To encounter this issue, it is recommended to always alias your aggregates.
+
+```ts
+await Database.query().count('* as total').from('users')
+
+// SQLITE: [{ "total": 4 }]
+// POSTGRESQL: [{ "total": "4" }]
 ```
 
 ## What's Next?

@@ -4,7 +4,14 @@ group: Database
 ---
 
 # Setup
-The default application created using `npx` or `yarn create` doesn't install Lucid and hence an extra step is required to set it up.
+In this guide, you will install `@adonisjs/lucid` package, along with the database driver of your choice. Lucid supports following database engines.
+
+- MYSQL
+- SQLite
+- MSSQL
+- PostgreSQL
+- MariaDB
+- and OracleDB
 
 Install the package from npm registry by running the following command.
 
@@ -26,12 +33,18 @@ Next, you must setup Lucid by running the `node ace invoke` command. The followi
 
 ```sh
 node ace invoke @adonisjs/lucid
+
+# ✔  create    config/database.ts
+#    update    .env
+#    update    tsconfig.json
+#    update    .adonisrc.json
+# ✔  create    ace-manifest.json
 ```
 
 Congrats! You have configured Lucid. We will now continue with the setup for different database backends.
 
-## Configure SQlite
-SQlite is a light weight file based database server. You can quickly get up and running with SQlite by just installing the database driver from npm.
+## Configure SQLite
+SQLite is a light weight file based database server. You can quickly get up and running with SQLite by just installing the database driver from npm.
 
 ```sh
 npm i -D sqlite3
@@ -75,7 +88,7 @@ The first step is to have MySQL server running on your computer. You can [instal
 Once, the server is running, install the MySQL driver for Node.js from npm.
 
 [note]
-You can also connect to the MariaDb database using the `mysql` driver.
+You can also connect to the MariaDB database using the `mysql` driver.
 [/note]
 
 ```sh
@@ -211,8 +224,11 @@ We haven't covered the setup for all possible databases. However, the process re
   ```
 - Finally, define a new connection inside the `config/database.ts` file
 
-## Health Checks
-Lucid has inbuilt support for health checks and it works across all database backends. All you need to do is, enable the `healthCheck` flag on the database connection and then use the AdonisJS global Health check API for checking the status.
+## Verifying Connection
+There are couple of ways to verify the connection settings and ensure that you are able to connect to your database server successfully. One is using the **health checks api** and another one is to **manually run a query** inside a dummy route.
+
+### Health Checks
+Lucid has inbuilt support for health checks and it works across all database engines. All you need to do is, enable the `healthCheck` flag on the database connection and then use the AdonisJS global Health check API for checking the status.
 
 ```ts{}{start/routes.ts}
 import Route from '@ioc:Adonis/Core/Route'
@@ -224,4 +240,19 @@ Route.get('health', async ({ response }) => {
 })
 ```
 
-If you now visit [http://localhost:3333/health](http://localhost:3333/health), you must see the health check report for your database connection.
+If you now visit [http://localhost:3333/health](http://localhost:3333/health), you must see the health check report for your database connection(s).
+
+![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587544897/adonisjs.com/health-check-report_emwloq.png)
+
+
+### Manual Query
+Another option is to perform a query inside a dummy route. For example:
+
+```ts{}{start/routes.ts}
+import Route from '@ioc:Adonis/Core/Route'
+import Database from '@ioc:Adonis/Lucid/Database'
+
+Route.get('test', async () => {
+  return Database.query().select('*').from('users')
+})
+```

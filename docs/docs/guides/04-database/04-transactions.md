@@ -8,7 +8,8 @@ Being a SQL ORM, Lucid has first class support for Transactions and save points.
 
 - How to create and manage transactions
 - How to create nested transactions (aka save points)
-- The concept of using global transactions during tests
+- Using transactions with Lucid models
+- Persisting relationships inside a transaction
 
 ## Working with Transactions
 Creating a new transaction is as simple as executing the `database.transaction` method.
@@ -18,7 +19,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 const trx = await Database.transaction() // notice it is an async method
 ```
 
-Once you have received the transaction instance, you can use it to create and run queries.
+Once you have received the transaction instance, you can use it to execute queries.
 
 [codegroup]
 
@@ -58,7 +59,7 @@ try {
 Voila! You have just created and used a transaction.
 
 ### Points to Note
-- Just like the `Database` object, you can also use the `trx` object to create new queries.
+- Just like the `Database` object, you can also use the `trx` object to create new instances of the query builder.
 - The `trx.commit` and `trx.rollback` methods are async, so do make sure to put `await` in front of them.
 - Lucid reserves a dedicated connection as soon as `Database.transaction()` method is called and releases the connection after commit or rollback actions.
 
@@ -143,13 +144,13 @@ await Database.transaction(async (trx) => {
   user.username = 'virk'
 
   // highlight-start
-  user.trx = trx
+  user.$trx = trx
   await user.save()
   // highlight-end
 })
 ```
 
-As soon as the transaction has completed, the Model will release the `trx` reference of the transaction.
+As soon as the transaction is completed, the Model will release the `$trx` reference.
 
 ### Model Query Builder
 Just like the standard query builder, you can also pass the transaction to the model query builder.
@@ -176,7 +177,7 @@ await Database.transaction(async (trx) => {
   const user = new User()
   user.username = 'virk'
 
-  user.trx = trx
+  user.$trx = trx
   await user.save()
 
   // highlight-start
@@ -188,4 +189,4 @@ await Database.transaction(async (trx) => {
 })
 ```
 
-In the above query, the `related('profile').create` method will automatically use the transaction object `trx` assigned to the user model.
+In the above query, the `related('profile').create` method will automatically use the transaction object assigned to the `User` model.

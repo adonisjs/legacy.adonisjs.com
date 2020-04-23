@@ -5,197 +5,165 @@ group: Database
 
 # Introduction
 
-AdonisJS is one of the few Node.js frameworks (if not the only one) that has first class support for SQL databases. The Database layer of the framework **(called Lucid)** makes database interactions super simple using the [ORM](/database/orm/models), the [Query builder](query-builder), [Migrations](migrations), [Seeds](seeds-and-factories) and much more.
+AdonisJS is one of the few Node.js frameworks (if not the only one) that has first class support for SQL databases. The Database layer of the framework **(Lucid)** comes with versatile set of tools, enabling you to build data driven applications quickly and easily.
 
-## Support for Multiple Connections
-Within a single application, you can create and use multiple database connections using different database backends all together. For example: You can have a connection using PostgreSQL and other one using MySQL.
+In this guide, we will briefly talk about the following topics. Once you have the basic understanding, you can dig into the in-depth guides of individual topics.
 
-Also, the lifecycle of these connections is entirely managed by Lucid and hence you don't have to worry about initiating or closing connections manually.
+- Database query builder
+- Data Models
+- Schema migrations
+- Seeds & Factories
 
-Learn more about [Connections management](connections-management)
+## Database query builder
+The database query builder offers a rich API for constructing SQL queries, ranging from simple **select all** to **complex joins**.
 
-## Connection pooling
-Connection pooling is a way to optimize queries and also limit the number of concurrent connections a database server can handle. Inside your database config file, you can define the **min** and **max** number of pool connections for AdonisJS to maintain.
+No need to write SQL DSL by hand. Just use our Javascript API and we will create the correct SQL query for the database engine in use. For example:
 
-- The `min` number ensures that these many connections are always alive, even when the application is idle. Since, creating a new connection is an expensive operation, you do want to make sure that a couple of connections are always alive to execute queries.
-- The `max` number ensures that you are not overwhelming your database with too many concurrent connections.
-
-Learn more about [Connections pooling](connections-management#connection-pooling)
-
-## Support for Read-Write Replicas
-Read-write replicas are treated as first class citizen with Lucid. Inside your database connection config, you can define one write server and multiple read servers.
-
-Lucid will round robin between the read servers and all of the read queries will automatically be directed towards one of the read servers.
-
-Learn more about [Read-write replicas](connections-management#readwrite-replicas)
-
-## Database Query Builder
-Lucid comes with a database query builder (built on top of [knex](https://knexjs.org/)), that you can use in order to construct SQL queries. For example:
-
-[codegroup]
-
-```ts{}{Select All}
+```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
-const users = await Database
-  .from('users')
-  .select('username', 'email')
+const users = await Database.from('users').select('*')
+// SQL:  SELECT * FROM "users";
 ```
 
+Similarly you can construct complex queries with where clause and joins.
 
-```ts{}{Where clause}
+```ts
 import Database from '@ioc:Adonis/Lucid/Database'
 
 const user = await Database
   .from('users')
-  .select('username', 'email')
-  .where('username', 'virk')
-  .first()
-```
-
-```ts{}{Joins}
-import Database from '@ioc:Adonis/Lucid/Database'
-
-const user = await Database
-  .from('users')
+  .select('*')
   .where('username', 'virk')
   .innerJoin('profiles', 'users.id', 'profiles.userId')
   .first()
+
+// SQL: SELECT * FROM `users` inner join `profiles` on `users`.`id` = `profiles`.`userId` where `username` = ? limit ?
 ```
 
-```ts{}{Aggregates}
-import Database from '@ioc:Adonis/Lucid/Database'
+The goal of the query builder is to offer you a declarative API to construct SQL queries, but without preventing you from using the power of SQL. Everything that you can write in raw SQL is also supported by the [query builder](/guides/database/query-builder) or the [raw query builder](guides/database/query-builder#executing-raw-queries).
 
-const [{ total }] = await Database
-  .from('users')
-  .count('* as total')
-```
+## Data Models
+The database query builder is great in constructing and executing SQL queries. However, the result of every is an array of plain Javascript objects with no behavior.
 
-[/codegroup]
+Imagine, you fetch an array of users and each user object has a `date_of_birth` property. Before returning the data back to the client, you want to compute the `age` of the user. How would you do it?
 
-Learn more about [Database query builder](query-builder)
-
-## Raw Query Builder
-The database query builder offers a rich API to construct SQL queries, ranging from simple **select all** to **complex joins**.
-
-However, at times, the standard query builder API may not be able express the queries you want to construct. For example: Using the native database methods like `YEAR`, `LOWER` and so on.
-
-In scanerios like these, you can opt in for the Raw query builder.
-
-[codegroup]
-
-```ts{4}{Raw where clause}
-const user = await Database
-  .from('users')
-  .where(
-    Database.raw('LOWER("username")'),
-    'virk',
-  )
-  .first()
-```
-
-```ts{}{Raw Query}
-const response = await Database
-  .rawQuery(
-    'select * from "users" where "username" = ?',
-    ['virk'],
-  )
-```
-
-[/codegroup]
-
-Learn more about [Raw query builder]()
-
-## Support for Transactions & Save Points
-Being a SQL ORM, Lucid has first class support for transactions and save points. The transaction object created by Lucid itself is a fully featured query client and you can use it directly to construct and execute sql queries.
+- Well, you will have to loop over the array.
+- Subtract the users `date_of_birth` from the current date.
+- Attach a new property to the existing object.
+- Delete the `date_of_birth` property.
+- Send response.
 
 ```ts
-await Database.transaction((trx) => {
-  const [ userId ] = await trx
-   .table('users')
-   .returning('id')
-   .insert({ username: 'virk', email: 'virk@adonisjs.com' })
+import { DateTime } from 'luxon'
+import Database from '@ioc:Adonis/Lucid/Database'
 
-  await trx
-   .table('profiles')
-   .insert({ user_id: userId, twitter: '@AmanVirk1' })
+const users = await Database.from('users').select('*')
+
+return users.map((user) => {
+  const dob = DateTime.fromJSDate(user.dob_of_birth)
+  user.age = DateTime.local().diff(dob, 'years').years
+  delete user.dob_of_birth
+  return user
 })
 ```
 
-Learn more about [Transactions](transactions)
+The above code is not bad, but imagine, same sort of transformations every where inside of codebase. Well, we can do better than this
 
-## Active Record ORM
-Along with the Database query builder, Lucid also comes with a fully fledged implementation of [Active Record ORM](https://en.wikipedia.org/wiki/Active_record_pattern). Using the ORM, you can represent your database tables as **Models** and run SQL operations by invoking methods on your Model class.
+### Say Hello to Data Models
+Data models are defined as Javascript classes and each class is meant to query a single database table. Instead of using the `Database` object for executing queries, you will make use of the model to create and run SQL queries. For example:
 
 [codegroup]
 
-```ts{}{Model Declaration}
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+```ts{}{Defining Model}
+import { DateTime } from 'luxon'
+import { column, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
-  public id: string
-
-  @column()
-  public username: string
+  public id: number
 
   @column()
   public email: string
+
+  @column.date()
+  public dateOfBirth: DateTime
 }
 ```
 
-```ts{}{Save using Model}
+```ts{}{Using Model}
 import User from 'App/Models/User'
 
-const user = new User()
-user.username = 'virk'
-user.email = 'virk@adonisjs.com'
-
-await user.save()
-```
-
-```ts{}{Fetch using Model}
-import User from 'App/Models/User'
-
+// select all
 const users = await User.all()
 
-// or use the query builder
-const user = await User
-  .query()
-  .where('username', 'virk')
-  .first()
+// using query builder
+const user = await User.query().where('username', 'virk').first()
 ```
-
 [/codegroup]
 
-Learn more about [Lucid Models](orm/models)
+One of the difference between **Database query builder** and **Models** is, the models returns an array of **class instances over plain objects** and this simple distinction makes models way more powerful over the standard query builder.
 
-## Database Migrations
+Coming back to the earlier example of computing user `age` from the `date_of_birth`. Following is an example of achieving the same result in more ergonomic way.
 
-Database migrations is a way of evolving the database schema using code. Instead of manually creating tables using a GUI application, you express database operations by writing JavaScript code.
+```ts{11,14-17}{}
+import { DateTime } from 'luxon'
+import { column, computed, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
-For example: The following code snippet creates a new database table called `users`.
+export default class User extends BaseModel {
+  @column({ isPrimary: true })
+  public id: number
 
-```ts
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+  @column()
+  public email: string
 
-export default class Users extends BaseSchema {
-  protected $tableName = 'users'
+  @column.date({ serializeAs: null })
+  public dateOfBirth: DateTime
 
-  public async up () {
-    this.schema.createTable(this.$tableName, (table) => {
-      table.increments('id').notNullable().primary()
-      table.string('username', 100).notNullable().unique()
-      table.string('email', 255).notNullable().unique()
-      table.timestamps(true)
-    })
-  }
-
-  public async down () {
-    this.schema.dropTable(this.$tableName)
+  @computed()
+  public get age () {
+    return DateTime.local().diff(this.dateOfBirth, 'years').years
   }
 }
 ```
 
-## Health Checks
-Lucid has inbuilt support for health checks. It will run a sample query on your configured database connection to check its connectivity. All you need to do is enable the `healthcheck` flag inside the config file and then use the AdonisJS central [health check](/guides/health-check) system to see the status.
+```ts
+import User from 'App/Models/User'
+const users = await User.all()
+
+return users.map((user) => user.toJSON()) // age will be computed automatically
+```
+
+### What just happened?
+- We begin by defining `serializeAs = null` property on the `dateOfBirth` column. This will fetch the `date_of_birth` from the table **(since we need it for calculation)**, but will remove it during serialization.
+- Next, we define a computed property `age` on the model. Computed properties are values that are created on the fly, but doesn't exists in the database.
+- The `toJSON` method serializes a model instance to a plain Javascript object and this is where all the magic happens.
+
+As you can see, models makes it possible to attach behavior to the rows fetched from the database and this alone will help you cleanup a lot of inline data transformations.
+
+There is a lot more to uncover with Data models. We recommend you to read the [dedicated guide](/guides/models/introduction) for better in-depth understanding.
+
+## Schema migrations
+Schema migrations enables you to programmatically **create/alter database tables**. At first, schema migrations may feel trivial, as one can login to a GUI application like Sequel Pro and can manually create tables.
+
+However, the manual process has its own set of shortcomings like.
+
+- Production database must be exposed publicly for a GUI application to connect.
+- Schema changes are not tied to deployment workflows and manual intervention is always required.
+- There is no history around the evolution of the database.
+
+The schema migrations addresses all of the above issues by offering a robust layer for managing database changes as code. Make sure to read the [schema migrations](/guides/database/migrations) guide for better understanding. 
+
+## Seeds & Factories
+Every application under development needs dummy data at some stage. It can be during tests, or when sharing your code with a colleague. 
+
+One option is to manually insert data using a GUI application, but a better approach is to automate this process and this is where **seeds** and **factories** comes into the picture.
+
+- Seeders allows you insert data to your database by running a single `db:seed` command.
+- Based upon the amount of data you want to seed, manually typing values for each row can be tedious. Factories helps you with generating fake on the fly.
+- Combining seeders and factories together, you end up with a very robust system seeding database without manual intervention.
+
+We recommend reading the dedicated guide on [seeds and factories]() for in-depth understanding.
+
+## Conclusion
+AdonisJS Lucid comes with a versatile set of tools to make it easy for you to create data driven applications.
