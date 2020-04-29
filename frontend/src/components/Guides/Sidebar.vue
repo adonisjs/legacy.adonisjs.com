@@ -15,7 +15,7 @@
         <select name="docs-menu" class="menu-select-box" @change="openUrl($event)">
           <optgroup v-for="(category, index) in categories" :key="index" :label="category.name">
             <option v-for="doc in category.docs" :key="doc.permalink" :value="`/${doc.permalink}`">
-              {{ doc.title }}
+              {{ doc.sidebarTitle || doc.title }}
             </option>
           </optgroup>
         </select>
@@ -54,7 +54,7 @@
                 <h3 class="title" v-if="category.name !== 'root'">{{ category.name }}</h3>
                 <li v-for="doc in category.docs" :key="doc.permalink">
                   <g-link :to="`/${doc.permalink}`">
-                    <span class="label"> {{ doc.title }} </span>
+                    <span class="label"> {{ doc.sidebarTitle || doc.title }} </span>
                   </g-link>
                 </li>
               </div>

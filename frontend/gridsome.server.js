@@ -31,7 +31,7 @@ module.exports = function (gsApi) {
     config.secondaryFeatures.forEach((item) => secondaryFeatures.addNode(item))
   })
 
-  gsApi.createManagedPages(async ({ createPage, removePageByPath }) => {
+  gsApi.createPages(async ({ createPage, removePageByPath }) => {
     const zones = await api.getZones()
 
     /**
@@ -45,6 +45,9 @@ module.exports = function (gsApi) {
       zoneGroupsCategories.forEach((group) => {
         group.categories.forEach((category) => {
           category.docs.forEach((doc) => {
+            if (doc.draft) {
+              return
+            }
             const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
             console.log(green(`create page ${pageData.path}`))
             createPage(pageData)
@@ -65,12 +68,14 @@ module.exports = function (gsApi) {
 
         const zoneGroupsCategories = await api.getZoneGroupsAndCategories(zoneSlug, versionNo, false)
         const doc = await api.getDoc(zoneSlug, versionNo, permalink)
-        const zone = zones.find((one) => one.slug === zoneSlug)
+        if (doc.draft) {
+          return
+        }
 
+        const zone = zones.find((one) => one.slug === zoneSlug)
         const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
 
         console.log(green(`create page ${pageData.path}`))
-        await removePageByPath(pageData.path)
         createPage(pageData)
       }, (error) => {
         console.log('Ws error')

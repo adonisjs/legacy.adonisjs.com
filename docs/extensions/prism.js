@@ -13,7 +13,7 @@ function visit (node, tag, callback) {
   }
 }
 
-module.exports = function compileCode (hooks) {
+module.exports = function prism (hooks) {
   hooks.before('doc', ({ doc }) => {
     visit(doc.content, 'pre', (node) => {
       node.children[0].children[0].value = highlight(

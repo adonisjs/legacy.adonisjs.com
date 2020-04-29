@@ -129,13 +129,14 @@ export default class PostsController {
   }
 
   public async store ({ request }: HttpContextContract) {
-    const postSchema = validator.compile(schema.create({
+    const postSchema = schema.create({
       title: schema.string(),
       body: schema.string(),
-    }))
+    })
   
     const data = await request.validate({
       schema: postSchema,
+      cacheKey: request.url(),
     })
 
     console.log(data)
@@ -337,7 +338,7 @@ public async store ({ request }: HttpContextContract) {
 The errors messages can also target nested fields using the dot notation syntax. For example: `profile.user.name.required`.
 
 ## Using Validator Classes
-In order to keep the controllers clean and small, you can extract the validator schema and custom messages to its own dedicated validator class. So let's create a new validator by running the following ace command.
+In order to keep the controllers clean and small, you can extract the validation schema and custom messages to its own dedicated validator class. So let's create a new validator by running the following ace command.
 
 ```sh
 node ace make:validator Post
@@ -348,24 +349,28 @@ node ace make:validator Post
 Open the newly created file and paste the following contents to it.
 
 ```ts
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, validator } from '@ioc:Adonis/Core/Validator'
 
-class PostValidator {
-  public schema = validator.compile(schema.create({
+export default class PostValidator {
+  constructor (private ctx: HttpContextContract) {
+  }
+
+  public schema = schema.create({
     title: schema.string(),
     body: schema.string(),
-  }))
+  })
+
+  public cacheKey = this.ctx.routeKey
 
   public messages = {
     'title.required': 'Please enter post title',
     'body.required': 'Please enter post body',
   }
 }
-
-export default new PostValidator()
 ```
 
-Finally, you can remove the schema related code from the controller method and instead reference this newly created validator.
+Finally, you can remove the schema related code from the controller method in favor of the newly created validator.
 
 ```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'

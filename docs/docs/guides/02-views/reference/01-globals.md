@@ -167,6 +167,27 @@ And now you can use the `input` global inside the standard double curly braces.
 {{ input('text', 'foo') }}
 ```
 
+## `csrfToken`
+Value of the CSRF token generated for the current HTTP request.
+
+[note]
+Available only, when the `@adonisjs/shield` package is installed and CSRF protection is enabled.
+[/note]
+
+```edge
+{{ csrfToken }}
+```
+
+Following are the methods to render the CSRF token inside a hidden input field or the meta tag.
+
+```edge
+{{-- Renders the input field --}}
+{{ csrfField() }}
+
+{{-- Renders the meta tag --}}
+{{ csrfMeta }}
+```
+
 ## Adding your own
 You can add your own globals by using the `View.global` method. Since, globals needs to be registered only once, it is best to register them inside a provider or a preloaded file.
 

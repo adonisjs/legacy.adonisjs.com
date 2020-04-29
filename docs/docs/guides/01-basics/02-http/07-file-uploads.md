@@ -100,16 +100,12 @@ import Application from '@ioc:Adonis/Core/Application'
 export default class UsersController {
   public async store ({ request }: HttpContextContract) {
 
-    // highlight-start
     const avatar = request.file('avatar')
-
-    // Make sure avatar was uploaded
     if (!avatar) {
       return 'Please upload file'
     }
 
     await avatar.move(Application.tmpPath('uploads'))
-    // highlight-end
 
     return 'File uploaded successfully'
   }
@@ -130,7 +126,7 @@ await avatar.move(Application.tmpPath('uploads'), {
 ```
 
 ## Validating Uploaded Files
-AdonisJS automatically validate files during the `move` operation. All you need to do is define the validation options.
+AdonisJS automatically validate files when you try to access them. All you need to do is define the validation options.
 
 ```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
@@ -164,18 +160,23 @@ Another way to validate files is to make use of the request validator. Assuming 
 
 ```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { validator, schema } from '@ioc:Adonis/Core/Validator'
+import { schema } from '@ioc:Adonis/Core/Validator'
 import Application from '@ioc:Adonis/Core/Application'
 
 export default class UsersController {
   public async store ({ request }: HttpContextContract) {
     const userSchema = schema.create({
       email: schema.string(),
-      avatar: schema.file({ size: '2mb', extnames: ['jpg', 'png', 'jpeg'] }),
+      // highlight-start
+      avatar: schema.file({
+        size: '2mb',
+        extnames: ['jpg', 'png', 'jpeg'],
+      }),
+      // highlight-end
     })
 
     const data = await request.validate({
-      schema: validator.compile(userSchema),
+      schema: userSchema,
     })
 
     await data.avatar.move(Application.tmpPath('uploads'))

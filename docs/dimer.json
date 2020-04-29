@@ -6,6 +6,11 @@
       "versions": {
         "master": "docs/guides"
       }
+    },
+    "releases": {
+      "versions": {
+        "master": "docs/releases"
+      }
     }
   },
   "websiteOptions": {
@@ -14,6 +19,6 @@
     "apiUrl": "http://localhost:4444",
     "detectAssets": true,
     "createSearchIndex": true,
-    "extensions": ["extensions/compileCode.js"]
+    "extensions": ["extensions/prism.js", "extensions/lede.js"]
   }
 }

@@ -5,6 +5,7 @@ group: Basics
 ---
 
 # Health Checks
+
 In the era of Containers and Orchestration, it is very important for your application to report about its own health. For example, Kubernetes can use the health checks information for its [liveness and readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/).
 
 ## How Health Checks Works?

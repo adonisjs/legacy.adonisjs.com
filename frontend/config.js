@@ -16,9 +16,20 @@ exports.header = [
   },
   {
     title: 'Learn',
-    permalink: '/guides/quick-start',
+    permalink: '',
     isExternal: false,
-    children: [],
+    children: [
+      {
+        title: 'Guides',
+        permalink: '/guides/quick-start',
+        isExternal: false,
+      },
+      {
+        title: 'Releases',
+        permalink: '/releases/core/preview-rc-5',
+        isExternal: false,
+      },
+    ],
   },
   {
     title: 'Roadmap',

@@ -1,6 +1,7 @@
 ---
 permalink: guides/database/connections-management
 group: Database
+category: Advanced Concepts
 ---
 
 # Connections Management

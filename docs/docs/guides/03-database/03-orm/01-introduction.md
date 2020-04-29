@@ -10,7 +10,6 @@ Along with the Database query builder, Lucid also comes with an implementation o
 - More about the Active record pattern
 - Difference between Data models and Database query builder
 - The API exposed by Lucid to manipulate data stored in a relational database
-- Working with dates and times inside Lucid models
 
 ## What is Active record pattern?
 Active Record is also the name of the ORM used by Ruby on Rails. However, the Active record pattern is a broader concept that can be implemented by any programming language or framework.

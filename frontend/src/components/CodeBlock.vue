@@ -222,11 +222,11 @@
 
   .code-highlight .token.inserted {
     display: block;
-    color: #36acaa;
+    color: #84f1a6;
   }
 
   .code-highlight .token.deleted {
-    color: #9a050f;
+    color: #e25f68;
     display: block;
   }
 
