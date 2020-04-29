@@ -24,7 +24,7 @@ Middleware are a series of functions that are executed before an HTTP request re
 Global middleware are executed on every HTTP request in the same order as they are registered. You create global middleware for actions that you want to execute on every request.
 
 [note]
-AdonisJS does not execute global middleware for requests that does not have a registered route. This means, if you create a global middleware and a request comes in for an non-existing route, then the middleware will never be executed. You can use [HTTP hooks](http-hooks), if you want to run code for requests with non-existing routes.
+AdonisJS does not execute global middleware for requests that does not have a registered route. This means, if you create a global middleware and a request comes in for an non-existing route, then the middleware will never be executed.
 [/note]
 
 For demonstration, let's create a middleware for finding the user country from their IP address. The middleware lives inside `app/Middleware` directory and just like controllers, they are also vanilla JavaScript classes.

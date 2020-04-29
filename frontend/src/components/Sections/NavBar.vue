@@ -52,6 +52,11 @@
         activeIndex: -1
       }
     },
+     watch: {
+      '$route.fullPath' () {
+        this.activeIndex = -1
+      },
+    },
     methods: {
       toggleMenu (index) {
         this.activeIndex = this.activeIndex === index ? - 1 : index

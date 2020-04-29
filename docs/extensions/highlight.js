@@ -66,22 +66,43 @@ Prism.languages.edge = {
 function getPrismLanguage (preLanguage) {
   const language = preLanguage.startsWith('language-') ? preLanguage.replace('language-', '') : 'text'
   if (language === 'sh') {
-    return 'shell'
+    return {
+      language: 'shell'
+    }
   }
-  return language
+
+  if (language.startsWith('diff')) {
+    return {
+      language: 'diff',
+      sublanguage: language
+    }
+  }
+
+  return {
+    language
+  }
 }
 
 /**
  * Highlight code
  */
 module.exports = function highlight (code, languageClass, dataLine) {
-  const language = getPrismLanguage(languageClass)
+  const { language, sublanguage } = getPrismLanguage(languageClass)
+
   if (!Prism.languages[language]) {
     loadLanguages(language)
   }
 
+  if (sublanguage && !Prism.languages[sublanguage]) {
+    loadLanguages(sublanguage)
+  }
+
   const lines = dataLine ? rangeParser.parse(dataLine) : []
-  const highlighted = Prism.highlight(code, Prism.languages[language], language)
+  const highlighted = Prism.highlight(
+    code,
+    Prism.languages[language],
+    sublanguage || language,
+  )
 
   let finalCode = ''
   const codeSplits = directives(highlighted, lines)

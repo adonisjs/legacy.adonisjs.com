@@ -3,7 +3,7 @@ const { cyan } = require('kleur')
 
 module.exports = {
   connect (onUpdate, onError) {
-    const ws = new WebSocket('ws://localhost:5000')
+    const ws = new WebSocket('ws://localhost:4444')
     ws.on('open', () => {
       console.log(cyan('Connected to ws server'))
     })

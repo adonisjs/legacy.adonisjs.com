@@ -184,5 +184,3 @@ export default class ExceptionHandler extends HttpExceptionHandler {
   }
 }
 ```
-
-## Development Pages

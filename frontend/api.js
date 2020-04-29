@@ -1,13 +1,14 @@
-const { red } = require('kleur')
+const { red, yellow } = require('kleur')
 const axios = require('axios')
 const { utils } = require('dimer-vue')
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'http://localhost:4444'
 
 /**
  * A mapping of zones and the template component they must use
  */
 const ZONE_TEMPLATE_MAPPING = {
-  guides: './src/templates/Guides.vue'
+  guides: './src/templates/Guides.vue',
+  releases: './src/templates/Guides.vue'
 }
 
 /**
@@ -72,6 +73,15 @@ async function getZoneGroupsAndCategories (zoneSlug, versionNo, includeContent) 
     category.docs.forEach((doc) => {
       if (!doc.group) {
         console.log(red(`${doc.permalink} is ignored, since it has no group`))
+        return
+      }
+
+      if (doc.group === 'Application Security') {
+        return
+      }
+
+      if (doc.draft) {
+        console.log(yellow(`${doc.permalink} is ignored, since it is in draft mode`))
         return
       }
 
@@ -141,7 +151,6 @@ function getDocPageData (zone, doc, groups) {
   })
 
   const docGroup = groups.find(({ name }) => name === doc.group) || {}
-
   return {
     path: `/${doc.permalink}`,
     component: zone.component,
@@ -151,6 +160,7 @@ function getDocPageData (zone, doc, groups) {
         content: doc.content,
         group: doc.group,
         permalink: doc.permalink,
+        meta: doc.meta || null,
       },
       toc: toc,
       groups: groups,

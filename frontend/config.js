@@ -16,9 +16,20 @@ exports.header = [
   },
   {
     title: 'Learn',
-    permalink: '/guides/quick-start',
+    permalink: '',
     isExternal: false,
-    children: [],
+    children: [
+      {
+        title: 'Guides',
+        permalink: '/guides/quick-start',
+        isExternal: false,
+      },
+      {
+        title: 'Releases',
+        permalink: '/releases/core/preview-rc-5',
+        isExternal: false,
+      },
+    ],
   },
   {
     title: 'Roadmap',
@@ -162,7 +173,7 @@ exports.footer = [
 | to the code blocks and confused on how to approach it.
 |
 */
-exports.showCaseTabs = [
+exports.homePageShowCaseTabs = [
   {
     title: 'Routes',
     code: `<pre><code><span class="token comment">/**
@@ -216,6 +227,42 @@ Route<span class="token punctuation">.</span><span class="token function">post</
   @<span class="token function">column</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
   <span class="token keyword">public</span> body<span class="token operator">:</span> <span class="token builtin">string</span>
 <span class="token punctuation">}</span></code></pre>`
+  }
+]
+
+exports.edgeShowCaseTabs = [
+  {
+    title: 'Conditionals',
+    code: `<pre><code><span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span></span>
+<span class="token tag"><span class="token function">  @if</span>(user)</span>
+    <span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span> Hello</span> <span class="token mustache"><span class="token punctuation">{{</span> user.username <span class="token punctuation">}}</span></span> <span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span></span>
+<span class="token tag"><span class="token function">  @endif</span></span>
+<span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span></span></code></pre>`
+  },
+  {
+    title: 'Multiline Mustache',
+    code: `<pre><code><span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+  {{
+    user<span class="token punctuation">.</span>earnings<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">earning</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> earning <span class="token operator">*</span> <span class="token number">100</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
+  }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span></span></code></pre>`
+  },
+  {
+    title: 'Components',
+    code: `<pre><code><span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span></span>
+<span class="token tag"><span class="token function">  @component</span>(<span class="token string"><span class="token punctuation">'</span>components/modal<span class="token punctuation">'</span></span>, { title: <span class="token string"><span class="token punctuation">'</span>Are you sure?<span class="token punctuation">'</span></span> })</span><span class="token tag"><span class="token function">
+    @slot</span>(<span class="token string"><span class="token punctuation">'</span>body<span class="token punctuation">'</span></span>)</span>
+      <span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span> Select yes, will delete the blog post permanently <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span></span>
+<span class="token tag"><span class="token function">    @endslot</span></span><span class="token tag"><span class="token function">
+
+    @slot</span>(<span class="token string"><span class="token punctuation">'</span>actions<span class="token punctuation">'</span></span>)</span>
+      <span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span> Cancel <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span> Yes, delete it <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span></span>
+<span class="token tag"><span class="token function">    @endslot</span></span><span class="token tag"><span class="token function">
+  @endcomponent</span></span>
+<span class="token other"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span></span></code></pre>`
   }
 ]
 

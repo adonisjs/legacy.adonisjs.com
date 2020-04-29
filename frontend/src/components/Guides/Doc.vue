@@ -1,5 +1,10 @@
 <template>
   <div class="doc wysiwyg">
+    <div v-if="doc.meta">
+      <p>{{ doc.meta.class }}</p>
+      <p>{{ doc.meta.source }}</p>
+    </div>
+
     <dimer-tree :node="doc.content" />
   </div>
 </template>
@@ -15,6 +20,7 @@
     max-width: 100%;
     padding: 60px 0;
     color: var(--grey-800);
+    line-height: 1.4;
   }
 
   .wysiwyg p,
@@ -32,8 +38,12 @@
     margin-bottom: 5rem;
   }
 
-  .wysiwyg h1, .wysiwyg h2, .wysiwyg h3, .wysiwyg h4 {
-    font-weight: 700;
+  .wysiwyg ul ul, .wysiwyg ul ol, .wysiwyg ol ul, .wysiwyg ol ol {
+    margin-bottom: 2rem;
+  }
+
+.wysiwyg h1, .wysiwyg h2, .wysiwyg h3, .wysiwyg h4 {
+    font-weight: 600;
     color: var(--grey-900);
     position: relative;
   }
@@ -46,6 +56,12 @@
   .wysiwyg h1 {
     margin-bottom: 3rem;
     font-size: 4.6rem;
+  }
+
+  .wysiwyg h1 code {
+    font-size: 2rem;
+    position: relative;
+    top: -4px;
   }
 
   .wysiwyg h2 {
@@ -64,6 +80,10 @@
     font-size: 2.4rem;
     margin-top: 4rem;
     margin-bottom: 1.2rem;
+  }
+
+  .wysiwyg h3 code {
+    font-size: 2rem;
   }
 
   .wysiwyg h4 {
@@ -142,7 +162,8 @@
   .wysiwyg img, .wysiwyg video {
     max-width: 100%;
     border-radius: 5px;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     background-color: var(--grey-100);
   }
 
@@ -226,7 +247,9 @@
   }
 
   @media (min-width: 768px) {
-    .wysiwyg > div > p+.code-highlight, .wysiwyg > div > p+.codegroup {
+    .wysiwyg > div > p+.code-highlight,
+    .wysiwyg > div > p+.codegroup,
+    .wysiwyg > div > p+p>img {
       margin-top: -1.4rem;
     }
 

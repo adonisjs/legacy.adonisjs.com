@@ -42,7 +42,7 @@
 
 <static-query>
   query {
-    showCaseTabs: allShowCaseTabs(order: ASC) {
+    showCaseTabs: allHomePageShowCaseTabs(order: ASC) {
       edges {
         node {
           title

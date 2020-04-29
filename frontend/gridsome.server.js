@@ -16,7 +16,8 @@ module.exports = function (gsApi) {
     const header = addCollection({ typeName: 'HeaderMenu' })
     const footer = addCollection({ typeName: 'FooterMenu' })
     const primaryFeatures = addCollection({ typeName: 'PrimaryFeatures' })
-    const showCaseTabs = addCollection({ typeName: 'ShowCaseTabs' })
+    const homePageShowCaseTabs = addCollection({ typeName: 'HomePageShowCaseTabs' })
+    const edgeShowCaseTabs = addCollection({ typeName: 'EdgeShowCaseTabs' })
     const secondaryFeatures = addCollection({ typeName: 'SecondaryFeatures' })
 
     /**
@@ -24,12 +25,13 @@ module.exports = function (gsApi) {
      */
     config.header.forEach((item) => header.addNode(item))
     config.footer.forEach((item) => footer.addNode(item))
-    config.showCaseTabs.forEach((item) => showCaseTabs.addNode(item))
+    config.homePageShowCaseTabs.forEach((item) => homePageShowCaseTabs.addNode(item))
+    config.edgeShowCaseTabs.forEach((item) => edgeShowCaseTabs.addNode(item))
     config.primaryFeatures.forEach((item) => primaryFeatures.addNode(item))
     config.secondaryFeatures.forEach((item) => secondaryFeatures.addNode(item))
   })
 
-  gsApi.createManagedPages(async ({ createPage, removePageByPath }) => {
+  gsApi.createPages(async ({ createPage, removePageByPath }) => {
     const zones = await api.getZones()
 
     /**
@@ -43,6 +45,9 @@ module.exports = function (gsApi) {
       zoneGroupsCategories.forEach((group) => {
         group.categories.forEach((category) => {
           category.docs.forEach((doc) => {
+            if (doc.draft) {
+              return
+            }
             const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
             console.log(green(`create page ${pageData.path}`))
             createPage(pageData)
@@ -63,12 +68,14 @@ module.exports = function (gsApi) {
 
         const zoneGroupsCategories = await api.getZoneGroupsAndCategories(zoneSlug, versionNo, false)
         const doc = await api.getDoc(zoneSlug, versionNo, permalink)
-        const zone = zones.find((one) => one.slug === zoneSlug)
+        if (doc.draft) {
+          return
+        }
 
+        const zone = zones.find((one) => one.slug === zoneSlug)
         const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
 
         console.log(green(`create page ${pageData.path}`))
-        await removePageByPath(pageData.path)
         createPage(pageData)
       }, (error) => {
         console.log('Ws error')
