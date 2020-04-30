@@ -7,6 +7,7 @@ const BASE_URL = 'http://localhost:4444'
  * A mapping of zones and the template component they must use
  */
 const ZONE_TEMPLATE_MAPPING = {
+  blog: './src/templates/Pages.vue',
   guides: './src/templates/Guides.vue',
   releases: './src/templates/Guides.vue'
 }

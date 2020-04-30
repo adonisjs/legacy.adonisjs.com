@@ -75,8 +75,21 @@
     font-weight: 500;
   }
 
+  .hero-container .meta {
+    font-size: 1.75rem;
+  }
+
+  .hero-container .meta strong {
+    color: var(--brand);
+    font-weight: 600;
+  }
+
   .main {
     padding-bottom: 80px;
+  }
+
+  .article-container:first-child {
+    margin-top: 6rem;
   }
 
   .article-container h2 {
