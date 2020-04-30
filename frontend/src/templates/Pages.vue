@@ -6,6 +6,9 @@
       <template v-slot:hero>
         <h1> {{ $context.doc.title }} </h1>
 
+        <h3 class="lede" v-if="$context.doc.meta.excerpt" v-html="$context.doc.meta.excerpt">
+        </h3>
+
         <div class="meta">
           <p v-if="$context.doc.meta.author">
             Written by <strong>{{ $context.doc.meta.author }}</strong>
@@ -16,9 +19,9 @@
         </div>
       </template>
 
-      <div>
+      <MarkdownStyling>
         <dimer-tree :node="$context.doc.content" :custom-renderers="customRenderers" />
-      </div>
+      </MarkdownStyling>
     </a-article>
 
     <a-footer />
@@ -30,6 +33,7 @@
   import AFooter from '~/components/Sections/Footer.vue'
   import AArticle from '~/components/Article.vue'
   import DateTime from '~/components/Time/DateTime.vue'
+  import MarkdownStyling from '~/components/MarkdownStyling.vue'
 
   export default {
     metaInfo () {
@@ -38,7 +42,7 @@
       }
     },
 
-    components: { AHeader, AArticle, AFooter, DateTime, },
+    components: { AHeader, AArticle, AFooter, DateTime, MarkdownStyling, },
 
     methods: {
       /**

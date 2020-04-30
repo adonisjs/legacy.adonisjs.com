@@ -2,6 +2,11 @@
   "domain": "",
   "cname": "",
   "zones": {
+    "pages": {
+      "versions": {
+        "master": "pages"
+      }
+    },
     "blog": {
       "versions": {
         "master": "blog"

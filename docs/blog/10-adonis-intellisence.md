@@ -1,5 +1,5 @@
 ---
-permalink: blog/adonisjs-3-0-release
+permalink: blog/adonis-intellisence
 title: Adonis + IntelliSense = 💜
 group: blog
 meta:
