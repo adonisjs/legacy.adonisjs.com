@@ -33,9 +33,7 @@ Next, you will have to enable the `debug` flag for your database connection insi
 {
   pg: {
     client: 'pg',
-    connection: {
-      debug: true,
-    },
+    debug: true,
   }
 }
 ```
@@ -92,9 +90,7 @@ Following is the final recipe to have best debugging experience during developme
   {
     pg: {
       client: 'pg',
-      connection: {
-        debug: !Application.inProduction,
-      },
+      debug: !Application.inProduction,
     }
   }
   ```
@@ -121,6 +117,6 @@ Following is the final recipe to have best debugging experience during developme
         }
       })
     }
-  }  
+  }
   ```
 - Use the `debug()` method on query builder to enable debugging for selected queries.
