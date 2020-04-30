@@ -144,13 +144,13 @@ await Database.transaction(async (trx) => {
   user.username = 'virk'
 
   // highlight-start
-  user.$trx = trx
+  user.useTransaction(trx)
   await user.save()
   // highlight-end
 })
 ```
 
-As soon as the transaction is completed, the Model will release the `$trx` reference.
+As soon as the transaction is completed, the Model will release the `trx` reference.
 
 ### Model Query Builder
 Just like the standard query builder, you can also pass the transaction to the model query builder.
@@ -177,7 +177,7 @@ await Database.transaction(async (trx) => {
   const user = new User()
   user.username = 'virk'
 
-  user.$trx = trx
+  user.useTransaction(trx)
   await user.save()
 
   // highlight-start
