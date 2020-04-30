@@ -18,11 +18,6 @@
   </div>
 </template>
 
-<script>
-  export default {
-  }
-</script>
-
 <style scoped>
   .article {
     color: var(--grey-800);
@@ -104,27 +99,66 @@
     border-top: 0;
   }
 
-  .article-container p {
+  .article-container p,
+  .article-container img,
+  .article-container video,
+  .article-container img,
+  .article-container .alert {
     margin-bottom: 3.2rem;
   }
 
-  .article-container ul {
+  .article-container ul,
+  .article-container .code-highlight,
+  .article-container ol,
+  .article-container table {
+    margin-bottom: 5rem;
+  }
+
+  .article-container ul, .article-container ol {
     list-style: none;
-    margin-bottom: 4rem;
   }
 
   .article-container li {
+    padding-left: 2rem;
+    margin-left: .4rem;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .article-container ul li {
     position: relative;
     padding-left: 30px;
     margin-bottom: 20px;
   }
 
-  .article-container li:before {
+  .article-container ul li:before {
     content: '—';
     width: 15px;
     overflow: hidden;
     position: absolute;
     left: 0;
+    color: var(--grey);
+  }
+
+  .article-container ol {
+    counter-reset: numbered-counter;
+  }
+
+  .article-container ol li:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    content: counter(numbered-counter, decimal) ".";
+    counter-increment: numbered-counter;
+  }
+
+  .article-container li p:last-of-type {
+    margin-bottom: 10px;
+  }
+
+  .article-container li p:first-of-type {
+    margin-top: 0;
   }
 
   .article-container strong {

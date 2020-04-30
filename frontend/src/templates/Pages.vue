@@ -11,7 +11,7 @@
             Written by <strong>{{ $context.doc.meta.author }}</strong>
           </p>
           <p v-if="$context.doc.meta.published_on">
-            Published on the <strong><DateTime :time="$context.doc.meta.published_on" format="do LLLL yyyy" /></strong>
+            Published on <strong><DateTime :time="$context.doc.meta.published_on" format="do LLLL yyyy" /></strong>
           </p>
         </div>
       </template>
