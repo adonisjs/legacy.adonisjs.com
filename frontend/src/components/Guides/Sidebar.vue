@@ -32,7 +32,7 @@
               href="#"
               class="dropdown-selected-item"
               :title="group"
-              @click="isExpanded = !isExpanded"
+              @click.prevent="isExpanded = !isExpanded"
             >
               <span>{{ group }}</span>
               <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.94.727l-.94.94 4 4 4-4-.94-.94L4 3.78.94.727z" fill="currentColor"/></svg>
