@@ -3,6 +3,7 @@ permalink: blog/contributing-to-adonisjs
 title: Contributing to AdonisJs
 group: blog
 meta:
+  number: 4
   published_on: 2017-05-10
   author: Harminder Virk
 ---

@@ -3,6 +3,7 @@ permalink: blog/the-reddit-fire
 title: The Reddit Fire
 group: blog
 meta:
+  number: 9
   published_on: 2018-02-15
   author: Harminder Virk
 ---

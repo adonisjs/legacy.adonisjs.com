@@ -3,6 +3,7 @@ permalink: blog/changing-route-url-behavior
 title: Changing Route.url behavior
 group: blog
 meta:
+  number: 8
   published_on: 2018-01-12
   author: Harminder Virk
 ---

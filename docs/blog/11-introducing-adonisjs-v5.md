@@ -3,6 +3,7 @@ permalink: blog/introducing-adonisjs-v5
 title: Introducing AdonisJS V5 Preview
 group: blog
 meta:
+  number: 11
   published_on: 2020-03-01
   author: Harminder Virk
 ---

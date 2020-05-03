@@ -3,6 +3,7 @@ permalink: blog/adonis-4-0-dev-release
 title: Adonis 4.0 Dev Release
 group: blog
 meta:
+  number: 5
   published_on: 2017-08-25
   author: Harminder Virk
 ---

@@ -3,6 +3,7 @@ permalink: blog/using-socket-io-with-adonis3-0
 title: Using Socket.Io with Adonis 3.0
 group: blog
 meta:
+  number: 2
   published_on: 2016-06-26
   author: Harminder Virk
 ---

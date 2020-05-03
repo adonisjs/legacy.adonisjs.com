@@ -3,6 +3,7 @@ permalink: blog/here-you-go-adonis-4-0
 title: Here you go - Adonis 4.0 ?
 group: blog
 meta:
+  number: 6
   published_on: 2017-11-08
   author: Harminder Virk
 ---

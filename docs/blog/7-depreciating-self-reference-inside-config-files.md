@@ -3,6 +3,7 @@ permalink: blog/depreciating-self-reference-inside-config-files
 title: Depreciating self reference inside config files
 group: blog
 meta:
+  number: 7
   published_on: 2018-01-12
   author: Harminder Virk
 ---

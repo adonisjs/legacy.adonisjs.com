@@ -3,6 +3,7 @@ permalink: blog/adonisjs-3-0-release
 title: AdonisJs 3.0 Release
 group: blog
 meta:
+  number: 1
   published_on: 2016-06-21
   author: Harminder Virk
 ---

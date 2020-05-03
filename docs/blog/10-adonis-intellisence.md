@@ -3,6 +3,7 @@ permalink: blog/adonis-intellisence
 title: Adonis + IntelliSense = 💜
 group: blog
 meta:
+  number: 10
   published_on: 2018-09-15
   author: Romain Lanz
 ---

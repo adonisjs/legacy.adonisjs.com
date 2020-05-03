@@ -3,6 +3,7 @@ permalink: blog/petit-mais-grand-adonisjs-3-2-1
 title: Petit mais grand (AdonisJS 3.2.1)
 group: blog
 meta:
+  number: 3
   published_on: 2017-01-27
   author: Harminder Virk
 ---
