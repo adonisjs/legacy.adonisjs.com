@@ -60,6 +60,11 @@ exports.header = [
     ]
   },
   {
+    title: 'Blog',
+    permalink: '/blog',
+    children: [],
+  },
+  {
     title: 'About',
     permalink: '',
     children: [

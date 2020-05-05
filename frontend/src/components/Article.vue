@@ -18,11 +18,6 @@
   </div>
 </template>
 
-<script>
-  export default {
-  }
-</script>
-
 <style scoped>
   .article {
     color: var(--grey-800);
@@ -75,46 +70,16 @@
     font-weight: 500;
   }
 
+  .hero-container .meta {
+    font-size: 1.75rem;
+  }
+
+  .hero-container .meta strong {
+    color: var(--brand);
+    font-weight: 600;
+  }
+
   .main {
     padding-bottom: 80px;
-  }
-
-  .article-container h2 {
-    margin-top: 6rem;
-    padding-top: 5.2rem;
-    border-top: 1px solid var(--grey-100);
-    margin-bottom: 1.8rem;
-    color: var(--grey-900);
-    font-size: 3.2rem;
-  }
-  .article-container h2:first-child {
-    border-top: 0;
-  }
-
-  .article-container p {
-    margin-bottom: 3.2rem;
-  }
-
-  .article-container ul {
-    list-style: none;
-    margin-bottom: 4rem;
-  }
-
-  .article-container li {
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 20px;
-  }
-
-  .article-container li:before {
-    content: '—';
-    width: 15px;
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-  }
-
-  .article-container strong {
-    font-weight: 600;
   }
 </style>

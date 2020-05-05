@@ -21,7 +21,7 @@ module.exports = function (gsApi) {
     const secondaryFeatures = addCollection({ typeName: 'SecondaryFeatures' })
 
     /**
-     * Using the static config file to feed the graphQL database.
+     * Using the static config file to feed the GraphQL database.
      */
     config.header.forEach((item) => header.addNode(item))
     config.footer.forEach((item) => footer.addNode(item))

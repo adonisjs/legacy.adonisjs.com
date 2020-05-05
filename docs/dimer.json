@@ -2,6 +2,16 @@
   "domain": "",
   "cname": "",
   "zones": {
+    "pages": {
+      "versions": {
+        "master": "pages"
+      }
+    },
+    "blog": {
+      "versions": {
+        "master": "blog"
+      }
+    },
     "guides": {
       "versions": {
         "master": "docs/guides"
