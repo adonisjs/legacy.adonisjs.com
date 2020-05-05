@@ -40,11 +40,11 @@ The latest version of TypeScript let us use a dynamic `import()` statement to de
 const Route = use('Route')
 ```
 
-IMAGE
+[video url="https://res.cloudinary.com/adonis-js/image/upload/v1588697780/adonisjs.com/blog/c4abb0b0-6da2-49f5-ab98-58ac34afef7f_fvqq9w.mp4", controls]
 
 We can also make it work for the HTTP Context we receive in all controller.
 
-IMAGE
+[video url="https://res.cloudinary.com/adonis-js/image/upload/v1588697904/adonisjs.com/blog/e78c5c1e-8a5e-47fc-be6a-2c33e22e27fb_oghh2s.mp4", controls]
 
 Instead of typing everytime the whole import statement, you can also create a typedef at the beginning of your file.
 
@@ -76,7 +76,7 @@ class MyModel extends Model {
 }
 ```
 
-IMAGE
+[video url="https://res.cloudinary.com/adonis-js/image/upload/v1588698004/adonisjs.com/blog/f178769f-30b2-4863-8854-6eafdf5ee115_zewtzn.mp4", controls]
 
 Take notes that we are not using a `typedef` in this example. There's currently [an issue in TypeScript](https://github.com/Microsoft/TypeScript/issues/27110) that prevents us from doing so.
 

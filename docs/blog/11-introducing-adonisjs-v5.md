@@ -32,7 +32,7 @@ When we say that AdonisJS supports Typescript, we mean it. It is not just about 
 
 The following screenshot shows that right after validating the request body, you also get its type information. Also, you don't have to maintain any separate interfaces for this. It just works!
 
-IMAGE
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588693759/adonisjs.com/blog/c07965f4-1527-430b-aa97-139e24816798_pjkaop.webp)
 
 ### Typed Events
 
@@ -40,7 +40,7 @@ The events listeners are usually defined inside a single dedicated file, but you
 
 However, with AdonisJS you can define types for your events and we will ensure to enforce them.
 
-IMAGE
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588693893/adonisjs.com/blog/11905a79-d365-4686-abee-821da458324e_vjuu0x.mp4", controls]
 
 ### Extending AdonisJS Core
 
@@ -48,7 +48,7 @@ Extending classes or objects at runtime with typed languages is not fun. Infact,
 
 However, we have put extra care to ensure that you can extend every piece of the framework at both runtime and static fronts. For fun, let's extend the Response class of AdonisJS
 
-IMAGE
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588693980/adonisjs.com/blog/b7850421-8114-4e5c-8698-ac0436ef781a_bmfwdl.webp)
 
 ## Crazy Performance Improvements
 
@@ -62,7 +62,7 @@ With that said, as a framework, we always measure our performance bottlenecks an
 
 The HTTP server has been extracted from the core to its own repo. Running this server standalone is on par with Fastify. You can clone the repo yourself and run the benchmark to see the results.
 
-IMAGE
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588694018/adonisjs.com/blog/57101ee5-0cb8-46d2-af55-b8a357326ec4_rkgoib.webp)
 
 ### Validator
 
@@ -71,7 +71,7 @@ The validator has received some crazy performance gains. Infact, it is the faste
 - It is faster than Joi (A popular validation library for Node.js)
 - And also faster than its predecessor Indicative
 
-IMAGE
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588694056/adonisjs.com/blog/4311d061-89a8-4ba6-b666-81e99f8c8882_ie8u0v.webp)
 
 ## Good Bye Adonis CLI
 

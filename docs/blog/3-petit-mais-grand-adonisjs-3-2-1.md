@@ -48,7 +48,7 @@ AdonisJs error reporting library [Youch](https://npmjs.org/package/youch) is ins
 
 Newer release of **Youch** has lots of exciting features focusing to improve your productivity when developing web apps.
 
-IMAGE
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588698137/adonisjs.com/blog/c10bf977-b07b-4312-bd56-d4b9c5cda0a4_gripcv.webp)
 
 1. Pretty design;
 1. It only shows stack traces of your code and eliminates all native stack traces, as they only create noise;
@@ -57,6 +57,8 @@ IMAGE
 
 ## New Adonis CLI
 
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588698205/adonisjs.com/blog/539987f3-4497-45e7-ad22-73806ba35b95_qh6zpd.webp)
+
 [@romainlanz](https://twitter.com/romainlanz) rewrote adonis-cli from scratch using Ace. The more it looks pretty, the more it offers options to customize the installation process. Under the hood it allows:
 
 1. Choose between `npm` and `yarn` when installing dependencies;
@@ -64,8 +66,6 @@ IMAGE
 1. Skip the modules installation process all together by passing `--skip-install` flag.
 
 ## New Adonis Ally Drivers
-
-IMAGE
 
 [Adonis Ally](https://adonisjs.com/docs/social-auth) let’s you add social login feature to your website. [@iamraphson](https://twitter.com/iamraphson) has done awesome piece of work by contributing 2 new drivers for:
 

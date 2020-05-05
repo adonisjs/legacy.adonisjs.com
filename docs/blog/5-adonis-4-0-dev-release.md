@@ -44,7 +44,7 @@ tarting lean is great but it’s **frustrating** when you have to spend time con
 
 Adonis CLI now ships with a `install` command, that installs the module from npm, but at the same time creates the **config files**, **required models**, **migrations** etc.
 
-GIF
+[video url="https://res.cloudinary.com/adonis-js/image/upload/v1588698084/adonisjs.com/blog/641c0a69-0b40-40e6-b1e2-049a6ef6b15a_pf4krv.mp4", controls]
 
 ## Forum
 
