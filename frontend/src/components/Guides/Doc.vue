@@ -29,6 +29,10 @@
     line-height: 1.4;
   }
 
+  .doc .markdown-content:first-child {
+    margin-top: 0;
+  }
+
   @media (min-width: 1024px) {
     .doc {
       padding: 60px 0 60px 100px;
