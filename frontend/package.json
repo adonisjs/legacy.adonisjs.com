@@ -11,6 +11,7 @@
     "axios": "^0.19.1",
     "date-fns": "^2.12.0",
     "dimer-vue": "^3.0.3",
+    "docsearch.js": "^2.6.3",
     "gridsome": "^0.7.14",
     "kleur": "^3.0.3"
   },
