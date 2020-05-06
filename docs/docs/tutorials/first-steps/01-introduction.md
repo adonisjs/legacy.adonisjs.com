@@ -1,16 +1,16 @@
 ---
- permalink: tutorials/first-steps/01-introduction
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/01-introduction
+category: First Steps
+author: Chimezie Enyinnaya
 ---
 
 # Introduction
 
-AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or microservices.
+AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or micro-services.
 
-AdonisJS has a consistent and expressive API. If you have ever used frameworks like Laravel or Ruby on Rails, then you will love AdonisJS. It employs a convention over configuration approach, which means it follows a set of standardised conventions, making it easier for new developers to work on existing AdonisJS applications.
+AdonisJS has a consistent and expressive API. If you have ever used frameworks like **Laravel** or **Ruby on Rails**, then **you will love AdonisJS**. It employs a convention over configuration approach, which means it follows a set of standardized conventions, making it easier for new developers to work on existing AdonisJS applications.
 
-It offers a stable eco-system to write web servers so that you can focus on business needs over finalising which package to choose or not. AdonisJS has everything you'd need for building modern web applications, such as:
+It offers a stable eco-system to write web servers so that you can focus on business needs over finalizing which package to choose or not. AdonisJS has everything you'd need for building modern web applications, such as:
 
 - A powerful ORM called Lucid
 - Robust routing

@@ -1,7 +1,7 @@
----
- permalink: tutorials/first-steps/02-prerequisites
- category: First Steps
- author: Chimezie Enyinnaya
+--- 
+permalink: tutorials/first-steps/02-prerequisites
+category: First Steps
+author: Chimezie Enyinnaya
 ---
 
 # Prerequisites

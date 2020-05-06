@@ -1,7 +1,7 @@
 ---
- permalink: tutorials/first-steps/03-creating-an-adonisjs-application
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/03-creating-an-adonisjs-application
+category: First Steps
+author: Chimezie Enyinnaya
 ---
 
 # Creating an AdonisJS application

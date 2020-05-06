@@ -6,7 +6,7 @@
 
 # Routing
 
-Like I said above, routes are the entry point of an AdonisJS application. Every of our application URI must have a corresponding route definition describing how incoming HTTP request for a particular route should be handled. All routes must be defined inside `start/routes.ts`. Although we can define routes in different files provided we import them inside `start/routes.ts`.
+Like I said above, routes are the entry point of an AdonisJS application. Every URI of our application must have a corresponding route definition describing how incoming HTTP request for a particular route should be handled. All routes must be defined inside `start/routes.ts`. Although we can define routes in different files provided we import them inside `start/routes.ts`.
 
 A typical route definition should handle a corresponding HTTP request such as: `GET`, `POST`, `PATCH`, `PUT` and `DELETE`. A typical route accepts two arguments: the URI of the route and the route handler. A route handler can either be inline or using a controller.
 
