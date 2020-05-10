@@ -67,7 +67,7 @@ Next, open the `config/database.ts` file to review the configuration options.
         // highlight-end
       },
       useNullAsDefault: true,
-      healthCheck: false,
+      healthCheck: true,
     },
   }
 }
@@ -115,7 +115,7 @@ Next, open the database config file to review the configuration options.
         database: Env.get('DB_NAME', 'lucid') as string,
         // highlight-end
       },
-      healthCheck: false,
+      healthCheck: true,
     },
   }
 }
@@ -145,7 +145,7 @@ connections: {
       password: Env.get('DB_PASSWORD', 'lucid') as string,
       database: Env.get('DB_NAME', 'lucid') as string,
     },
-    healthCheck: false,
+    healthCheck: true,
   },
 }
 ```
@@ -179,7 +179,7 @@ Next, open the database config file to review the configuration options.
         database: Env.get('DB_NAME', 'lucid') as string,
         // highlight-end
       },
-      healthCheck: false,
+      healthCheck: true,
     },
   }
 }
@@ -203,7 +203,7 @@ With PostgreSQL, you can also pass the connection string instead of defining eve
     pg: {
       client: 'pg',
       connection: 'postgres://someuser:somepassword@somehost:5432/somedatabase',
-      healthCheck: false,
+      healthCheck: true,
     },    
   }
 }
