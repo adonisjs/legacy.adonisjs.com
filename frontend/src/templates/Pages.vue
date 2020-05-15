@@ -19,14 +19,27 @@
         </div>
       </template>
 
-      <MarkdownStyling>
-        <dimer-tree :node="$context.doc.content" :custom-renderers="customRenderers" />
-      </MarkdownStyling>
+      <div class="page-content">
+        <MarkdownStyling>
+          <dimer-tree :node="$context.doc.content" :custom-renderers="customRenderers" />
+        </MarkdownStyling>
+      </div>
     </a-article>
 
     <a-footer />
   </Layout>
 </template>
+
+<style scoped>
+  .page-content .markdown-content {
+    margin-top: 10rem;
+  }
+
+  .page-content .markdown-content h2:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+</style>
 
 <script>
   import AHeader from '~/components/Sections/Header.vue'

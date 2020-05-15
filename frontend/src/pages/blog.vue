@@ -5,6 +5,9 @@
     <a-article>
       <template v-slot:hero>
         <h1>Blog</h1>
+        <h3 class="lede">
+          Hello world
+        </h3>
       </template>
 
       <div class="post-card" v-for="post in posts" :key="post.path">

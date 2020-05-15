@@ -5,23 +5,19 @@
 </template>
 
 <style>
-  .markdown-content:first-child {
-    margin-top: 6rem;
-  }
-
   .markdown-content p,
   .markdown-content img,
   .markdown-content video,
   .markdown-content img,
   .markdown-content .alert {
-    margin-bottom: 3rem;
+    margin-bottom: 3.2rem;
   }
 
   .markdown-content ul,
   .markdown-content ol,
   .markdown-content table,
   .markdown-content .code-highlight {
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
   }
 
   .markdown-content ul ul,
@@ -60,10 +56,6 @@
     top: -4px;
   }
 
-  .markdown-content h2:first-of-type {
-    border: 0;
-  }
-
   .markdown-content h2 {
     border-top: .1rem solid var(--grey-100);
     margin-bottom: 2rem;
@@ -99,7 +91,7 @@
     visibility: hidden;
   }
 
-  .markdown-content ul, ol {
+  .markdown-content ul, .markdown-content ol {
     list-style: none;
   }
 
@@ -215,7 +207,7 @@
     width: 40px;
     left: 0;
     position: absolute;
-    top: -4px;
+    top: 0;
     bottom: 0;
   }
 
