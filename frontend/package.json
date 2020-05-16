@@ -13,7 +13,8 @@
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
     "gridsome": "^0.7.14",
-    "kleur": "^3.0.3"
+    "kleur": "^3.0.3",
+    "typeit": "^7.0.4"
   },
   "devDependencies": {
     "ws": "^7.2.1"
