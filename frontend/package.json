@@ -1,5 +1,5 @@
 {
-  "name": "final-website",
+  "name": "adonisjs.com",
   "private": true,
   "scripts": {
     "build": "gridsome build",
@@ -17,6 +17,12 @@
     "typeit": "^7.0.4"
   },
   "devDependencies": {
+    "autoprefixer": "^9.8.0",
+    "css-loader": "^3.5.3",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-nested": "^4.2.1",
+    "tailwindcss": "^1.4.6",
     "ws": "^7.2.1"
   }
 }

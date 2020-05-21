@@ -1,10 +1,10 @@
 // This is the main.js file. Import global CSS and scripts here.
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 
-import '~/assets/fonts/calibre.css'
-import '~/assets/fonts/jetbrains.css'
-import DefaultLayout from '~/layouts/Default.vue'
+import '~/assets/css/app.css'
+
 import { Dimer, DimerTree, DimerSearch, DimerTabs, utils } from 'dimer-vue'
+import DefaultLayout from '~/layouts/Default.vue'
 import CodeBlock from '~/components/CodeBlock.vue'
 import Tabs from '~/components/Tabs'
 
@@ -23,7 +23,6 @@ Lucky you... the website is open source!
 Feel free to make any suggestion in an issue or PR directly your change(s). 🤗
 
 🔗 https://github.com/adonisjs/adonisjs.com
-
 `)
 
 export default function (Vue, { router, head, isClient }) {
