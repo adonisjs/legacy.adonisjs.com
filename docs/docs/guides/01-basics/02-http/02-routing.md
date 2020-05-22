@@ -150,19 +150,19 @@ Route.post('/posts', async () => {
 })
 
 Route.get('/posts', () => {
-  return 'Peform Read'
+  return 'Perform Read'
 })
 
 Route.get('/posts/:id', () => {
-  return 'Peform Read on a single post'
+  return 'Perform Read on a single post'
 })
 
 Route.put('/posts/:id', () => {
-  return 'Peform Update'
+  return 'Perform Update'
 })
 
 Route.delete('/posts/:id', () => {
-  return 'Peform Delete'
+  return 'Perform Delete'
 })
 ```
 
