@@ -42,7 +42,7 @@ export default class User extends BaseModel {
 
   // highlight-start
   public get initials () {
-    const [first, last] = fullName.split(' ')
+    const [first, last] = this.fullName.split(' ')
     return `${first.charAt(0)}${last.charAt(0)}`
   }
   // highlight-end
