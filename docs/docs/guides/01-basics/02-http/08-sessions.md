@@ -31,11 +31,11 @@ Install the `@adonisjs/session` package from npm registry using the following co
 [codegroup]
 
 ```sh{}{npm}
-npm i @adonisjs/session
+npm i @adonisjs/session@alpha
 ```
 
 ```sh{}{yarn}
-yarn add @adonisjs/session
+yarn add @adonisjs/session@alpha
 ```
 
 [/codegroup]
