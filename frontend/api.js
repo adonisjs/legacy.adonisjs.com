@@ -8,7 +8,7 @@ const BASE_URL = 'http://localhost:4444'
  */
 const ZONE_TEMPLATE_MAPPING = {
   pages: './src/templates/Pages.vue',
-  blog: './src/templates/Pages.vue',
+  blog: './src/templates/Blog.vue',
   guides: './src/templates/Guides.vue',
   releases: './src/templates/Guides.vue'
 }
