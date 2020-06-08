@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/10-deleting-tasks
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/deleting-tasks
+category: First Steps
+group: Tutorials
+author: Chimezie Enyinnaya
 ---
 
 # Deleting tasks

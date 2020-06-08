@@ -117,6 +117,50 @@ console.log(post.serialize())
 */
 ```
 
+### Cherry picking fields
+
+The `serializedAs` option turn off the properties from getting serialized at the global level. However, there we will be times, when you want to decide this on per request basis and this is where cherry picking fields can help you.
+
+The `serialize` method optionally accepts an option to pick/omit fields from getting serialized.
+
+```ts
+post.serialize({
+  fields: ['title', 'body']
+})
+```
+
+You can also define the fields to omit vs the fields to pick.
+
+```ts
+post.serialize({
+  fields: {
+    omit: ['created_at', 'updated_at']
+  }
+})
+```
+
+Finally, you can repeat this process for the relationships as well.
+
+```ts
+post.serialize({
+  fields: {
+    omit: ['created_at', 'updated_at']
+  },
+  relations: {
+    comments: {
+      fields: ['body', 'id']
+    }
+  }
+})
+```
+
+**During cherry picking, the column names are matched against the `serializeAs` names and not the model property names. WHY?**
+
+Imagine you are creating a JSON API server and you decided to allow the users of your API to define the fields they want to be returned in the response.
+
+The users of your API doesn't know about the property names that exists on your models. They only know about the property names they see in the response (ie. the `serializeAs` name) and hence the cherry picking API matches against the `serializeAs` names.
+
+
 ## Customizing value
 Along with the serialized property names, you can also customize the value of a given column by defining a custom `serialize` method.
 
@@ -186,7 +230,11 @@ export class User extends BaseModel {
 ## Computed properties
 As stated earlier, the `serialize` method ignores all the model properties except the one using the `@column` decorator. 
 
-There will be time, when you want to include custom properties inside the serialized output, but without defining them inside the database, and this is where the computed properties comes into the picture.
+There will be times, when you want to include custom properties inside the serialized output, but without defining them inside the database, and this is where the computed properties comes into the picture.
+
+[note]
+The serialization process is synchronous and hence you cannot use `async/await` on the computed properties.
+[/note]
 
 ```ts
 import { DateTime } from 'luxon'
@@ -205,7 +253,3 @@ export default class Post extends BaseModel {
 ```
 
 The properties using the `@computed` decorator will be included inside the serialized output.
-
-[note]
-The serialization process is synchronous and hence you cannot use `async/await` on the computed properties.
-[/note]

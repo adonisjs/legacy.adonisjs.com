@@ -93,6 +93,7 @@ if (args[0] === 'edge:mmustache') {
 if (args[0] === 'edge:components') {
   console.log(wrapPre(higlight(`<body>
   @component('components/modal', { title: 'Are you sure?' })
+    // highlight-start
     @slot('body')
       <p> Select yes, will delete the blog post permanently </p>
     @endslot
@@ -101,6 +102,7 @@ if (args[0] === 'edge:components') {
       <a href=""> Cancel </a>
       <a href=""> Yes, delete it </a>
     @endslot
+    // highlight-end
   @endcomponent
 </body>`,
     'language-edge'

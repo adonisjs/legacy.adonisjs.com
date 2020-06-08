@@ -225,7 +225,7 @@ We haven't covered the setup for all possible databases. However, the process re
 - Finally, define a new connection inside the `config/database.ts` file
 
 ## Verifying Connection
-There are couple of ways to verify the connection settings and ensure that you are able to connect to your database server successfully. One is using the **health checks api** and another one is to **manually run a query** inside a dummy route.
+There are a couple of ways to verify the connection settings and ensure that you are able to connect to your database server successfully. One is using the **health checks api** and another one is to **manually run a query** inside a dummy route.
 
 ### Health Checks
 Lucid has inbuilt support for health checks and it works across all database engines. All you need to do is, enable the `healthCheck` flag on the database connection and then use the AdonisJS global Health check API for checking the status.

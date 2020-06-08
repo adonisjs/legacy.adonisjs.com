@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/04-routing
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/routing
+category: First Steps
+group: Tutorials
+author: Chimezie Enyinnaya
 ---
 
 # Routing

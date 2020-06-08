@@ -145,6 +145,17 @@ const user = await Database
   .rawQuery('select * from users where id = ?', [1])
 ```
 
+- The `rawQuery` method accepts a total of two arguments.
+- First argument is the SQL query.
+- 2nd argument is an array of values to substitute the `?` placeholders inside the SQL string. To prevent SQL injection, you must always define values as bindings and do not inline them inside the SQL string. For example:
+  ```ts{}{Never do this}
+  Database.rawQuery('select * from users where id = 1')
+  ```
+
+  ```ts{}{Correct way}
+  Database.rawQuery('select * from users where id = ?', [1])
+  ```
+
 ## Aggregates
 The aggregate methods like `count`, `min`, `avg` returns an array with the aggregate key and its value. For example:
 

@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/11-deploying-to-digital-ocean
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/deploying-to-digital-ocean
+category: First Steps
+group: Tutorials
+author: Chimezie Enyinnaya
 ---
 
 # Deploying to Digital Ocean
@@ -14,7 +15,7 @@ The rest of this tutorial assumes you have a fully configured droplet running Ub
 
 Let’s install Node.js on our server. First, we need to login to our server:
 
-```bash
+```sh
 ssh root@IP_ADDRESS
 ```
 
@@ -24,20 +25,20 @@ ssh root@IP_ADDRESS
 
 Once we are logged in, run the command below:
 
-```bash
+```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 ```
 
 Then run the snippet below:
 
-```bash
+```sh
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 ```
 
 Now, we can install the latest of version of Node.js using the following command:
 
-```bash
+```sh
 nvm install node
 ```
 
@@ -45,13 +46,13 @@ nvm install node
 
 Nginx will be used as our web server. We’ll use to reverse proxy, which will allow us access our app directly with an IP address or domain instead of tacking port to the IP address.
 
-```bash
+```sh
 apt install nginx
 ```
 
 Enter `Y` to install. Once installed, we need to open firewall for HTTP requests:
 
-```bash
+```sh
 ufw allow 'Nginx HTTP'
 ```
 
@@ -59,13 +60,13 @@ ufw allow 'Nginx HTTP'
 
 Since our application uses MySQL, we need to install it on our server as well:
 
-```bash
+```sh
 apt install mysql-server
 ```
 
 Next, let’s configuring MySQL:
 
-```bash
+```sh
 mysql_secure_installation
 ```
 
@@ -73,13 +74,13 @@ Enter a root password when prompted, then answer the necessary options when prom
 
 Finally, let’s login to the MySQL server:
 
-```bash
+```sh
 mysql
 ```
 
 Then execute the following command:
 
-```bash
+```sh
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 ```
 
@@ -87,19 +88,19 @@ This will allow us use a password when connecting to MySQL as root (in my case).
 
 Next, create a new database:
 
-```bash
+```sql
 CREATE DATABASE tasks;
 ```
 
 For the changes to take effect, run:
 
-```bash
+```sql
 FLUSH PRIVILEGES;
 ```
 
 Then exit the MySQL server:
 
-```bash
+```sql
 exit;
 ```
 
@@ -107,44 +108,44 @@ exit;
 
 With the necessary things installed on our server, let’s pull in our application. have gone ahead to push the code for our application to [GitHub](https://github.com/ammezie/adonis5-tasks.git):
 
-```bash
+```sh
 git clone https://github.com/ammezie/adonis5-tasks.git
 ```
 
 Once cloned, run the following command:
 
-```bash
+```sh
 cd adonis5-tasks
 npm install
 ```
 
 Next, we need to build our application. That is, compile the TypeScript files:
 
-```bash
+```sh
 node ace build
 ```
 
 Next, let’s create the `.env` file:
 
-```bash
+```sh
 cp .env.example .env
 ```
 
 Then generate an `APP_KEY`:
 
-```bash
+```sh
 node ace generate:key
 ```
 
 This will output a random string, which we’ll copy and add inside the `.env` file. Open `.env`:
 
-```bash
+```sh
 vim .env
 ```
 
 And paste the following into it:
 
-```
+```markup
 // .env
 
 PORT=3333
@@ -160,13 +161,13 @@ DB_PASSWORD=YOUR_DATABASE_PASSWORD
 
 Since we have updated the `.env` file, we need to rebuild our application:
 
-```bash
+```sh
 node ace build
 ```
 
 Now, we can run the migration:
 
-```bash
+```sh
 node ace migration:run --force
 ```
 
@@ -176,13 +177,13 @@ Because we are on production, we have to use the `--force` flag, otherwise the m
 
 [PM2](http://pm2.keymetrics.io/) is a process manager which we’ll use to start our application and restart it whenever it crashes.
 
-```bash
+```sh
 npm install pm2 -g
 ```
 
 With PM2 installed, we can start our application with it:
 
-```bash
+```sh
 pm2 start build/server.js
 ```
 
@@ -190,13 +191,13 @@ pm2 start build/server.js
 
 Like I said earlier, we’ll be using Nginx as a reverse proxy. Let’s open the default server configuration file:
 
-```bash
+```sh
 vim /etc/nginx/sites-available/default
 ```
 
 and update the `server` block as below:
 
-```
+```nginx
 // /etc/nginx/sites-available/default
 
 server_name DOMAIN_NAME_OR_IP_ADDRESS;
@@ -214,13 +215,13 @@ location / {
 
 Let’s make sure there are no errors in the configuration:
 
-```bash
+```sh
 nginx -t
 ```
 
 Then we can restart Nginx:
 
-```bash
+```sh
 service nginx restart
 ```
 

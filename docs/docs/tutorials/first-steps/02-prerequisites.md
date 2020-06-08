@@ -1,6 +1,7 @@
 --- 
-permalink: tutorials/first-steps/02-prerequisites
+permalink: tutorials/first-steps/prerequisites
 category: First Steps
+group: Tutorials
 author: Chimezie Enyinnaya
 ---
 

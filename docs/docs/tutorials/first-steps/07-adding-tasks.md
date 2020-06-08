@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/07-adding-tasks
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/adding-tasks
+group: Tutorials
+category: First Steps
+author: Chimezie Enyinnaya
 ---
 
 # Adding tasks
@@ -45,7 +46,7 @@ Next, let’s update the `index.edge` to include a form for adding a new task. R
 
 We have a form with a single field for the title of the task and a submit button. Upon submission, the form will `POST` to the `tasks` route we created earlier for processing.
 
-[https://res.cloudinary.com/adonis-js/image/upload/v1583320069/adonisjs.com/Screenshot_2020-02-20_Tasks_cywozg.png](https://res.cloudinary.com/adonis-js/image/upload/v1583320069/adonisjs.com/Screenshot_2020-02-20_Tasks_cywozg.png)
+![https://res.cloudinary.com/adonis-js/image/upload/v1583320069/adonisjs.com/Screenshot_2020-02-20_Tasks_cywozg.png](https://res.cloudinary.com/adonis-js/image/upload/v1583320069/adonisjs.com/Screenshot_2020-02-20_Tasks_cywozg.png)
 
 ## Creating the store method
 
@@ -148,7 +149,7 @@ Let’s give our users a way to know that have filled the form incorrectly. Upda
 
 If there’s an error for the `title` field, we add an `is-danger` class to the input field. To display the actual validation error message, we check if the there’s an error for the `title` field, then we get the error message.
 
-[https://res.cloudinary.com/adonis-js/image/upload/v1583320346/adonisjs.com/screenshot-127.0.0.1_3333-2020.03.04-12_11_52_albnki.png](https://res.cloudinary.com/adonis-js/image/upload/v1583320346/adonisjs.com/screenshot-127.0.0.1_3333-2020.03.04-12_11_52_albnki.png)
+![https://res.cloudinary.com/adonis-js/image/upload/v1583320346/adonisjs.com/screenshot-127.0.0.1_3333-2020.03.04-12_11_52_albnki.png](https://res.cloudinary.com/adonis-js/image/upload/v1583320346/adonisjs.com/screenshot-127.0.0.1_3333-2020.03.04-12_11_52_albnki.png)
 
 ## Creating the task
 
@@ -207,4 +208,4 @@ Next, let’s display the success message. Add the following code inside `index.
 
 We want to display the success message only if it’s available in the session. Then we get the success message that was flashed.
 
-[https://res.cloudinary.com/adonis-js/image/upload/v1583320070/adonisjs.com/Screenshot_2020-02-20_Tasks_1_jved0b.png](https://res.cloudinary.com/adonis-js/image/upload/v1583320070/adonisjs.com/Screenshot_2020-02-20_Tasks_1_jved0b.png)
+![https://res.cloudinary.com/adonis-js/image/upload/v1583320070/adonisjs.com/Screenshot_2020-02-20_Tasks_1_jved0b.png](https://res.cloudinary.com/adonis-js/image/upload/v1583320070/adonisjs.com/Screenshot_2020-02-20_Tasks_1_jved0b.png)

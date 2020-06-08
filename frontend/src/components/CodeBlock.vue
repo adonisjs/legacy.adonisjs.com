@@ -206,10 +206,7 @@
   }
 
   .code-highlight .token.regex {
-    background: #364135;
-  }
-  .code-highlight.light .token.regex {
-    background: #5fb3b3;
+    color: rgb(238, 95, 143);
   }
 
   .code-highlight .token.bold {

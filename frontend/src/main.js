@@ -6,6 +6,7 @@ import SvgIcon from 'vue-svgicon';
 import DefaultLayout from '~/layouts/Default.vue'
 import { Dimer, DimerTree, DimerSearch, DimerTabs, utils } from 'dimer-vue'
 import CodeBlock from '~/components/CodeBlock.vue'
+import Collapsible from '~/components/Collapsible.vue'
 import Tabs from '~/components/Tabs'
 
 console.log(`
@@ -66,6 +67,19 @@ export default function (Vue, { router, head, isClient }) {
       return createElement(node.tag, {}, children.map(rerender))
     }
 
+    if (node.tag === 'div' && node.props.className && node.props.className.includes('collapsible')) {
+      const title = node.children[0].children[0].value
+      return createElement(Collapsible, {
+        props: {
+          title,
+          content: node.children[1],
+        },
+      })
+    }
+
+    /**
+     * Rendering pre tags inside dedicated component
+     */
     if (node.tag === 'div' && node.props.className && node.props.className.includes('dimer-highlight')) {
       if (node.children.length === 2) {
         return createElement(CodeBlock, {
