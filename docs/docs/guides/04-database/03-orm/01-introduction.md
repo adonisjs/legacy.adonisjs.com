@@ -110,9 +110,12 @@ export default class User extends BaseModel {
 ## FAQ's
 
 [collapse title="Does models creates the database tables automatically?"]
-  No. We do not sync your models with the database. Creating/altering tables must be done using migrations. Make sure to read this [RFC]() for reasoning behind the decision.
+  No. We do not sync your models with the database. Creating/altering tables must be done using [migrations](/guides/database/migrations). Here are some of the reasons for not using models to create database schema.
+
+  1. Generating database tables from models means will make them bloated with all the database level configuration that you don't even need after generating table.
+  2. Not every database change is as simple as renaming a column. There are scenarios, in which you want to migrate data from one table to another during re-structuring and this cannot/should not be expressed within models.
 [/collapse]
 
 [collapse title="I am coming from TypeORM, how should I define column types?"]
-  You do not. We follow the approach of lean models and do 
+  You do not. We follow the approach of **lean models** and do not define database level types and constraints inside models.
 [/collapse]

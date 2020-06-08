@@ -10,6 +10,7 @@ const ZONE_TEMPLATE_MAPPING = {
   pages: './src/templates/Pages.vue',
   blog: './src/templates/Blog.vue',
   guides: './src/templates/Guides.vue',
+  api: './src/templates/Api.vue',
   releases: './src/templates/Guides.vue'
 }
 

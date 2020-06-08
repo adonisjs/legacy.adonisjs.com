@@ -1,10 +1,5 @@
 <template>
   <div class="doc wysiwyg">
-    <div v-if="doc.meta">
-      <p>{{ doc.meta.class }}</p>
-      <p>{{ doc.meta.source }}</p>
-    </div>
-
     <MarkdownStyling>
       <DimerTree :node="doc.content" />
     </MarkdownStyling>

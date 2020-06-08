@@ -1,6 +1,7 @@
 ---
-permalink: tutorials/first-steps/01-introduction
+permalink: tutorials/first-steps/introduction
 category: First Steps
+group: Tutorials
 author: Chimezie Enyinnaya
 ---
 

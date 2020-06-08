@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/08-displaying-tasks
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/displaying-tasks
+category: First Steps
+group: Tutorials
+author: Chimezie Enyinnaya
 ---
 
 # Displaying tasks

@@ -87,33 +87,37 @@ function getPrismLanguage (preLanguage) {
  * Highlight code
  */
 module.exports = function highlight (code, languageClass, dataLine) {
-  const { language, sublanguage } = getPrismLanguage(languageClass)
+  try {
+    const { language, sublanguage } = getPrismLanguage(languageClass)
 
-  if (!Prism.languages[language]) {
-    loadLanguages(language)
+    if (!Prism.languages[language]) {
+      loadLanguages(language)
+    }
+
+    if (sublanguage && !Prism.languages[sublanguage]) {
+      loadLanguages(sublanguage)
+    }
+
+    const lines = dataLine ? rangeParser.parse(dataLine) : []
+    const highlighted = Prism.highlight(
+      code,
+      Prism.languages[language],
+      sublanguage || language,
+    )
+
+    let finalCode = ''
+    const codeSplits = directives(highlighted, lines)
+    const lastId = codeSplits.length - 1
+
+    codeSplits
+      .forEach((split, index) => {
+        finalCode += split.highlight
+          ? split.code
+          : `${split.code}${index == lastId ? `` : `\n`}`
+      })
+
+    return finalCode
+  } catch (error) {
+    console.log(error)
   }
-
-  if (sublanguage && !Prism.languages[sublanguage]) {
-    loadLanguages(sublanguage)
-  }
-
-  const lines = dataLine ? rangeParser(dataLine) : []
-  const highlighted = Prism.highlight(
-    code,
-    Prism.languages[language],
-    sublanguage || language,
-  )
-
-  let finalCode = ''
-  const codeSplits = directives(highlighted, lines)
-  const lastId = codeSplits.length - 1
-
-  codeSplits
-    .forEach((split, index) => {
-      finalCode += split.highlight
-        ? split.code
-        : `${split.code}${index == lastId ? `` : `\n`}`
-    })
-
-  return finalCode
 }

@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/09-completing-tasks
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/completing-tasks
+category: First Steps
+group: Tutorials
+author: Chimezie Enyinnaya
 ---
 
 # Completing tasks

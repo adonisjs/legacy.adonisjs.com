@@ -35,16 +35,16 @@ const user = await Database
   .from('users')
   .select('*')
   .where('username', 'virk')
-  .innerJoin('profiles', 'users.id', 'profiles.userId')
+  .innerJoin('profiles', 'users.id', 'profiles.user_id')
   .first()
 
-// SQL: SELECT * FROM `users` inner join `profiles` on `users`.`id` = `profiles`.`userId` where `username` = ? limit ?
+// SQL: SELECT * FROM `users` inner join `profiles` on `users`.`id` = `profiles`.`user_id` where `username` = ? limit ?
 ```
 
 The goal of the query builder is to offer you a declarative API to construct SQL queries, but without preventing you from using the power of SQL. Everything that you can write in raw SQL is also supported by the [query builder](/guides/database/query-builder) or the [raw query builder](guides/database/query-builder#executing-raw-queries).
 
 ## Data Models
-The database query builder is great in constructing and executing SQL queries. However, the result of every is an array of plain Javascript objects with no behavior.
+The database query builder is great in constructing and executing SQL queries. However, the result of every query is an array of plain Javascript objects with no behavior.
 
 Imagine, you fetch an array of users and each user object has a `date_of_birth` property. Before returning the data back to the client, you want to compute the `age` of the user. How would you do it?
 
@@ -68,7 +68,7 @@ return users.map((user) => {
 })
 ```
 
-The above code is not bad, but imagine, same sort of transformations every where inside of codebase. Well, we can do better than this
+The above code is not bad, but imagine, same nature of transformations everywhere inside you codebase. Well, we can do better than this.
 
 ### Say Hello to Data Models
 Data models are defined as Javascript classes and each class is meant to query a single database table. Instead of using the `Database` object for executing queries, you will make use of the model to create and run SQL queries. For example:
@@ -160,10 +160,7 @@ Every application under development needs dummy data at some stage. It can be du
 One option is to manually insert data using a GUI application, but a better approach is to automate this process and this is where **seeds** and **factories** comes into the picture.
 
 - Seeders allows you insert data to your database by running a single `db:seed` command.
-- Based upon the amount of data you want to seed, manually typing values for each row can be tedious. Factories helps you with generating fake on the fly.
+- Based upon the amount of data you want to seed, manually typing values for each row can be tedious. Factories helps you with generating fake data on the fly.
 - Combining seeders and factories together, you end up with a very robust system seeding database without manual intervention.
 
 We recommend reading the dedicated guide on [seeds and factories]() for in-depth understanding.
-
-## Conclusion
-AdonisJS Lucid comes with a versatile set of tools to make it easy for you to create data driven applications.

@@ -1,7 +1,8 @@
 ---
- permalink: tutorials/first-steps/06-working-with-database
- category: First Steps
- author: Chimezie Enyinnaya
+permalink: tutorials/first-steps/working-with-database
+category: First Steps
+group: Tutorials
+author: Chimezie Enyinnaya
 ---
 
 # Working with database
@@ -12,13 +13,13 @@ Unless we are building a static site, our application will definitely need some 
 
 AdonisJS provides an expressive way to interact with database in our application through it ORM called Lucid. Lucid is not installed in our application by default, so we need to install it:
 
-```bash
+```sh
 npm install @adonisjs/lucid@alpha
 ```
 
 Once installed, we need to set it up. For that, we’ll make use of the `invoke` command to set it up automatically:
 
-```bash
+```sh
 node ace invoke @adonisjs/lucid
 ```
 
@@ -28,13 +29,13 @@ Before we can start interacting with a database in our AdonisJS application, we 
 
 First, we need to install the database driver for MySQL:
 
-```bash
+```sh
 npm install mysql
 ```
 
 Taking a look at `config/database.ts`, we’ll see that the MySQL config details are pulled from  environment variables. So let’s update `.env` with our database details:
 
-```
+```markup
 // .env
 
 DB_CONNECTION=mysql
@@ -52,7 +53,7 @@ With our database set up, let’s create our first migration. But what’s a mig
 
 We can make use of the `make:migration` command to create a migration:
 
-```bash
+```sh
 node ace make:migration tasks
 ```
 
@@ -75,7 +76,7 @@ This migration will create a database table called `tasks` with 5 fields: `id`, 
 
 Next, we need to run the migration:
 
-```bash
+```sh
 node ace migration:run
 ```
 
@@ -85,7 +86,7 @@ Before we head straight to create a Lucid model, let’s take a moment to unders
 
 Now, let’s create our first Lucid model. We can use the `make:model` command:
 
-```bash
+```sh
 node ace make:model Task
 ```
 

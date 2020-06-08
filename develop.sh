@@ -6,7 +6,7 @@ export NODE_ENV=development
 echo ""
 echo "----- Start API Server -----"
 (cd docs && npm run serve) &
-sleep 2
+sleep 5
 
 echo ""
 echo "----- Start Frontend Server -----"
