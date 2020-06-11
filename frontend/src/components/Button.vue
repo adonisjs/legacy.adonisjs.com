@@ -1,5 +1,10 @@
 <template>
-  <a :href="href" class="button big primary">{{ title }}</a>
+  <a v-if="external" :href="href" class="button big primary" target="_blank" rel="noreferrer">
+    {{ title }}
+  </a>
+  <GLink v-else :to="href" class="button big primary">
+    {{ title }}
+  </GLink>
 </template>
 
 <script>
@@ -11,15 +16,11 @@ export default {
     href: {
       type: String,
     },
-  },
-  computed: {
-    classes () {
-      return {
-        [this.type]: true,
-        [this.size]: true,
-      }
+    external: {
+      type: Boolean,
+      default: true,
     }
-  }
+  },
 }
 </script>
 

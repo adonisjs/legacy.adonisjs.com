@@ -19,7 +19,7 @@
 
         <div class="cta">
           <!-- @hardcoded -->
-          <a-button title="Get Started" href="/guides/quick-start" />
+          <a-button title="Get Started" href="/guides/quick-start" :external="false" />
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">
