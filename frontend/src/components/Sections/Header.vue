@@ -6,7 +6,7 @@
           <div class="header-main-container">
             <div class="logo">
               <GLink to="/">
-                <img src="/adonis-banner.svg" alt="AdonisJS" />
+                <img src="/img/adonis-banner.svg" alt="AdonisJS" />
               </GLink>
             </div>
 
