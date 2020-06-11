@@ -86,7 +86,7 @@
 
   .codegroup_tabs_head .codegroup_tab {
     cursor: pointer;
-    padding: 14px 15px 12px 15px;
+    padding: 15px 15px;
     margin-right: 20px;
     font-family: var(--font-secondary);
     letter-spacing: 1px;
@@ -94,5 +94,10 @@
     font-size: 1.2rem;
     color: var(--grey-200);
     font-weight: 600;
+    transition: color 150ms;
+  }
+
+  .codegroup_tab:hover {
+    color: white;
   }
 </style>

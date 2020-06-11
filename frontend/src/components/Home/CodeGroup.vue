@@ -86,7 +86,7 @@
   }
 
   .hero-codegroup-tab {
-    padding: 13px 15px;
+    padding: 20px 15px;
     margin-right: 20px;
     font-family: var(--font-secondary);
     letter-spacing: 1px;
@@ -94,5 +94,10 @@
     font-size: 1.3rem;
     color: var(--grey-200);
     font-weight: 500;
+    transition: color 150ms;
+  }
+
+  .hero-codegroup-tab:hover {
+    color: white;
   }
 </style>
