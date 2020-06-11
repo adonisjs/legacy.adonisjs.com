@@ -12,6 +12,14 @@ module.exports = {
       options: {
         id: 'UA-62429600-3',
       }
+    },
+    {
+      use: '@gridsome/plugin-critical',
+      options: {
+        paths: ['/'],
+        width: 1300,
+        height: 900
+      }
     }
   ],
 }
