@@ -5,10 +5,10 @@
     <section class="main">
       <div class="container">
         <Sidebar
-         :groups="this.$context.groups"
-         :group="this.$context.doc.group"
-         :categories="this.$context.categories"
-         />
+          :groups="this.$context.groups"
+          :group="this.$context.doc.group"
+          :categories="this.$context.categories"
+        />
 
         <div :key="$route.path">
           <div class="docs-wrapper">
@@ -17,7 +17,7 @@
                 The guides for <strong>{{ $context.doc.group }}</strong> are in progress and will be updated regularly.
               </p>
               <p class="notification-timestamp">
-                <span> Last updated: </span> {{ $context.last_updated_on }}
+                <span>Last updated: </span> {{ $context.last_updated_on }}
               </p>
             </div>
             <Doc :doc="$context.doc" />

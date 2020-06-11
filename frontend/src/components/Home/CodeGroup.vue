@@ -21,7 +21,7 @@
         v-for="(section, index) in sections" :key="index"
         v-show="index === activeIndex"
       >
-        <code-block><div v-html="section.code"></div></code-block>
+        <CodeBlock><div v-html="section.code"></div></CodeBlock>
       </div>
     </div>
   </div>

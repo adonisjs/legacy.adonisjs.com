@@ -21,7 +21,7 @@
 
       <div class="page-content">
         <MarkdownStyling>
-          <dimer-tree :node="$context.doc.content" :custom-renderers="customRenderers" />
+          <DimerTree :node="$context.doc.content" :custom-renderers="customRenderers" />
         </MarkdownStyling>
       </div>
 

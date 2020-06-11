@@ -13,14 +13,7 @@
           :class="{ active: withIn(item.node.children) }"
         >
           <span>{{ item.node.title }}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="10"
-            height="5"
-            viewBox="0 0 10 5"
-          >
-            <path d="M0 0l5 5 5-5z" fill="currentColor" fill-rule="nonzero"/>
-          </svg>
+          <Icon  class="stroke-0" name="chevron" height="16" width="16" :fill="true" />
         </a>
 
         <!-- Use anchor tag when top level link is external -->

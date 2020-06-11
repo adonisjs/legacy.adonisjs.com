@@ -8,7 +8,7 @@
           </option>
         </select>
 
-        <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.94.727l-.94.94 4 4 4-4-.94-.94L4 3.78.94.727z" fill="currentColor"/></svg>
+        <Icon  class="stroke-0" name="chevron" height="16" width="16" :fill="true" />
       </div>
 
       <div class="menu-select-box--wrapper">
@@ -20,7 +20,7 @@
           </optgroup>
         </select>
 
-        <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.94.727l-.94.94 4 4 4-4-.94-.94L4 3.78.94.727z" fill="currentColor"/></svg>
+        <Icon  class="stroke-0" name="chevron" height="16" width="16" :fill="true" />
       </div>
     </div>
 
@@ -35,7 +35,8 @@
               @click.prevent="isExpanded = !isExpanded"
             >
               <span>{{ group }}</span>
-              <svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M.94.727l-.94.94 4 4 4-4-.94-.94L4 3.78.94.727z" fill="currentColor"/></svg>
+
+              <Icon  class="stroke-0" name="chevron" height="16" width="16" :fill="true" />
             </a>
             <div class="dropdown-options">
               <g-link
@@ -53,9 +54,9 @@
               <div v-for="(category, index) in categories" :key="index">
                 <h3 class="title" v-if="category.name !== 'root'">{{ category.name }}</h3>
                 <li v-for="doc in category.docs" :key="doc.permalink">
-                  <g-link :to="`/${doc.permalink}`">
+                  <GLink :to="`/${doc.permalink}`">
                     <span class="label"> {{ doc.sidebarTitle || doc.title }} </span>
-                  </g-link>
+                  </GLink>
                 </li>
               </div>
             </ul>

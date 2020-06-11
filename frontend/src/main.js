@@ -3,6 +3,8 @@
 
 import '~/assets/fonts/calibre.css'
 import '~/assets/fonts/jetbrains.css'
+import '~/components/Icons';
+import SvgIcon from 'vue-svgicon';
 import DefaultLayout from '~/layouts/Default.vue'
 import { Dimer, DimerTree, DimerSearch, DimerTabs, utils } from 'dimer-vue'
 import CodeBlock from '~/components/CodeBlock.vue'
@@ -27,6 +29,13 @@ Feel free to make any suggestion in an issue or PR directly your change(s). 🤗
 `)
 
 export default function (Vue, { router, head, isClient }) {
+  Vue.use(SvgIcon, {
+		defaultWidth: '30px',
+		tagName: 'Icon',
+		isOriginalDefault: true,
+		isStroke: true,
+  });
+
   Dimer.addRenderer(function (node, rerender, createElement) {
     /**
      * Wrapping tabs inside a custom component

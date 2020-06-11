@@ -101,4 +101,35 @@
   .tab-item .title {
     display: none !important;
   }
+
+  .svg-icon {
+    display: inline-block;
+    color: inherit;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+  }
+
+  .svg-fill {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .svg-up {
+    /* default */
+    transform: rotate(0deg);
+  }
+
+  .svg-right {
+    transform: rotate(90deg);
+  }
+
+  .svg-down {
+    transform: rotate(180deg);
+  }
+
+  .svg-left {
+    transform: rotate(-90deg);
+  }
 </style>

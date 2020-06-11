@@ -4,7 +4,8 @@
   "scripts": {
     "build": "gridsome build",
     "develop": "gridsome develop",
-    "explore": "gridsome explore"
+    "explore": "gridsome explore",
+    "svg": "vsvg -s src/assets/icons -t src/components/Icons --es6"
   },
   "dependencies": {
     "@gridsome/plugin-critical": "^0.1.6",
@@ -18,6 +19,7 @@
     "typeit": "^7.0.4"
   },
   "devDependencies": {
+    "vue-svgicon": "^3.2.6",
     "ws": "^7.3.0"
   }
 }
