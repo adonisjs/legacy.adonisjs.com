@@ -3,10 +3,18 @@
     <div class="container">
       <div class="hero-container">
         <h1 class="title">
-          A Modern Web Framework for Node.js
+          The foundation of your
+					<br />
+					<span>
+						next
+						<Typewriter :words="['business', 'project', 'idea']" />
+					</span>
         </h1>
+
         <h3 class="subtitle">
-          AdonisJS is a fully-featured MVC framework for Node.js. It takes care of most of your web development hassles, offering you a clean and stable API to build web apps or microservices.
+          The Node.js Framework highly focused on developer ergonomics, stability and speed.
+          <br />
+          Start building efficient, reliable and scalable server-side applications.
         </h3>
 
         <div class="cta">
@@ -26,9 +34,10 @@
 <script>
   import AButton from '~/components/Button.vue'
   import ACodeGroup from '~/components/Home/CodeGroup.vue'
+  import Typewriter from '~/components/Typewriter.vue'
 
   export default {
-    components: { AButton, ACodeGroup },
+    components: { AButton, ACodeGroup, Typewriter },
     data () {
       return {
         codeHighlightSections: []
@@ -128,7 +137,7 @@
 
     .hero-container {
       padding-top: 120px;
-      max-width: 800px;
+      max-width: 900px;
     }
 
     .title {
@@ -140,8 +149,8 @@
 
     .subtitle {
       padding: 0 30px;
-      line-height: 32px;
-      font-size: 2.6rem;
+      line-height: 40px;
+      font-size: 2.4rem;
       margin-bottom: 70px;
     }
 
