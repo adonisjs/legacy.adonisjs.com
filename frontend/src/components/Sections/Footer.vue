@@ -13,7 +13,7 @@
                 <a :href="child.permalink" v-if="child.isExternal" target="_blank" rel="noreferrer">
                   {{ child.title }}
                 </a>
-                <g-link :to="child.permalink" v-else>{{ child.title }}</g-link>
+                <GLink :to="child.permalink" v-else>{{ child.title }}</GLink>
               </li>
             </ul>
           </div>

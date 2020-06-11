@@ -6,7 +6,7 @@
     </div>
 
     <MarkdownStyling>
-      <dimer-tree :node="doc.content" />
+      <DimerTree :node="doc.content" />
     </MarkdownStyling>
   </div>
 </template>

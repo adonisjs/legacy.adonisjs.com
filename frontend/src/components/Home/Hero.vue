@@ -21,11 +21,11 @@
 
         <div class="cta">
           <!-- @hardcoded -->
-          <a-button title="Get Started" href="/guides/quick-start" :external="false" />
+          <Button title="Get Started" href="/guides/quick-start" :external="false" />
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">
-          <a-code-group :sections="codeHighlightSections" />
+          <CodeGroup :sections="codeHighlightSections" />
         </div>
       </div>
     </div>
@@ -34,12 +34,12 @@
 </template>
 
 <script>
-  import AButton from '~/components/Button.vue'
-  import ACodeGroup from '~/components/Home/CodeGroup.vue'
+  import Button from '~/components/Button.vue'
+  import CodeGroup from '~/components/Home/CodeGroup.vue'
   import Typewriter from '~/components/Typewriter.vue'
 
   export default {
-    components: { AButton, ACodeGroup, Typewriter },
+    components: { Button, CodeGroup, Typewriter },
     data () {
       return {
         codeHighlightSections: []

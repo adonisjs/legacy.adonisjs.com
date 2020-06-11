@@ -1,21 +1,21 @@
 <template>
   <Layout>
-    <a-header />
-    <a-hero />
-    <a-primary-features />
-    <a-video />
-    <a-secondary-features />
-    <a-footer />
+    <Header />
+    <Hero />
+    <PrimaryFeatures />
+    <Video />
+    <SecondaryFeatures />
+    <Footer />
   </Layout>
 </template>
 
 <script>
-  import AFooter from '~/components/Sections/Footer.vue'
-  import AHeader from '~/components/Sections/Header.vue'
-  import AVideo from '~/components/Home/Video.vue'
-  import AHero from '~/components/Home/Hero.vue'
-  import APrimaryFeatures from '~/components/Home/PrimaryFeatures.vue'
-  import ASecondaryFeatures from '~/components/Home/SecondaryFeatures.vue'
+  import Footer from '~/components/Sections/Footer.vue'
+  import Header from '~/components/Sections/Header.vue'
+  import Video from '~/components/Home/Video.vue'
+  import Hero from '~/components/Home/Hero.vue'
+  import PrimaryFeatures from '~/components/Home/PrimaryFeatures.vue'
+  import SecondaryFeatures from '~/components/Home/SecondaryFeatures.vue'
 
   export default {
     metaInfo: {
@@ -28,6 +28,6 @@
         { property: 'og:image', content: 'https://preview.adonisjs.com/adonis-readme.jpg' },
       ],
     },
-    components: { AHeader, AHero, APrimaryFeatures, AFooter, AVideo, ASecondaryFeatures },
+    components: { Header, Hero, PrimaryFeatures, Footer, Video, SecondaryFeatures },
   }
 </script>

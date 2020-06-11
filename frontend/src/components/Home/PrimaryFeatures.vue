@@ -4,9 +4,9 @@
       <div class="features-container">
         <div class="grid">
           <div class="col" v-for="feature in $static.features.edges" :key="feature.node.id">
-            <a-feature :title="feature.node.title" :icon="feature.node.icon">
+            <Feature :title="feature.node.title" :icon="feature.node.icon">
               <div v-html="feature.node.body"></div>
-            </a-feature>
+            </Feature>
           </div>
         </div>
       </div>
@@ -30,9 +30,10 @@
 </static-query>
 
 <script>
-  import AFeature from '~/components/Feature.vue'
+  import Feature from '~/components/Feature.vue'
+
   export default {
-    components: { AFeature },
+    components: { Feature },
   }
 </script>
 

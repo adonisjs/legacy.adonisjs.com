@@ -1,8 +1,8 @@
 <template>
   <Layout>
-    <a-header />
+    <Header />
 
-    <a-article>
+    <Article>
       <template v-slot:hero>
         <h1> {{ $context.doc.title }} </h1>
 
@@ -21,12 +21,12 @@
 
       <div class="page-content">
         <MarkdownStyling>
-          <dimer-tree :node="$context.doc.content" :custom-renderers="customRenderers" />
+          <DimerTree :node="$context.doc.content" :custom-renderers="customRenderers" />
         </MarkdownStyling>
       </div>
-    </a-article>
+    </Article>
 
-    <a-footer />
+    <Footer />
   </Layout>
 </template>
 
@@ -42,9 +42,9 @@
 </style>
 
 <script>
-  import AHeader from '~/components/Sections/Header.vue'
-  import AFooter from '~/components/Sections/Footer.vue'
-  import AArticle from '~/components/Article.vue'
+  import Header from '~/components/Sections/Header.vue'
+  import Footer from '~/components/Sections/Footer.vue'
+  import Article from '~/components/Article.vue'
   import DateTime from '~/components/Time/DateTime.vue'
   import MarkdownStyling from '~/components/MarkdownStyling.vue'
 
@@ -55,7 +55,7 @@
       }
     },
 
-    components: { AHeader, AArticle, AFooter, DateTime, MarkdownStyling, },
+    components: { Header, Article, Footer, DateTime, MarkdownStyling, },
 
     methods: {
       /**

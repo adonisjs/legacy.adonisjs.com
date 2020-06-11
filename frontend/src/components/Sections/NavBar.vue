@@ -29,7 +29,7 @@
         </a>
 
         <!-- Otherwise use g-link -->
-        <g-link :to="item.node.permalink" v-else><span>{{ item.node.title }}</span></g-link>
+        <GLink :to="item.node.permalink" v-else><span>{{ item.node.title }}</span></GLink>
 
         <!-- Dropdown -->
         <ul v-if="item.node.children.length">
@@ -37,7 +37,7 @@
             <a :href="child.permalink" v-if="child.isExternal" target="_blank" rel="noreferrer">
               {{ child.title }}
             </a>
-            <g-link :to="child.permalink" v-else>{{ child.title }}</g-link>
+            <GLink :to="child.permalink" v-else>{{ child.title }}</GLink>
           </li>
         </ul>
       </li>

@@ -4,11 +4,11 @@
       <div class="video-container">
 
         <span class="label"> AdonisJS in Action </span>
-        <a-section-title theme="light"> Build a Blog in 15 Mins </a-section-title>
+        <SectionTitle theme="light"> Build a Blog in 15 Mins </SectionTitle>
 
-        <a-section-sub-title theme="light">
+        <SectionSubTitle theme="light">
           Inspired by the popular Ruby on Rails demo, let's create a blog together to feel the essence of the framework.
-        </a-section-sub-title>
+        </SectionSubTitle>
 
         <div class="embed-player" ref="embed-player">
           <p> Coming Next Week </p>
@@ -19,11 +19,11 @@
 </template>
 
 <script>
-  import ASectionTitle from '~/components/SectionTitle'
-  import ASectionSubTitle from '~/components/SectionSubTitle'
+  import SectionTitle from '~/components/SectionTitle'
+  import SectionSubTitle from '~/components/SectionSubTitle'
 
   export default {
-    components: { ASectionSubTitle, ASectionTitle },
+    components: { SectionSubTitle, SectionTitle },
 
     mounted () {
       // const script1 = document.createElement('script')

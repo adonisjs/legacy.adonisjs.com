@@ -1,8 +1,8 @@
 <template>
   <Layout>
-    <a-header />
+    <Header />
 
-    <a-article>
+    <Article>
       <template v-slot:hero>
         <h1>Blog</h1>
         <h3 class="lede">
@@ -18,9 +18,9 @@
           </small>
         </a>
       </div>
-    </a-article>
+    </Article>
 
-    <a-footer />
+    <Footer />
   </Layout>
 </template>
 
@@ -34,9 +34,9 @@ query {
 </page-query>
 
 <script>
-  import AHeader from '~/components/Sections/Header.vue'
-  import AFooter from '~/components/Sections/Footer.vue'
-  import AArticle from '~/components/Article.vue'
+  import Header from '~/components/Sections/Header.vue'
+  import Footer from '~/components/Sections/Footer.vue'
+  import Article from '~/components/Article.vue'
   import DateTime from '~/components/Time/DateTime.vue'
 
   export default {
@@ -46,7 +46,7 @@ query {
       }
     },
 
-    components: { AHeader, AArticle, AFooter, DateTime },
+    components: { Header, Article, Footer, DateTime },
 
     computed: {
       posts () {

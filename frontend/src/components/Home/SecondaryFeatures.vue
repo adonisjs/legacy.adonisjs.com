@@ -2,12 +2,12 @@
   <div class="main-features">
     <div class="container">
       <div class="main-features-container">
-        <a-section-title>What's included?</a-section-title>
+        <SectionTitle>What's included?</SectionTitle>
 
         <div class="subtitle-container">
-          <a-section-sub-title>
+          <SectionSubTitle>
             No need to download a gazillion of packages to create a meaningful application. AdonisJS comes with ton of features for every corner of your app, aiming to make you productive from day one.
-          </a-section-sub-title>
+          </SectionSubTitle>
         </div>
 
         <div class="features-list">
@@ -35,9 +35,9 @@
                  v-for="feature in $static.categories.edges[activeCategoryIndex].node.features"
                  :key="feature.title"
               >
-                <a-feature :title="feature.title" :icon="feature.icon">
+                <Feature :title="feature.title" :icon="feature.icon">
                   <div v-html="feature.body"></div>
-                </a-feature>
+                </Feature>
               </div>
             </div>
           </div>
@@ -48,15 +48,15 @@
 </template>
 
 <script>
-  import AFeature from '~/components/Feature.vue'
-  import ASectionTitle from '~/components/SectionTitle'
-  import ASectionSubTitle from '~/components/SectionSubTitle'
+  import Feature from '~/components/Feature.vue'
+  import SectionTitle from '~/components/SectionTitle'
+  import SectionSubTitle from '~/components/SectionSubTitle'
 
   export default {
     components: {
-      AFeature,
-      ASectionTitle,
-      ASectionSubTitle,
+      Feature,
+      SectionTitle,
+      SectionSubTitle,
     },
     data () {
       return {

@@ -1,10 +1,10 @@
 <template>
   <Layout>
-    <a-header />
+    <Header />
 
     <section class="main">
       <div class="container">
-        <a-sidebar
+        <Sidebar
          :groups="this.$context.groups"
          :group="this.$context.doc.group"
          :categories="this.$context.categories"
@@ -20,11 +20,11 @@
                 <span> Last updated: </span> {{ $context.last_updated_on }}
               </p>
             </div>
-            <a-doc :doc="$context.doc" />
+            <Doc :doc="$context.doc" />
           </div>
 
           <div class="toc-wrapper" v-if="$context.toc">
-            <a-toc :node="$context.toc" />
+            <Toc :node="$context.toc" />
           </div>
         </div>
       </div>
@@ -33,14 +33,13 @@
 </template>
 
 <script>
-  import AHeader from '~/components/Sections/Header.vue'
-  import ASidebar from '~/components/Guides/Sidebar.vue'
-  import ADoc from '~/components/Guides/Doc.vue'
-  import AToc from '~/components/Guides/Toc.vue'
-  import { utils } from 'dimer-vue'
+  import Header from '~/components/Sections/Header.vue'
+  import Sidebar from '~/components/Guides/Sidebar.vue'
+  import Doc from '~/components/Guides/Doc.vue'
+  import Toc from '~/components/Guides/Toc.vue'
 
   export default {
-    components: { AHeader, ASidebar, ADoc, AToc },
+    components: { Header, Sidebar, Doc, Toc },
 
     metaInfo () {
       return {
