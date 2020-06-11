@@ -30,8 +30,11 @@
 	};
 </script>
 
-<style scoped>
+<style>
 .typed-text {
 	color: var(--brand);
+}
+.ti-cursor {
+	margin: 0 !important;
 }
 </style>
