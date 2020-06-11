@@ -11,11 +11,13 @@
 					</span>
         </h1>
 
-        <h3 class="subtitle">
+        <h2 class="subtitle">
           The Node.js Framework highly focused on developer ergonomics, stability and speed.
-          <br />
+        </h2>
+
+        <h2 class="subtitle">
           Start building efficient, reliable and scalable server-side applications.
-        </h3>
+        </h2>
 
         <div class="cta">
           <!-- @hardcoded -->
@@ -78,9 +80,13 @@
   .subtitle {
     font-weight: 500;
     font-size: 2.4rem;
-    line-height: 28px;
-    margin-bottom: 40px;
+    line-height: 30px;
+    margin-bottom: 1rem;
     color: var(--grey-700);
+  }
+
+  .subtitle:last-of-type {
+    margin-bottom: 40px;
   }
 
   .code-showcase-wrapper {
@@ -96,7 +102,7 @@
 
   @media (min-width: 768px) {
     .hero-container {
-      max-width: 620px;
+      max-width: 700px;
       text-align: center;
       margin: auto;
     }
@@ -151,6 +157,10 @@
       padding: 0 30px;
       line-height: 40px;
       font-size: 2.4rem;
+      margin-bottom: 0;
+    }
+
+    .subtitle:last-of-type {
       margin-bottom: 70px;
     }
 
