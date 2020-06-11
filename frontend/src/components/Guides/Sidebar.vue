@@ -164,6 +164,7 @@
     appearance: none;
     height: 4rem;
     padding-left: 2rem;
+    font-size: 16px;
     width: 100%;
   }
 
