@@ -20,6 +20,17 @@ module.exports = {
         width: 1300,
         height: 900
       }
+    },
+    {
+      use: "gridsome-plugin-service-worker",
+      options: {
+        networkFirst: {
+          routes: ['/']
+        },
+        cacheFirst: {
+          routes: ['/assets']
+        }
+      }
     }
   ],
 }
