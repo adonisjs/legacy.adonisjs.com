@@ -97,7 +97,7 @@ module.exports = function highlight (code, languageClass, dataLine) {
     loadLanguages(sublanguage)
   }
 
-  const lines = dataLine ? rangeParser.parse(dataLine) : []
+  const lines = dataLine ? rangeParser(dataLine) : []
   const highlighted = Prism.highlight(
     code,
     Prism.languages[language],
