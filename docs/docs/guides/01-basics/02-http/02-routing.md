@@ -244,7 +244,7 @@ The above example registers the following routes. The **parent resource id** get
 
 ## Route Groups
 
-AdonisJs provides a great way to group multiple routes of similar nature and bulk configure them instead of re-defining same properties on every route.
+AdonisJS provides a great way to group multiple routes of similar nature and bulk configure them instead of re-defining same properties on every route.
 
 A group is created by passing a closure to the `Route.group` method. Routes, declared inside the closure are part of the surrounding group.
 

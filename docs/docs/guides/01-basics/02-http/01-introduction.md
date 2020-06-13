@@ -97,7 +97,7 @@ export default class PostsController {
   public async index ({ view }) {
     const posts = await Post.all()
     return view.render('posts', { posts })
-  } 
+  }
 
 }
 ```
@@ -133,7 +133,7 @@ The views layer of AdonisJS is powered by [Edge](https://edge.adonisjs.com) temp
 </body>
 ```
 
-All that fancy syntax `@set`, `@each` are part of the Edge templating syntax. Make sure to read the [views documentation](views-and-templates) for better understanding. 
+All that fancy syntax `@set`, `@each` are part of the Edge templating syntax. Make sure to read the [views documentation](views-and-templates) for better understanding.
 
 ## Models
 
@@ -194,7 +194,7 @@ export class AuthMiddleware {
     if (!session.userId) {
       return response.status(401).send('Unauthorized')
     }
-    
+
     await next()
   }
 }
@@ -204,9 +204,9 @@ export class AuthMiddleware {
 
 ## Http Context
 
-AdonisJs creates a unique context object for every HTTP request it receives. The Context (aka `ctx`) is then passed to every middleware and finally to the route handler. 
+AdonisJS creates a unique context object for every HTTP request it receives. The Context (aka `ctx`) is then passed to every middleware and finally to the route handler.
 
-The purpose of the context is to hold the information related to the current request. For example: 
+The purpose of the context is to hold the information related to the current request. For example:
 
 - The current request url, body, headers, cookies and so on.
 - Currently logged in user.
