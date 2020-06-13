@@ -75,6 +75,14 @@ Route.route('/', ['TRACE'], async () => {
 })
 ```
 
+If you only need to render a view (like a static page), you don't need to write a complete route handler.
+
+```ts
+// The view resources/view/home.edge will be automatically
+// rendered when reaching /.
+Route.on('/').render('home')
+```
+
 ## Route Handlers
 Every route must have a corresponding handler to handle the request. Handlers can be inline closures or reference to a controller method.
 
@@ -92,10 +100,10 @@ Let's continue with the blog example and see how we can accept the **blog post i
 Route.get('/posts/:id', async ({ params }) => {
   return `You are viewing a blog post with id ${params.id}`
 })
-``` 
+```
 
 [note]
-Make sure to start the HTTP server by running `node ace serve --watch` command. 
+Make sure to start the HTTP server by running `node ace serve --watch` command.
 [/note]
 
 Now, if you will visit the http://localhost:3333/posts/1, you will see the following message.
@@ -218,9 +226,9 @@ Route
   .only(['index', 'create', 'store', 'show', 'edit']) 👈
 ```
 
-The `except` and `only` methods takes an array of subset of route names to blacklist or whitelist. When both are applied together, the `only` method will win. 
+The `except` and `only` methods takes an array of subset of route names to blacklist or whitelist. When both are applied together, the `only` method will win.
 
-Learn more about [route names](#naming-routes).    
+Learn more about [route names](#naming-routes).
 
 ### Nested resources
 
@@ -267,7 +275,7 @@ In case of nested groups, all prefixes will be applied starting from the outer t
 Route
   .group(() => {
     Route.get('/', 'PostsController.index')
-    
+
     Route
       .group(() => {
         Route.get('/', 'PostsApiController.index')
@@ -333,21 +341,21 @@ Creating and using middleware classes involves an extra step of registering midd
      }
    }
    ```
-   
+
 3. Register the middleware namespace with an alias under `start/kernel.ts` file.
   ```ts
   Server.middleware.registerNamed({
     sample: 'App/Middleware/Sample',
   })
   ```
-  
+
 4. Reference the registered alias on the route.
   ```ts
   Route
     .get('/users/:id', 'UserController.show')
     .middleware('sample') 👈
   ```
-   
+
 ### Applying Middleware to Route Groups
 
 You can also apply middleware to a group of routes. The group middleware will be executed before the middleware registered on individual routes.
@@ -455,7 +463,7 @@ Route
 
 ### Naming Resourceful Routes
 
-The routes registered by the `Route.resource` method are automatically named after the resource name. 
+The routes registered by the `Route.resource` method are automatically named after the resource name.
 
 For example: The `users` resource will have the following names.
 
