@@ -202,13 +202,13 @@ Open the newly created file and paste the following code snippet inside it.
     <div>
       <label for="email">Email</label>
       <input type="text" name="email" value="{{ flashMessages.get('email') || '' }}" />
-      <p>{{ flashMessages.get('errors.auth.uid') || '' }}</p>
+      <p>{{ flashMessages.get('auth.errors.uid') || '' }}</p>
     </div>
 
     <div>
       <label for="password">Password</label>
       <input type="password" name="password" />
-      <p>{{ flashMessages.get('errors.auth.password') || '' }}</p>
+      <p>{{ flashMessages.get('auth.errors.password') || '' }}</p>
     </div>
 
     <div>
