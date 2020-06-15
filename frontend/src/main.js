@@ -1,8 +1,6 @@
 // This is the main.js file. Import global CSS and scripts here.
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 
-import '~/assets/fonts/calibre.css'
-import '~/assets/fonts/jetbrains.css'
 import '~/components/Icons';
 import SvgIcon from 'vue-svgicon';
 import DefaultLayout from '~/layouts/Default.vue'
@@ -110,5 +108,53 @@ export default function (Vue, { router, head, isClient }) {
   head.meta.push({
     name: 'viewport',
     content: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+  })
+
+  head.link.push({
+    rel: 'preload',
+    href: '/fonts/calibre.css',
+    as: 'style',
+  })
+
+  head.link.push({
+    rel: 'preload',
+    href: '/fonts/Calibre/Calibre.woff2',
+    as: 'font',
+    type: 'font/woff2',
+    crossorigin: 'anonymous'
+  })
+
+  head.link.push({
+    rel: 'preload',
+    href: '/fonts/Calibre/Calibre-Medium.woff2',
+    as: 'font',
+    type: 'font/woff2',
+    crossorigin: 'anonymous'
+  })
+
+  head.link.push({
+    rel: 'preload',
+    href: '/fonts/Calibre/Calibre-Bold.woff2',
+    as: 'font',
+    type: 'font/woff2',
+    crossorigin: 'anonymous'
+  })
+
+  head.link.push({
+    rel: 'preload',
+    href: '/fonts/Calibre/Calibre-Semibold.woff2',
+    as: 'font',
+    type: 'font/woff2',
+    crossorigin: 'anonymous'
+  })
+
+  head.link.push({
+    rel: 'stylesheet',
+    href: '/fonts/calibre.css',
+  })
+
+  head.link.push({
+    rel: 'stylesheet',
+    href: '/fonts/jetbrains.css',
   })
 }
