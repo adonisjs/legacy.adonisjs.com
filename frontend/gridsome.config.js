@@ -28,7 +28,7 @@ module.exports = {
           routes: ['/']
         },
         cacheFirst: {
-          routes: ['/assets/fonts', '/img']
+          routes: ['/fonts', '/img']
         }
       }
     }
