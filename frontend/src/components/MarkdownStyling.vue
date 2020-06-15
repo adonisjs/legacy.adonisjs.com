@@ -17,6 +17,10 @@
     margin-top: -2rem;
   }
 
+  .markdown-content li p + .code-highlight {
+    margin-top: auto;
+  }
+
   .markdown-content ul,
   .markdown-content ol,
   .markdown-content table,

@@ -53,3 +53,51 @@ Route.get('/healthz', async ({ response }) => {
 Since, Kubernetes only relies on the HTTP status, there is no need to fetch the complete report using `HealthCheck.getReport`. Just using `isLive` method is sufficient.
 
 Similarly, you can use the same approach with other monitoring tools like Pingdom.
+
+## Existing Health checkers
+Following is the list of pre-bundled health checkers. You can also add your own checkers, and we will explore the API for that later in this guide.
+
+### App Key Checker
+The checker will look for the `APP_KEY` environment variable and fails if the key is missing or its length is less than 32 characters.
+
+To fix the issue, you can generate a secure key using `node ace generate:key` command and set the output value as `APP_KEY` environment variable.
+
+### NODE_ENV Checker
+The checker will look for the `NODE_ENV` environment variable and fails if no environment has been set. You should never run your apps with an undefined `NODE_ENV` value.
+
+### SQL Database Checker
+The `@adonisjs/lucid` package registers a checker to check the database connectivity from your application. To enable the health checks for your database, you just need to turn on the `healthCheck` flag inside the `config/database.ts` file.
+
+```ts
+{
+  pg: {
+    client: 'pg',
+    connection: {},
+    healthCheck: true, // 👈
+  }
+}
+```
+
+### Redis Checker
+Similar to the SQL databases, you can also enable the health checks for your redis server when using the `@adonisjs/redis` module.
+
+To enable the health checks for your redis server, you just need to turn on the `healthCheck` flag inside the `config/redis.ts` file.
+
+```ts
+{
+  local: {
+    host: '127.0.0.1',
+    port: 6379,
+    password: '',
+    healthCheck: true // 👈
+  }
+}
+```
+
+## Un-healthy report sample
+
+![](https://res.cloudinary.com/adonis-js/image/upload/v1592214549/adonisjs.com/unhealthy-health-check.png)
+
+## Healthy report sample
+
+![](https://res.cloudinary.com/adonis-js/image/upload/v1592214549/adonisjs.com/health-check-healthy.png)
