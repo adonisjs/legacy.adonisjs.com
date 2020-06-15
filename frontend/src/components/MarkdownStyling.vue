@@ -13,9 +13,9 @@
     margin-bottom: 3.2rem;
   }
 
-  /* .markdown-content p + .code-highlight {
+  .markdown-content p + .code-highlight {
     margin-top: -2rem;
-  } */
+  }
 
   .markdown-content ul,
   .markdown-content ol,
