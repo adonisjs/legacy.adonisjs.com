@@ -4,27 +4,34 @@ group: Validator
 ---
 
 # Validation Rules
-The validation rules allows you to validate the formatting and integrity of data. The validation rules are standalone can be applied on any schema type (with some exceptions).
+Validation rules allows adding additional constraints on the schema types. For example: A rule to validate the formatting of a string to be a valid email, and another rule to ensure a field value is unique inside the database.
 
-1. First, you need to import the `rules` list.
-  ```ts
-  import { rules, schema } from '@ioc:Adonis/Core/Validator'
-  ```
-2. Next, you can define one or more rules on a given field.
-  ```ts
-  schema.create({
-    email: schema.string({}, [
-      rules.email(),
-      rules.unique({ table: 'users', column: 'email' })
-    ])
-  })
-  ```
+## Importing and using rules
+The first step is to import the `rules` list.
+
+```ts
+import {
+  rules, // 👈
+  schema,
+} from '@ioc:Adonis/Core/Validator'
+```
+
+And then define them on the schema types.
+
+```ts
+schema.create({
+  email: schema.string({}, [
+    rules.email(),
+    rules.unique({ table: 'users', column: 'email' })
+  ])
+})
+```
 
 ## `rules.alpha`
 Enforces the value to only have letters. Optionally, you can also allow `spaces`, `dash` and `underscore` characters.
 
 [note]
-Can only be used with the string data type. Otherwise, an exception is raised
+Can only be used only with the **string schema type**.
 [/note]
 
 ```ts
@@ -41,7 +48,7 @@ rules.alpha({
 ```
 
 ## `rules.confirmed`
-Enforce the field under validation is also confirmed using the `_confirmation` convention. You will mostly this rule for password confirmation.
+Enforce the field under validation is also confirmed using the `_confirmation` convention. You will mostly use this rule for password confirmation.
 
 ```ts
 {
@@ -53,8 +60,68 @@ Enforce the field under validation is also confirmed using the `_confirmation` c
 // Valid data: { password: 'secret', password_confirmation: 'secret' }
 ```
 
+## `rules.distinct`
+The `distinct` rule ensures that all values of a property inside an array are unique. For example:
+
+Assuming you have an array of objects, each defining a product id property and you want to ensure that no duplicates product ids are being used.
+
+```js{}{Sample Data}
+{
+  "products": [
+    {
+      "id": 1,
+      "quantity": 4,
+    },
+    {
+      "id": 3,
+      "quantity": 10,
+    },
+    {
+      "id": 8,
+      "quantity": 1,
+    }
+  ]
+}
+```
+
+```ts{}{Validation rule}
+{
+  products: schema
+    .array([
+      rules.distinct('id') // 👈 ensures id is unique
+    ])
+    .members(schema.object({
+      id: schema.number(),
+      quantity: schema.number(),
+    }))
+}
+```
+
+You can also use the distinct rule with an array of literal values by using the wildcard `*` keyword. For example:
+
+```js{}{Sample Data}
+{
+  "tags": [1, 10, 15, 8]
+}
+```
+
+```ts{}{Validation rule}
+{
+  tags: schema
+    .array([
+      rules.distinct('*')
+    ])
+    .members(schema.number())
+}
+```
+
+
 ## `rules.email`
 Enforces the value to be properly formatted as an email. 
+
+[note]
+Can only be used only with the **string schema type**.
+[/note]
 
 ```ts
 {
@@ -70,7 +137,7 @@ You can also define the following options to control the validation behavior.
 |--------|----------------|-------------|
 | allowIpDomain | `false` | Set it as `true` to allow IP addresses in the host part. |
 | ignoreMaxLength | `false` | Set it as `true` to disable email address max length validation. |
-| domainSpecificValidation | `false` | Set it as `true` to enable dis-allow certain syntactically valid email addresses that are rejected by **GMail** |
+| domainSpecificValidation | `false` | Set it as `true` to dis-allow certain syntactically valid email addresses that are rejected by **GMail** |
 | sanitize | `false` | Not a validation option, but instead can be used to transform the local part of the email (before the @ symbol) to all lowercase. |
 
 ```ts
@@ -99,7 +166,13 @@ The validation rule is added by `@adonisjs/lucid` package. So make sure it is [i
 }
 ```
 
-Additionally, you can also defined `where` and `whereNot` constraints. For example: Limit the database query to a specific tenant id.
+Additionally, you can also define `where` and `whereNot` constraints. For example: Limit the database query to a specific tenant id.
+
+[note]
+
+If you are caching your validation schema using the `cacheKey` and your **where constraints** relies on a runtime value, then you must make use of [refs](schema-caching#refs).
+
+[/note]
 
 ```ts
 {
@@ -114,7 +187,7 @@ Additionally, you can also defined `where` and `whereNot` constraints. For examp
 ```
 
 ## `rules.ip`
-Enforce the field under validation is a valid ip address. Optionally, you can also specify the `ipv` version.
+Enforce the field under validation is a valid ip address. Optionally, you can also specify the `ip` version.
 
 ```ts
 {
@@ -125,7 +198,7 @@ Enforce the field under validation is a valid ip address. Optionally, you can al
 
 // or
 rules.ip({
-  version: '6',
+  version: 6,
 })
 ```
 

@@ -1,10 +1,12 @@
 ---
-permalink: guides/validator/data-types
+permalink: guides/validator/schema-types
 group: Validator
 ---
 
-# Data Types
-Following is the list of available data types you can use when defining a schema. 
+# Schema Types
+Schema types enforces type validation on a given property. Also, every schema type has a static return data type as well. In other words, there is no need to maintain separate interfaces for Typescript types.
+
+In this guide, we will go through all of the available schema types and the options accepted by them.
 
 ## `schema.string`
 Enforces the value to a valid string. Also, you can pass options to trim the whitespace or escape certain characters with HTML entities.
@@ -20,7 +22,16 @@ Enforces the value to a valid string. Also, you can pass options to trim the whi
 // Valid data: { title: 'Hello world' }
 ```
 
-The  `<`, `>`, `&`, `'`, `"` and `/` characters will be escaped with HTML entities
+The  `<`, `>`, `&`, `'`, `"` and `/` characters will be escaped with HTML entities.
+
+### Passing additional rules
+You can pass an array of additional rules as 2nd argument.
+
+```ts
+schema.string({}, [
+  rules.email(),
+])
+```
 
 ## `schema.number`
 Enforces the value to be a valid number. The string representation of a number will be casted to a number data type. For example: `"22"` becomes `22`.
@@ -33,11 +44,27 @@ Enforces the value to be a valid number. The string representation of a number w
 // Valid data: { marks: 20 } or { marks: "20" }
 ```
 
+### Passing additional rules
+Since the `number` rule does not accept any configuration options, you can pass additional rules as 1st argument itself.
+
+```ts
+schema.number([
+  rules.unsigned(),
+  rules.range(10, 100),
+])
+```
+
 ## `schema.boolean`
 Enforces the value to be a valid boolean. The following literal values are also casted to a boolean.
 
 - `"1"`, `1`, `"on"`, `"true"` is casted to `true`.
 - `"0"`, `0`, `"off"`, `"false"` is casted to `false`.
+
+[note]
+
+We cast `on` and `off` values to a boolean, since the HTML form `input[type="checkbox"]` sets the value to `"on"` if checkbox is checked.
+
+[/note]
 
 ```ts
 {
@@ -58,7 +85,7 @@ Enforces the value to be a valid date object or a string representing a date. Th
 // Valid data: { published_at: "2020-04-30 12:00:00" }
 ```
 
-You can also enforce a format for the string values.
+You can also enforce a format for the string values by defining a valid format accepted by luxon.
 
 ```ts
 {
@@ -68,7 +95,7 @@ You can also enforce a format for the string values.
 }
 ```
 
-You can also use the following shorthand for standardized date/time formats.
+Or use the following shorthand codes for standardized date/time formats.
 
 ```ts
 {
@@ -115,6 +142,13 @@ enum SocialAccounts {
 schema.enum(Object.values(SocialAccounts))
 ```
 
+[note]
+
+If you are caching your validation schema using the `cacheKey` and your **enum options** relies on a runtime value, then you must make use of [refs](schema-caching#refs).
+
+[/note]
+
+
 ## `schema.enumSet`
 The `schema.enumSet` is similar to the `enum`, instead it accepts an array of values that falls under one of the pre-defined values.
 
@@ -132,6 +166,12 @@ In the following example, we expect the user to select one or more of the pre-de
 
 // Valid data: { skills: ['Programming', 'Design'] }
 ```
+
+[note]
+
+If you are caching your validation schema using the `cacheKey` and your **enumSet options** relies on a runtime value, then you must make use of [refs](schema-caching#refs).
+
+[/note]
 
 ## `schema.file`
 Enforces the value to be a valid uploaded file. You can also enforce additional validation rules on the file size and the extension names.
@@ -164,6 +204,16 @@ You can also validate the members of the array, using the `.members` method. For
 }
 
 // Valid data: { tags: [1, 2, 3] } or { tags: ["1", "2", "3"] }
+```
+
+To validate the array itself, you can pass additional validation rules to the `array` method.
+
+```ts
+{
+  tags: schema.array([ rules.minLength(1) ]).members(
+    schema.number()
+  )
+}
 ```
 
 ## `schema.object`

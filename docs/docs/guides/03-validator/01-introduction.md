@@ -16,13 +16,13 @@ The AdonisJS validator has support for:
 - Extensible API to add custom rules
 
 ## Built with HTTP in mind
-The data submitted over the HTTP is always represented as string and hence manual data casting is required to convert it to language specific data types.
+The data submitted over the HTTP is always represented as string and hence manual data casting is required to convert it to language specific data types. For example:
 
 [video url="https://res.cloudinary.com/adonis-js/video/upload/v1589776782/adonisjs.com/http-data-is-always-string.mov", controls]
 
-If a validator is strict about the data types, then it will offload the work of casting strings to the correct data type on you. 
+As you can see in the above video, the value of `marks` is a **string** and not a **number**. Now, if a validator is strict with data types, it will offload the work of type casting on you.
 
-However, **AdonisJS handles the data casting** for you based upon the applied validation rules. For example:
+However, AdonisJS addresses this behavior and takes care of the type casting for you by inferring types from the validation schema. For example:
 
 ```ts{}{start/routes.ts}
 import { schema } from '@ioc:Adonis/Core/Validator'
@@ -30,7 +30,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 Route.post('/', async ({ request }) => {
   const validated = await request.validate({
     schema: schema.create({
-      marks: schema.number() // 👈
+      marks: schema.number() // 👈 convert to number and validate
     })
   })
 
@@ -51,7 +51,7 @@ request.validate({
   }),
   messages: {
     'marks.required': 'Marks are required to submit the form',
-    'marks.number': 'Invalid value provided for the marks'
+    'marks.number': 'Invalid value provided for the {{ field }}',
   },
 })
 ```
