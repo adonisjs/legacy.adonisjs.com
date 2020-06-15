@@ -7,10 +7,37 @@ group: Basics
 # Logger
 AdonisJS uses [pino logger](https://getpino.io/#/) for logging, since it is one of the fastest logging libraries in Node.js ecosystem and also follows the [12factor app guidelines](https://12factor.net/logs).
 
+## Usage
+You need to import the `Logger` before you can use it. 
+
+```ts
+import Logger from '@ioc:Adonis/Core/Logger'
+
+Logger.info('A info message')
+Logger.warn('A warning')
+```
+
+During an HTTP request, it is recommended to use the `logger` instance attach to the HTTP Context. The request logger holds a unique request id to keep log messages tighter in scope.
+
+[note]
+
+Make sure to enabled request id generation by setting `generateRequestId = true` inside `config/app.ts` file.
+
+[/note]
+
+```ts
+Route.get('/', async ({ logger }) => {
+  logger.info('An info message')
+  return 'handled'
+})
+```
+
+![](https://res.cloudinary.com/adonis-js/image/upload/v1592211987/adonisjs.com/http-logger.png)
+
 ## How AdonisJS Logger works?
 Since, Node.js is a single threaded event-loop, it is very important to keep the main thread free from any extra work required to process or reformat logs. 
 
-For this very reason, we opted for pino logger, which does not perform any in-process log formatting and instead encourages you to make use a seperate process for that. In nutshell, this is how the logging works.
+For this very reason, we opted for [pino logger](http://getpino.io/#/), which does not perform any in-process log formatting and instead encourages you to make use a seperate process for that. In nutshell, this is how the logging works.
 
 1. You can log at different levels using the Logger API, for example: `Logger.info('some message')`.
 2. The logs will be send out to `stdout`.
