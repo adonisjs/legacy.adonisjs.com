@@ -1,7 +1,7 @@
 ---
 permalink: releases/core/preview-rc-5
 group: Core
-sidebarTitle: Preview Release
+sidebarTitle: Preview Release 1.5
 ---
 
 # Preview release `rc-1.5`
