@@ -101,3 +101,41 @@ To enable the health checks for your redis server, you just need to turn on the 
 ## Healthy report sample
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/v1592214549/adonisjs.com/health-check-healthy.png)
+
+## Registering your own checker
+You can also register your own health checkers using the Health check module. Since, the checker needs to be registered only once, you must use a **preload file** or the **service provider** to register it.
+
+For demonstration, lets open the `providers/AppProvider.ts` and paste the following code inside the `boot` method.
+
+```ts
+import { IocContract } from '@adonisjs/fold'
+
+export default class AppProvider {
+  constructor (protected $container: IocContract) {
+  }
+
+  // highlight-start
+  public async boot () {
+    const HealthCheck = (await import('@ioc:Adonis/Core/HealthCheck')).default
+
+    HealthCheck.addChecker('my-checker', async () => {
+      return {
+        displayName: 'Checker Name',
+        health: {
+          healthy: true,
+          message: 'Everything works fine'
+        },
+        meta: {},
+      }
+    })
+  }
+  // highlight-end
+}
+```
+
+- The `HealthCheck.addChecker` accepts a total of two arguments.
+- The first argument is a unique name of the checker.
+- The second argument is the callback that should return the report with following required properties.
+  - `displayName` A human readable name of the checker.
+  - `health.healthy` A boolean that indicates if the service is healthy.
+  - `health.message` Error or success message.
