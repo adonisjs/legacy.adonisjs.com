@@ -9,7 +9,7 @@ Database seeding is a way to setup your application with some initial data that 
 - Creating a seeder to insert countries, states and cities before deploying and running your application.
 - Or a seeder to insert users inside the database for local development.
 
-In AdonisJS, the seeders are stored inside the `database/Seeders` directory. You can create seeders manually or run the following ace command to create one for you.
+In AdonisJS, the seeders are stored inside the `database/seeders` directory. You can create seeders manually or run the following ace command to create one for you.
 
 ```sh
 node ace make:seeder User
@@ -17,7 +17,7 @@ node ace make:seeder User
 
 The seeder file is a standard Javascript class as shown in the following example:
 
-```ts{}{database/Seeders/UserSeeder.ts}
+```ts{}{database/seeders/UserSeeder.ts}
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import User from 'App/Models/User'
 
@@ -51,7 +51,7 @@ node ace db:seed
 ```
 
 ```sh
-# runs database/Seeders/UserSeeder
+# runs database/seeders/UserSeeder
 node ace db:seed --file=UserSeeder
 ```
 
@@ -76,7 +76,7 @@ export default class UserSeeder extends BaseSeeder {
 }
 ```
 
-The `developmentOnly` flag ensures that this file is never executed when `process.env.NODE_ENV = 'production'`.
+The `developmentOnly` flag ensures that this file is only executed when `process.env.NODE_ENV = 'development'`.
 
 ## Idempotent operations
 Unlike migrations, there is no tracking system in place for the database seeders. In other words, executing a seeder multiple times will perform the inserts multiple times as well.
@@ -121,3 +121,30 @@ In the above example, the `updateOrCreateMany` method will look for existing row
 [tip]
 Learn more about the other idempotent methods [here](/guides/models/crud-operations#find-or-create).
 [/tip]
+
+## Customizing database connection
+The `db:seed` command accepts an optional `--connection` flag and forwards it to the seeder files as a `connection` property. From there on, you can use this property to set the appropriate connection during your models interactions. For example:
+
+```ts
+import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
+import User from 'App/Models/User'
+
+export default class UserSeeder extends BaseSeeder {
+
+  public async run () {
+    await User.create({
+      email: 'virk@adonisjs.com',
+      password: 'secret',
+    }, {
+      connection: this.connection, // 👈
+    })
+  }
+
+}
+```
+
+Now you can specify the `--connection` flag on your `db:seed` command and the `UserSeeder` will use it.
+
+```sh
+node ace db:seed --connection=tenant-1
+```

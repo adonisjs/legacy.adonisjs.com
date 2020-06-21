@@ -15,11 +15,11 @@ By the end of this guide, you will know:
 
 ## Creating factories
 
-Model factories are stored inside `databases/Factories` directory. You can define all factories within a single file or create dedicated files for each model, the choice is yours.
+Model factories are stored inside `databases/factories` directory. You can define all factories within a single file or create dedicated files for each model, the choice is yours.
 
 Unlike seeders or models, the factories are declarative in nature as shown in the following example:
 
-```ts{}{database/Factories/index.js}
+```ts{}{database/factories/index.js}
 import Factory from '@ioc:Adonis/Lucid/Factory'
 import User from 'App/Models/User'
 
@@ -43,7 +43,7 @@ export const UserFactory = Factory
 Using factories is quite simple. Just `import` the file and use the exported factories.
 
 ```ts
-import { UserFactory } from 'Database/Factories'
+import { UserFactory } from 'Database/factories'
 
 const user = await UserFactory.create()
 ```
@@ -55,7 +55,7 @@ const users = await UserFactory.createMany(10)
 ```
 
 ## Merging attributes
-The `Factory.define` method returns a default set of attributes. You can override them using the `.merge` method. For example:
+You can override the default set of attributes using the `.merge` method. For example:
 
 ```ts
 await UserFactory
@@ -63,7 +63,7 @@ await UserFactory
   .create()
 ```
 
-When creating multiple instances, you can define an array of attributes and they will merged based upon their indexes. For example:
+When creating multiple instances, you can define an array of attributes and they will merge based upon their indexes. For example:
 
 ```ts
 await UserFactory
@@ -81,7 +81,7 @@ In the above example
 - And, the third user will use the default email address, since the merge array has a length of 2.
 
 ## Factory states
-Factory states allows you to define variations of your factories as states. For example: On a `Post` factory, you can have different states to **define published and draft posts**.
+Factory states allows you to define variations of your factories as states. For example: On a `Post` factory, you can have different states to **represent published and draft posts**.
 
 ```ts
 import Factory from '@ioc:Adonis/Lucid/Factory'
@@ -102,7 +102,7 @@ export const PostFactory = Factory
 By default, all posts will be created with `DRAFT` status. However, you can explicitly apply the `published` state to create posts with `PUBLISHED` status.
 
 ```ts
-await PostFactory.state('published').createMany(3)
+await PostFactory.apply('published').createMany(3)
 await PostFactory.createMany(3)
 ```
 
@@ -132,7 +132,7 @@ export const UserFactory = Factory
   .build()
 ```
 
-Now, you can create a `user` and its `posts` in one go.
+Now, you can create a `user` and its `posts` all together in one call.
 
 ```ts
 const user = await UserFactory.with('posts', 3).create()
@@ -149,7 +149,7 @@ You can also apply states on a relationship by passing a callback to the `with` 
 
 ```ts
 const user = await UserFactory
-  .with('posts', 3, (post) => post.state('published'))
+  .with('posts', 3, (post) => post.apply('published'))
   .create()
 ```
 
@@ -157,7 +157,7 @@ Similarly, if you want, you can create few posts with the `published` state and 
 
 ```ts
 const user = await UserFactory
-  .with('posts', 3, (post) => post.state('published'))
+  .with('posts', 3, (post) => post.apply('published'))
   .with('posts', 2)
   .create()
 
@@ -173,7 +173,7 @@ const user = await UserFactory
 ```
 
 ## Stubbing database calls
-In some cases, you may prefer to stub out the database calls and just want create in-memory model instances. This is can achieved using the `makeStubbed` and `makeStubbedMany` methods.
+In some cases, you may prefer to stub out the database calls and just want to create in-memory model instances. This is can achieved using the `makeStubbed` and `makeStubbedMany` methods.
 
 ```ts
 const user = await UserFactory
@@ -204,8 +204,7 @@ Factory.stubId((counter, model) => {
 })
 ```
 
-You can make use of the `makeStubbed` hook to customize ids for an individual factory.
-
+You can make use of the `makeStubbed` hook to customize the id generation behavior for an individual factory.
 ```ts
 Factory
   .define(Post, () => {
@@ -257,6 +256,25 @@ Factory
 | `after` | `makeStubbed` | Invoked **after the stubbed** call. |
 | `after` | `make` | Invoked only **after** the model instance has been created. This hook is also invoked before the **before create** and **before makeStubbed** hooks. |
 
+## Custom connections
+Factories allows you to define a custom connection or query client at the time using them. For example:
+
+```ts
+await Factory.connection('tenant-1').create()
+```
+
+Also, you can pass a custom query client instance.
+```ts
+const queryClient = Database.connection('tenant-1')
+await Factory.client(queryClient).create()
+```
+
+For the sake of API uniformity among the factories and the Lucid models, you can also define the `connection` or the `client` using the `query` method.
+
+```ts
+await Factory.query({ connection: 'tenant-1' }).create()
+```
+
 ## Customizations
 Finally, you can optionally customize the behavior of certain operations performed under the hood.
 
@@ -290,3 +308,6 @@ Factory
   })
   .build()
 ```
+
+## Interactive mode
+The `db:seed` command comes with an interactive mode to cherry pick the seeders to run. Following is an example of same.
