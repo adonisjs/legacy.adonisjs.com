@@ -13,6 +13,23 @@ By the end of this guide, you will know:
 2. How to configure and use different session storage engines.
 3. The concept of flash messages and how to use them.
 
+## Available drivers
+The session module of AdonisJS ships with the following storage drivers.
+
+[note]
+You can change the active driver and its settings inside `config/session.ts` file.
+[/note]
+
+- **Cookies (default)** are great when you are not storing multi megabytes of data. Cookies are encrypted by default and hence there is no concern of data security.
+- **File System** can be used to keep the sessions data on the server side. However, horizontally scaling and sharing sessions is impossible. Also there can be data loss, when code is running inside containers, like Docker.
+- **Redis** is the best of both. You can store large chunks of data and also share it across multiple servers. 
+
+You can configure the session storage by choosing between one of the available session drivers. They are:
+
+- `cookie`
+- `file`
+- `redis`
+
 ## Setup
 The sessions package of AdonisJS is pre-configured for Web application boilerplate created using `npx` or `yarn create`. Open `.adonisrc.json` file and check if `@adonisjs/session` is registered under the providers array or not.
 
@@ -94,19 +111,6 @@ As soon as the package is configured, you can access the `session` object on the
   ```
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582442759/adonisjs.com/session-language-change.gif)
-
-## Session Storage
-AdonisJS offers multiple backend storage options for storing session data. It includes
-
-- **Cookies (default)** are great when you are not storing multi megabytes of data. Cookies are signed by default and hence there is no concern of data security.
-- **File System** can be used to keep the sessions data on the server side. However, horizontally scaling and sharing sessions is impossible. Also there can be data loss, when code is running inside containers, like Docker.
-- **Redis** is the best of both. You can store large chunks of data and also share it across multiple servers. 
-
-You can configure the session storage by choosing between one of the available session drivers. They are:
-
-- `cookie`
-- `file`
-- `redis`
 
 ## Flash Messages
 The session flash messages are cleared with each request. This means, you can use them for passing data between two requests for things like displaying **error and success messages**.
