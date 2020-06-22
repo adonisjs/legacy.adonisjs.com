@@ -216,6 +216,16 @@ To validate the array itself, you can pass additional validation rules to the `a
 }
 ```
 
+A good example would be to validate number of files to be uploaded through HTML form.
+
+```ts
+{
+  thumbnails: schema.array([ rules.maxLength(3) ]).members(
+    schema.file()
+  )
+}
+```
+
 ## `schema.object`
 Enforces the value to be a valid Javascript object. Similar to an array, you can also validate the members/properties of an object.
 
