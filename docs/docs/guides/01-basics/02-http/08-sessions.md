@@ -33,11 +33,13 @@ You can configure the session storage by choosing between one of the available s
 ## Setup
 The sessions package of AdonisJS is pre-configured for Web application boilerplate created using `npx` or `yarn create`. Open `.adonisrc.json` file and check if `@adonisjs/session` is registered under the providers array or not.
 
-```json{4}
+```json
 {
   "providers": [
     "@adonisjs/core",
+    // highlight-start
     "@adonisjs/session"
+    // highlight-end
   ]
 }
 ```
@@ -73,10 +75,12 @@ node ace invoke @adonisjs/session
 As soon as the package is configured, you can access the `session` object on the [HTTP context](introduction#http-context). For demonstration, lets create a dummy app to store the user language preference inside the session.
 
 1. Register the route to render the `welcome` view and pass the user language by reading it from the session.
-  ```ts{3}{}
+  ```ts
   Route.get('/', async ({ session, view }) => {
     return view.render('welcome', {
+      // highlight-start
       userLanguage: session.get('userLanguage'),
+      // highlight-end
     })
   })
   ```
@@ -103,9 +107,11 @@ As soon as the package is configured, you can access the `session` object on the
   ```
 
 3. Finally setup the route to update the user language inside the session store and redirect them back.
-  ```ts{2}
+  ```ts
   Route.get('/language/:name', async ({ session, params, response }) => {
+    // highlight-start
     session.put('userLanguage', params.name)
+    // highlight-end
     response.redirect('back')
   })
   ```
@@ -115,17 +121,21 @@ As soon as the package is configured, you can access the `session` object on the
 ## Flash Messages
 The session flash messages are cleared with each request. This means, you can use them for passing data between two requests for things like displaying **error and success messages**.
 
-```ts{5,8-10}
+```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
   public async store ({ session }: HttpContextContract) {
+    // highlight-start
     session.flash('success', 'Post has been created')
+    // highlight-end
 
     // or pass an object
+    // highlight-start
     session.flash({
       success: 'Post has been created',
     })
+    // highlight-end
   }
 }
 ```
@@ -134,11 +144,13 @@ A standard practice is to redirect the request after you have set the flash mess
 
 ### Access Flash Messages inside Controllers 
 
-```ts{2-4}
+```ts
 public async create ({ view, session }: HttpContextContract) {
+  // highlight-start
   console.log(session.flashMessages.all())
   console.log(session.flashMessages.get('errors'))
   console.log(session.flashMessages.has('success'))
+  // highlight-end
 
   return view.render('posts/create')
 }
