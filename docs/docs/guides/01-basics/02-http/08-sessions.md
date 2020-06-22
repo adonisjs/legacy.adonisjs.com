@@ -73,7 +73,7 @@ node ace invoke @adonisjs/session
 As soon as the package is configured, you can access the `session` object on the [HTTP context](introduction#http-context). For demonstration, lets create a dummy app to store the user language preference inside the session.
 
 1. Register the route to render the `welcome` view and pass the user language by reading it from the session.
-  ```ts{3}
+  ```ts{3}{}
   Route.get('/', async ({ session, view }) => {
     return view.render('welcome', {
       userLanguage: session.get('userLanguage'),
