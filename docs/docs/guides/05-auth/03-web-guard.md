@@ -19,7 +19,7 @@ The web guard relies on the sessions for managing the state of an authenticated 
 - For applications running on a single domain or subdomains.
 - An API server serving the frontend application on the same domain or subdomain.
 
-If you creating an API server, that needs to support **mobile applications** or **3rd party web applications**, then we recommend using the `jwt` guard.
+If you creating an API server, that needs to support **mobile applications** or **3rd party web applications**, then we recommend using the `api` guard.
 
 ## Register new users
 Let's begin by defining the required routes and create the HTML form to register new users. 
@@ -264,39 +264,7 @@ In order to logout a user, you just need to call the `auth.logout` method and th
 await auth.logout()
 ```
 
-## Handling exceptions
-All of the exceptions raised by the auth module are [self handled](guides/http/exception-handling#self-handled-exceptions) and you may never have to handle them manually. However, lets understand the default behavior of the exceptions.
+## What's next?
 
-### `InvalidCredentialsException`
-The `auth.attempt` method raises the `InvalidCredentialsException` when unable to lookup a user or not able verify the password. If not handled manually:
-
-- The request will be redirected back to the **previous page**, along with error messages.
-- Ajax requests or requests with `accept = application/json` header will receive errors as JSON instead of the redirect.
-
-```ts
-try {
-  await auth.attempt(email, password)
-} catch (error) {
-  if (error.code === 'E_INVALID_AUTH_UID') {
-    // unable to find user using email address
-  }
-
-  if (error.code === 'E_INVALID_AUTH_PASSWORD') {
-    // password mis-match
-  }
-}
-```
-
-### `AuthenticationException`
-The `auth.authenticate` method raises the `AuthenticationException` when unable to find a valid session or unable to lookup the user from the session id. If not handled manually:
-
-- The request will be redirected back to the login page.
-- Ajax requests or requests with `accept = application/json` header will receive an error with 401 status code.
-
-```ts
-try {
-  await auth.authenticate()
-} catch (error) {
-  // invalid session
-}
-```
+- [Using middleware](middleware) to protect routes from unauthenticated users.
+- [Understanding the flow](handling-exceptions) of exceptions raised by the auth module.

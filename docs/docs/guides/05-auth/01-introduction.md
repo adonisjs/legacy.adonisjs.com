@@ -20,6 +20,9 @@ AdonisJS makes use of providers to lookup users from the database. We ship follo
 
 You just need to define a handful of configuration options and then providers are ready to do all the heavy lifting.
 
+### Token Providers
+The token providers are used to lookup tokens from the database. Currently, there is only one token provider, ie `database`. The `database` provider using the SQL database for persisting/reading tokens.
+
 ### Guards
 Guards decides how to login a user and then authenticate them on subsequent users. A guard can be an implementation of a stateful authentication like sessions or a stateless implementation using JWT tokens.
 
