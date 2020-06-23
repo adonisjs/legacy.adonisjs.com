@@ -19,7 +19,7 @@ Model factories are stored inside `databases/factories` directory. You can defin
 
 Unlike seeders or models, the factories are declarative in nature as shown in the following example:
 
-```ts{}{database/factories/index.js}
+```ts{}{database/factories/index.ts}
 import Factory from '@ioc:Adonis/Lucid/Factory'
 import User from 'App/Models/User'
 
