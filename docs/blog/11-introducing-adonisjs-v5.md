@@ -209,6 +209,5 @@ Also, I do hear maintainers horror stories in the open source world, but I have 
 
 So as much as me, all this hard work is possible because of you. It takes only a day for a maintainer to shutdown the project without any motivation. But, I have been lucky enough to have such great people using the framework and always appreciating the work.
 
-Cheers!
-
+Cheers!  
 Harminder Virk
