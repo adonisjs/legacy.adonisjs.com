@@ -308,6 +308,3 @@ Factory
   })
   .build()
 ```
-
-## Interactive mode
-The `db:seed` command comes with an interactive mode to cherry pick the seeders to run. Following is an example of same.
