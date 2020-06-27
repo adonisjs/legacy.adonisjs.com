@@ -178,7 +178,7 @@ If you are caching your validation schema using the `cacheKey` and your **where 
 {
   category_id: schema.number([
     rules.exists({
-      column: 'categories',
+      table: 'categories',
       column: 'id',
       where: { tenant_id: 1 },
     })
