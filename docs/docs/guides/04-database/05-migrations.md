@@ -177,9 +177,3 @@ The configuration for migrations is stored inside the `config/database.ts` file 
 - You can define multiple `paths` from which to read the migrations files. The migrations are executed in sequence of the defined paths.
 - The `tableName` property allows you to customize the table name for tracking completed migrations.
 - Since rollbacks can lead to data loss, you can disable them in production by setting `disableRollbacksInProduction = true`.
-
-## What's Next?
-This guide gives you a high level overview of migrations. We recommend you to read the following docs as well.
-
-- [Schema API Docs]()
-- [Migrations Commands Reference]()
