@@ -161,7 +161,7 @@ The validation rule is added by `@adonisjs/lucid` package. So make sure it is [i
 ```ts
 {
   category_id: schema.number([
-    rules.exists({ column: 'categories', column: 'id' })
+    rules.exists({ table: 'categories', column: 'id' })
   ])
 }
 ```
