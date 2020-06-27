@@ -75,18 +75,18 @@ The local key is mostly the primary key of the **parent model**. In our example:
 ### `relatedKey`
 The related key is mostly the primary key of the **related model**. In our example: Skill is the related model and `relatedKey` will also be the `id`.
 
-### `foreignKey`
-The foreign key is in the pivot table to create the relationship with the **parent model**. Conventionally, it is camelCase representation of the model name and its primary key. In our example: The `foreignKey` will be `userId`.
+### `pivotForeignKey`
+The foreign key is in the pivot table to create the relationship with the **parent model**. Conventionally, it is camelCase representation of the model name and its primary key. In our example: The `pivotForeignKey` will be `userId`.
 
-### `relatedForeignKey`
-The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is camelCase representation of the model name and its primary key. In our example: The `relatedForeignKey` will be `skillId`.
+### `pivotRelatedForeignKey`
+The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is camelCase representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skillId`.
 
 ```ts
 @manyToMany(() => Skill, {
   localKey: 'id',
-  foreignKey: 'user_id',
+  pivotForeignKey: 'user_id',
   relatedKey: 'id',
-  relatedForeignKey: 'skill_id',
+  pivotRelatedForeignKey: 'skill_id',
 })
 public skills: ManyToMany<typeof Skill>
 ```
