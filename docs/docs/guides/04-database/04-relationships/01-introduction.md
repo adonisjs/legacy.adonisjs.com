@@ -76,6 +76,19 @@ await user.preload('profile')
 console.log(user.profile)
 ```
 
+## Preloading deep relationship
+
+Imagine you user model has a relation to profile, and profile model has a relation to address. You can preload and element of a relationship by passing a preload function as a second argument:
+
+```ts
+const user = auth.user
+await user.preload('profile', (query) => {
+  query.preload('address')
+})
+
+console.log(user.profile)
+```
+
 ### Multiple relations
 You can also preload multiple relations, by calling the method for multiple times.
 
@@ -86,6 +99,16 @@ users.forEach((user) => {
   console.log(user.profile)
   console.log(user.emails)
 })
+```
+If you already have loaded a module, you can preload multiple relations by passing a function to preload method:
+
+```ts
+const user = auth.user
+await user.preload((query) => {
+  query.preload('profile').preload('emails')
+})
+
+console.log(user.profile)
 ```
 
 ### Relationship constraints
