@@ -10,17 +10,17 @@
   "dependencies": {
     "@gridsome/plugin-critical": "^0.1.6",
     "@gridsome/plugin-google-analytics": "^0.1.1",
-    "axios": "^0.19.1",
+    "axios": "^0.19.2",
     "date-fns": "^2.14.0",
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
     "gridsome": "^0.7.17",
     "gridsome-plugin-service-worker": "^0.1.5",
-    "kleur": "^3.0.3",
+    "kleur": "^4.0.2",
     "typeit": "^7.0.4"
   },
   "devDependencies": {
-    "vue-svgicon": "^3.2.6",
+    "vue-svgicon": "^3.2.8",
     "ws": "^7.3.0"
   }
 }
