@@ -12,7 +12,6 @@ The web guard uses `sessions` to login and authenticate users. By the end of thi
 - How to authenticate requests after the login
 - Using the remember me token for long lived sessions
 
-
 ## When to use the web guard?
 The web guard relies on the sessions for managing the state of an authenticated user. It is a great fit:
 
@@ -20,6 +19,10 @@ The web guard relies on the sessions for managing the state of an authenticated 
 - An API server serving the frontend application on the same domain or subdomain.
 
 If you creating an API server, that needs to support **mobile applications** or **3rd party web applications**, then we recommend using the `api` guard.
+
+[note]
+Ensure to install the [@adonisjs/session](/guides/http/sessions) module before continuing.
+[/note]
 
 ## Register new users
 Let's begin by defining the required routes and create the HTML form to register new users. 
