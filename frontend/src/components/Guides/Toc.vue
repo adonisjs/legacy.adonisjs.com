@@ -3,7 +3,7 @@
     <div class="toc-content">
       <h3 class="title">
         <Icon name="content" height="16" width="16" :fill="false" />
-        <span>On this psage</span>
+        <span>On this page</span>
       </h3>
       <DimerTree :node="node" />
     </div>
