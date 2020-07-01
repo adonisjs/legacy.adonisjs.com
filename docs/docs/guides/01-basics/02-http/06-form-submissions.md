@@ -400,4 +400,4 @@ export default class PostsController {
 We have just scratched the surface with form validation and flash messages. We also recommend you to read the dedicated guides on the following topics.
 
 - Crash course on [Flash messages](sessions#flash-messages)
-- [Validator deep dive](guides/validator/introduction)
+- [Validator deep dive](../validator/introduction)
