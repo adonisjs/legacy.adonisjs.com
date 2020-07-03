@@ -433,5 +433,5 @@ We have just scratched the surface with templates and there is more to learn. We
 
 - [In-depth guide on view components](/guides/views/components)
 - [Views API](/guides/views/api)
-- [View tags](/guides/views/if-tag)
-- [View globals](/guides/views/request-global)
+- [View tags](/guides/views/tags)
+- [View globals](/guides/views/globals)
