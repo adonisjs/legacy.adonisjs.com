@@ -3,7 +3,8 @@
     <div class="container">
       <div class="hero-container">
         <h1 class="title">
-          Foundation of your
+          The Foundation for your
+          <br>
 					<span>
 						next
 						<Typewriter :words="['business', 'project', 'idea']" />
@@ -69,7 +70,7 @@
     font-size: 5rem;
     color: var(--grey-900);
     font-weight: 700;
-    line-height: 46px;
+    line-height: 58px;
     margin-bottom: 34px;
   }
 
