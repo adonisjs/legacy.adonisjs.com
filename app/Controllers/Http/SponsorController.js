@@ -1,8 +1,6 @@
-const patreon = use('App/Services/patreon')
-
 class SponsorController {
-  async handle ({ view }) {
-    return view.render('sponsors', { patrons: patreon.getJSON() })
+  async handle ({ response }) {
+    return response.redirect('/')
   }
 }
 
