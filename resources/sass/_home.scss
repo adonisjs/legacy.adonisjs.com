@@ -215,3 +215,51 @@
     }
   }
 }
+
+.sponsors {
+  background: $light-gray;
+  padding: 60px 0;
+}
+
+.sponsors-list {
+  display: flex;
+}
+
+.sponsor-list-card {
+  width: 250px;
+  background: #fff;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 6px 0 rgba(69, 79, 91, 0.18);
+}
+
+.sponsor-list-card.placeholder {
+  opacity: 0.8;
+}
+
+.sponsor-list-card img {
+  max-width: 100%;
+}
+
+.sponsor-list-card h3 {
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.sponsor-list-card h3 a {
+  color: $danger;
+}
+
+.sponsor-list-card h3:after {
+  content: '';
+  height: 3px;
+  background: #dfe3e8;
+  position: absolute;
+  width: 40px;
+  top: 60%;
+  left: 50%;
+  margin-left: -20px;
+}
