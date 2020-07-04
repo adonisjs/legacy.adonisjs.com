@@ -5,6 +5,7 @@
     <PrimaryFeatures />
     <Video />
     <SecondaryFeatures />
+    <Sponsors />
     <Footer />
   </Layout>
 </template>
@@ -16,6 +17,7 @@
   import Hero from '~/components/Home/Hero.vue'
   import PrimaryFeatures from '~/components/Home/PrimaryFeatures.vue'
   import SecondaryFeatures from '~/components/Home/SecondaryFeatures.vue'
+  import Sponsors from '~/components/Home/Sponsors.vue'
 
   export default {
     metaInfo: {
@@ -28,6 +30,6 @@
         { property: 'og:image', content: 'https://preview.adonisjs.com/adonis-readme.jpg' },
       ],
     },
-    components: { Header, Hero, PrimaryFeatures, Footer, Video, SecondaryFeatures },
+    components: { Header, Hero, PrimaryFeatures, Footer, Video, SecondaryFeatures, Sponsors },
   }
 </script>

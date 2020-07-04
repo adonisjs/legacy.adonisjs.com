@@ -3,8 +3,7 @@
     <div class="container">
       <div class="hero-container">
         <h1 class="title">
-          The foundation of your
-					<br />
+          Foundation of your
 					<span>
 						next
 						<Typewriter :words="['business', 'project', 'idea']" />
@@ -13,9 +12,6 @@
 
         <h2 class="subtitle">
           The Node.js Framework highly focused on developer ergonomics, stability and speed.
-        </h2>
-
-        <h2 class="subtitle">
           Start building efficient, reliable and scalable server-side applications.
         </h2>
 
@@ -147,25 +143,21 @@
     }
 
     .title {
-      font-size: 6.2rem;
+      font-size: 6rem;
       line-height: 60px;
-      padding: 0 80px;
-      margin-bottom: 28px;
+      padding: 0 0px;
+      margin-bottom: 40px;
     }
 
     .subtitle {
-      padding: 0 30px;
-      line-height: 40px;
-      font-size: 2.4rem;
+      padding: 0 100px;
+      line-height: 34px;
+      font-size: 2.6rem;
       margin-bottom: 0;
     }
 
-    .subtitle:last-of-type {
-      margin-bottom: 70px;
-    }
-
     .code-showcase-wrapper {
-      margin-top: 120px;
+      margin-top: 80px;
       padding: 0 50px;
     }
   }
