@@ -29,7 +29,7 @@
             <h2> Current Sponsors </h2>
             <div class="sponsor-card">
               <a href="https://pickaw.com/?utm_source=adonisjs" target="_blank" referrerpolicy="origin">
-                <img src="https://res.cloudinary.com/adonis-js/image/upload/v1593875255/adonisjs.com/Sponsors/square_iq1dtk.png" />
+                <img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1593875255/adonisjs.com/square_iq1dtk.png" />
               </a>
             </div>
           </div>
