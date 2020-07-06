@@ -17,7 +17,8 @@
     "gridsome": "^0.7.17",
     "gridsome-plugin-service-worker": "^0.1.5",
     "kleur": "^4.0.2",
-    "typeit": "^7.0.4"
+    "typeit": "^7.0.4",
+    "vue-github-button": "^1.2.0"
   },
   "devDependencies": {
     "vue-svgicon": "^3.2.8",

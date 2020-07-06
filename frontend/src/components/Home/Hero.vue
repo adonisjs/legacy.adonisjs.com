@@ -19,6 +19,10 @@
         <div class="cta">
           <!-- @hardcoded -->
           <Button title="Get Started" href="/guides/quick-start" :external="false" />
+
+          <div class="github-star-button">
+            <github-button href="https://github.com/adonisjs/core" data-color-scheme="no-preference: light; light: light; dark: light;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star adonisjs/core on GitHub" class="github-button">Star</github-button>
+          </div>
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">
@@ -31,12 +35,13 @@
 </template>
 
 <script>
+  import GithubButton from 'vue-github-button'
   import Button from '~/components/Button.vue'
   import CodeGroup from '~/components/Home/CodeGroup.vue'
   import Typewriter from '~/components/Typewriter.vue'
 
   export default {
-    components: { Button, CodeGroup, Typewriter },
+    components: { Button, CodeGroup, Typewriter, GithubButton },
     data () {
       return {
         codeHighlightSections: []
@@ -95,6 +100,10 @@
   .code-showcase-wrapper div {
     border-radius: 6px;
     background-color: var(--pre-bg);
+  }
+
+  .github-star-button {
+    margin-top: 10px;
   }
 
   @media (min-width: 768px) {
