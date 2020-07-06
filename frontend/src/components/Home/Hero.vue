@@ -19,10 +19,17 @@
         <div class="cta">
           <!-- @hardcoded -->
           <Button title="Get Started" href="/guides/quick-start" :external="false" />
-
-          <div class="github-star-button">
-            <github-button href="https://github.com/adonisjs/core" data-color-scheme="no-preference: light; light: light; dark: light;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star adonisjs/core on GitHub" class="github-button">Star</github-button>
-          </div>
+          <Button theme="secondary" href="https://github.com/adonisjs/core/stargazers" :external="true" class="gh-button-wrapper">
+            <div class="gh-button">
+              <span class="icon">
+                <svg viewBox="0 0 16 16" width="16" height="16" class="octicon octicon-star" aria-hidden="true"><path fill-rule="evenodd" fill="currentColor" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>
+              </span>
+              <span>
+                Star
+              </span>
+              <span class="count">8K+</span>
+            </div>
+          </Button>
         </div>
 
         <div class="code-showcase-wrapper" v-if="codeHighlightSections.length">
@@ -35,13 +42,12 @@
 </template>
 
 <script>
-  import GithubButton from 'vue-github-button'
   import Button from '~/components/Button.vue'
   import CodeGroup from '~/components/Home/CodeGroup.vue'
   import Typewriter from '~/components/Typewriter.vue'
 
   export default {
-    components: { Button, CodeGroup, Typewriter, GithubButton },
+    components: { Button, CodeGroup, Typewriter },
     data () {
       return {
         codeHighlightSections: []
@@ -102,8 +108,28 @@
     background-color: var(--pre-bg);
   }
 
-  .github-star-button {
-    margin-top: 10px;
+  .gh-button-wrapper {
+    margin-left: 15px;
+  }
+
+  .gh-button {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .gh-button .icon {
+    position: relative;
+    top: 3px;
+    color: var(--grey-900);
+    margin-right: 5px;
+  }
+
+  .gh-button .count {
+    margin-left: 10px;
+    padding-left: 10px;
+    height: 100%;
+    border-left: 1px solid;
   }
 
   @media (min-width: 768px) {

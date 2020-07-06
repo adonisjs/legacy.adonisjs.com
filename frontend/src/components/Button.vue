@@ -1,9 +1,9 @@
 <template>
-  <a v-if="external" :href="href" class="button big primary" target="_blank" rel="noreferrer">
-    {{ title }}
+  <a v-if="external" :href="href" class="button big" :class="buttonClass" target="_blank" rel="noreferrer">
+    <slot>{{ title }}</slot>
   </a>
   <GLink v-else :to="href" class="button big primary">
-    {{ title }}
+    <slot>{{ title }}</slot>
   </GLink>
 </template>
 
@@ -11,6 +11,9 @@
 export default {
   props: {
     title: {
+      type: String,
+    },
+    theme: {
       type: String,
     },
     href: {
@@ -21,6 +24,18 @@ export default {
       default: true,
     }
   },
+
+  computed: {
+    content () {
+      return this.$slots.default ? this.$slots.default[0] : this.title
+    }
+  },
+
+  data () {
+    return {
+      buttonClass: this.theme ? this.theme : 'primary'
+    }
+  }
 }
 </script>
 
@@ -47,6 +62,15 @@ export default {
   }
   .button.primary:hover {
     background-color: var(--brand-darker);
+  }
+
+  .button.secondary {
+    background-color: var(--grey-400);
+    color: var(--grey-900);
+  }
+
+  .button.secondary:hover {
+    background-color: var(--grey-100);
   }
 
   @media (min-width: 1024px) {
