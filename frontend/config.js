@@ -56,6 +56,11 @@ exports.header = [
         title: 'Twitter',
         permalink: 'https://twitter.com/adonisframework',
         isExternal: true
+      },
+      {
+        title: 'Github',
+        permalink: 'https://github.com/adonisjs/',
+        isExternal: true
       }
     ]
   },
