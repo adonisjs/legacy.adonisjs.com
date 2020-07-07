@@ -263,3 +263,37 @@
   left: 50%;
   margin-left: -20px;
 }
+
+.gh-button {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 0;
+  padding: 0 16px 0 16px;
+  height: auto;
+  transition: background 200ms ease;
+}
+
+.gh-button:hover {
+  background: #f1ecec;
+  color: #363636;
+}
+
+.gh-button .icon:first-child:not(:last-child) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.gh-button .icon {
+  position: relative;
+  top: 3px;
+  margin-right: 5px;
+}
+
+.gh-button .count {
+  margin-left: 19px;
+  height: 100%;
+  font-weight: 600;
+  border-left: 1px solid #e8e8e8;
+  padding: 10px 0 10px 14px;
+}
