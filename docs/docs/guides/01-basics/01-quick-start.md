@@ -24,13 +24,13 @@ npm -v
 # 6.13.7
 ```
 
-You can create a new AdonisJS project by using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) or [yarn create](https://classic.yarnpkg.com/en/docs/cli/create/). 
+You can create a new AdonisJS project by using [npm init](https://docs.npmjs.com/cli/init) or [yarn create](https://classic.yarnpkg.com/en/docs/cli/create/). 
 
 Both of these tools are meant to install a package and then immediately execute the main command exposed by the installed package. So think of it as a shortcut to install a package globally and then run it as an executable.
 
 [codegroup]
-```sh{}{npx}
-npx create-adonis-ts-app blog
+```sh{}{npm}
+npm init adonis-ts-app blog
 ```
 
 ```sh{}{yarn}
@@ -38,8 +38,8 @@ yarn create adonis-ts-app blog
 ```
 [/codegroup]
 
-1. The `npx` command will setup a new project structure and installs all required dependencies.
-2. If you are creating an API server, then do choose `Api project` in the boilerplate prompt.
+1. The command will setup a new project structure and installs all required dependencies.
+2. If you are creating an API server, then do choose `API Project` in the boilerplate prompt.
 3. `cd` into the newly created directory.
 4. And run `node ace serve --watch` to start the development server.
 
