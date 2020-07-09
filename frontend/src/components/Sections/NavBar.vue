@@ -92,8 +92,9 @@
   }
 
   .navbar a {
-    color: var(--grey-700);
+    color: var(--grey-800);
     font-weight: 500;
+    font-size: 2rem;
     transition: color 300ms ease;
     display: flex;
   }
@@ -108,11 +109,6 @@
   }
 
   .navbar > ul > li.dropdown > a {
-    color: var(--grey-600);
-    font-family: var(--font-mono);
-    letter-spacing: 1px;
-    font-weight: 600;
-    font-size: 1.6rem;
     margin-bottom: 10px;
   }
 
@@ -146,11 +142,7 @@
     }
 
     .navbar > ul > li.dropdown > a {
-      color: var(--grey-700);
       letter-spacing: normal;
-      font-family: inherit;
-      font-size: inherit;
-      font-weight: 500;
       margin: 0;
     }
 

@@ -9,7 +9,7 @@
 */
 exports.header = [
   {
-    title: 'Why AdonisJS?',
+    title: 'Why AdonisJS',
     permalink: 'why-adonisjs',
     children: [],
     isExternal: false,
@@ -42,7 +42,7 @@ exports.header = [
         isExternal: true,
       },
       {
-        title: 'Discord Chat',
+        title: 'Discord',
         permalink: 'https://discord.gg/vDcEjq6',
         isExternal: true,
       },
