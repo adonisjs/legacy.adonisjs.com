@@ -28,9 +28,9 @@ If your mobile app has some security flaws, you can revoke all the tokens on the
 ---
 
 ### Frontend app on a different domain
-If your frontend application is running on a different domain, then you cannot leverage the use of cookies. You must use **this guard (the api guard)** for authentication.
+If your frontend application is running on a different domain, then you can still leverage the use of cookies by creating a proxy server. This server will proxy the request of your frontend application to your API transforming the cookie into the `Authorization` header. It should be on the same domain as your frontend application. If you cannot create a proxy, you must use **this guard (the api guard)** for authentication.
 
-The tokens issued by the server has to be persisted within the localstorage and you must read the documentation of your frontend framework to keep your applications secure from XSS attacks and also learn about the [Content-Security-Policy](https://content-security-policy.com/)
+The tokens issued by the server has to be persisted within the localstorage and you must read the documentation of your frontend framework to keep your applications secure from XSS attacks and also learn about [Content-Security-Policy](https://content-security-policy.com/).
 
 ---
 
