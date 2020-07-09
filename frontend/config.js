@@ -9,33 +9,22 @@
 */
 exports.header = [
   {
-    title: 'Why AdonisJS',
+    title: 'Why AdonisJS?',
     permalink: 'why-adonisjs',
     children: [],
-    isExternal: false
-  },
-  {
-    title: 'Learn',
-    permalink: '',
     isExternal: false,
-    children: [
-      {
-        title: 'Guides',
-        permalink: '/guides/quick-start',
-        isExternal: false,
-      },
-      {
-        title: 'Releases',
-        permalink: '/releases/core/preview-rc-5',
-        isExternal: false,
-      },
-    ],
   },
   {
-    title: 'Roadmap',
-    permalink: 'https://trello.com/b/3klaHbfP',
+    title: 'Guides',
+    permalink: '/guides/quick-start',
     children: [],
-    isExternal: true
+    isExternal: false,
+  },
+  {
+    title: 'Blog',
+    permalink: '/blog',
+    children: [],
+    isExternal: false,
   },
   {
     title: 'Community',
@@ -43,48 +32,27 @@ exports.header = [
     isExternal: false,
     children: [
       {
+        title: 'Github',
+        permalink: 'https://github.com/adonisjs',
+        isExternal: true,
+      },
+      {
         title: 'Forum',
-        permalink: 'https://forum.adonisjs.com/',
-        isExternal: true
+        permalink: 'https://forum.adonisjs.com',
+        isExternal: true,
       },
       {
         title: 'Discord Chat',
-        permalink: 'https://discord.gg/vDcEjq6?',
-        isExternal: true
+        permalink: 'https://discord.gg/vDcEjq6',
+        isExternal: true,
       },
       {
         title: 'Twitter',
         permalink: 'https://twitter.com/adonisframework',
-        isExternal: true
+        isExternal: true,
       }
     ]
   },
-  {
-    title: 'Blog',
-    permalink: '/blog',
-    children: [],
-  },
-  {
-    title: 'About',
-    permalink: '',
-    children: [
-      {
-        title: 'Security',
-        permalink: '/security',
-        isExternal: false
-      },
-      {
-        title: 'Code of Conduct',
-        permalink: '/code-of-conduct',
-        isExternal: false
-      },
-      {
-        title: 'Release Process',
-        permalink: '/release-process',
-        isExternal: false
-      },
-    ]
-  }
 ]
 
 /*
@@ -98,24 +66,20 @@ exports.header = [
 */
 exports.footer = [
   {
-    title: 'Learn',
+    title: 'Project',
     permalink: '',
     isExternal: false,
     children: [
       {
-        title: 'Quick Start',
-        permalink: '/guides/quick-start',
-        isExternal: false
+        title: 'Roadmap',
+        permalink: 'https://trello.com/b/3klaHbfP',
+        children: [],
+        isExternal: true,
       },
       {
-        title: 'Handling HTTP Requests',
-        permalink: '/guides/http/introduction',
-        isExternal: false
-      },
-      {
-        title: 'Validator',
-        permalink: '/guides/validator/introduction',
-        isExternal: false
+        title: 'Changelog',
+        permalink: '/releases/core/preview-rc-5',
+        isExternal: false,
       },
     ]
   },
@@ -127,40 +91,18 @@ exports.footer = [
       {
         title: 'Security',
         permalink: '/security',
-        isExternal: false
+        isExternal: false,
       },
       {
         title: 'Code of Conduct',
         permalink: '/code-of-conduct',
-        isExternal: false
+        isExternal: false,
       },
       {
         title: 'Release Process',
         permalink: '/release-process',
-        isExternal: false
+        isExternal: false,
       },
-    ]
-  },
-  {
-    title: 'Community',
-    permalink: '',
-    isExternal: false,
-    children: [
-      {
-        title: 'Forum',
-        permalink: 'https://forum.adonisjs.com/',
-        isExternal: true
-      },
-      {
-        title: 'Discord Chat',
-        permalink: 'https://discord.gg/vDcEjq6?',
-        isExternal: true
-      },
-      {
-        title: 'Twitter',
-        permalink: 'https://twitter.com/adonisframework',
-        isExternal: true
-      }
     ]
   },
 ]
