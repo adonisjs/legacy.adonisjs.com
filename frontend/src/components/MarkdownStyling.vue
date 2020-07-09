@@ -238,8 +238,6 @@
 
   .markdown-content .code-highlight,
   .markdown-content .codegroup {
-    margin-left: -30px;
-    margin-right: -30px;
     border-radius: 0;
   }
 
