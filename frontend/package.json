@@ -14,13 +14,13 @@
     "date-fns": "^2.14.0",
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
-    "gridsome": "^0.7.17",
+    "gridsome": "^0.7.19",
     "gridsome-plugin-service-worker": "^0.1.5",
     "kleur": "^4.0.2",
     "typeit": "^7.0.4"
   },
   "devDependencies": {
     "vue-svgicon": "^3.2.8",
-    "ws": "^7.3.0"
+    "ws": "^7.3.1"
   }
 }
