@@ -16,7 +16,7 @@ By the end of this guide you will know:
 
 ## Setup
 
-The BodyParser middleware reads the **request body including the uploaded files** and make them available on the `request` object. So, before moving any forward, let's make sure that the middleware is registered under the list of global middleware.
+The BodyParser middleware reads the **request body including the uploaded files** and make them available on the `request` object. So, before moving forward, let's make sure that the middleware is registered under the list of global middleware.
 
 Open `start/kernel.ts` file and ensure that the file has the following line of code inside it.
 
@@ -37,7 +37,7 @@ All of the user uploaded files can be accessed using one of the following method
 - `request.files('fieldName')`: to access multiple files for a given field.
 - `request.allFiles()`: to access all files.
 
-For demonstration purposes, lets setup initial set of routes and create a form to upload files to the server.
+For demonstration purposes, lets setup our initial set of routes and create a form to upload files to the server.
 
 ```ts{}{start/routes.ts}
 Route.on('users/create').render('users/create')
