@@ -6,6 +6,7 @@
 
 module.exports = {
   siteName: 'AdonisJS',
+  siteUrl: 'https://preview.adonisjs.com',
   plugins: [
     {
       use: '@gridsome/plugin-google-analytics',
@@ -22,10 +23,13 @@ module.exports = {
       }
     },
     {
+      use: '@gridsome/plugin-sitemap',
+    },
+    {
       use: "gridsome-plugin-service-worker",
       options: {
         networkFirst: {
-          routes: ['/']
+          routes: ['/*']
         },
         cacheFirst: {
           routes: ['/fonts', '/img']
