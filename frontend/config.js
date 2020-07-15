@@ -37,13 +37,8 @@ exports.header = [
         isExternal: true,
       },
       {
-        title: 'Forum',
-        permalink: 'https://forum.adonisjs.com',
-        isExternal: true,
-      },
-      {
-        title: 'Discord',
-        permalink: 'https://discord.gg/vDcEjq6',
+        title: 'Discussions',
+        permalink: 'https://github.com/adonisjs/core/discussions',
         isExternal: true,
       },
       {
