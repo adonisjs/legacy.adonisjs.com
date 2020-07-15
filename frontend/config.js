@@ -79,6 +79,28 @@ exports.footer = [
     ]
   },
   {
+    title: 'Community',
+    permalink: '',
+    isExternal: false, 
+    children: [
+      {
+        title: 'Github',
+        permalink: 'https://github.com/adonisjs',
+        isExternal: true,
+      },
+      {
+        title: 'Discussions',
+        permalink: 'https://github.com/adonisjs/core/discussions',
+        isExternal: true,
+      },
+      {
+        title: 'Twitter',
+        permalink: 'https://twitter.com/adonisframework',
+        isExternal: true,
+      }
+    ]
+  },
+  {
     title: 'About',
     permalink: '',
     isExternal: false,
