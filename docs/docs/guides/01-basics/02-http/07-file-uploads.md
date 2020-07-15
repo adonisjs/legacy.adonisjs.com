@@ -16,7 +16,7 @@ By the end of this guide you will know:
 
 ## Setup
 
-The BodyParser middleware reads the **request body including the uploaded files** and make them available on the `request` object. So, before moving forward, let's make sure that the middleware is registered under the list of global middlewares.
+The BodyParser middleware reads the **request body including the uploaded files** and make them available on the `request` object. So, before moving forward, let's make sure that the middleware is registered under the list of global middleware.
 
 Open `start/kernel.ts` file and ensure that the file has the following line of code inside it.
 
