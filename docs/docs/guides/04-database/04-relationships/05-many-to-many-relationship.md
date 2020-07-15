@@ -123,7 +123,7 @@ user.skills.forEach((skill) => {
 - Also, the values are not defined on the `skill` model instance, but on the `$extras` object.
   - Skill model has no pre-defined properties like `pivot_user_id`. So, the typescript compiler will never allow you to read this property, unless it is defined.
   - When serializing the model to JSON, the `$extras` object is ignored and it means you are not leaking these properties in your API.
-  - If for some reason, you want to serialize some properties of the `$extras` object, you can create a computed property on your and then expose it.
+  - If for some reason, you want to serialize some properties of the `$extras` object, you can create a computed property on your `skill` model and then expose it.
     ```ts
     class Skill extends BaseModel {
       @computed()
