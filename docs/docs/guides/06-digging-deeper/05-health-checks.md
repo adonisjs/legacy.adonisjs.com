@@ -1,7 +1,6 @@
 ---
 permalink: guides/health-check
-category: Additional Resources
-group: Basics
+group: Digging Deeper
 ---
 
 # Health Checks
@@ -12,7 +11,7 @@ In the era of Containers and Orchestration, it is very important for your applic
 AdonisJS exposes a unified module for health checks. The other parts of the application, including the packages you install, can register checkers to this module. For example: [Lucid registers](https://github.com/adonisjs/lucid/blob/develop/providers/DatabaseProvider.ts#L73) a checker for reporting its connectivity with the database.
 
 [note]
-You can make use of `HealthCheck.getReport` to get the health check report and then share it with the external services.
+You can make use of `HealthCheck.getReport` method to get the health check report and then share it with the external services.
 If any of the registered checkers fails, your application will be considered unhealthy.
 [/note]
 

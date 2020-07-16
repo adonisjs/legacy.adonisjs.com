@@ -1,7 +1,6 @@
 ---
 permalink: guides/events
-category: Additional Resources
-group: Basics
+group: Digging Deeper
 ---
 
 # Events

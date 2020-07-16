@@ -1,11 +1,9 @@
 ---
 permalink: guides/database/redis
-group: Database
-category: Redis
-sidebarTitle: Usage
+group: Digging Deeper
 ---
 
-# Redis Usage
+# Redis
 AdonisJS has its own first party package for working with a Redis database. It internally wraps [ioredis](https://github.com/luin/ioredis) but improves the **pub/sub layer** and provides first class support for **connections management** and **health checks**.
 
 By the end of this guide, you will know:
@@ -134,7 +132,7 @@ Redis.psubscribe('user:*', (event: string, user: string) => {
 ```
 
 ## Health Checks
-The Redis module uses the AdonisJS [health check](/guides/health-check) module to report the connections health. All you need to do is enable inside the config file.
+The Redis module uses the AdonisJS [health check](/guides/health-check) module to report the connections health. All you need to do is enable it inside the config file.
 
 ```ts{}{config/redis.ts}
 {
