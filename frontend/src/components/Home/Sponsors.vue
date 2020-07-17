@@ -27,11 +27,13 @@
 
           <div class="sponsors-list">
             <h2> Current Sponsors </h2>
-            <div class="sponsor-card">
-              <a href="https://pickaw.com/?utm_source=adonisjs" target="_blank" referrerpolicy="origin">
-                <img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1593875255/adonisjs.com/square_iq1dtk.png" />
-              </a>
-            </div>
+            <a href="https://pickaw.com/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card">
+              <img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1593875255/adonisjs.com/square_iq1dtk.png" />
+            </a>
+
+            <a href="http://pivale.co/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card pivale">
+              <img src="https://res.cloudinary.com/adonis-js/image/upload/v1594956820/adonisjs.com/pivale_cqsexe.png" />
+            </a>
           </div>
         </div>
       </div>
@@ -79,14 +81,20 @@
     padding: 0 60px;
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.05), 0 10px 40px 0 rgba(0,0,0,0.05);
     border-radius: 6px;
-    height: 100%;
+    height: 185px;
     display: flex;
     align-items: center;
+    justify-content: center;
     max-width: 300px;
+    margin-top: 20px;
   }
 
   .sponsor-card img {
     max-width: 100%;
+  }
+
+  .pivale img {
+    width: 90%;
   }
 
   .why-become-sponsor .title {
@@ -141,8 +149,12 @@
     }
 
     .sponsors-list {
-      width: 40%;
+      width: 35%;
       flex-shrink: 0;
+    }
+
+    .sponsor-card {
+      height: 150px;
     }
   }
 
@@ -156,8 +168,12 @@
     }
 
     .sponsors-list {
-      width: 36%;
+      width: 40%;
       padding: 0 60px;
+    }
+
+    .sponsor-card {
+      height: 185px;
     }
   }
 </style>
