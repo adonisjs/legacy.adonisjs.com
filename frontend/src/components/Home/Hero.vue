@@ -109,7 +109,7 @@
   }
 
   .gh-button-wrapper {
-    margin-left: 15px;
+    margin-top: 15px;
   }
 
   .gh-button {
@@ -123,6 +123,7 @@
     top: 3px;
     color: var(--grey-900);
     margin-right: 5px;
+    margin-bottom: -1px;
   }
 
   .gh-button .count {
@@ -130,6 +131,12 @@
     padding-left: 10px;
     height: 100%;
     border-left: 1px solid;
+  }
+
+  .cta {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   @media (min-width: 768px) {
@@ -147,6 +154,16 @@
 
     .subtitle {
       font-size: 2.4rem;
+    }
+
+    .gh-button-wrapper {
+      margin-top: 0;
+      margin-left: 15px;
+    }
+
+    .cta {
+      flex-direction: row;
+      justify-content: center;
     }
   }
 
