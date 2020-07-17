@@ -31,7 +31,7 @@
               <img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1593875255/adonisjs.com/square_iq1dtk.png" />
             </a>
 
-            <a href="http://pivale.co/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card pivale">
+            <a href="https://www.pivale.co/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card pivale">
               <img src="https://res.cloudinary.com/adonis-js/image/upload/v1594956820/adonisjs.com/pivale_cqsexe.png" />
             </a>
           </div>
