@@ -216,62 +216,15 @@
   }
 }
 
-.sponsors {
-  background: $light-gray;
-  padding: 60px 0;
-}
-
-.sponsors-list {
-  display: flex;
-}
-
-.sponsor-list-card {
-  width: 250px;
-  background: #fff;
-  height: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 6px 0 rgba(69, 79, 91, 0.18);
-}
-
-.sponsor-list-card.placeholder {
-  opacity: 0.8;
-}
-
-.sponsor-list-card img {
-  max-width: 100%;
-}
-
-.sponsor-list-card h3 {
-  padding-bottom: 20px;
-  position: relative;
-}
-
-.sponsor-list-card h3 a {
-  color: $danger;
-}
-
-.sponsor-list-card h3:after {
-  content: '';
-  height: 3px;
-  background: #dfe3e8;
-  position: absolute;
-  width: 40px;
-  top: 60%;
-  left: 50%;
-  margin-left: -20px;
-}
-
 .gh-button {
   display: inline-flex;
   align-items: center;
   border: none;
   border-radius: 0;
-  padding: 0 16px 0 16px;
+  padding: 0 0 0 16px;
   height: auto;
   transition: background 200ms ease;
+  margin-top: 10px;
 }
 
 .gh-button:hover {
@@ -291,9 +244,137 @@
 }
 
 .gh-button .count {
-  margin-left: 19px;
+  margin-left: 25px;
   height: 100%;
   font-weight: 600;
   border-left: 1px solid #e8e8e8;
-  padding: 10px 0 10px 14px;
+  padding: 10px 10px 10px 16px;
+}
+
+@media (min-width: 425px) {
+  .gh-button {
+    margin-top: 0;
+  }
+}
+
+.sponsors {
+  background: $light-gray;
+  padding: 60px 0;
+}
+
+.sponsors-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sponsors-column {
+  width: 100%;
+}
+
+.sponsor-list-card {
+  width: 100%;
+  padding: 10px 10px;
+}
+
+.sponsor-list-card-body {
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 6px 0 rgba(69, 79, 91, 0.18);
+}
+
+.sponsor-list-card.pickaw .sponsor-list-card-body {
+  padding: 0 20px;
+}
+
+.sponsor-list-card.pivale .sponsor-list-card-body {
+  padding: 0 50px;
+}
+
+.sponsor-list-card a {
+  height: 160px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sponsor-list-card img {
+  max-width: 100%;
+}
+
+.sponsor-list-placeholder {
+  padding: 10px;
+  opacity: 0.8;
+}
+
+.sponsor-list-placeholder-body {
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 6px 0 rgba(69, 79, 91, 0.18);
+  height: 160px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sponsor-list-placeholder h3 {
+  padding-bottom: 20px;
+  position: relative;
+  color: $danger;
+}
+
+.sponsor-list-placeholder p {
+  color: #454F5B;
+}
+
+.sponsor-list-placeholder h3:after {
+  content: '';
+  height: 3px;
+  background: #dfe3e8;
+  position: absolute;
+  width: 40px;
+  top: 60%;
+  left: 50%;
+  margin-left: -20px;
+}
+
+@media (min-width: 768px) {
+  .sponsors-column {
+    width: 50%;
+  }
+
+  .sponsor-list-card.pickaw .sponsor-list-card-body {
+    padding: 0 60px;
+  }
+
+  .sponsor-list-card.pivale .sponsor-list-card-body {
+    padding: 0 100px;
+  }
+
+  .sponsor-list-card a {
+    height: 180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sponsors-column {
+    width: 25%;
+  }
+
+  .sponsor-list-card.pickaw .sponsor-list-card-body {
+    padding: 0 20px;
+  }
+
+  .sponsor-list-card.pivale .sponsor-list-card-body {
+    padding: 0 40px;
+  }
+
+  .sponsor-list-card a {
+    height: 200px;
+  }
+
+  .sponsor-list-placeholder-body {
+    height: 200px;
+  }
 }
