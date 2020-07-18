@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/signed-routes
-group: Application Security
+group: Security
 ---
 
 # Signed Routes

@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/password-reset
-group: Application Security
+group: Security
 ---
 
 # Password Reset

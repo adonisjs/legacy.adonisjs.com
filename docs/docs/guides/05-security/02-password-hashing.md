@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/password-hashing
-group: Application Security
+group: Security
 ---
 
 # Password Hashing

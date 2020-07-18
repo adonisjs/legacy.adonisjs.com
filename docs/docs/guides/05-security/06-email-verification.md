@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/email-verifications
-group: Application Security
+group: Security
 ---
 
 # Email Verification

@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/data-encryption
-group: Application Security
+group: Security
 ---
 
 # Data Encryption

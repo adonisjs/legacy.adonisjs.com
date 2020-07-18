@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/secured-cookies
-group: Application Security
+group: Security
 ---
 
 # Secured Cookies

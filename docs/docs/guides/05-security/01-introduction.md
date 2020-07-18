@@ -1,6 +1,6 @@
 ---
 permalink: guides/security/introduction
-group: Application Security
+group: Security
 ---
 
 # Introduction

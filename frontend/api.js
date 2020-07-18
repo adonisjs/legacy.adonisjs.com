@@ -79,7 +79,7 @@ async function getZoneGroupsAndCategories (zoneSlug, versionNo, includeContent) 
         return
       }
 
-      if (doc.group === 'Application Security') {
+      if (doc.group === 'Security') {
         return
       }
 
