@@ -70,7 +70,7 @@
 
   .header-main {
     background: #FFFFFF;
-    box-shadow: 0 20px 40px 0 rgba(0,0,0,0.02), 0 4px 6px 0 rgba(0,0,0,0.03);
+    border-bottom: 1px solid var(--grey-400);
   }
 
   .header .container {

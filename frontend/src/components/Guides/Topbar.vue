@@ -25,7 +25,7 @@ export default {
     #topbar {
       display: flex;
       background-color: white;
-      border-bottom: 2px solid var(--brand);
+      box-shadow: 0 20px 40px 0 rgba(0,0,0,0.02), 0 4px 6px 0 rgba(0,0,0,0.03);
       position: fixed;
       height: 50px;
       width: 100%;
