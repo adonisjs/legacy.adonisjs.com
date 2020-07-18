@@ -22,6 +22,7 @@
     right: 0;
     bottom: 0;
     top: calc(var(--header-height) + 6px);
+    padding-top: var(--topbar-bar-height);
   }
 
   .toc-content {

@@ -27,27 +27,9 @@
     <aside class="sidebar">
       <div class="sidebar-container">
         <div class="sidebar-section">
-          <div class="categories-dropdown" :class="{ expanded: isExpanded }">
-            <a
-              href="#"
-              class="dropdown-selected-item"
-              :title="group"
-              @click.prevent="isExpanded = !isExpanded"
-            >
-              <span>{{ group }}</span>
-
-              <Icon  class="stroke-0" name="chevron" height="16" width="16" :fill="true" />
-            </a>
-            <div class="dropdown-options">
-              <g-link
-                v-for="group in groups"
-                :to="`/${group.categories[0].docs[0].permalink}`"
-                :key="group.name"
-              >
-                <span @click="isExpanded = false"> {{ group.name }} </span>
-              </g-link>
-            </div>
-          </div>
+          <h2 class="title">
+            {{ group }}
+          </h2>
 
           <div class="sidebar-menu">
             <ul>
@@ -101,6 +83,14 @@
     display: none;
   }
 
+  .sidebar h2.title {
+    color: var(--grey-200);
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 2rem;
+  }
+
   .sidebar-container {
     height: 100%;
     overflow: auto;
@@ -113,7 +103,7 @@
   }
 
   .sidebar-menu {
-    margin: 20px 5px;
+    margin: 20px 0;
   }
 
   .sidebar-menu .title {
@@ -179,6 +169,7 @@
   @media (min-width: 1024px) {
     .sidebar {
       display: block;
+      padding-top: var(--topbar-bar-height);
     }
 
     .sidebar-wrapper .menu-select-box--wrapper {

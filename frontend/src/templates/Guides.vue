@@ -3,7 +3,9 @@
     <Header />
 
     <section class="main">
-      <div class="container">
+      <Topbar :groups="this.$context.groups" />
+
+      <main class="container">
         <Sidebar
           :groups="this.$context.groups"
           :group="this.$context.doc.group"
@@ -27,7 +29,7 @@
             <Toc :node="$context.toc" />
           </div>
         </div>
-      </div>
+      </main>
     </section>
   </Layout>
 </template>
@@ -35,11 +37,12 @@
 <script>
   import Header from '~/components/Sections/Header.vue'
   import Sidebar from '~/components/Guides/Sidebar.vue'
+  import Topbar from '~/components/Guides/Topbar.vue'
   import Doc from '~/components/Guides/Doc.vue'
   import Toc from '~/components/Guides/Toc.vue'
 
   export default {
-    components: { Header, Sidebar, Doc, Toc },
+    components: { Header, Topbar, Sidebar, Doc, Toc },
 
     metaInfo () {
       return {
@@ -64,6 +67,10 @@
   @media (min-width: 1024px) {
     .docs-wrapper {
        margin-left: 250px;
+    }
+
+    main {
+      padding-top: var(--topbar-bar-height);
     }
   }
 
@@ -103,7 +110,7 @@
 
   @media (min-width: 1350px) {
     .toc-wrapper {
-       display: block;
+      display: block;
     }
   }
 </style>

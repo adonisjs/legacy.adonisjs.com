@@ -29,6 +29,8 @@
     --base-text-size: 1.9rem;
     --base-line-height: 1.2;
     --loose-line-height: 1.3;
+
+    --topbar-bar-height: 50px;
   }
 
   * {
