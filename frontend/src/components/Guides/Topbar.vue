@@ -33,7 +33,10 @@ export default {
     }
 
     #topbar .container {
+      align-items: center;
+      display: flex;
       justify-content: start;
+      width: 100%;
     }
 
     #topbar ul {
