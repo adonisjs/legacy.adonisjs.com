@@ -247,6 +247,16 @@ Ensure, the value is an [unsigned integer](https://www.cs.utah.edu/~germain/PPS/
 }
 ```
 
+## `rules.range`
+Ensure, the value is contained in the specified range.
+```ts
+{
+  score: schema.number([
+    rules.range(0, 10)
+  ])
+}
+```
+
 ## `rules.regex`
 Define a custom regex to validate the value against. 
 
