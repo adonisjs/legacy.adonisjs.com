@@ -78,6 +78,21 @@
     margin: auto;
   }
 
+  h1 > a, h2 > a, h3 > a, h4 > a {
+   text-decoration: none; 
+   background-image: none !important;
+  }
+
+  .icon.icon-link {
+    display: inline-block;
+    color: var(--grey-100);
+    margin-right: 1.5rem;   
+  }
+
+  .icon.icon-link::after {
+    content: '#';
+  }
+
   a {
     color: var(--brand);
     text-decoration: none;
