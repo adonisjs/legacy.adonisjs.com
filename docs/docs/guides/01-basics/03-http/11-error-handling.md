@@ -141,7 +141,7 @@ Route.get('/', async () => {
 
 If you visit [http://localhost:3333](http://localhost:3333), you must see a message similar to the following screenshot.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582479120/adonisjs.com/self-handled-exception.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582479120/adonisjs.com/self-handled-exception.png)
 
 
 ## Status Pages

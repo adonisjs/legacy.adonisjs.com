@@ -242,7 +242,7 @@ Route.get('health', async ({ response }) => {
 
 If you now visit [http://localhost:3333/health](http://localhost:3333/health), you must see the health check report for your database connection(s).
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587544897/adonisjs.com/health-check-report_emwloq.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587544897/adonisjs.com/health-check-report_emwloq.png)
 
 
 ### Manual Query

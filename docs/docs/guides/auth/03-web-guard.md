@@ -166,7 +166,7 @@ So far, we have not done anything related to auth. So, let's open the `AuthContr
     })
     ```
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1587897981/adonisjs.com/register-auth_n2mvxi.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1587897981/adonisjs.com/register-auth_n2mvxi.mp4", controls]
 
 ### How it works?
 

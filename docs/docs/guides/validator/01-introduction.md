@@ -18,7 +18,7 @@ The AdonisJS validator has support for:
 ## Built with HTTP in mind
 The data submitted over the HTTP is always represented as string and hence manual data casting is required to convert it to language specific data types. For example:
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1589776782/adonisjs.com/http-data-is-always-string.mov", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1589776782/adonisjs.com/http-data-is-always-string.mp4", controls]
 
 As you can see in the above video, the value of `marks` is a **string** and not a **number**. Now, if a validator is strict with data types, it will offload the work of type casting on you.
 
@@ -39,7 +39,7 @@ Route.post('/', async ({ request }) => {
 })
 ```
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1589777292/adonisjs.com/validator-casted-data-type.mov", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1589777292/adonisjs.com/validator-casted-data-type.mp4", controls]
 
 ## Custom error messages
 The validator has first class support for defining custom error messages. The `validate` method accepts an object of `messages` along side the validation `schema`.
@@ -63,7 +63,7 @@ request.validate({
 ## Type information
 The static types are extracted automatically from the runtime validation rules, hence there is no need to maintain separate interfaces just for the type information or intellisense to work.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1589789301/adonisjs.com/validator-types.webp)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1589789301/adonisjs.com/validator-types.webp)
 
 ## Extensible
 Just like every other part of the framework. The validator is built with extensibility in mind and exposes the API to add custom validation rules. For example: [Here's the source code](https://github.com/adonisjs/lucid/blob/develop/src/Bindings/Validator.ts#L168) of Lucid extending the validator to add the database related validation rules.

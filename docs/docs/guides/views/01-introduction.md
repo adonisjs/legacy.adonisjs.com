@@ -73,7 +73,7 @@ Let's open the newly created file and paste the following code snippet inside it
 
 Make sure to start the development server by running `node ace serve --watch` and visit [http://localhost:3333](http://localhost:3333) to view the contents of the template file.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1583063256/adonisjs.com/view-usage.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1583063256/adonisjs.com/view-usage.png)
 
 ### How it works?
 - Every route handler receives an instance of `view` that is used to render template files.

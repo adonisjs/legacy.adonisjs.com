@@ -67,7 +67,7 @@ export default class AuthController {
 
 Now, start the development server `node ace serve --watch` and make a POST request to `/login` route to receive the api token.
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1592800689/adonisjs.com/oat-auth-login_qt8adc.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1592800689/adonisjs.com/oat-auth-login_qt8adc.mp4", controls]
 
 - The `auth.use('api')` method selects the API guard.
 - The `.attempt` method accepts the user login id and the password. After verifying the credentials, it will issue the api token.
@@ -95,7 +95,7 @@ Route.get('dashboard', async ({ auth }) => {
 
 Now, lets the visit the `dashboard` route without and with the `Authorization` header.
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1592803305/adonisjs.com/oat-authenticate_wlmyri.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1592803305/adonisjs.com/oat-authenticate_wlmyri.mp4", controls]
 
 ## Expiring tokens
 By default, the tokens have life long validity (until deleted). However, you can define expiry for the tokens at the time of the creating one.

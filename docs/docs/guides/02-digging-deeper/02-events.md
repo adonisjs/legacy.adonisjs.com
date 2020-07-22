@@ -58,7 +58,7 @@ Route.get('/register', async () => {
 
 Now, if you visit [http://localhost:3333/register](http://localhost:3333/register), you must see the `console.log` statement executed by the event listener.
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1582562375/adonisjs.com/adonis-events_gexfh3.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1582562375/adonisjs.com/adonis-events_gexfh3.mp4", controls]
 
 ## Making Events Type Safe
 Since, the events listeners and the code emitting the events are not in the same file, it is very easy to make the mistake of sending wrong arguments to a specific event. To prevent this behavior, AdonisJS allows you to define the shape of data an event can/must receive.

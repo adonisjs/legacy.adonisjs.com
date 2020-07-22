@@ -17,7 +17,7 @@ node ace make:prldfile validationRules
 # ✔  create    start/validationRules.ts
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/v1592037324/adonisjs.com/prldfile-validator-rules.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1592037324/adonisjs.com/prldfile-validator-rules.png)
 
 
 Open the newly created file and paste the following code snippet inside it.

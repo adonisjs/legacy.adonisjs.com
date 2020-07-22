@@ -20,7 +20,7 @@ You can inspect the state of the entire view using the `state` variable. ie. `in
 
 Output
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587022522/adonisjs.com/edge-inspect.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587022522/adonisjs.com/edge-inspect.png)
 
 ## `truncate`
 Truncate a string at a given character length.

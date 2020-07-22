@@ -28,11 +28,11 @@
           <div class="sponsors-list">
             <h2> Current Sponsors </h2>
             <a href="https://pickaw.com/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card">
-              <img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1593875255/adonisjs.com/square_iq1dtk.png" />
+              <img src="https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_200,f_auto,fl_lossy/v1593875255/adonisjs.com/square_iq1dtk.png" />
             </a>
 
             <a href="https://www.pivale.co/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card pivale">
-              <img src="https://res.cloudinary.com/adonis-js/image/upload/v1594956820/adonisjs.com/pivale_cqsexe.png" />
+              <img src="https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_200,f_auto,fl_lossy/v1594956820/adonisjs.com/pivale_cqsexe.png" />
             </a>
           </div>
         </div>

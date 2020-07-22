@@ -116,7 +116,7 @@ As soon as the package is configured, you can access the `session` object on the
   })
   ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582442759/adonisjs.com/session-language-change.gif)
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582442759/adonisjs.com/session-language-change.mp4", controls]
 
 ## Flash Messages
 The session flash messages are cleared with each request. This means, you can use them for passing data between two requests for things like displaying **error and success messages**.

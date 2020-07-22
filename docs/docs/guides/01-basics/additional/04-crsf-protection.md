@@ -80,7 +80,7 @@ As soon as the package is configured, all of the HTML forms will be protected ag
 
 Now, if you visit [http://localhost:3333/posts/create](http://localhost:3333/posts/create) and submit the form, you will receive an exception with `Invalid CSRF Token` message.
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1587649378/adonisjs.com/csrf_ruyzwo.mov", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1587649378/adonisjs.com/csrf_ruyzwo.mp4", controls]
 
 ### Fixing the error
 In order to the fix the error, you will have add a hidden input field to your form that contains a unique CSRF token. Open `resources/views/posts/create.edge` file and update the form body as shown in the following code snippet.

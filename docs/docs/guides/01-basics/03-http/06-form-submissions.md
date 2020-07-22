@@ -112,7 +112,7 @@ export default class PostsController {
 
 If you visit [http://localhost:3333/posts/create](http://localhost:3333/posts/create) and submit the form, you must see the data object being logged to the console.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582289486/adonisjs.com/form-submission_nlwu2x.gif)
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582289486/adonisjs.com/form-submission_nlwu2x.mp4", controls]
 
 ## Validating Form Data
 AdonisJS makes it super simple to validate the form data using the inbuilt form validator. You start by defining a schema of the data that you expect from the end user and then use `request.validate` method to validate the form values against the pre-defined schema.
@@ -200,7 +200,7 @@ Following is an example of displaying the error messages next to the input field
 
 If you submit the form with empty fields, you will see the validation errors next to the form inputs.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582289924/adonisjs.com/form-validation-basics_af9pse.gif)
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582289924/adonisjs.com/form-validation-basics_af9pse.mp4", controls]
 
 ### Retaining Form Input Values
 Currently, after the validation failure, the form inputs losses their old values and the user will have to fill the form again. However, you can prevent this behavior by also reading the input values from the `flashMessages` global object.

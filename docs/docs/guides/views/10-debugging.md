@@ -15,10 +15,10 @@ The first step to better debugging experience is to provide accurate stack trace
 Following are the screenshots demonstrating compile time and runtime errors.
 
 ### Compile time errors
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587039853/adonisjs.com/edge-compile-error.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587039853/adonisjs.com/edge-compile-error.png)
 
 ### Runtime errors
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587040053/adonisjs.com/edge-runtime-error.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587040053/adonisjs.com/edge-runtime-error.png)
 
 The stack traces works fine with components, partials and layouts too.
 
@@ -31,7 +31,7 @@ You can inspect an object as shown below.
 {{ inspect({ username: 'virk', age: 28, isAdmin: true }) }}
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587022522/adonisjs.com/edge-inspect.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587022522/adonisjs.com/edge-inspect.png)
 
 You can also inspect the state of a template as shown in the following example.
 
@@ -39,7 +39,7 @@ You can also inspect the state of a template as shown in the following example.
 {{ inspect(state) }}
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587048614/adonisjs.com/componet-inspect.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587048614/adonisjs.com/componet-inspect.png)
 
 ## Using Debugger
 Finally, you can also dig into the compiled output by using the `@debugger` tag. For debugging to work, you will have to use Google Chrome and its DevTools.
@@ -88,4 +88,4 @@ node ace serve --watch --node-args="--inspect"
 
 Finally, visit [http://localhost:3333](http://localhost:3333) inside Google Chrome and debug as shown in the following video.
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1587055017/adonisjs.com/edge-debugging-chrome-540_hwebpl.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1587055017/adonisjs.com/edge-debugging-chrome-540_hwebpl.mp4", controls]

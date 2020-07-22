@@ -15,7 +15,7 @@ npx create-adonis-ts-app tasks
 
 When prompted to select the project structure, we’ll choose `Web Application` then leave the default project name and lastly we’ll type `y` to set up ESLint.
 
-[https://res.cloudinary.com/adonis-js/image/upload/v1583319675/adonisjs.com/Screen_Shot_2020-02-19_at_10.48.47_AM_xbomdw.png](https://res.cloudinary.com/adonis-js/image/upload/v1583319675/adonisjs.com/Screen_Shot_2020-02-19_at_10.48.47_AM_xbomdw.png)
+[https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossyv1583319675/adonisjs.com/Screen_Shot_2020-02-19_at_10.48.47_AM_xbomdw.png](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1583319675/adonisjs.com/Screen_Shot_2020-02-19_at_10.48.47_AM_xbomdw.png)
 
 This will create a new AdonisJS application called `tasks` and install the necessary dependencies. Once that’s done, we can start the application to make sure everything is working as expected:
 

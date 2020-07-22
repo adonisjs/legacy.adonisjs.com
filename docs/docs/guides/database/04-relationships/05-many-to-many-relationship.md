@@ -33,7 +33,7 @@ With the above table, you will have to create a new skill for every user. Also, 
 
 You will end up with something similar to the following table structure.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1588083600/adonisjs.com/many-to-many.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1588083600/adonisjs.com/many-to-many.png)
 
 ## Relationship models
 Just like the other relationships, you will have to create just two models. The pivot table doesn't need a different model.

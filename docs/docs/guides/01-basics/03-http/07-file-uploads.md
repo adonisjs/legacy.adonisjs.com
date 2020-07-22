@@ -112,7 +112,7 @@ export default class UsersController {
 }
 ```
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1582432797/adonisjs.com/adonis-file-upload_s2bwdj.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1582432797/adonisjs.com/adonis-file-upload_s2bwdj.mp4", controls]
 
 ### Renaming Uploaded Files
 Currently the user uploaded files are saved with the original file name. However, you can rename them during the move operation.
@@ -234,7 +234,7 @@ Next step is to display the validation errors to the user. Open the template fil
 </html>
 ```
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1582438390/adonisjs.com/adonis-validator-file-uploads_l7fhfl.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1582438390/adonisjs.com/adonis-validator-file-uploads_l7fhfl.mp4", controls]
 
 ## Custom Error Messages
 Following is an example of defining custom error messages when validating files using the request validator.

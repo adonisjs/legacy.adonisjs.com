@@ -108,7 +108,7 @@ Make sure to start the HTTP server by running `node ace serve --watch` command.
 
 Now, if you will visit the http://localhost:3333/posts/1, you will see the following message.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582021556/adonisjs.com/dynamic-urls-static.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582021556/adonisjs.com/dynamic-urls-static.png)
 
 #### What just happened?
 
@@ -131,7 +131,7 @@ Route.get('/posts/:id?', async ({ params }) => {
 })
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582021461/adonisjs.com/dynamic-urls.gif)
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582021461/adonisjs.com/dynamic-urls.mp4", controls]
 
 ## CRUD Actions
 
@@ -184,7 +184,7 @@ Route.resource('posts', 'PostsController')
 
 The `Route.resource` method registers the following routes along with the appropriate controller methods.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582021833/adonisjs.com/list_routes.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582021833/adonisjs.com/list_routes.png)
 
 [note]
 
@@ -240,7 +240,7 @@ Route.resource('posts.comments', 'CommentsController')
 
 The above example registers the following routes. The **parent resource id** gets prefixed with the resource name, ie: `post_id`.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582022101/adonisjs.com/nested-resource.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582022101/adonisjs.com/nested-resource.png)
 
 ## Route Groups
 
@@ -285,7 +285,7 @@ Route
   .prefix('/blog')
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582023737/adonisjs.com/nested-groups.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582023737/adonisjs.com/nested-groups.png)
 
 You can also define [middleware](#applying-middleware-to-route-groups), [sub-domains](#domains) and [route names](#naming-routes) on a group of routes.
 
@@ -315,7 +315,7 @@ Route
   })
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582259620/adonisjs.com/route-middleware.gif)
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582259620/adonisjs.com/route-middleware.mp4", controls]
 
 ### Middleware Classes
 
@@ -504,4 +504,4 @@ Route
   .as('apiv1') 👈
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582270130/adonisjs.com/groups-naming.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582270130/adonisjs.com/groups-naming.png)

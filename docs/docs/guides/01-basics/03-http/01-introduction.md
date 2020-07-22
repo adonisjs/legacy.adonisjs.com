@@ -225,7 +225,7 @@ Route.get('/', async (ctx) => {
 })
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582007013/adonisjs.com/context.png.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582007013/adonisjs.com/context.png.png)
 
 ## Summary
 

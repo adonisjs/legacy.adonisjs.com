@@ -35,7 +35,7 @@ export default class PostsController {
 }
 ```
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1582537642/adonisjs.com/adonis-negotiation_nemsvr.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1582537642/adonisjs.com/adonis-negotiation_nemsvr.mp4", controls]
 
 ## Content Negotiation in Exception Handler
 The [base exception handler](https://github.com/adonisjs/adonis-framework/blob/develop/src/HttpExceptionHandler/index.ts#L177) of AdonisJS also uses content negotiation for returning errors in the correct format. 

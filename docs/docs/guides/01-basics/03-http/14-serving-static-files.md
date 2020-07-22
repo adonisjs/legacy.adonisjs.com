@@ -43,7 +43,7 @@ body {
 
 Now, start the development server by running `node ace serve --watch` command and visit [http://localhost:3333/style.css](http://localhost:3333/style.css) to view the contents of the CSS file.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1584157353/adonisjs.com/static-assets.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1584157353/adonisjs.com/static-assets.png)
 
 ### How it works?
 - If you notice carefully, the URL doesn't contain the directory name `/public`. So, if you decide to change the directory name from public to something else, then your URLs will not be impacted.

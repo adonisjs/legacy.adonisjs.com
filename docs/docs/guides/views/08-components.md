@@ -116,7 +116,7 @@ Make sure to start the development server by running `node ace serve --watch` co
 
 Now, if you visit [http://localhost:3333](http://localhost:3333), you must see a working modal as shown in the following video.
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1585653521/adonisjs.com/edge-modal-component_wzygvj.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1585653521/adonisjs.com/edge-modal-component_wzygvj.mp4", controls]
 
 ### How it works?
 

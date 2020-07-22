@@ -28,7 +28,7 @@ Next, run the following ace command to setup the package.
 node ace invoke @adonisjs/auth
 ```
 
-[video url="https://res.cloudinary.com/adonis-js/video/upload/v1592764868/adonisjs.com/auth-api-setup_amvpvi.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/video/upload/q_80/v1592764868/adonisjs.com/auth-api-setup_amvpvi.mp4", controls]
 
 - The setup command prompts you to select the `provider` and the `guard` and generates the config file based on your selection
 - When using Lucid, you are also prompted to create the model.

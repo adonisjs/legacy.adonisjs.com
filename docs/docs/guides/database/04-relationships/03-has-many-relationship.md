@@ -67,7 +67,7 @@ Following is an example table describing the relationship at the database level.
 Lucid models doesn't rely on the database level foreign key constraint. It just needs the columns to be present and must be of same data types.
 [/note]
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1588083599/adonisjs.com/has-many.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1588083599/adonisjs.com/has-many.png)
 
 ## Preloading relationship
 The preloading API for a has many relationship is already covered in the [introduction guide](/guides/model-relations/introduction#preloading-relationship).

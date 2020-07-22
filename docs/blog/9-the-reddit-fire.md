@@ -97,7 +97,7 @@ How do you know? If you think maintaining a code base is all about more people, 
 
 A popular testing framework **Mocha** is looking for maintainers, because the guy who created it has moved on and expecting everyone else to share the same passion for the code base is false.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,c_scale/v1588694377/adonisjs.com/blog/e6bec03e-30d0-4708-8eb3-0031853acf88_mtjy0r.webp)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,f_auto,fl_lossy/v1588694377/adonisjs.com/blog/e6bec03e-30d0-4708-8eb3-0031853acf88_mtjy0r.webp)
 
 Yes, I can also move on with something else, but until then maintaining all these reports is something that keeps me awake and happy.
 

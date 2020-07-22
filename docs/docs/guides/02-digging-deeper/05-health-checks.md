@@ -95,11 +95,11 @@ To enable the health checks for your redis server, you just need to turn on the 
 
 ## Un-healthy report sample
 
-![](https://res.cloudinary.com/adonis-js/image/upload/v1592214549/adonisjs.com/unhealthy-health-check.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1592214549/adonisjs.com/unhealthy-health-check.png)
 
 ## Healthy report sample
 
-![](https://res.cloudinary.com/adonis-js/image/upload/v1592214549/adonisjs.com/health-check-healthy.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1592214549/adonisjs.com/health-check-healthy.png)
 
 ## Registering your own checker
 You can also register your own health checkers using the Health check module. Since, the checker needs to be registered only once, you must use a **preload file** or the **service provider** to register it.

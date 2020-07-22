@@ -159,7 +159,7 @@ Route.get('health', async ({ response }) => {
 })
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/v1592724884/adonisjs.com/redis-health-check.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1592724884/adonisjs.com/redis-health-check.png)
 
 ## Closing connections
 You can close the redis connections using one of the following methods.

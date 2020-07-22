@@ -56,7 +56,7 @@ console.log(post.serialize())
 
 Output
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587745931/adonisjs.com/lucid-serialize-basic.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587745931/adonisjs.com/lucid-serialize-basic.png)
 
 ### Points to note
 - The `serialize` method only includes the properties using the `@column` decorator. Everything else is ignored.
@@ -211,7 +211,7 @@ console.log(user.serialize())
 
 Output
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1587755092/adonisjs.com/lucid-serialize-relations.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1587755092/adonisjs.com/lucid-serialize-relations.png)
 
 ### Customizing relationship name
 You can customize the property name for the serialized relationship.

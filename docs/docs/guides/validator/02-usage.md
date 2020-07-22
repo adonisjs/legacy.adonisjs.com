@@ -118,7 +118,7 @@ The schema definition is divided into three main parts.
 2. The expected data type of individual properties, ie `(schema.string())`.
 3. Additional set of validation rules to validate the data formatting, or checking if its unique in the database.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1591851435/adonisjs.com/schema-101_ldhxks.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1591851435/adonisjs.com/schema-101_ldhxks.png)
 
 Also, if you look carefully, we have separated the **format validations from core data types**. For example: There is no data type called `schema.email`. In fact `email` is a standalone rule to check the formatting a string.
 

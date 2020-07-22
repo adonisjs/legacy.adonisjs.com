@@ -51,7 +51,7 @@ AdonisJS packages can configure themselves by running the post install instructi
 node ace invoke @adonisjs/view
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582276116/adonisjs.com/invoke-ace.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582276116/adonisjs.com/invoke-ace.png)
 
 ## Working with Views
 The views are stored inside `resources/views` directory with files ending in `.edge` extension. The edge syntax can be written along with any other markup language like HTML, Markdown, XML and so on. However, we will be using HTML throughout this guide.
@@ -128,7 +128,7 @@ Route.get('/posts', async ({ view }) => {
 
 If you visit the registered route `/posts`, you must see the following output on the browser screen.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582279633/adonisjs.com/view-render-static-posts_dsd1hk.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582279633/adonisjs.com/view-render-static-posts_dsd1hk.png)
 
 #### What just happened?
 1. The route handler renders the `posts/index.edge` template and passes along an array of `posts` to it.
@@ -209,7 +209,7 @@ Let's open the `resources/views/posts/index.edge` file and make it use the `mast
 
 If you re-visit the `/posts` URL, you must see the following output on the browser screen.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582373292/adonisjs.com/view-layouts_jllnte.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582373292/adonisjs.com/view-layouts_jllnte.png)
 
 #### How does layout and sections work?
 - The `@layout` tag takes the path to the layout file. The path is relative from the `views` directory.
@@ -341,7 +341,7 @@ Let's create a signup form using components. Assuming that you are now familiar 
 
 If you visit [http://localhost:3333/signup](http://localhost:3333/signup), you must a form similar to the following screenshot.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582374471/adonisjs.com/edge-components-form_ckmhhd.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582374471/adonisjs.com/edge-components-form_ckmhhd.png)
 
 #### How does components work?
 - The `@component` tag accepts path to a given template, similar to the `@include` tag. But it also accepts an object of values called the component state.

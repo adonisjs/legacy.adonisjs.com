@@ -75,7 +75,7 @@ Route.on('/').render('posts', { title: 'AdonisJS Blog' })
 
 Now, if you visit [http://localhost:3333](http://localhost:3333), you must see the content being injected at the right place.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1585622864/adonisjs.com/layout.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1585622864/adonisjs.com/layout.png)
 
 ### How it works?
 - The `layout/blog.edge` template is created with a purpose to be used as a layout and hence it defines `@section` that other template can inject content into.

@@ -14,7 +14,7 @@ Middleware are a series of functions that are executed before an HTTP request re
 
 ## Middleware Flow
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582969262/adonisjs.com/http-middleware_wvb8mg.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582969262/adonisjs.com/http-middleware_wvb8mg.png)
 
 - Middleware are executed on every new HTTP request.
 - They are executed in sequence from left to right. 
@@ -86,7 +86,7 @@ A lot is going on above, let's decode it step by step.
 ## Extending Types
 If you are following along this guide, you would have noticed that TypeScript complains when trying to add a runtime property `country` to the request object as shown in the following image.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582462569/adonisjs.com/TypeScript-request-extend-complain.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1582462569/adonisjs.com/TypeScript-request-extend-complain.png)
 
 If you have used TypeScript previously, you may have faced a similar situation when trying to extend values at runtime. Infact, this is true for any statically typed language.
 
@@ -166,7 +166,7 @@ The first step is to create and register the middleware inside `start/kernel.ts`
     .middleware('acl:moderator,admin')
   ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1582467510/adonisjs.com/route-named-middleware.gif)
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582467510/adonisjs.com/route-named-middleware.mp4", controls]
 
 ### How it works?
 

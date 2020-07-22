@@ -376,6 +376,6 @@ Event.on('adonis:mail:sent', Mail.prettyPrint)
 
 Now, if you send an email, it will be pretty printed on the terminal.
 
-![](https://res.cloudinary.com/adonis-js/image/upload/q_100/v1594797377/adonisjs.com/adonis-mail-event-pretty-print.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1594797377/adonisjs.com/adonis-mail-event-pretty-print.png)
 
 The `Mail.prettyPrint` method is just one way to handle the event. You are free to define your own event listener and handle the event. The event listener receives only a single argument of [MailEventData](https://github.com/adonisjs/mail/blob/develop/adonis-typings/mail.ts#L486) type.

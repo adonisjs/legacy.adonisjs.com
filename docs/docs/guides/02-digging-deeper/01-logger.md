@@ -31,7 +31,7 @@ Route.get('/', async ({ logger }) => {
 })
 ```
 
-![](https://res.cloudinary.com/adonis-js/image/upload/v1592211987/adonisjs.com/http-logger.png)
+![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1592211987/adonisjs.com/http-logger.png)
 
 ## How AdonisJS Logger works?
 Since, Node.js is a single threaded event-loop, it is very important to keep the main thread free from any extra work required to process or reformat logs. 
