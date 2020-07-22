@@ -15,6 +15,11 @@ By the end of this guide, you will know:
 ## Migrations Overview
 Database [schema migrations](https://en.wikipedia.org/wiki/Schema_migration) is one of the most confusing topics in software programming. Many times individuals don't even understand the need of using migrations vs manually creating database tables. So, let's take a step backward and explore the possible options for creating/modifying tables inside a database.
 
+[note]
+AdonisJS uses [Knex.js](https://knexjs.org/#Schema-Building) behind the scene.
+Ensure to check out their documentation to see a full list of column types and modifier methods.
+[/note]
+
 ### Using a GUI Application
 The simplest way to create database tables is to make use of a GUI application like Sequel Pro, Table plus and so on. These applications are great during the development phase, however, they have some short-comings during the production workflow.
 
