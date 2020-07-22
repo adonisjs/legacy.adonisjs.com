@@ -90,6 +90,21 @@ The inline closures are functions, directly attached on the route definition. Th
 
 On the other hand, Controllers provides a great structure to your application by making you extract the code for handling requests to dedicated controller files. Make sure to read the [guide on controllers](controllers) for in-depth understanding.
 
+[codegroup]
+
+```ts{}{Reference}
+Route.get('users', 'UserController.index')
+Route.get('admin/users', 'Admin/UserController.index')
+```
+
+```ts{}{Closure}
+Route.get('users', async () => {
+  // ...
+})
+```
+
+[/codegroup]
+
 ## Dynamic URL's
 
 Not every URL can be as simple as `/about` or `/contact`. Many URL's will need dynamic values in order to be functional. A great example of this is a blog or an e-commerce website, where you want to lookup database records for a given id.
