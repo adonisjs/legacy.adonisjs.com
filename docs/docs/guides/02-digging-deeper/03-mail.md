@@ -182,7 +182,7 @@ Once done with the setup, you can import the `Mail` module and send emails using
 ```ts
 import Mail from '@ioc:Adonis/Addons/Mail'
 
-Mail.send((message) => {
+await Mail.send((message) => {
   message
     .from('info@example.com')
     .to('virk@adonisjs.com')
