@@ -40,7 +40,7 @@ The events listeners are usually defined inside a single dedicated file, but you
 
 However, with AdonisJS you can define types for your events and we will ensure to enforce them.
 
-[video url="https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_auto,f_auto,fl_lossy/v1588693893/adonisjs.com/blog/11905a79-d365-4686-abee-821da458324e_vjuu0x.mp4", controls]
+[video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1588693893/adonisjs.com/blog/11905a79-d365-4686-abee-821da458324e_vjuu0x.mp4", controls]
 
 ### Extending AdonisJS Core
 
