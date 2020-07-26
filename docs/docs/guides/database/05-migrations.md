@@ -73,6 +73,12 @@ export default class Users extends BaseSchema {
 }
 ```
 
+Next, you will need run the following ace command to build the application:
+
+```sh
+node ace build
+```
+
 Finally, run the following ace command to execute the instructions for creating the `users` table.
 
 ```sh
