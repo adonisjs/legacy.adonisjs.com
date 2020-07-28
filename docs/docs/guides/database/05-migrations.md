@@ -73,11 +73,19 @@ export default class Users extends BaseSchema {
 }
 ```
 
-Next, you will need run the following ace command to build the application:
+[note]
+
+Migrations are executed against the compiled Javascript code. So, make sure to run one of the following ace commands to keep the compiled output upto date.
 
 ```sh
-node ace build
+# watch & re-compile
+node ace build --watch
+
+# watch, re-compile & start http server
+node ace serve --watch
 ```
+
+[/note]
 
 Finally, run the following ace command to execute the instructions for creating the `users` table.
 
