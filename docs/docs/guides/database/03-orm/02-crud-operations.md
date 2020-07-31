@@ -161,7 +161,7 @@ import User from 'App/Models/User'
 const searchPayload = { email: 'virk@adonisjs.com' }
 const savePayload = { password: 'secret' }
 
-await User.findOrCreate(searchPayload, savePayload)
+await User.firstOrCreate(searchPayload, savePayload)
 ```
 
 ### `fetchOrCreateMany`
