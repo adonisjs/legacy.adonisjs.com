@@ -150,7 +150,7 @@ await User.query().where('is_verified', false).delete()
 ## Find Or Create
 Models comes a lot of helpful methods to simplify the record creation by first finding them inside the database and performing the create query, only when the record doesn't exists.
 
-### `findOrCreate`
+### `firstOrCreate`
 Search for record inside the database and create a new one, when the lookup fails. 
 
 In the following example, we attempt to search a user with an email, but persist both the `email` and the `password`, when the initial lookup fails. In other words, the `searchPayload` and the `savePayload` are merged during the create call.
@@ -161,7 +161,7 @@ import User from 'App/Models/User'
 const searchPayload = { email: 'virk@adonisjs.com' }
 const savePayload = { password: 'secret' }
 
-await User.findOrCreate(searchPayload, savePayload)
+await User.firstOrCreate(searchPayload, savePayload)
 ```
 
 ### `fetchOrCreateMany`
