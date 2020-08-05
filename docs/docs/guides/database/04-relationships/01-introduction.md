@@ -60,14 +60,14 @@ export default class Profile extends BaseModel {
 - The `Profile` model must have the `userId` foreign key column.
 
 ## Preloading relationship
-Most of the times, you will find yourself preloading relationships. For example: Fetch all users, along with their profile.
+Most of the times, you will find yourself eager-loading relationships. For example: Fetch all users, along with their profile.
 
 ```ts
 const users = await User.query().preload('profile')
 users.forEach((user) => console.log(user.profile))
 ```
 
-You can also lazily preload relationships from a given model instance. For example: You already have access to the `user` model instance from the auth module and you want to preload the profile.
+You can also lazy-load relationships from a given model instance. For example: You already have access to the `user` model instance from the auth module and you want to preload the profile.
 
 ```ts
 const user = auth.user
@@ -76,9 +76,9 @@ await user.preload('profile')
 console.log(user.profile)
 ```
 
-## Preloading deep relationship
+## Preloading nested relationship
 
-Imagine you user model has a relation to profile, and profile model has a relation to address. You can preload and element of a relationship by passing a preload function as a second argument:
+Imagine you user model has a relation to profile, and profile model has a relation to address. You can preload an element of a relationship by passing a preload function as a second argument:
 
 ```ts
 const user = auth.user
