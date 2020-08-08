@@ -155,15 +155,15 @@ You can constraints the route parameters to have a specific shape by adding the 
 ```ts
 Route.get('/posts/:id', async () => {
   // ...
-}).where('id', /^[0-9]$/) 👈
+}).where('id', /^[0-9]+$/) 👈
 ```
 
 When using them inside a Route Group, the route modifier take precedence over the group one.
 
 ```ts
 Route.group(() => {
-  Route.get('/:id', 'handler').where('id', /^[0-9]$/) // 👈 This one will be used
-}).where('id', /[^a-z$]/)
+  Route.get('/:id', 'handler').where('id', /^[0-9]+$/) // 👈 This one will be used
+}).where('id', /^[a-z]+$/)
 ```
 
 ## CRUD Actions
