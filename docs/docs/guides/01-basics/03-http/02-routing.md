@@ -165,6 +165,7 @@ Route.group(() => {
   Route.get('/:id', 'handler').where('id', /^[0-9]$/) // 👈 This one will be used
 }).where('id', /[^a-z$]/)
 
+
 ## CRUD Actions
 
 The principles of [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) provides a great way to map CRUD operations with HTTP methods without making the URL's verbose.
