@@ -164,7 +164,7 @@ When using them inside a Route Group, the route modifier take precedence over th
 Route.group(() => {
   Route.get('/:id', 'handler').where('id', /^[0-9]$/) // 👈 This one will be used
 }).where('id', /[^a-z$]/)
-
+```
 
 ## CRUD Actions
 
