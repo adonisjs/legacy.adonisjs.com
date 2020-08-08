@@ -131,7 +131,7 @@ Now, if you will visit the http://localhost:3333/posts/1, you will see the follo
 - You can give any name to the parameter, just make sure that it starts with `:` (a colon).
 - The `params` property exists on the `ctx` object. You can access it as `ctx.params` or use the [JavaScript destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring) as shown in the above example.
 
-### Optional parameters
+### Optional Parameters
 
 You can also mark parameters as optional by adding the `?` suffix. Consider the following example:
 
@@ -147,6 +147,23 @@ Route.get('/posts/:id?', async ({ params }) => {
 ```
 
 [video url="https://res.cloudinary.com/adonis-js/image/upload/q_80/v1582021461/adonisjs.com/dynamic-urls.mp4", controls]
+
+### Regular Expression Matchers
+
+You can constraints the route parameters to have a specific shape by adding the `where` modifier.
+
+```ts
+Route.get('/posts/:id', async () => {
+  // ...
+}).where('id', /^[0-9]$/) 👈
+```
+
+When using them inside a Route Group, the route modifier take precedence over the group one.
+
+```ts
+Route.group(() => {
+  Route.get('/:id', 'handler').where('id', /^[0-9]$/) // 👈 This one will be used
+}).where('id', /[^a-z$]/)
 
 ## CRUD Actions
 
