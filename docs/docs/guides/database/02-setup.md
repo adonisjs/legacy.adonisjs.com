@@ -4,16 +4,16 @@ group: Database
 ---
 
 # Setup
-In this guide, you will install `@adonisjs/lucid` package, along with the database driver of your choice. Lucid supports following database engines.
+In this guide, you will install `@adonisjs/lucid` package, along with the database driver of your choice. Lucid supports the following database engines.
 
 - MYSQL
 - SQLite
 - MSSQL
-- PostgreSQL
+- PostgreSQL (along with Amazon Redshift)
 - MariaDB
 - and OracleDB
 
-Install the package from npm registry by running the following command.
+Install the package from the npm registry by running the following command.
 
 [note]
 The `@alpha` tag is required during the preview release.
@@ -225,10 +225,10 @@ We haven't covered the setup for all possible databases. However, the process re
 - Finally, define a new connection inside the `config/database.ts` file
 
 ## Verifying Connection
-There are a couple of ways to verify the connection settings and ensure that you are able to connect to your database server successfully. One is using the **health checks api** and another one is to **manually run a query** inside a dummy route.
+There are a couple of ways to verify the connection settings and ensure that you are able to connect to your database server successfully. One way is to use the **health checks api** and another one is to **manually run a query** inside a dummy route.
 
 ### Health Checks
-Lucid has inbuilt support for health checks and it works across all database engines. All you need to do is, enable the `healthCheck` flag on the database connection and then use the AdonisJS global Health check API for checking the status.
+Lucid has inbuilt support for health checks and it works across all database engines. All you need to do is, enable the `healthCheck` flag on the database connection inside the `config/database.ts` file and then use the AdonisJS global Health check API, as shown in the following example.
 
 ```ts{}{start/routes.ts}
 import Route from '@ioc:Adonis/Core/Route'
@@ -236,7 +236,10 @@ import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 
 Route.get('health', async ({ response }) => {
   const report = await HealthCheck.getReport()
-  return report.healthy ? response.ok(report) : response.badRequest(report)
+  
+  return report.healthy
+    ? response.ok(report)
+    : response.badRequest(report)
 })
 ```
 

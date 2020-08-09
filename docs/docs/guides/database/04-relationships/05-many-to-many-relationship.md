@@ -5,7 +5,7 @@ group: Database
 ---
 
 # Many to Many
-The `ManyToMany` relationship allows an entity have a relationship with multiple other entities. For example: A **user has many skills**, and the **same skill can also belongs to many different users**.
+The `ManyToMany` relationship allows an entity have a relationship with multiple other entities. For example: A **user has many skills**, and the same time **a skill can also belongs to many different users**.
 
 When working with a many to many relationship, you will always need a 3rd table (commonly known as a pivot table) to represent the relationship.
 
@@ -29,7 +29,7 @@ With the above table, you will have to create a new skill for every user. Also, 
 
 - You should remove the `user_id` from the `skills` table and keep it as an independent database table.
 - By making the table independent, you can pre-fill the skills table and also use it to create a dropdown for selecting skills.
-- Create a new pivot table called the `skill_user`. This table will hold the ids to create a relationship with a user and a skill.
+- Create a new pivot table called the `skill_user`. This table will hold the ids to create a relationship between a user and a skill.
 
 You will end up with something similar to the following table structure.
 
@@ -76,10 +76,10 @@ The local key is mostly the primary key of the **parent model**. In our example:
 The related key is mostly the primary key of the **related model**. In our example: Skill is the related model and `relatedKey` will also be the `id`.
 
 ### `pivotForeignKey`
-The foreign key is in the pivot table to create the relationship with the **parent model**. Conventionally, it is camelCase representation of the model name and its primary key. In our example: The `pivotForeignKey` will be `userId`.
+The foreign key is in the pivot table to create the relationship with the **parent model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `pivotForeignKey` will be `user_id`.
 
 ### `pivotRelatedForeignKey`
-The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is camelCase representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skillId`.
+The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is **snake_casE** representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skill_id`.
 
 ```ts
 @manyToMany(() => Skill, {
@@ -228,13 +228,13 @@ await user.related('skills').createMany([
 Pass `false (boolean)` as the second argument to create duplicate entries inside the pivot table.
 
 ```ts
-await user.related('skills').save({
+await user.related('skills').create({
   name: 'Programming'
 }, false)
 ```
 
 ### `attach`
-The `attach` method allows you to setup relationships inside the pivot table, using just the id. For example:
+The `attach` method allows you to setup relationships inside the pivot table by just using the ids. For example:
 
 ```ts
 const user = await User.find(1)

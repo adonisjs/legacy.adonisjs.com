@@ -12,10 +12,11 @@ By the end of this guide, you will know:
 - Using different types of query builders for executing insert, select or raw queries
 
 ## Using the Query Builder
-You can get an instance of query builder using the Database module. For example:
+You can get an instance of the query builder using the Database module. For example:
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
+
 const users = await Database.query().select('*').from('users')
 ```
 
@@ -73,7 +74,7 @@ You make use of the insert query builder for inserting new rows to the database.
 
 ```ts
 await Database
-  .insertQuery() // 👈gives an instance of insert query builder
+  .insertQuery() // 👈 gives an instance of insert query builder
   .table('users')
   .insert({ username: 'virk', email: 'virk@adonisjs.com' })
 ```
@@ -99,7 +100,7 @@ The return value of the `insert` query is dependent on the database server in us
   ```
 
 ### Multi Insert
-You can also perform bulk inserts using the `multiInsert` method.
+You can make use of the `multiInsert` method in order to insert multiple rows in a single insert query.
 
 [note]
 MySQL and SQLite only returns the id for the last row and not all the rows.
@@ -132,7 +133,7 @@ await Database
 ```
 
 ## Executing Raw Queries
-Raw queries allows to execute a SQL from a string input. This is usually helpful, when you want to execute complex queries that are not supported by the standard query builder.
+Raw queries allows to execute a SQL statement from a string input. This is usually helpful, when you want to execute complex queries that are not supported by the standard query builder.
 
 [note]
 Unlike the standard query builder response, the response of the `rawQuery` is not normalized. You must read the documentation of the underlying npm driver for same.
@@ -148,11 +149,11 @@ const user = await Database
 - The `rawQuery` method accepts a total of two arguments.
 - First argument is the SQL query.
 - 2nd argument is an array of values to substitute the `?` placeholders inside the SQL string. To prevent SQL injection, you must always define values as bindings and do not inline them inside the SQL string. For example:
-  ```ts{}{Never do this}
+  ```ts{}{Prone to SQL injection}
   Database.rawQuery('select * from users where id = 1')
   ```
 
-  ```ts{}{Correct way}
+  ```ts{}{Safe from SQL injection}
   Database.rawQuery('select * from users where id = ?', [1])
   ```
 
@@ -166,7 +167,7 @@ const total = Database.query().count('*').from('users')
 // POSTGRESQL: [{ "count": "4" }]
 ```
 
-As you can notice, the output of `PostgreSQL` and `SQLite` is different and hence not predictable. To encounter this issue, it is recommended to always alias your aggregates.
+As you can notice, the output of `PostgreSQL` and `SQLite` is different and hence not predictable. To encounter this behavior, it is recommended to always alias your aggregates.
 
 ```ts
 await Database.query().count('* as total').from('users')
