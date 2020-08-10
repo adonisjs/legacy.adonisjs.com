@@ -11,12 +11,16 @@ meta:
 In the last few weeks, we have fixed a handful of issues and also shipped with some new features and improvements. This blog post summarizes the highlights of the release.
 
 ## ORM helpers to work with relationships
-In the true spirit of making it easier to work with Model relationships, we shipped new methods to [count related rows](/guides/model-relations/introduction#counting-related-rows), [check for the existence](/guides/model-relations/introduction#querying-relationship-existence) and apply [group limit]() during preloading.
+In the true spirit of making it easier to work with Model relationships, we shipped new methods to [count related rows](/guides/model-relations/introduction#counting-related-rows), [check for relationship existence](/guides/model-relations/introduction#querying-relationship-existence) and apply [group limit]() during preload.
 
 Imagining, you have a blog with **categories**, **posts** and **comments**. Following are the code examples for some of the known use cases.
 
 ### Get categories list with counts of posts inside them
-Many popular blogs shows the count of posts for a category or a tag. You can achieve the similar results using the following query.
+Many popular blogs shows the count of posts for a category or a tag. 
+
+![](https://res.cloudinary.com/adonis-js/image/upload/v1597042110/adonisjs.com/blog/categories_with_counts_efaxw1.png)
+
+You can achieve the similar results using the following query.
 
 ```ts
 const categories = await Category
@@ -31,17 +35,15 @@ categories.forEach((category) => {
 ### Check for relationship existence
 Another frequent use case is to limit the number of parent model records based upon the existence of its relationships.
 
-For example: Show all users that has a verified profile.
+For example: Show all posts that has received one or more comments.
 
 ```ts
-const users = await User
+const posts = await Post
   .query()
-  .whereHas('profile', (profile) => {
-    profile.where('isVerified', true)
-  })
+  .has('comments')
 ```
 
-The `whereHas` method has more variants. We recommend [reading docs](/guides/model-relations/introduction#counting-related-rows) for same.
+The `has` method has more variants. We recommend [reading the docs](/guides/model-relations/introduction#counting-related-rows) for same.
 
 ### Preloading group limit
 The `groupLimit` method uses [SQL window functions](https://www.sqlservertutorial.net/sql-server-window-functions/sql-server-row_number-function/) to limit the number of rows for preloaded relationships.
@@ -84,7 +86,7 @@ You can also use the `today` and `tomorrow` keywords with the after `rule`.
 }
 ```
 
-Similar, the before rule enforces the date to be before the specified date or offset.
+Similarly, the `before` rule enforces the date to be before the specified date or offset.
 
 ### `afterField` and `beforeField` rules
 
