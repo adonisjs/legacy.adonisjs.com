@@ -95,15 +95,37 @@
     margin-bottom: 1rem;
   }
 
+  .markdown-content h1 a, .markdown-content h2 a, .markdown-content h3 a, .markdown-content h4 a {
+    position: relative;
+  }
+
   .markdown-content h4 code {
     font-size: 1.7rem;
   }
 
+  .markdown-content .icon.icon-link {
+    display: inline-block;
+    color: var(--grey-100);
+    margin-right: 1rem;
+  }
+
+  .markdown-content .icon.icon-link::after {
+    content: '#';
+  }
+
+  .markdown-content h1 .icon.icon-link {
+    display: none;
+  }
+
   .markdown-content .bookmark {
-    top: -60px;
+    top: -130px;
     position: absolute;
     display: block;
     visibility: hidden;
+  }
+
+  .markdown-content h2 .bookmark {
+    top: -100px;
   }
 
   .markdown-content ul, .markdown-content ol {
@@ -251,6 +273,12 @@
       margin-left: auto;
       margin-right: auto;
       border-radius: 4px;
+    }
+
+    .markdown-content .icon.icon-link {
+      position: absolute;
+      left: -30px;
+      top: -2px;
     }
   }
 </style>
