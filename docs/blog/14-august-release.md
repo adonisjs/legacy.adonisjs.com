@@ -54,7 +54,9 @@ Continuing with the blog categories and the posts example. Lets fetch all catego
 const categories = await Category
   .query()
   .preload('posts', (posts) => {
-    posts.groupLimit(3) // 👈
+    posts
+      .groupOrderBy('posts.created_at', 'desc')
+      .groupLimit(3) // 👈
   })
 ```
 
