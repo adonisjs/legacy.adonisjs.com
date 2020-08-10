@@ -240,3 +240,11 @@ Enforces the value to be a valid Javascript object. Similar to an array, you can
 
 // Valid data: { full_name: 'Virk', profile_pic: [MultipartStream] }
 ```
+
+To accept an object with any/unknown properties, you can make use of the `anyMembers` method.
+
+```ts
+{
+  config: schema.object().anyMembers()
+}
+```

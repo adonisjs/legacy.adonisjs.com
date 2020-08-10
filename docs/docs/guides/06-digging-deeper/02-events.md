@@ -107,11 +107,46 @@ import Event from '@ioc:Adonis/Core/Event'
 Event.on('new:user', 'User.handleRegistration')
 ```
 
-#### How it works?
+### How it works?
 
 - The listeners classes allows you to keep your events file clean by extracting the logic for handling events inside their own classes.
 - By default, the listeners lives inside `app/Listeners` directory. However, you can customize inside the `.adonisrc.json` file.
 - AdonisJS will create a new instance of the listener class, everytime the event is emitted.
+
+## Trapping Events
+In true spirit of making testing easier in your AdonisJS applications, the event emitter allows trapping events. For example:
+
+```ts
+import User from 'App/Models/User'
+import Event from '@ioc:Adonis/Core/Event'
+
+Event.trap('new:user', (user) => {
+  assert.instanceOf(user, User)
+})
+```
+
+Once, a trap has been placed on a event, the actual event listener will not be invoked. 
+
+### Trap All
+Similar to the `Event.trap`, you can also place a trap for all the events.
+
+[note]
+The `Event.trapAll` is only called for events with no existing trap.
+[/note]
+
+```ts
+Event.trap('new:user', (data) => {
+})
+
+// highlight-start
+Event.trapAll((event, data) => {
+  // only called for "send:email"
+})
+// highlight-end
+
+Event.emit('new:user', {})
+Event.emit('send:email', {})
+```
 
 ## Node.js vs AdonisJS Event Emitter
 The event emitter of Node.js is synchronous by nature. It means every call to `emitter.emit` blocks the event loop and leads to non-performant codebase. On the other hand, AdonisJS uses [emittery](https://github.com/sindresorhus/emittery), which is a light weight asynchronous event emitter.
