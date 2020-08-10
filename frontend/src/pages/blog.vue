@@ -6,7 +6,7 @@
       <template v-slot:hero>
         <h1>Blog</h1>
         <h3 class="lede">
-          Hello world
+          Sharing framework updates and our learnings as we build AdonisJS
         </h3>
       </template>
 
