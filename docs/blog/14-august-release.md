@@ -11,7 +11,7 @@ meta:
 In the last few weeks, we have fixed a handful of issues and also shipped with some new features and improvements. This blog post summarizes the highlights of the release.
 
 ## ORM helpers to work with relationships
-In the true spirit of making it easier to work with Model relationships, we shipped new methods to [count related rows](/guides/model-relations/introduction#counting-related-rows), [check for relationship existence](/guides/model-relations/introduction#querying-relationship-existence) and apply [group limit]() during preload.
+In the true spirit of making it easier to work with Model relationships, we shipped new methods to [count related rows](/guides/model-relations/introduction#counting-related-rows), [check for relationship existence](/guides/model-relations/introduction#querying-relationship-existence) and apply **group limit** during preload.
 
 Imagining, you have a blog with **categories**, **posts** and **comments**. Following are the code examples for some of the known use cases.
 
