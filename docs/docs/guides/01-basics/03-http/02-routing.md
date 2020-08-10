@@ -359,7 +359,7 @@ Creating and using middleware classes involves an extra step of registering midd
 1. Run the following command to create a new middleware class.
 
    ```sh
-   adonis make:middleware Sample
+   node ace make:middleware Sample
    ```
 
 2. Copy/paste the following contents inside `app/Middleware/Sample.ts` file.
