@@ -14,7 +14,7 @@ For performance reason, we do not recommend using AdonisJS static file server in
 ## Setup
 The static file server is inbuilt into the core of the framework and hence there is no need to install any additional packages. However, do make sure that your project has `config/static.ts` config file with `enabled = true`.
 
-If the configuration file is missing, you can create one by copying the contents from this [url](https://github.com/adonisjs/core/blob/develop/config/static.txt).
+If the configuration file is missing, you can create one by copying the contents from this [url](https://github.com/adonisjs/core/blob/develop/templates/config/static.txt).
 
 Next, open the `.adonisrc.json` file and make sure that `public/**` glob pattern is in the `metaFiles` array.
 
