@@ -61,10 +61,10 @@ import Database from '@ioc:Adonis/Lucid/Database'
 const users = await Database.from('users').select('*')
 
 return users.map((user) => {
-  const dob = DateTime.fromJSDate(user.dob_of_birth)
+  const dob = DateTime.fromJSDate(user.date_of_birth)
   user.age = DateTime.local().diff(dob, 'years').years
 
-  delete user.dob_of_birth
+  delete user.date_of_birth
   return user
 })
 ```
