@@ -15,11 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "@dimerapp/http-server": "^2.0.3",
-    "ws": "^7.3.0"
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "@dimerapp/cli": "^1.0.15",
     "parse-numeric-range": "^1.2.0",
-    "prismjs": "^1.20.0"
+    "prismjs": "^1.21.0"
   }
 }
