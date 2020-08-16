@@ -50,7 +50,7 @@ export default {
     #topbar .container {
       align-items: center;
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       width: 100%;
     }
 
