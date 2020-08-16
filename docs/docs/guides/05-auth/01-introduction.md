@@ -5,7 +5,7 @@ group: Authentication
 
 # Introduction
 
-AdonisJS comes with a fully fledged authentication system to authenticate the users of your application using **traditional sessions**, **JWT tokens** or **API tokens**. In this guide, we will cover the fundamentals of authentication in AdonisJS.
+AdonisJS comes with a fully fledged authentication system to authenticate the users of your application using **traditional sessions**, **Basic Authentication** or **API tokens**. In this guide, we will cover the fundamentals of authentication in AdonisJS.
 
 ## How Authentication works in AdonisJS?
 Unlike many other frameworks, we **do not create the routes or the HTML pages** to `register` or `login` the users. We believe, every application has its own UI aesthetics and forcing you to use pre-built bootstrap templates is not a great idea.

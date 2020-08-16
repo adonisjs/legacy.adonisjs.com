@@ -32,7 +32,7 @@ The middleware will use the default guard *(configured inside the config file)* 
 ```ts
 Route
   .get('/dashboard', 'DashboardController.index')
-  .middleware('auth:web,jwt')
+  .middleware('auth:web,api')
 ```
 
 ## Silent Auth Middleware
