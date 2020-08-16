@@ -12,6 +12,10 @@ By the end of this guide, you will know:
 - How to use validator outside the flow of an HTTP request
 - Covering the basics of validation schema
 
+[note]
+This guide only cover inline validation. If you'd like to create a validator class, you should refer to the [form submissions](/guides/http/form-submissions#using-validator-classes) guide.
+[/note]
+
 ## Validating HTTP requests
 Most of the times, you will be using the validator to validate the forms submitted over an HTTP request. So, lets begin with an HTTP specific example first and later we will see how to use the validator directly.
 
