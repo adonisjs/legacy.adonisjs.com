@@ -52,7 +52,7 @@ node ace db:seed
 
 ```sh
 # runs database/seeders/UserSeeder
-node ace db:seed --file=UserSeeder
+node ace db:seed --files=UserSeeder
 ```
 
 There is also an interactive mode to manually select one or more seeders to execute.
