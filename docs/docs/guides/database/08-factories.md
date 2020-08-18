@@ -123,7 +123,7 @@ export const PostFactory = Factory
 export const UserFactory = Factory
   .define(User, ({ faker }) => {
     return {
-      username: faker.internet.username(),
+      username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
     }
