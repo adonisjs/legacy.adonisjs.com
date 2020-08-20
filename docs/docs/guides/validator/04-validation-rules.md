@@ -650,3 +650,30 @@ Along with the validation, you can also use the following options to normalize u
 
 - The `ensureProtocol` will make sure that all URLs after validation have the `https` protocol.
 - The `stripWWW` option will remove the `www` from the URL.
+
+## `rules.equalTo`
+Enforce the value of field to be a value provided. This rule also allows adding values from context.
+```ts
+  public schema = schema.create({
+    country: schema.string({}, [
+      rules.equalTo('DE')
+    ])
+  })
+```
+
+Example with refs
+```ts
+class PostValidator {
+
+  public refs = schema.refs({
+    country: this.ctx.auth.user.country
+  })
+
+  public schema = schema.create({
+    country: schema.string({}, [
+      rules.equalTo(this.refs.country)
+    ])
+  })
+
+}
+```
