@@ -114,7 +114,7 @@ Assuming you have an array of objects, each defining a product id property and y
     .array([
       rules.distinct('id') // 👈 ensures id is unique
     ])
-    .members(schema.object({
+    .members(schema.object().members({
       id: schema.number(),
       quantity: schema.number(),
     }))
