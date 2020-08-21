@@ -345,7 +345,7 @@ Define a custom regex to validate the value against.
 
 ```ts
 {
-  username: schema.string([
+  username: schema.string({}, [
     rules.regex(/^[a-zA-Z0-9]+$/)
   ])
 }
@@ -356,14 +356,14 @@ Enforce the value of field under validation is a valid `uuid`. You can also opti
 
 ```ts
 {
-  id: schema.string([
+  id: schema.string({}, [
     rules.uuid()
   ])
 }
 
 // Or enforce version
 {
-  id: schema.string([
+  id: schema.string({}, [
     rules.uuid({ version: 4 })
   ])
 }
@@ -374,7 +374,7 @@ Enforces the value to be properly formatted as a phone number. You can also defi
 
 ```ts
 {
-  mobile: schema.string([
+  mobile: schema.string({}, [
     rules.mobile()
   ])
 }
@@ -384,7 +384,7 @@ Validate against selected locales
 
 ```ts
 {
-  mobile: schema.string([
+  mobile: schema.string({}, [
     rules.mobile({ locales: ['pt-BR', 'en-IN', 'en-US'] })
   ])
 }
@@ -394,7 +394,7 @@ Also, you can enable **strict mode**, which will force the end user to specify t
 
 ```ts
 {
-  mobile: schema.string([
+  mobile: schema.string({}, [
     rules.mobile({ strict: true })
   ])
 }
