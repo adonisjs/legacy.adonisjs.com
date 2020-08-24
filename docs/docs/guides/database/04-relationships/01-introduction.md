@@ -401,5 +401,5 @@ const savePayload = {
   isActive: true,
 }
 
-await user.related('profile').updateOrCreate()
+await user.related('profile').updateOrCreate(searchPayload, savePayload)
 ```
