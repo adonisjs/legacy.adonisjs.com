@@ -53,5 +53,8 @@
     "webpack-cli": "^3.2.3",
     "webpack-shell-plugin": "^0.5.0",
     "zepto": "^1.2.0"
+  },
+  "volta": {
+    "node": "8.0.0"
   }
 }
