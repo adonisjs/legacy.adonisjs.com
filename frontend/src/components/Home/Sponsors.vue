@@ -36,7 +36,7 @@
             </a>
 
             <a href="https://cleaver.cloud/adonis/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card cleaver">
-              <img src="https://res.cloudinary.com/adonis-js/image/upload/v1598351234/adonisjs.com/Sponsors/cleaver-logo_wargqg.png" />
+              <img src="https://res.cloudinary.com/adonis-js/image/upload/v1598351234/adonisjs.com/cleaver-logo_wargqg.png" />
             </a>
           </div>
         </div>
