@@ -27,7 +27,9 @@ function chdir(dir) {
 
 async function run () {
   await runCommand('rm', ['-rf', 'prod'])
+
   chdir('docs')
+  await runCommand('npm', ['install'])
 
   console.log(kleur.green('npm'), kleur.yellow('run serve &'))
   const subProcess = execa('npm', ['run', 'serve'], { stdout: 'pipe' })
@@ -37,6 +39,7 @@ async function run () {
   await sleep()
 
   chdir('../frontend')
+  await runCommand('npm', ['install'])
   await runCommand('npm', ['run', 'build'])
 
   chdir('../')
