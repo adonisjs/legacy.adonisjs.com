@@ -1,3 +1,4 @@
+trap "kill 0" EXIT
 export NODE_ENV=production
 
 echo "----- Cleanup -----"
@@ -22,4 +23,4 @@ mv frontend/dist prod/public
 echo ""
 echo "Done!"
 
-pkill -P $$
+exit 0
