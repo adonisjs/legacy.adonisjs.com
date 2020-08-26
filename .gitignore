@@ -2,6 +2,7 @@
 .idea
 *.log
 
+node_modules
 frontend/node_modules
 frontend/src/.temp
 frontend/dist
