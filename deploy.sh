@@ -15,5 +15,7 @@ echo "----- Initiate frontend build -----"
 mkdir prod
 mv frontend/dist prod/public
 
+kill $(lsof -t -i:4444)
+
 echo ""
 echo "Done!"
