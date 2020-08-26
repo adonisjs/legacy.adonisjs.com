@@ -3,12 +3,20 @@ trap "kill 0" EXIT
 
 export NODE_ENV=production
 
-sh ./tasks.sh
+echo "----- Cleanup -----"
+rm -rf prod
 
-echo "---- Deploying API ----"
-cp up.json prod/api
-export AWS_PROFILE=adonis_prod
-(cd prod/api && ../../up)
+echo ""
+echo "----- Start API Server -----"
+(cd docs && npm run serve) &
+sleep 10
 
-echo "---- Deploying Frontend ----"
-npx netlify-cli deploy --dir=prod/public --prod
+echo ""
+echo "----- Initiate frontend build -----"
+(cd frontend && npm run build)
+
+mkdir prod
+mv frontend/dist prod/public
+
+echo ""
+echo "Done!"
