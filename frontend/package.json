@@ -8,16 +8,16 @@
     "svg": "vsvg -s src/assets/icons -t src/components/Icons --es6"
   },
   "dependencies": {
-    "@gridsome/plugin-critical": "^0.1.6",
+    "@gridsome/plugin-critical": "^0.2.0",
     "@gridsome/plugin-google-analytics": "^0.1.1",
     "@gridsome/plugin-sitemap": "^0.4.0",
-    "axios": "^0.19.2",
-    "date-fns": "^2.15.0",
+    "axios": "^0.20.0",
+    "date-fns": "^2.16.0",
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
-    "gridsome": "^0.7.19",
-    "gridsome-plugin-service-worker": "^0.2.1",
-    "kleur": "^4.1.0",
+    "gridsome": "^0.7.20",
+    "gridsome-plugin-service-worker": "^0.2.6",
+    "kleur": "^4.1.1",
     "typeit": "^7.0.4"
   },
   "devDependencies": {
