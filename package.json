@@ -4,6 +4,7 @@
   "scripts": {
     "start": "sirv build",
     "build": "node bin/build.js",
+    "build:watch": "nodemon --exec 'npm run build'",
     "build:front": "tailwindcss build assets/app.css -o build/assets/app.css"
   },
   "repository": {
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/adonisjs/adonisjs.com#readme",
   "devDependencies": {
+    "nodemon": "^2.0.4",
     "sirv-cli": "^1.0.6"
   },
   "dependencies": {
@@ -26,5 +28,9 @@
     "gray-matter": "^4.0.2",
     "readdirp": "^3.4.0",
     "tailwindcss": "^1.7.6"
+  },
+  "nodemonConfig": {
+    "watch": ["pages/*", "contents/*"],
+    "ext": "edge,md"
   }
 }
