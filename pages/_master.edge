@@ -5,7 +5,13 @@
 	<title></title>
 
 	<link rel="stylesheet" href="/assets/app.css">
+	<script src="https://cdn.jsdelivr.net/npm/turbolinks@5.2.0/dist/turbolinks.js" defer></script>
 	<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			Turbolinks.start()
+		})
+	</script>
 </head>
 <body>
 	@!section('page')
