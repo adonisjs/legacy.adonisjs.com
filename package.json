@@ -15,5 +15,11 @@
   },
   "homepage": "https://github.com/adonisjs/adonisjs.com#readme",
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "@dimerapp/markdown": "^3.2.2",
+    "edge.js": "^3.0.5",
+    "fs-extra": "^9.0.1",
+    "gray-matter": "^4.0.2",
+    "readdirp": "^3.4.0"
+  }
 }
