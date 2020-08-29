@@ -2,7 +2,8 @@
   "name": "adonisjs.com",
   "private": true,
   "scripts": {
-    "build": "node bin/build.js"
+    "build": "node bin/build.js",
+    "build:front": "tailwindcss build assets/app.css -o build/assets/app.css"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "edge.js": "^3.0.5",
     "fs-extra": "^9.0.1",
     "gray-matter": "^4.0.2",
-    "readdirp": "^3.4.0"
+    "readdirp": "^3.4.0",
+    "tailwindcss": "^1.7.6"
   }
 }
