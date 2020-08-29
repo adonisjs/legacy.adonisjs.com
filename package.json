@@ -1,14 +1,6 @@
 {
   "name": "adonisjs.com",
-  "version": "1.0.0",
-  "description": "AdonisJS.com",
-  "main": "app.js",
-  "bin": {
-    "adonisjs.com": "build.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
+  "private": true,
   "scripts": {
     "build": "node bin/build.js"
   },
@@ -22,10 +14,6 @@
     "url": "https://github.com/adonisjs/adonisjs.com/issues"
   },
   "homepage": "https://github.com/adonisjs/adonisjs.com#readme",
-  "devDependencies": {
-    "execa": "^4.0.3"
-  },
-  "dependencies": {
-    "kleur": "^4.1.1"
-  }
+  "devDependencies": {},
+  "dependencies": {}
 }
