@@ -5,23 +5,22 @@
     "start": "sirv build -d",
     "build": "node bin/build.js",
     "build:watch": "nodemon --exec 'npm run build'",
-    "build:front": "tailwindcss build assets/app.css -o build/assets/app.css"
+    "build:front": "postcss assets/app.css -o build/assets/app.css"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/adonisjs/adonisjs.com.git"
-  },
-  "author": "virk,adonisjs",
+  "author": "AdonisJS <info@adonisjs.com>",
+  "contributors": [
+    "Harminder Virk <virk@adonisjs.com>",
+    "Romain Lanz <romain.lanz@slynova.ch>"
+  ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/adonisjs/adonisjs.com/issues"
-  },
-  "homepage": "https://github.com/adonisjs/adonisjs.com#readme",
+  "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^9.8.6",
     "nodemon": "^2.0.4",
-    "sirv-cli": "^1.0.6"
-  },
-  "dependencies": {
+    "postcss-cli": "^7.1.1",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.2.3",
+    "sirv-cli": "^1.0.6",
     "@dimerapp/markdown": "^3.2.2",
     "edge.js": "^3.0.5",
     "fs-extra": "^9.0.1",
@@ -30,7 +29,17 @@
     "tailwindcss": "^1.7.6"
   },
   "nodemonConfig": {
-    "watch": ["pages/*", "contents/*"],
+    "watch": [
+      "pages/*",
+      "contents/*"
+    ],
     "ext": "edge,md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adonisjs/adonisjs.com.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adonisjs/adonisjs.com/issues"
   }
 }
