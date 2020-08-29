@@ -2,6 +2,7 @@
   "name": "adonisjs.com",
   "private": true,
   "scripts": {
+    "start": "sirv build",
     "build": "node bin/build.js",
     "build:front": "tailwindcss build assets/app.css -o build/assets/app.css"
   },
@@ -15,7 +16,9 @@
     "url": "https://github.com/adonisjs/adonisjs.com/issues"
   },
   "homepage": "https://github.com/adonisjs/adonisjs.com#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "sirv-cli": "^1.0.6"
+  },
   "dependencies": {
     "@dimerapp/markdown": "^3.2.2",
     "edge.js": "^3.0.5",
