@@ -272,5 +272,4 @@ One or more database connections can be closed. You can specify if you want to "
 ```ts{}
 await Database.manager.close("myconnection", true)
 await Database.manager.closeAll()
-}
 ```
