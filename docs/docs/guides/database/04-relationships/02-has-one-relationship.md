@@ -66,7 +66,7 @@ public profile: HasOne<typeof Profile>
 Following is an example table describing the relationship at the database level.
 
 [note]
-Lucid models doesn't rely on the database level foreign key constraint. It just needs the columns to be present and must be of same data types.
+Lucid models doesn't rely on the database level foreign key constraint. It just want the columns to be present and must be of same data types.
 [/note]
 
 ![](https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_700,f_auto,fl_lossy/v1588081758/adonisjs.com/has-one.png)

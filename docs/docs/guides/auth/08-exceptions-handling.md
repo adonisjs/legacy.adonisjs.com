@@ -30,7 +30,8 @@ try {
 The `auth.authenticate` method raises the `AuthenticationException` when unable to find a valid session or unable to lookup the user from the session id. If not handled manually:
 
 - The request will be redirected back to the login page.
-- Ajax requests or requests with `accept = application/json` header will receive an error with 401 status code.
+- Ajax requests or requests with `accept = application/json` header will receive an errors object with 401 status code.
+- When using `basic` auth driver. The exception will response will contain `www-authenticate` header.
 
 ```ts
 try {

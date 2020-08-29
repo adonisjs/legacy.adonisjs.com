@@ -46,7 +46,7 @@ Method to register your custom tags to the templating layer. Again, it is recomm
 ```ts
 View.registerTag({
   block: false,
-  name: 'svg',
+  tagName: 'svg',
   seekable: true,
   compile () {
     // implementation goes here.

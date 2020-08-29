@@ -7,7 +7,7 @@ draft: true
 # Multiple guards
 Most of the applications usually make use of a single guard to login/authenticate users. However, there can be times, when you want to use multiple guards. For example:
 
-- Using the `jwt` guard to authenticate requests from the mobile app and using the `web` guard for the browser client.
+- Using the `api` guard to authenticate requests from the mobile app and using the `web` guard for the browser client.
 - Using two variants of the web guard for authenticating regular users and admins. However, we recommend using roles for this scenario.
 
 ## Defining multiple guards

@@ -322,7 +322,7 @@ exports.secondaryFeatures = [
       {
         title: 'Multi Driver Auth',
         icon: `<svg class="feature-icon" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h40v40H0z"/><g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><path stroke="#5A45FF" d="M13.75 20h12.5v8.75h-12.5zM16.25 20v-3.75A3.75 3.75 0 0120 12.5h0a3.75 3.75 0 013.75 3.75V20"/><path d="M35 23.75c0 8.284-6.716 15-15 15-8.284 0-15-6.716-15-15V6.25L20 2.5l15 3.75v17.5z" stroke="#17161A"/></g></g></svg>`,
-        body: `There is no one size fit authentication process for all apps and hence AdonisJS has let you choose between Sessions, Opaque tokens and JWT tokens.`,
+        body: `There is no one size fit authentication process for all apps and hence AdonisJS has let you choose between Sessions, Opaque tokens and Basic Authentication.`,
       },
       {
         title: 'InBuilt RBAC',

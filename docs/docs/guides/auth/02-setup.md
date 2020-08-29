@@ -117,7 +117,7 @@ auth.login()
 The `list` property holds a collection of one or more guards you want to use. Majority of applications will only need a single guard. However, there can be situations, when you want support multiple style of login. For example:
 
 - Using the `web` guard to login and authenticate users on your web application.
-- And using the `jwt` guard for mobile app authentication.
+- And using the `api` guard for mobile app authentication.
 
 ### `provider.model`
 The `model` property is used by the `lucid` provider. You can make use of any Lucid model here, just make sure that the model has `password` and `rememberMeToken` properties on it.

@@ -2,8 +2,13 @@
   <div id="topbar">
     <div class="container">
       <ul>
-        <li v-for="group in groups"  :key="group.name">
-          <GLink :to="`/${group.categories[0].docs[0].permalink}`">{{ group.name }}</GLink>
+        <li v-for="group in groups" :key="group.name">
+          <GLink
+            :to="`/${group.categories[0].docs[0].permalink}`"
+            :class="{ active: hasSameParent(`/${group.categories[0].docs[0].permalink}`) }"
+            >
+            {{ group.name }}
+          </GLink>
         </li>
       </ul>
     </div>
@@ -13,6 +18,16 @@
 <script>
 export default {
   props: ['groups'],
+  methods: {
+    hasSameParent(url) {
+      const currentRoute = this.$route.fullPath.split('/')
+      if (currentRoute.length <= 3) {
+        return url === currentRoute
+      }
+
+      return this.$route.fullPath.split('/').slice(0, -1).join('/') === url.split('/').slice(0, -1).join('/')
+    }
+  },
 }
 </script>
 
@@ -35,7 +50,7 @@ export default {
     #topbar .container {
       align-items: center;
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       width: 100%;
     }
 

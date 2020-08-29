@@ -59,26 +59,92 @@ export default class Profile extends BaseModel {
 - It also uses a `HasOne` type on the `profile` property. It is required to **distinguish between relationships and other model properties** for better intellisense support.
 - The `Profile` model must have the `userId` foreign key column.
 
-## Preloading relationship
-Most of the times, you will find yourself eager-loading relationships. For example: Fetch all users, along with their profile.
+Similarly, you can use the following decorators and types to define other relationships.
 
 ```ts
-const users = await User.query().preload('profile')
+import {
+  hasOne,
+  HasOne,
+  hasMany,
+  HasMany,
+  belongsTo,
+  BelongsTo,
+  manytoMany,
+  ManyToMany,
+  hasManyThrough,
+  HasManyThrough
+} from '@ioc:Adonis/Lucid/Orm'
+
+export default class User extends BaseModel {
+  @hasOne(() => Profile)
+  public profile: HasOne<typeof Profile>
+
+  @belongsTo(() => Team)
+  public team: BelongsTo<typeof Team>
+
+  @hasMany(() => Post)
+  public posts: HasMany<typeof Post>
+
+  @manyToMany(() => Skill)
+  public skills: ManyToMany<typeof Skill>
+
+  @hasManyThrough(() => Project, () => Team)
+  public projects: HasManyThrough<typeof Project>
+}
+```
+
+## Preloading relationship
+Preloading (or eager-loading) is one of the most common tasks you will perform when working with relationships. For example: Fetch all users along with their profile.
+
+```ts
+const users = await User
+  .query()
+  .preload('profile') // 👈
+
 users.forEach((user) => console.log(user.profile))
 ```
 
-You can also lazy-load relationships from a given model instance. For example: You already have access to the `user` model instance from the auth module and you want to preload the profile.
+You can also lazy-load relationships for an existing model instance. For example:
 
 ```ts
+// Reference to logged in user
 const user = auth.user
+
+// Preload profile for the user
 await user.preload('profile')
 
+// Access profile
 console.log(user.profile)
 ```
 
-## Preloading nested relationship
+### Preloading multiple relations
+Call the `preload` method for multiple times to preload multiple relationships.
 
-Imagine you user model has a relation to profile, and profile model has a relation to address. You can preload an element of a relationship by passing a preload function as a second argument:
+```ts
+const users = await User
+  .query()
+  .preload('profile') // preload profile
+  .preload('emails') // preload emails
+
+users.forEach((user) => {
+  console.log(user.profile)
+  console.log(user.emails)
+})
+```
+
+### Relationship constraints
+When preloading relationships, you can also define constraints by passing a callback as the 2nd parameter.
+
+When fetching related data, you can also define constraints on the relationship query builder. In the following example, only the **verified emails** will be fetched from the database.
+
+```ts
+User.query().preload('emails', (query) => {
+  query.where('isVerified', true)
+})
+```
+
+## Preloading nested relationship
+You can preload nested relationships by calling the `preload` method on the relationship query builder. Consider the following example.
 
 ```ts
 const user = auth.user
@@ -87,43 +153,17 @@ await user.preload('profile', (query) => {
 })
 
 console.log(user.profile)
+console.log(user.profile.address)
 ```
-
-### Multiple relations
-You can also preload multiple relations, by calling the method for multiple times.
-
-```ts
-const users = await User.query().preload('profile').preload('emails')
-
-users.forEach((user) => {
-  console.log(user.profile)
-  console.log(user.emails)
-})
-```
-If you already have loaded a module, you can preload multiple relations by passing a function to preload method:
-
-```ts
-const user = auth.user
-await user.preload((query) => {
-  query.preload('profile').preload('emails')
-})
-
-console.log(user.profile)
-```
-
-### Relationship constraints
-When fetching related data, you can also define constraints using the relationship query builder.
-
-```ts
-User.query().preload('emails', (query) => {
-  query.where('isVerified', true)
-})
-```
-
-As you can notice, the `preload` method accepts a callback, which receives a standard query builder instance and you can modify the query as you want.
 
 ## Access to the direct query builder
-You are not only limited to preloading relationships. You can also access have direct access to the relationship query builder. For example:
+You are not only limited to preloading relationships. You can also get direct access to the relationship query builder as shown in the following example.
+
+[note]
+
+Unlike preloading, the query results are returned directly and not persisted on the parent model instance.
+
+[/note]
 
 ```ts
 const user = await User.find(1)
@@ -134,7 +174,104 @@ const activeEmails = user
   .where('isActive', true)
 ```
 
-When you access the relationship query builder directly, then the output of that query is return directly and not defined on the parent model.
+The same query builder can also be used to delete related rows.
+
+```ts
+user.related('emails')
+  .query()
+  .where('isActive', false)
+  .delete()
+```
+
+## Querying relationship existence
+Lucid simplifies the job of querying the relationship existence without writing the join queries manually by hand. Consider the following example
+
+```ts
+const userWithTeams = await User.query().has('team')
+```
+
+You can also define the number of rows you expect the join query to return. For example: Select all users, who have enrolled for more than two courses.
+
+```ts
+const veterans = await User.query().has('courses', '>', 2)
+```
+
+Let's take a step further and also add a constraint to select courses with 100% completion. This time, we will be using `whereHas` instead of `has`.
+
+[tip]
+
+The `wherePivot` method is only available for `manyToMany` relationship and prefixes the pivot table name to prevent column name conflicts.
+
+[/tip]
+
+```ts
+const veterans = await User
+  .query()
+  .whereHas('courses', (query) => {
+    query.wherePivot('completion_percentage', 100)
+  }, '>', 2)
+```
+
+### Other relationship existence methods
+Following is the list of other similar methods to query the relationship existence.
+
+- `orHas`: Defines an `or where exists` clause.
+- `doesntHave`: Opposite of `has`.
+- `orDoesntHave`: Opposite of `orHas`.
+
+
+- `orWhereHas`: Defines an `orWhere` clause.
+- `whereDoesntHave`: Opposite of `whereHas`.
+- `orWhereDoesntHave`: Opposite of `orWhereHas`.
+
+## Counting related rows
+You can make use of the `withCount` method to count the number of related rows. For example: Count the number of posts a user has written.
+
+```ts
+const users = await User.query().withCount('posts')
+```
+
+Now, you can access the count of posts as shown below.
+
+```ts
+users.forEach((user) => {
+  console.log(user.$extras.posts_count)
+})
+```
+
+Moving forward, you can also define custom constraints to the count query. For example: Count only the number of **published posts** a user has written.
+
+```ts
+const users = await User.query().withCount('posts', (query) => {
+  query.where('isPublished', true)
+})
+```
+
+### Custom count alias
+You can also define a custom alias for the count query results using the `as` method.
+
+```ts
+const users = await User.query().withCount('posts', (query) => {
+  query.as('totalPosts')
+})
+
+users.forEach((user) => {
+  console.log(user.$extras.totalPosts)
+})
+```
+
+### Custom aggregates
+The `withCount` method is not only limited to the number of rows. You can also use a custom SQL aggregate method. For example: Get sum of total marks scored by a user.
+
+```ts
+const users = await User.query().withCount('exams', (query) => {
+  query.sum('marks').as('totalMarks')
+})
+
+users.forEach((user) => {
+  console.log(user.$extras.totalMarks)
+})
+```
 
 ## On Query Hook
 Every time you define a relationship, you can also attach an `onQuery` hook with it and this can allow you to create variants of your relationship. For example:
@@ -264,5 +401,5 @@ const savePayload = {
   isActive: true,
 }
 
-await user.related('profile').updateOrCreate()
+await user.related('profile').updateOrCreate(searchPayload, savePayload)
 ```

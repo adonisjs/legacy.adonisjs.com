@@ -21,8 +21,10 @@ And then define them on the schema types.
 ```ts
 schema.create({
   email: schema.string({}, [
+    // highlight-start
     rules.email(),
     rules.unique({ table: 'users', column: 'email' })
+    // highlight-end
   ])
 })
 ```
@@ -57,11 +59,33 @@ Enforce the field under validation is also confirmed using the `_confirmation` c
   ])
 }
 
-// Valid data: { password: 'secret', password_confirmation: 'secret' }
+/**
+ Valid data: {
+    password: 'secret',
+    password_confirmation: 'secret'
+ }
+ */
+```
+
+The `confirmed` rule also allows you to use a custom confirmation field name.
+
+```ts
+{
+  password: schema.string({}, [
+    rules.confirmed('passwordConfirmation')
+  ])
+}
+
+/**
+ Valid data: {
+    password: 'secret',
+    passwordConfirmation: 'secret'
+ }
+ */
 ```
 
 ## `rules.distinct`
-The `distinct` rule ensures that all values of a property inside an array are unique. For example:
+The `distinct` rule ensures that all values of a property inside an array are unique.
 
 Assuming you have an array of objects, each defining a product id property and you want to ensure that no duplicates product ids are being used.
 
@@ -90,7 +114,7 @@ Assuming you have an array of objects, each defining a product id property and y
     .array([
       rules.distinct('id') // 👈 ensures id is unique
     ])
-    .members(schema.object({
+    .members(schema.object().members({
       id: schema.number(),
       quantity: schema.number(),
     }))
@@ -166,6 +190,25 @@ The validation rule is added by `@adonisjs/lucid` package. So make sure it is [i
 }
 ```
 
+### Case insensitivity
+Many databases perform case sensitive queries. So whether you can transform the value to `lowerCase` in JavaScript or make use of the `caseInsensitive` option to convert value to lowercase during the query.
+
+```ts
+{
+  username: schema.string({}, [
+    rules.exists({
+      table: 'users',
+      column: 'username',
+      caseInsensitive: true,
+    })
+  ])
+}
+
+// query: SELECT username FROM users WHERE LOWER(username) = LOWER(?)
+```
+
+### Additional constraints
+
 Additionally, you can also define `where` and `whereNot` constraints. For example: Limit the database query to a specific tenant id.
 
 [note]
@@ -181,6 +224,46 @@ If you are caching your validation schema using the `cacheKey` and your **where 
       table: 'categories',
       column: 'id',
       where: { tenant_id: 1 },
+    })
+  ])
+}
+```
+
+Example with refs.
+
+```ts
+class UserValidator {
+
+  // highlight-start
+  public refs = schema.refs({
+    tenantId: this.ctx.auth.user.tenantId
+  })
+  // highlight-end
+
+  public schema = schema.create({
+    username: schema.string({}, [
+      rules.exists({
+        table: 'categories',
+        column: 'id',
+        // highlight-start
+        where: { tenant_id: this.refs.tenantId },
+        // highlight-end
+      })
+    ])
+  })
+
+}
+```
+
+## `rules.unique`
+The `rules.unique` method is the opposite of `rules.exists` method. Instead of checking the existence of the value in a given table, it ensures that missing doesn't exists.
+
+```ts
+{
+  username: schema.string({}, [
+    rules.unique({
+      table: 'users',
+      column: 'username',
     })
   ])
 }
@@ -262,7 +345,7 @@ Define a custom regex to validate the value against.
 
 ```ts
 {
-  username: schema.string([
+  username: schema.string({}, [
     rules.regex(/^[a-zA-Z0-9]+$/)
   ])
 }
@@ -273,14 +356,14 @@ Enforce the value of field under validation is a valid `uuid`. You can also opti
 
 ```ts
 {
-  id: schema.string([
+  id: schema.string({}, [
     rules.uuid()
   ])
 }
 
 // Or enforce version
 {
-  id: schema.string([
+  id: schema.string({}, [
     rules.uuid({ version: 4 })
   ])
 }
@@ -291,7 +374,7 @@ Enforces the value to be properly formatted as a phone number. You can also defi
 
 ```ts
 {
-  mobile: schema.string([
+  mobile: schema.string({}, [
     rules.mobile()
   ])
 }
@@ -301,7 +384,7 @@ Validate against selected locales
 
 ```ts
 {
-  mobile: schema.string([
+  mobile: schema.string({}, [
     rules.mobile({ locales: ['pt-BR', 'en-IN', 'en-US'] })
   ])
 }
@@ -311,7 +394,7 @@ Also, you can enable **strict mode**, which will force the end user to specify t
 
 ```ts
 {
-  mobile: schema.string([
+  mobile: schema.string({}, [
     rules.mobile({ strict: true })
   ])
 }
@@ -380,3 +463,112 @@ The `requiredWhen` rule support the following operators.
 - `<`
 - `>=`
 - `<=`
+
+## `rules.after`
+Ensure, the value of field is after a given date/offset. The rule can be only be used with the date data type.
+
+```ts
+{
+  checkin_date: schema.date({}, [
+    rules.after(2, 'days')
+  ])
+}
+```
+
+The `after` method can receive one of the following values:
+
+- The `duration` and the `offset`. Feel free to use Typescript intellisense for finding the available offset keywords.
+- The `today` or `tomorrow` keywords.
+  ```ts
+  {
+    checkin_date: schema.date({}, [
+      rules.after('tomorrow')
+    ])
+  }
+  ```
+- Finally, you can also pass an instance of luxon DateTime object. Make sure, you pass it is a ref.
+  ```ts
+  class HolidayValidator {
+    public refs = schema.refs({
+      allowedDate: luxon.DateTime.local().add({ days: '2' })
+    })
+
+    public schema = schema.create({
+      checkin_date: schema.date({}, [
+        rules.after(this.refs.allowedDate)
+      ])
+    })
+  }
+  ```
+
+## `rules.before`
+Similar to `rules.after` but instead enforces the value be before the defined date/offset.
+
+```ts
+{
+  joining_date: schema.date({}, [
+    rules.before('today')
+  ])
+}
+```
+
+## `rules.afterField`
+Similar to the `after` rule. But instead of defining a date/offset for comparison, you define the field to check against. For example:
+
+```ts
+{
+  checkin_date: schema.date(),
+  checkout_date: schema.date({}, [
+    rules.afterField('checkin_date')
+  ]),
+}
+```
+
+Also, you can make use of the `afterOrEqualToField` for enforcing date to be same or after the given field.
+
+```ts
+{
+  drafted_on: schema.date(),
+  published_on: schema.date({}, [
+    rules.afterOrEqualToField('drafted_on')
+  ]),
+}
+```
+
+## `rules.beforeField`
+Similar to the `before` rule. But instead of defining a date/offset for comparison, you define the field to check against. For example:
+
+```ts
+{
+  checkout_date: schema.date(),
+  checkin_date: schema.date({}, [
+    rules.beforeField('checkout_date')
+  ]),
+}
+```
+
+Also, you can make use of the `beforeOrEqualToField` for enforcing date to be same or before the given field.
+
+```ts
+{
+  published_on: schema.date(),
+  drafted_on: schema.date({}, [
+    rules.beforeOrEqualToField('published_on')
+  ]),
+}
+```
+
+## `rules.blacklist`
+Enforce the value of field is not inside the blacklist. The `blacklist` rule is opposite of the [enum schema type](/guides/validator/schema-types#schemaenum)
+
+```ts
+{
+  username: schema.string({}, [
+    rules.blacklist([
+      'admin',
+      'super',
+      'root'
+    ])
+  ])
+}
+```

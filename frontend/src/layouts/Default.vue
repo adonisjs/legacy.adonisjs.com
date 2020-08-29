@@ -83,16 +83,6 @@
    background-image: none !important;
   }
 
-  .icon.icon-link {
-    display: inline-block;
-    color: var(--grey-100);
-    margin-right: 1.5rem;   
-  }
-
-  .icon.icon-link::after {
-    content: '#';
-  }
-
   a {
     color: var(--brand);
     text-decoration: none;

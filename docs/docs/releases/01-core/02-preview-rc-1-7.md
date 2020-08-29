@@ -37,3 +37,11 @@ yarn add @adonisjs/core@alpha
 
 - Depreciate `hash.hash` in favor of `hash.make`. [b5ac156](https://github.com/adonisjs/hash/commit/b5ac156448983bbbd059e47f285007332edf851b)
 - Add support for faking Hash implementation during tests. [75e2f5b](https://github.com/adonisjs/hash/commit/75e2f5b8b724d594b930e952d9ff1cba243bdafc)
+
+### Breaking change
+Earlier the `argon2` and `bcrypt` drivers were relying on the following packages.
+
+- [@phc/argon2](https://npm.im/@phc/argon2)
+- [@phc/bcrypt](https://npm.im/@phc/bcrypt)
+
+However, these packages are not actively maintained and had some security vulnerabilities. We have forked and published them as [phc-bcrypt](https://npm.im/phc-bcrypt) and [phc-argon2](https://npm.im/phc-argon2). So make sure to remove old dependencies from your application in favor of the new ones.
