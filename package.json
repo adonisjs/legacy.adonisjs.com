@@ -2,7 +2,7 @@
   "name": "adonisjs.com",
   "private": true,
   "scripts": {
-    "start": "sirv build",
+    "start": "sirv build -d",
     "build": "node bin/build.js",
     "build:watch": "nodemon --exec 'npm run build'",
     "build:front": "tailwindcss build assets/app.css -o build/assets/app.css"
