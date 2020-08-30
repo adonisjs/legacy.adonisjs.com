@@ -2,7 +2,7 @@
   "name": "adonisjs.com",
   "private": true,
   "scripts": {
-    "start": "sirv build -d",
+    "start": "sirv build --dev",
     "build": "node bin/build.js",
     "build:watch": "nodemon --exec 'npm run build'",
     "build:front": "postcss assets/app.css -o build/assets/app.css"
@@ -15,17 +15,18 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "@dimerapp/markdown": "^3.2.2",
+    "@tailwindcss/ui": "^0.5.0",
     "autoprefixer": "^9.8.6",
+    "edge.js": "^3.0.5",
+    "fs-extra": "^9.0.1",
+    "gray-matter": "^4.0.2",
     "nodemon": "^2.0.4",
     "postcss-cli": "^7.1.1",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.2.3",
-    "sirv-cli": "^1.0.6",
-    "@dimerapp/markdown": "^3.2.2",
-    "edge.js": "^3.0.5",
-    "fs-extra": "^9.0.1",
-    "gray-matter": "^4.0.2",
     "readdirp": "^3.4.0",
+    "sirv-cli": "^1.0.6",
     "tailwindcss": "^1.7.6"
   },
   "nodemonConfig": {

@@ -1,7 +1,21 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   purge: [],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          'Calibre',
+          ...defaultTheme.fontFamily.sans,
+        ],
+        mono: [
+          'SF Mono',
+          'Cascadia Code',
+          'JetBrains Mono',
+          ...defaultTheme.fontFamily.mono,
+        ]
+      },
       colors: {
         adonis: {
           black: '#17161a',
@@ -18,5 +32,7 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/ui')
+  ],
 }
