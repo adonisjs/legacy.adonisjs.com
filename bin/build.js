@@ -9,8 +9,16 @@ const Markdown = require('@dimerapp/markdown')
 
 const contentsPath = join(cwd(), 'contents')
 const pagesPath = join(cwd(), 'pages')
+const staticPath = join(cwd(), 'static')
 const buildPath = join(cwd(), 'build')
 const guidesPath = join(contentsPath, 'guides')
+
+/**
+ * Clean the build directory.
+ */
+function cleanBuildDirectory() {
+	return fs.remove(buildPath)
+}
 
 /**
  * Build all static Edge pages.
@@ -58,7 +66,16 @@ async function buildGuidePages() {
 	}
 }
 
+/**
+ * Copy all static file to the build directory.
+ */
+function copyStaticFiles() {
+	return fs.copy(staticPath, buildPath)
+}
+
 ;(async () => {
+	await cleanBuildDirectory()
 	await buildEdgePages()
 	await buildGuidePages()
+	await copyStaticFiles()
 })()
