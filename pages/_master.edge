@@ -2,9 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>{{ title }}</title>
 
 	<link rel="stylesheet" href="/assets/app.css">
+	<link rel="stylesheet" href="/fonts/calibre.css">
+	<link rel="stylesheet" href="/fonts/jetbrains.css">
+
 	<script src="https://cdn.jsdelivr.net/npm/turbolinks@5.2.0/dist/turbolinks.js" defer></script>
 	<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
 	<script>
@@ -14,6 +17,10 @@
 	</script>
 </head>
 <body>
-	@!section('page')
+	@include('_components/_header')
+
+	<main>
+		@!section('page')
+	</main>
 </body>
 </html>

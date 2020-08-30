@@ -1,5 +1,24 @@
 @layout('_master')
 
 @section('page')
-	{{{ content }}}
+	<div class="flex mt-20">
+		<aside>
+			{{ frontMatter.group }}
+
+			@each(link in menu)
+				@if(link.children)
+					<strong>{{ link.name }}</strong>
+					@each(sublink in link.children)
+						<a href="/guides/{{ sublink.link }}">{{ sublink.name }}</a>
+					@endeach
+				@else
+					<a href="/guides/{{ link.link }}">{{ link.name }}</a>
+				@endif
+			@endeach
+		</aside>
+
+		<article class="markdown-content max-w-screen-md mx-auto">
+			{{{ content }}}
+		</article>
+	</div>
 @endsection

@@ -1,0 +1,49 @@
+<header class="fixed bg-white top-0 right-0 left-0 border-t-4 border-adonis-brand z-10">
+	<div class="border-b border-gray-200">
+		<nav class="flex container mx-auto items-center justify-between">
+			{{-- Logo --}}
+			<div class="flex-shrink-0 flex items-center">
+				<a href="/">
+					<img src="/img/adonis-banner.svg" alt="AdonisJS" />
+				</a>
+			</div>
+
+			{{-- Navigation --}}
+			<div class="py-4">
+				<a class="font-medium text-xl text-gray-700 hover:text-adonis-brand mr-6 transition duration-150 ease-in-out" href="/why-adonisjs">Why AdonisJS</a>
+				<a class="font-medium text-xl text-gray-700 hover:text-adonis-brand mr-6 transition duration-150 ease-in-out" href="/guides/quick-start">Guides</a>
+				<a class="font-medium text-xl text-gray-700 hover:text-adonis-brand mr-6 transition duration-150 ease-in-out" href="/blog">Blog</a>
+
+				{{-- Dropdown Menu--}}
+				<div class="relative inline" x-data="{ open: false }" @click.away="open = false">
+					<button id="community-menu" class="font-medium text-xl text-gray-700 hover:text-adonis-brand transition duration-150 ease-in-out" aria-haspopup="true" @click="open = !open">
+						Community
+					</button>
+
+					<div
+						class="origin-top-left absolute left-0 mt-2 w-48 rounded-md shadow-lg"
+						x-show="open"
+						x-transition:enter="transition ease-out duration-200"
+						x-transition:enter-start="transform opacity-0 scale-95"
+						x-transition:enter-end="transform opacity-100 scale-100"
+						x-transition:leave="transition ease-in duration-75"
+						x-transition:leave-start="transform opacity-100 scale-100"
+						x-transition:leave-end="transform opacity-0 scale-95"
+					>
+							<div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="community-menu">
+								<a href="#" class="block px-4 py-2 leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">Github</a>
+								<a href="#" class="block px-4 py-2 leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">Forum</a>
+								<a href="#" class="block px-4 py-2 leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out" role="menuitem">Twitter</a>
+							</div>
+					</div>
+				</div>
+			</div>
+
+			{{-- Search --}}
+			<div class="bg-gray-100">
+				<input type="search">
+			</div>
+		</nav>
+	</div>
+</header>
+
