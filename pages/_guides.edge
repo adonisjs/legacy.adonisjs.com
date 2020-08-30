@@ -18,7 +18,9 @@
 		</aside>
 
 		<article class="markdown mx-auto">
-			{{{ content }}}
+      @each(node in content.children)
+        @!component(getComponentFor(node), { node })
+      @endeach
 		</article>
 	</div>
 @endsection
