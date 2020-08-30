@@ -14,15 +14,15 @@ const staticPath = join(cwd(), 'static')
 const buildPath = join(cwd(), 'build')
 const guidesPath = join(contentsPath, 'guides')
 const renderers = [
-  function (node) {
-    if (node.tag === 'dimertitle') {
-      return false
-    }
+	function (node) {
+		if (node.tag === 'dimertitle') {
+			return false
+		}
 
-    if (node.tag === 'div' && node.props.className && node.props.className.includes('alert')) {
-      return '_elements/_alert'
-    }
-  },
+		if (node.tag === 'div' && node.props.className && node.props.className.includes('alert')) {
+			return '_elements/_alert'
+		}
+	},
 ]
 
 /**
@@ -46,10 +46,7 @@ async function buildEdgePages() {
 
 		const html = edge.render(entry.path)
 
-		await fs.outputFile(
-			join(buildPath, entry.path.replace(/\.edge/, '.html')),
-			html
-		)
+		await fs.outputFile(join(buildPath, entry.path.replace(/\.edge/, '.html')), html)
 	}
 }
 
@@ -59,89 +56,89 @@ async function buildEdgePages() {
 async function buildGuidePages() {
 	const edge = new Edge({ cache: false })
 	edge.mount(pagesPath)
-  Object.keys(GLOBALS).forEach((name) => {
-    edge.global(name, GLOBALS[name])
-  })
+	Object.keys(GLOBALS).forEach((name) => {
+		edge.global(name, GLOBALS[name])
+	})
 
-  const standardComponents = [
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'p',
-    'a',
-    'span',
-    'ul',
-    'li',
-    'strong',
-    'code',
-    'div',
-    'pre',
-    'img',
-    'em',
-    'video',
-    'source',
-    'ol',
-    'table',
-    'thead',
-    'tr',
-    'th',
-    'td',
-    'tbody',
-    'hr'
-  ]
+	const standardComponents = [
+		'h1',
+		'h2',
+		'h3',
+		'h4',
+		'h5',
+		'p',
+		'a',
+		'span',
+		'ul',
+		'li',
+		'strong',
+		'code',
+		'div',
+		'pre',
+		'img',
+		'em',
+		'video',
+		'source',
+		'ol',
+		'table',
+		'thead',
+		'tr',
+		'th',
+		'td',
+		'tbody',
+		'hr',
+	]
 
-  function propsToAttributes(props) {
-    const attributes = []
-    Object.keys(props).forEach((key) => {
-      const value = props[key]
-      attributes.push(`${key}="${Array.isArray(value) ? value.join(' ') : value}"`)
-    })
-    return attributes.join(' ')
-  }
+	function propsToAttributes(props) {
+		const attributes = []
+		Object.keys(props).forEach((key) => {
+			const value = props[key]
+			attributes.push(`${key}="${Array.isArray(value) ? value.join(' ') : value}"`)
+		})
+		return attributes.join(' ')
+	}
 
-  standardComponents.forEach((component) => {
-    edge.registerTemplate(`components/${component}`, {
-      template: `<${component} {{{ propsToAttributes(node.props) }}}>
+	standardComponents.forEach((component) => {
+		edge.registerTemplate(`components/${component}`, {
+			template: `<${component} {{{ propsToAttributes(node.props) }}}>
       @each(child in node.children)
         @!component(getComponentFor(child), { node: child })
       @endeach
-      </${component}>`
-    })
-  })
+      </${component}>`,
+		})
+	})
 
-  edge.registerTemplate('components/rawtext', { template: `{{ node.value }}` })
-  edge.registerTemplate('components/noop', { template: '' })
+	edge.registerTemplate('components/rawtext', { template: `{{ node.value }}` })
+	edge.registerTemplate('components/noop', { template: '' })
 
-  function getComponentFor(node) {
-    let rendererComponent = null
-    for (let renderer of renderers) {
-      rendererComponent = renderer(node)
-      if (rendererComponent !== undefined) {
-        break
-      }
-    }
+	function getComponentFor(node) {
+		let rendererComponent = null
+		for (let renderer of renderers) {
+			rendererComponent = renderer(node)
+			if (rendererComponent !== undefined) {
+				break
+			}
+		}
 
-    if (rendererComponent === false) {
-      return 'components/noop'
-    }
+		if (rendererComponent === false) {
+			return 'components/noop'
+		}
 
-    if (rendererComponent) {
-      return rendererComponent
-    }
+		if (rendererComponent) {
+			return rendererComponent
+		}
 
-    if (node.type === 'element') {
-      return `components/${node.tag}`
-    }
+		if (node.type === 'element') {
+			return `components/${node.tag}`
+		}
 
-    if (node.type === 'text') {
-      return `components/rawtext`
-    }
-  }
+		if (node.type === 'text') {
+			return `components/rawtext`
+		}
+	}
 
-  edge.global('getComponentFor', getComponentFor)
-  edge.global('propsToAttributes', propsToAttributes)
+	edge.global('getComponentFor', getComponentFor)
+	edge.global('propsToAttributes', propsToAttributes)
 
 	for await (const entry of readdirp(guidesPath)) {
 		const source = await fs.readFile(entry.fullPath)
@@ -156,10 +153,7 @@ async function buildGuidePages() {
 			content: contents,
 		})
 
-		await fs.outputFile(
-			join(buildPath, `${frontMatter.permalink}.html`),
-			html
-		)
+		await fs.outputFile(join(buildPath, `${frontMatter.permalink}.html`), html)
 	}
 }
 
