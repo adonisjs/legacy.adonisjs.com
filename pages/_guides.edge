@@ -2,12 +2,12 @@
 
 @section('page')
 	<div class="flex mt-20">
-		<aside>
-			{{ frontMatter.group }}
+		<aside class="flex flex-col">
+			<span class="uppercase text-2xl font-mono text-gray-400">{{ frontMatter.group }}</span>
 
 			@each(link in menu)
 				@if(link.children)
-					<strong>{{ link.name }}</strong>
+					<span class="uppercase font-mono text-gray-300 text-sm">{{ link.name }}</span>
 					@each(sublink in link.children)
 						<a href="/guides/{{ sublink.link }}">{{ sublink.name }}</a>
 					@endeach
@@ -17,7 +17,7 @@
 			@endeach
 		</aside>
 
-		<article class="markdown-content max-w-screen-md mx-auto">
+		<article class="markdown mx-auto">
 			{{{ content }}}
 		</article>
 	</div>
