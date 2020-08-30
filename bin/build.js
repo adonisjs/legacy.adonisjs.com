@@ -6,6 +6,7 @@ const readdirp = require('readdirp')
 const matter = require('gray-matter')
 const { Edge } = require('edge.js')
 const Markdown = require('@dimerapp/markdown')
+const Menu = require('../menu.js')
 
 const contentsPath = join(cwd(), 'contents')
 const pagesPath = join(cwd(), 'pages')
@@ -53,9 +54,11 @@ async function buildGuidePages() {
 		const { data: frontMatter, content } = matter(source)
 		const markdown = new Markdown(content, { skipToc: true })
 		const { contents } = await markdown.toHTML()
+		const menu = Menu.guides[frontMatter.group]
 
 		const html = edge.render(`_guides.edge`, {
 			frontMatter,
+			menu,
 			content: contents,
 		})
 
@@ -74,7 +77,7 @@ function copyStaticFiles() {
 }
 
 ;(async () => {
-	await cleanBuildDirectory()
+	// await cleanBuildDirectory()
 	await buildEdgePages()
 	await buildGuidePages()
 	await copyStaticFiles()
