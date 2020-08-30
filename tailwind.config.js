@@ -17,14 +17,22 @@ module.exports = {
         ]
       },
       colors: {
+        grey: {
+          900: '#17161a',
+          800: '#46444c',
+          700: '#666976',
+          600: '#91939f',
+          500: '#a8a6b8',
+          400: '#b1bacc',
+          300: '#d7deeb',
+          200: '#f0f3f9',
+          100: '#f7f8fa',
+        },
         adonis: {
-          black: '#17161a',
-          'grey-dark': '#666976',
-          inactive: '#b1bacc',
-          background: '#f0f3f9',
-          background2: '#f7f8fa',
-          outline: '#d7deeb',
+          'pre-bg': '#1e1e3f',
+          selection: '#e6e2ff',
           brand: '#5a45ff',
+          'brand-dark': '#3f2dbd',
           green: '#70d787',
           red: '#df4a4a',
         },
