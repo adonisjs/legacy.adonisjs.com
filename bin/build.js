@@ -4,7 +4,7 @@ const { cwd } = require('process')
 const fs = require('fs-extra')
 const readdirp = require('readdirp')
 const matter = require('gray-matter')
-const { Edge } = require('edge.js')
+const { Edge, GLOBALS } = require('edge.js')
 const Markdown = require('@dimerapp/markdown')
 const Menu = require('../menu.js')
 
@@ -59,6 +59,9 @@ async function buildEdgePages() {
 async function buildGuidePages() {
 	const edge = new Edge({ cache: false })
 	edge.mount(pagesPath)
+  Object.keys(GLOBALS).forEach((name) => {
+    edge.global(name, GLOBALS[name])
+  })
 
   const standardComponents = [
     'h1',
