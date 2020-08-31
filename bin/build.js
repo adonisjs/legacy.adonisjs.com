@@ -14,6 +14,7 @@ const staticPath = join(cwd(), 'static')
 const buildPath = join(cwd(), 'build')
 const guidesPath = join(contentsPath, 'guides')
 const markdownPagesPath = join(contentsPath, 'pages')
+const blogPagesPath = join(contentsPath, 'blog')
 
 const renderers = [
 	function (node) {
@@ -96,6 +97,9 @@ function prepareEdge() {
 		'td',
 		'tbody',
 		'hr',
+		'br',
+		'blockquote',
+		'iframe',
 	]
 
 	standardComponents.forEach((component) => {
@@ -188,6 +192,38 @@ async function buildMarkdownPages() {
 	}
 }
 
+async function buildBlogPages() {
+	const edge = prepareEdge()
+
+	const blog = []
+
+	for await (const entry of readdirp(blogPagesPath)) {
+		const source = await fs.readFile(entry.fullPath)
+		const { data: frontMatter, content } = matter(source)
+		const markdown = new Markdown(content, { skipToc: true })
+		const { contents } = await markdown.toJSON()
+
+		const html = edge.render(`_posts.edge`, {
+			frontMatter,
+			content: contents,
+		})
+
+		blog.push({
+			title: frontMatter.title,
+			published_on: frontMatter.meta.published_on,
+			link: frontMatter.permalink,
+		})
+
+		await fs.outputFile(join(buildPath, `${frontMatter.permalink}.html`), html)
+	}
+
+	const html = edge.render(`_blog.edge`, {
+		blog
+	})
+
+	await fs.outputFile(join(buildPath, `blog.html`), html)
+}
+
 /**
  * Copy all static file to the build directory.
  */
@@ -200,5 +236,6 @@ function copyStaticFiles() {
 	await buildEdgePages()
 	await buildGuidePages()
 	await buildMarkdownPages()
+	await buildBlogPages()
 	await copyStaticFiles()
 })()
