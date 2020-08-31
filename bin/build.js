@@ -13,6 +13,8 @@ const pagesPath = join(cwd(), 'pages')
 const staticPath = join(cwd(), 'static')
 const buildPath = join(cwd(), 'build')
 const guidesPath = join(contentsPath, 'guides')
+const markdownPagesPath = join(contentsPath, 'pages')
+
 const renderers = [
 	function (node) {
 		if (node.tag === 'dimertitle') {
@@ -25,35 +27,42 @@ const renderers = [
 	},
 ]
 
-/**
- * Clean the build directory.
- */
-function cleanBuildDirectory() {
-	return fs.remove(buildPath)
+function propsToAttributes(props) {
+	const attributes = []
+	Object.keys(props).forEach((key) => {
+		const value = props[key]
+		attributes.push(`${key}="${Array.isArray(value) ? value.join(' ') : value}"`)
+	})
+	return attributes.join(' ')
 }
 
-/**
- * Build all static Edge pages.
- */
-async function buildEdgePages() {
-	const edge = new Edge({ cache: false })
-	edge.mount(pagesPath)
-
-	for await (const entry of readdirp(pagesPath)) {
-		if (entry.path.startsWith('_')) {
-			continue
+function getComponentFor(node) {
+	let rendererComponent = null
+	for (let renderer of renderers) {
+		rendererComponent = renderer(node)
+		if (rendererComponent !== undefined) {
+			break
 		}
+	}
 
-		const html = edge.render(entry.path)
+	if (rendererComponent === false) {
+		return 'components/noop'
+	}
 
-		await fs.outputFile(join(buildPath, entry.path.replace(/\.edge/, '.html')), html)
+	if (rendererComponent) {
+		return rendererComponent
+	}
+
+	if (node.type === 'element') {
+		return `components/${node.tag}`
+	}
+
+	if (node.type === 'text') {
+		return `components/rawtext`
 	}
 }
 
-/**
- * Build all pages from their markdown files.
- */
-async function buildGuidePages() {
+function prepareEdge() {
 	const edge = new Edge({ cache: false })
 	edge.mount(pagesPath)
 	Object.keys(GLOBALS).forEach((name) => {
@@ -89,15 +98,6 @@ async function buildGuidePages() {
 		'hr',
 	]
 
-	function propsToAttributes(props) {
-		const attributes = []
-		Object.keys(props).forEach((key) => {
-			const value = props[key]
-			attributes.push(`${key}="${Array.isArray(value) ? value.join(' ') : value}"`)
-		})
-		return attributes.join(' ')
-	}
-
 	standardComponents.forEach((component) => {
 		edge.registerTemplate(`components/${component}`, {
 			template: `<${component} {{{ propsToAttributes(node.props) }}}>
@@ -111,34 +111,42 @@ async function buildGuidePages() {
 	edge.registerTemplate('components/rawtext', { template: `{{ node.value }}` })
 	edge.registerTemplate('components/noop', { template: '' })
 
-	function getComponentFor(node) {
-		let rendererComponent = null
-		for (let renderer of renderers) {
-			rendererComponent = renderer(node)
-			if (rendererComponent !== undefined) {
-				break
-			}
-		}
-
-		if (rendererComponent === false) {
-			return 'components/noop'
-		}
-
-		if (rendererComponent) {
-			return rendererComponent
-		}
-
-		if (node.type === 'element') {
-			return `components/${node.tag}`
-		}
-
-		if (node.type === 'text') {
-			return `components/rawtext`
-		}
-	}
-
 	edge.global('getComponentFor', getComponentFor)
 	edge.global('propsToAttributes', propsToAttributes)
+
+	return edge
+}
+
+/**
+ * Clean the build directory.
+ */
+function cleanBuildDirectory() {
+	return fs.remove(buildPath)
+}
+
+/**
+ * Build all static Edge pages.
+ */
+async function buildEdgePages() {
+	const edge = new Edge({ cache: false })
+	edge.mount(pagesPath)
+
+	for await (const entry of readdirp(pagesPath)) {
+		if (entry.path.startsWith('_')) {
+			continue
+		}
+
+		const html = edge.render(entry.path)
+
+		await fs.outputFile(join(buildPath, entry.path.replace(/\.edge/, '.html')), html)
+	}
+}
+
+/**
+ * Build all pages from their markdown files.
+ */
+async function buildGuidePages() {
+	const edge = prepareEdge()
 
 	for await (const entry of readdirp(guidesPath)) {
 		const source = await fs.readFile(entry.fullPath)
@@ -146,16 +154,33 @@ async function buildGuidePages() {
 		const markdown = new Markdown(content, { skipToc: true })
 		const { contents } = await markdown.toJSON()
 		const menu = Menu.guides[frontMatter.group]
-		const categories = Object.keys(Menu.guides)
-			.map(key => ({
-				name: key,
-				link: Menu.guides[key][0].link
-			}))
+		const categories = Object.keys(Menu.guides).map((key) => ({
+			name: key,
+			link: Menu.guides[key][0].link,
+		}))
 
 		const html = edge.render(`_guides.edge`, {
 			frontMatter,
 			menu,
 			categories,
+			content: contents,
+		})
+
+		await fs.outputFile(join(buildPath, `${frontMatter.permalink}.html`), html)
+	}
+}
+
+async function buildMarkdownPages() {
+	const edge = prepareEdge()
+
+	for await (const entry of readdirp(markdownPagesPath)) {
+		const source = await fs.readFile(entry.fullPath)
+		const { data: frontMatter, content } = matter(source)
+		const markdown = new Markdown(content, { skipToc: true })
+		const { contents } = await markdown.toJSON()
+
+		const html = edge.render(`_pages.edge`, {
+			frontMatter,
 			content: contents,
 		})
 
@@ -174,5 +199,6 @@ function copyStaticFiles() {
 	// await cleanBuildDirectory()
 	await buildEdgePages()
 	await buildGuidePages()
+	await buildMarkdownPages()
 	await copyStaticFiles()
 })()

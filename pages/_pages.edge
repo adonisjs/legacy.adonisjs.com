@@ -1,0 +1,11 @@
+@layout('_master')
+
+@section('page')
+	<div class="flex mt-20">
+		<article class="markdown mx-auto">
+      @each(node in content.children)
+        @!component(getComponentFor(node), { node })
+      @endeach
+		</article>
+	</div>
+@endsection
