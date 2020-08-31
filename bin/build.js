@@ -146,10 +146,16 @@ async function buildGuidePages() {
 		const markdown = new Markdown(content, { skipToc: true })
 		const { contents } = await markdown.toJSON()
 		const menu = Menu.guides[frontMatter.group]
+		const categories = Object.keys(Menu.guides)
+			.map(key => ({
+				name: key,
+				link: Menu.guides[key][0].link
+			}))
 
 		const html = edge.render(`_guides.edge`, {
 			frontMatter,
 			menu,
+			categories,
 			content: contents,
 		})
 

@@ -2,6 +2,13 @@
 
 @section('page')
 	<div class="flex mt-20">
+		@each(category in categories)
+			<div class="flex">
+				<a class="mr-4" href="/guides/{{ category.link }}">{{ category.name }}</a>
+			</div>
+		@endeach
+	</div>
+	<div class="flex">
 		<aside class="flex flex-col">
 			<span class="uppercase text-2xl font-mono text-gray-400">{{ frontMatter.group }}</span>
 
