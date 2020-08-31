@@ -194,7 +194,6 @@ async function buildMarkdownPages() {
 
 async function buildBlogPages() {
 	const edge = prepareEdge()
-
 	const blog = []
 
 	for await (const entry of readdirp(blogPagesPath)) {
@@ -210,6 +209,7 @@ async function buildBlogPages() {
 
 		blog.push({
 			title: frontMatter.title,
+			order: frontMatter.meta.number,
 			published_on: frontMatter.meta.published_on,
 			link: frontMatter.permalink,
 		})
@@ -218,7 +218,7 @@ async function buildBlogPages() {
 	}
 
 	const html = edge.render(`_blog.edge`, {
-		blog
+		blog: blog.sort((a, b) => b.order - a.order)
 	})
 
 	await fs.outputFile(join(buildPath, `blog.html`), html)
