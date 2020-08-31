@@ -11,21 +11,20 @@
 	@apply text-xl text-grey-800 font-normal leading-relaxed;
 	max-width: 60ch;
 
-	dimertitle {
-		@apply hidden;
-	}
-
 	/*
 	 * Spacing
 	 */
-	* + * {
+	> * + * {
 		@apply mb-6;
 	}
 
 	/*
 	 * Typography
 	 */
-	h1, h2, h3, h4 {
+	h1,
+	h2,
+	h3,
+	h4 {
 		@apply text-grey-900 font-semibold;
 	}
 
@@ -35,24 +34,40 @@
 		.icon.icon-link {
 			@apply hidden;
 		}
+
+		code {
+			@apply relative text-5xl !important;
+		}
 	}
 
 	h2 {
 		@apply text-3xl border-grey-300 border-t pt-10 mt-12;
+
+		code {
+			@apply relative text-3xl !important;
+		}
 	}
 
 	h3 {
 		@apply text-2xl;
+
+		code {
+			@apply relative text-2xl !important;
+		}
+	}
+
+	strong {
+		@apply font-medium;
 	}
 
 	/*
 	 * Lists
 	 */
-	 li {
+	li {
 		@apply relative;
-	 }
+	}
 
-	 ul li {
+	ul li {
 		@apply pl-8 mb-4;
 
 		&::before {
@@ -69,7 +84,7 @@
 		@apply inline-block text-grey-300 mr-4;
 
 		&::after {
-			content: '#'
+			content: '#';
 		}
 	}
 
@@ -78,166 +93,39 @@
 		background-image: linear-gradient(to bottom, transparent 50%, #5a45ff 50%);
 		background-position: 0 93%;
 		background-repeat: repeat-x;
-		background-size: 100% .15rem;
-	}
-
-	/*
-	 * Alert, Notes, Tips
-	 */
-	.alert {
-		@apply relative bg-grey-100 rounded-md py-6 pr-8 pl-12;
-
-		&::before {
-			@apply absolute left-0 top-0 bottom-0;
-			width: 40px;
-			content: "";
-		}
-
-		&.alert-note {
-			@apply border-adonis-brand border-b-4;
-
-			&::before {
-				background: url("data:image/svg+xml;charset=utf8,%3Csvg width='18' height='18' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Crect id='a' x='0' y='.5' width='640' height='113' rx='2'/%3E%3C/defs%3E%3Cg transform='translate(-17 -19)' fill='none' fill-rule='evenodd'%3E%3Cmask id='b' fill='%23fff'%3E%3Cuse xlink:href='%23a'/%3E%3C/mask%3E%3Cuse xlink:href='%23a'/%3E%3Cg mask='url(%23b)'%3E%3Cg transform='rotate(-180 17 18)'%3E%3Ccircle stroke='%235A45FF' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' cx='8' cy='8' r='8'/%3E%3Ccircle fill='%235A45FF' fill-rule='nonzero' cx='8' cy='10.7' r='1'/%3E%3Cpath stroke='%235A45FF' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M8 4.8V8'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat 20px 25px transparent;
-			}
-		}
-
-		&.alert-tip {
-			@apply border-adonis-green border-b-4;
-
-			&::before {
-				background: url("data:image/svg+xml;charset=utf8,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Crect id='a' x='0' y='.5' width='640' height='113' rx='2'/%3E%3C/defs%3E%3Cg transform='translate(-20 -20)' fill='none' fill-rule='evenodd'%3E%3Cmask id='b' fill='%23fff'%3E%3Cuse xlink:href='%23a'/%3E%3C/mask%3E%3Cuse xlink:href='%23a'/%3E%3Cg mask='url(%23b)'%3E%3Cpath d='M18 20h16v16H18z'/%3E%3Cpath d='M31.5 26.5h-4.872l1.36-5.888a.5.5 0 00-.874-.43l-7 8.5a.5.5 0 00.386.818h4.872l-1.36 5.887a.5.5 0 00.874.431l7-8.5a.5.5 0 00-.386-.818z' fill='%2370D787' fill-rule='nonzero'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat 20px 25px transparent;
-			}
-		}
-
-		*:first-child {
-			margin-top: 0;
-		}
-
-		*:last-child {
-			margin-bottom: 0;
-		}
+		background-size: 100% 0.15rem;
 	}
 
 	/*
 	 * Code Examples
 	 */
 	:not(pre) > code {
-		@apply bg-grey-200 text-base rounded-md px-1;
+		@apply text-adonis-brand font-semibold text-sm;
+
+		&::before {
+			content: '\`';
+		}
+
+		&::after {
+			content: '\`';
+		}
+	}
+
+	/*
+	 * Alert
+	 */
+	.alert {
+		:first-child {
+			@apply mt-0;
+		}
+
+		:last-child {
+			@apply mb-0;
+		}
 	}
 }
 
-/*.markdown-content p,
-.markdown-content img,
-.markdown-content video,
-.markdown-content img,
-.markdown-content .alert {
-}
-
-.markdown-content p + .code-highlight {
-	@apply -mb-8;
-}*/
-
-./*markdown-content li p + .code-highlight {
-	margin-top: auto;
-}*/
-
-/*.markdown-content ul,
-.markdown-content ol,
-.markdown-content table,
-.markdown-content .code-highlight {
-	margin-bottom: 5rem;
-}*/
-
-/*.markdown-content ul ul,
-.markdown-content ul ol,
-.markdown-content ol ul,
-.markdown-content ol ol {
-	margin-bottom: 2rem;
-}*/
-
-/*.markdown-content h1,
-.markdown-content h2,
-.markdown-content h3,
-.markdown-content h4 {
-	@apply text-grey-900;
-	font-weight: 600;
-	position: relative;
-}
-
-.markdown-content :not(pre) > code {
-	@apply bg-grey-200;
-	font-size: 1.5rem;
-	border-radius: 3px;
-	padding: 0 4px;
-}*/
-
-.markdown-content hr {
-	@apply bg-grey-300;
-	height: 1px;
-}
-
 /*
-.markdown-content h1 {
-	margin-bottom: 3rem;
-	font-size: 4.6rem;
-}
-
-.markdown-content h1 code {
-	font-size: 2.4rem;
-	position: relative;
-	top: -4px;
-}
-
-.markdown-content h2 {
-	@apply border-grey-300 border-t;
-	margin-bottom: 2rem;
-	font-size: 3.2rem;
-	margin-top: 5.6rem;
-	padding-top: 4rem;
-}
-
-.markdown-content h2 code {
-	font-size: 2.4rem;
-}
-
-.markdown-content h3 {
-	font-size: 2.4rem;
-	margin-top: 4rem;
-	margin-bottom: 1.2rem;
-}
-
-.markdown-content h3 code {
-	font-size: 1.8rem;
-}
-
-.markdown-content h4 {
-	font-size: 2.2rem;
-	margin-top: 5rem;
-	margin-bottom: 1rem;
-}*/
-
-/*.markdown-content h1 a, .markdown-content h2 a, .markdown-content h3 a, .markdown-content h4 a {
-	position: relative;
-}
-
-.markdown-content h4 code {
-	font-size: 1.7rem;
-}*/
-
-/*
-.markdown-content .icon.icon-link {
-	@apply text-grey-300;
-	display: inline-block;
-	margin-right: 1rem;
-}
-
-.markdown-content .icon.icon-link::after {
-	content: '#';
-}
-
-.markdown-content h1 .icon.icon-link {
-	display: none;
-}*/
 
 .markdown-content .bookmark {
 	top: -130px;
@@ -248,32 +136,6 @@
 
 .markdown-content h2 .bookmark {
 	top: -100px;
-}
-
-.markdown-content ul, .markdown-content ol {
-	list-style: none;
-}
-
-.markdown-content li {
-	padding-left: 2rem;
-	margin-left: .4rem;
-	position: relative;
-	margin-bottom: 1rem;
-}
-
-.markdown-content ul li {
-	position: relative;
-	padding-left: 3rem;
-	margin-bottom: 1rem;
-}
-
-.markdown-content ul li:before {
-	@apply text-grey-800;
-	content: '—';
-	width: 15px;
-	overflow: hidden;
-	position: absolute;
-	left: 0;
 }
 
 .markdown-content ol {
@@ -325,19 +187,6 @@
 	border-radius: 5px;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-.markdown-content a {
-	color: var(--brand);
-	text-decoration: none;
-	background-image: linear-gradient(to bottom, transparent 50%, #5a45ff 50%);
-	background-position: 0 93%;
-	background-repeat: repeat-x;
-	background-size: 100% .15rem;
-}
-
-.markdown-content strong {
-	font-weight: 600;
 }
 
 .markdown-content .alert {
@@ -404,3 +253,4 @@
 		top: -2px;
 	}
 }
+*/

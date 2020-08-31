@@ -25,6 +25,10 @@ const renderers = [
 		if (node.tag === 'div' && node.props.className && node.props.className.includes('alert')) {
 			return '_elements/_alert'
 		}
+
+		if (node.tag === 'div' && node.props.className && node.props.className.includes('dimer-highlight')) {
+			return '_elements/_code'
+		}
 	},
 ]
 
