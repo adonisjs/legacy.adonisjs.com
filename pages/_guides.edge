@@ -1,14 +1,15 @@
 @layout('_master')
 
 @section('page')
-	<div class="flex mt-20">
-		@each(category in categories)
-			<div class="flex">
-				<a class="mr-4" href="/guides/{{ category.link }}">{{ category.name }}</a>
-			</div>
-		@endeach
+	<div class="flex fixed shadow bg-white z-10 w-full" style="top: var(--header-height); height: var(--topbar-height)">
+		<div class="flex items-center justify-start container mx-auto">
+			@each(category in categories)
+				<a class="text-xl mr-8 hover:text-adonis-brand transition duration-150 ease-in-out" href="/guides/{{ category.link }}">{{ category.name }}</a>
+			@endeach
+		</div>
 	</div>
-	<div class="flex">
+
+	<div class="flex" style="margin-top: calc(var(--header-height) + var(--topbar-height)">
 		<aside class="flex flex-col">
 			<span class="uppercase text-2xl font-mono text-gray-400">{{ frontMatter.group }}</span>
 

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--topbar-height: 50px;
+	--header-height: 55px;
+}
+
 ::-moz-selection,
 ::selection {
 	@apply bg-adonis-selection;
