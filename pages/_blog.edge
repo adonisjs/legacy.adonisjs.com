@@ -3,7 +3,7 @@
 @section('page')
 	<div class="flex flex-col mt-20">
 		@each(post in blog)
-			<a href="{{ post.link }}">{{ post.title }}</a>
+			<a href="/{{ post.link }}">{{ post.title }}</a>
 		@endeach
 	</div>
 @endsection
