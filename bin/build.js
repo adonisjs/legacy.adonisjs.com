@@ -26,7 +26,11 @@ const renderers = [
 			return '_elements/_alert'
 		}
 
-		if (node.tag === 'div' && node.props.className && node.props.className.includes('dimer-highlight')) {
+		if (
+			node.tag === 'div' &&
+			node.props.className &&
+			node.props.className.includes('dimer-highlight')
+		) {
 			return '_elements/_code'
 		}
 	},
@@ -205,16 +209,25 @@ async function buildBlogPages() {
 		const { data: frontMatter, content } = matter(source)
 		const markdown = new Markdown(content, { skipToc: true })
 		const { contents } = await markdown.toJSON()
+		const date = new Intl.DateTimeFormat('en-US', {
+			weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+		}).format(new Date(frontMatter.meta.published_on))
 
 		const html = edge.render(`_posts.edge`, {
-			frontMatter,
+			frontMatter: {
+				...frontMatter,
+				published_on: date,
+			},
 			content: contents,
 		})
 
 		blog.push({
 			title: frontMatter.title,
 			order: frontMatter.meta.number,
-			published_on: frontMatter.meta.published_on,
+			published_on: date,
 			link: frontMatter.permalink,
 		})
 
@@ -222,7 +235,7 @@ async function buildBlogPages() {
 	}
 
 	const html = edge.render(`_blog.edge`, {
-		blog: blog.sort((a, b) => b.order - a.order)
+		blog: blog.sort((a, b) => b.order - a.order),
 	})
 
 	await fs.outputFile(join(buildPath, `blog.html`), html)

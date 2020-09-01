@@ -22,6 +22,18 @@
 	margin-left: 280px;
 }
 
+.hero {
+	&::after {
+		@apply absolute block left-0 right-0 bottom-0;
+		content: '';
+		background: inherit;
+		height: 50%;
+		transform-origin: 100%;
+		transform: skewY(-1.5deg);
+		z-index: -1;
+	}
+}
+
 .markdown {
 	@apply text-xl font-normal leading-relaxed text-grey-800;
 	max-width: 70ch;
