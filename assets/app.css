@@ -24,7 +24,7 @@
 
 .markdown {
 	@apply text-xl font-normal leading-relaxed text-grey-800;
-	max-width: 60ch;
+	max-width: 70ch;
 
 	/*
 	 * Spacing
