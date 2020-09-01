@@ -24,7 +24,7 @@
 
 .hero {
 	&::after {
-		@apply absolute block left-0 right-0 bottom-0;
+		@apply absolute bottom-0 left-0 right-0 block;
 		content: '';
 		background: inherit;
 		height: 50%;
@@ -37,6 +37,10 @@
 .markdown {
 	@apply text-xl font-normal leading-relaxed text-grey-800;
 	max-width: 70ch;
+
+	:first-child:is(h2) {
+		@apply border-none;
+	}
 
 	/*
 	 * Spacing

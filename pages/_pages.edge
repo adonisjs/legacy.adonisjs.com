@@ -1,13 +1,14 @@
 @layout('_master')
 
 @section('page')
-	<div class="flex mt-20">
-		<article class="mx-auto markdown">
-			<h1>{{ frontMatter.title }}</h1>
-
-      @each(node in content.children)~
-        @!component(getComponentFor(node), { node })
-      @endeach
-		</article>
+	<div style="margin-top: var(--header-height)">
+		@!component('_components/_hero', { title: frontMatter.title, description: frontMatter.meta.excerpt })
 	</div>
+
+	<article class="mx-auto markdown">
+
+		@each(node in content.children)~
+			@!component(getComponentFor(node), { node })
+		@endeach
+	</article>
 @endsection
