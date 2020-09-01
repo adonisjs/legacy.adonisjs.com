@@ -3,6 +3,7 @@
 @set('title', `${frontMatter.title} (${frontMatter.group})`)
 
 @section('page')
+	{{-- Topbar - Category Selector --}}
 	<div class="fixed z-10 flex w-full bg-white shadow" style="top: var(--header-height); height: var(--topbar-height)">
 		<div class="container flex items-center justify-start mx-auto">
 			@each(category in categories)
@@ -12,6 +13,7 @@
 	</div>
 
 	<div class="container flex mx-auto" style="margin-top: calc(var(--header-height) + var(--topbar-height)">
+		{{-- Aside --}}
 		<aside class="fixed bottom-0 pt-8 overflow-auto sidebar bg-grey-100">
 			<div class="flex flex-col w-64">
 				<span class="mb-4 font-mono text-xl font-medium text-gray-400 uppercase">
@@ -34,6 +36,7 @@
 			</div>
 		</aside>
 
+		{{-- Doc --}}
 		<article class="p-8 doc markdown">
       @each(node in content.children)~
         @!component(getComponentFor(node), { node })

@@ -8,7 +8,6 @@
 	</div>
 
 	<article class="mx-auto markdown">
-
 		@each(node in content.children)~
 			@!component(getComponentFor(node), { node })
 		@endeach
