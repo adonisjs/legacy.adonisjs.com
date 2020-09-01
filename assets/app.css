@@ -118,8 +118,11 @@
 			content: '#';
 		}
 	}
+	:is(h1, h2, h3, h4) > a {
+		@apply bg-none;
+	}
 
-	& > a {
+	a {
 		@apply no-underline text-adonis-brand;
 		background-image: linear-gradient(to bottom, transparent 50%, #5a45ff 50%);
 		background-position: 0 93%;
