@@ -2,10 +2,10 @@
 
 @section('page')
 	<div class="flex mt-20">
-		<article class="markdown mx-auto">
+		<article class="mx-auto markdown">
 			<h1>{{ frontMatter.title }}</h1>
 
-      @each(node in content.children)
+      @each(node in content.children)~
         @!component(getComponentFor(node), { node })
       @endeach
 		</article>

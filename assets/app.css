@@ -12,8 +12,18 @@
 	@apply bg-adonis-selection;
 }
 
+.sidebar {
+	margin-left: -999px;
+	padding-left: 999px;
+	top: calc(var(--header-height) + var(--topbar-height));
+}
+
+.doc {
+	margin-left: 280px;
+}
+
 .markdown {
-	@apply text-xl text-grey-800 font-normal leading-relaxed;
+	@apply text-xl font-normal leading-relaxed text-grey-800;
 	max-width: 60ch;
 
 	/*
@@ -30,7 +40,7 @@
 	h2,
 	h3,
 	h4 {
-		@apply text-grey-900 font-semibold;
+		@apply font-semibold text-grey-900;
 	}
 
 	h1 {
@@ -46,7 +56,7 @@
 	}
 
 	h2 {
-		@apply text-3xl border-grey-300 border-t pt-10 mt-12;
+		@apply pt-10 mt-12 text-3xl border-t border-grey-300;
 
 		code {
 			@apply relative text-3xl !important;
@@ -76,7 +86,7 @@
 		@apply pl-8 mb-4;
 
 		&::before {
-			@apply absolute text-grey-800 overflow-hidden left-0;
+			@apply absolute left-0 overflow-hidden text-grey-800;
 			content: '—';
 			width: 15px;
 		}
@@ -86,7 +96,7 @@
 	 * Links
 	 */
 	.icon.icon-link {
-		@apply inline-block text-grey-300 mr-4;
+		@apply inline-block mr-4 text-grey-300;
 
 		&::after {
 			content: '#';
@@ -94,7 +104,7 @@
 	}
 
 	& > a {
-		@apply text-adonis-brand no-underline;
+		@apply no-underline text-adonis-brand;
 		background-image: linear-gradient(to bottom, transparent 50%, #5a45ff 50%);
 		background-position: 0 93%;
 		background-repeat: repeat-x;
@@ -105,7 +115,7 @@
 	 * Code Examples
 	 */
 	:not(pre) > code {
-		@apply text-adonis-brand font-semibold text-sm;
+		@apply text-sm font-semibold text-adonis-brand;
 
 		&::before {
 			content: '\`';
@@ -220,7 +230,7 @@
 }
 
 .markdown-content .alert-note {
-	@apply border-adonis-brand border-b-4;
+	@apply border-b-4 border-adonis-brand;
 }
 
 .markdown-content .alert-note:before {
@@ -228,7 +238,7 @@
 }
 
 .markdown-content .alert-tip {
-	@apply border-adonis-green border-b-4;
+	@apply border-b-4 border-adonis-green;
 }
 
 .markdown-content .alert-tip:before {

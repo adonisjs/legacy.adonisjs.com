@@ -1,32 +1,39 @@
 @layout('_master')
 
 @section('page')
-	<div class="flex fixed shadow bg-white z-10 w-full" style="top: var(--header-height); height: var(--topbar-height)">
-		<div class="flex items-center justify-start container mx-auto">
+	<div class="fixed z-10 flex w-full bg-white shadow" style="top: var(--header-height); height: var(--topbar-height)">
+		<div class="container flex items-center justify-start mx-auto">
 			@each(category in categories)
-				<a class="text-xl mr-8 hover:text-adonis-brand transition duration-150 ease-in-out" href="/guides/{{ category.link }}">{{ category.name }}</a>
+				<a class="mr-8 text-xl transition duration-150 ease-in-out hover:text-adonis-brand" href="/guides/{{ category.link }}">{{ category.name }}</a>
 			@endeach
 		</div>
 	</div>
 
-	<div class="flex" style="margin-top: calc(var(--header-height) + var(--topbar-height)">
-		<aside class="flex flex-col">
-			<span class="uppercase text-2xl font-mono text-gray-400">{{ frontMatter.group }}</span>
+	<div class="container flex mx-auto" style="margin-top: calc(var(--header-height) + var(--topbar-height)">
+		<aside class="fixed bottom-0 pt-8 overflow-auto sidebar bg-grey-100">
+			<div class="flex flex-col w-64">
+				<span class="mb-4 font-mono text-xl font-medium text-gray-400 uppercase">
+					{{ frontMatter.group }}
+				</span>
 
-			@each(link in menu)
-				@if(link.children)
-					<span class="uppercase font-mono text-gray-300 text-sm">{{ link.name }}</span>
-					@each(sublink in link.children)
-						<a href="/guides/{{ sublink.link }}">{{ sublink.name }}</a>
-					@endeach
-				@else
-					<a href="/guides/{{ link.link }}">{{ link.name }}</a>
-				@endif
-			@endeach
+				@each(link in menu)
+					@if(link.children)
+						<span class="mt-4 mb-2 font-mono text-sm font-medium text-gray-400 uppercase">
+							{{ link.name }}
+						</span>
+
+						@each(sublink in link.children)
+							<a href="/guides/{{ sublink.link }}" class="text-lg text-grey-700 hover:text-grey-900">{{ sublink.name }}</a>
+						@endeach
+					@else
+						<a href="/guides/{{ link.link }}" class="text-lg text-grey-700 hover:text-grey-900">{{ link.name }}</a>
+					@endif
+				@endeach
+			</div>
 		</aside>
 
-		<article class="markdown mx-auto">
-      @each(node in content.children)
+		<article class="p-8 doc markdown">
+      @each(node in content.children)~
         @!component(getComponentFor(node), { node })
       @endeach
 		</article>
