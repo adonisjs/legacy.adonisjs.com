@@ -1,5 +1,7 @@
 @layout('_master')
 
+@set('title', `${frontMatter.title} (${frontMatter.group})`)
+
 @section('page')
 	<div class="fixed z-10 flex w-full bg-white shadow" style="top: var(--header-height); height: var(--topbar-height)">
 		<div class="container flex items-center justify-start mx-auto">

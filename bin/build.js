@@ -172,7 +172,10 @@ async function buildGuidePages() {
 		}))
 
 		const html = edge.render(`_guides.edge`, {
-			frontMatter,
+			frontMatter: {
+				...frontMatter,
+				title: contents.children[0].children[0].value,
+			},
 			menu,
 			categories,
 			content: contents,

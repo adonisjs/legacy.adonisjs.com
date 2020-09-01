@@ -1,5 +1,7 @@
 @layout('_master')
 
+@set('title', frontMatter.title)
+
 @section('page')
 	<div style="margin-top: var(--header-height)">
 		@!component('_components/_hero', { title: frontMatter.title, description: frontMatter.meta.excerpt })
