@@ -1,6 +1,7 @@
 @layout('_master.edge')
 
 @section('page')
+	{{-- Hero --}}
 	<section class="container flex flex-col justify-center mx-auto" style="margin-top: var(--header-height)">
 		<h1 class="mt-24 mb-12 text-6xl font-bold text-center" style="line-height: 60px;">
       The Foundation for your<br>next
@@ -24,6 +25,83 @@
 	  		<span class="pl-3 border-l border-grey-900">8K+</span>
 	  	</a>
   	</div>
+	</section>
+
+	{{-- Code Examples --}}
+	<section class="mt-20">
+
+	</section>
+
+	{{-- Features --}}
+	<section class="mt-20 bg-grey-200 py-24">
+		<div class="flex justify-between container mx-auto">
+			{{-- Type-Safe --}}
+			<article class="bg-white rounded-md shadow p-8 flex-grow max-w-sm">
+				<header class="flex items-center mb-4">
+					<svg class="mr-4 h-8 w-8" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+						<g fill="none" fill-rule="evenodd">
+							<path d="M0 0h40v40H0z"></path>
+							<g transform="translate(1.25 1.25)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+								<path d="M37.5 17.5C37.5 7.5 28.683 0 18.75 0 8.818 0 .71 7.73.062 17.5H15v6.25C15 29.962 20.038 35 26.25 35S37.5 29.962 37.5 23.75V17.5z" stroke="#17161A"></path>
+								<path stroke="#5A45FF" d="M0 22.5v10L12.5 30"></path>
+								<circle stroke="#5A45FF" cx="26.25" cy="23.75" r="3.75"></circle>
+							</g>
+						</g>
+					</svg>
+					<h3 class="font-semibold text-2xl">Type-Safe</h3>
+				</header>
+
+				<p class="leading-relaxed text-lg text-grey-800">
+					Type safety is baked into the framework with first class support for TypeScript. No need to install any additional build tools, TypeScript just works with AdonisJS.
+				</p>
+			</article>
+
+			{{-- Extensible --}}
+			<article class="bg-white rounded-md shadow p-8 flex-grow max-w-sm">
+				<header class="flex items-center mb-4">
+					<svg class="mr-4 h-8 w-8" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+						<g fill="none" fill-rule="evenodd">
+							<path d="M0 0h40v40H0z"></path>
+							<g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+								<path d="M21.667 8.333h6.666a3.333 3.333 0 013.334 3.334v6.666M8.333 21.667v6.666a3.333 3.333 0 003.334 3.334h6.666" stroke="#17161A"></path>
+								<path stroke="#5A45FF" d="M1.667 1.667H15V15H1.667zM25 25h13.333v13.333H25z"></path>
+							</g>
+						</g>
+					</svg>
+					<h3 class="font-semibold text-2xl">Extensible</h3>
+				</header>
+
+				<p class="leading-relaxed text-lg text-grey-800">
+					Instead of writing the same code across multiple projects, build your own first class primitives on top of the framework core.
+				</p>
+			</article>
+
+			{{-- Ton of Packages --}}
+			<article class="bg-white rounded-md shadow p-8 flex-grow max-w-sm">
+				<header class="flex items-center mb-4">
+					<svg class="mr-4 h-8 w-8" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+							<g fill="none" fill-rule="evenodd">
+								<path d="M0 0h40v40H0z"></path>
+								<g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+									<path stroke="#17161A" d="M3.333 3.334H15V15H3.333z"></path>
+									<path stroke="#5A45FF" d="M30.833.918l8.25 8.25-8.25 8.25-8.25-8.25z"></path>
+									<path stroke="#17161A" d="M25 25h11.667v11.667H25zM3.333 25H15v11.667H3.333z"></path>
+								</g>
+							</g>
+						</svg>
+					<h3 class="font-semibold text-2xl">Ton of Packages</h3>
+				</header>
+
+				<p class="leading-relaxed text-lg text-grey-800">
+					Stop spending hours to find the perfect NPM packages. AdonisJS comes with a ton of first party packages with unified API semantics.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	{{-- Demo --}}
+	<section class="bg-adonis-brand py-24">
+
 	</section>
 
 	<script src="https://cdn.jsdelivr.net/npm/typeit@7.0.4/dist/typeit.min.js" defer></script>
