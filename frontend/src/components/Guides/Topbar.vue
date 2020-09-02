@@ -4,7 +4,7 @@
       <ul>
         <li v-for="group in groups" :key="group.name">
           <GLink
-            :to="`/${group.categories[0].docs[0].permalink}`"
+            :to="`/${group.categories[0].docs[0].permalink}/`"
             :class="{ active: hasSameParent(`/${group.categories[0].docs[0].permalink}`) }"
             >
             {{ group.name }}

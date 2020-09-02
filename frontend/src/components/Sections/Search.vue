@@ -36,7 +36,7 @@
               <GLink
                 v-if="row.body.length"
                 class="search-result-item"
-                :to="row.url"
+                :to="`${row.url}/`"
               >
                 <h2 class="title"><component :is="searchScope.renderMark(row.title.marks)" /></h2>
                 <div v-for="(sec, index) in row.body" :key="index">

@@ -2,7 +2,7 @@
   <a v-if="external" :href="href" class="button big" :class="buttonClass" target="_blank" rel="noreferrer">
     <slot>{{ title }}</slot>
   </a>
-  <GLink v-else :to="href" class="button big primary">
+  <GLink v-else :to="`${href}/`" class="button big primary">
     <slot>{{ title }}</slot>
   </GLink>
 </template>

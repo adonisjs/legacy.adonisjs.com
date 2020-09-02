@@ -10,13 +10,13 @@
 exports.header = [
   {
     title: 'Why AdonisJS',
-    permalink: 'why-adonisjs',
+    permalink: '/why-adonisjs/',
     children: [],
     isExternal: false,
   },
   {
     title: 'Guides',
-    permalink: '/guides/quick-start',
+    permalink: '/guides/quick-start/',
     children: [],
     isExternal: false,
   },
@@ -81,7 +81,7 @@ exports.footer = [
   {
     title: 'Community',
     permalink: '',
-    isExternal: false, 
+    isExternal: false,
     children: [
       {
         title: 'Github',
@@ -107,17 +107,17 @@ exports.footer = [
     children: [
       {
         title: 'Security',
-        permalink: '/security',
+        permalink: '/security/',
         isExternal: false,
       },
       {
         title: 'Code of Conduct',
-        permalink: '/code-of-conduct',
+        permalink: '/code-of-conduct/',
         isExternal: false,
       },
       {
         title: 'Release Process',
-        permalink: '/release-process',
+        permalink: '/release-process/',
         isExternal: false,
       },
     ]
