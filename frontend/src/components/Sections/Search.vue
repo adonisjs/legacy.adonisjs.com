@@ -1,125 +1,75 @@
 <template>
   <div class="search" :class="{ active: model.query.length }">
-    <div class="search-overlay" @click="hideResults()"></div>
-    <DimerSearch :model="model" baseUrl="http://localhost:5000/">
-      <template slot-scope="searchScope">
-        <div class="search-input">
-          <Icon class="stroke-0" name="search" height="20" width="20" :fill="true" />
-          <input
-            ref="algolia"
-            id="algolia-search-input"
-            type="search"
-            placeholder="Search Documentation"
-            @click="boot"
-          />
-        </div>
-
-        <div class="search-results">
-          <div class="search-result-tabs">
-            <span class="highlighter" ref="tabsHighlighter"></span>
-            <a
-              href="#"
-              v-for="(row, tabIndex) in model.data"
-              :key="tabIndex"
-              ref="tabs"
-              :class="{ active: tabIndex === activeIndex }"
-            >
-              {{ row.title }}
-            </a>
-          </div>
-
-          <div class="search-result-items">
-            <div
-              :key="rowIndex"
-              v-for="(row, rowIndex) in model.data[activeIndex].results"
-            >
-              <GLink
-                v-if="row.body.length"
-                class="search-result-item"
-                :to="`${row.url}/`"
-              >
-                <h2 class="title"><component :is="searchScope.renderMark(row.title.marks)" /></h2>
-                <div v-for="(sec, index) in row.body" :key="index">
-                  <component :is="searchScope.renderMark(sec.marks)" />
-                </div>
-              </GLink>
-            </div>
-          </div>
-        </div>
-      </template>
-    </DimerSearch>
+    <div class="search-input">
+      <Icon class="stroke-0" name="search" height="20" width="20" :fill="true" />
+      <input
+        ref="algolia"
+        id="algolia-search-input"
+        type="search"
+        placeholder="Search Documentation"
+        @click="boot"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-    data () {
-      return {
-        booted: false,
-        activeIndex: 0,
-        model: {
-          query: '',
-          data: [
-            {
-              zone: 'guides',
-              version: 'master',
-              title: 'Guides',
-              results: [],
-            },
-          ]
-        }
-      }
-    },
-    watch: {
-      '$route.fullPath' () {
-        this.hideResults()
-      },
-    },
-    mounted () {
-      // this.updateHighlighterPosition()
-    },
-    methods: {
-      boot () {
-        if (!this.booted) {
-          this.booted = true
-
-          Promise.all([
-            import(/* webpackChunkName: "docsearch" */ 'docsearch.js/dist/cdn/docsearch.min.js'),
-            import(/* webpackChunkName: "docsearch" */ 'docsearch.js/dist/cdn/docsearch.min.css')
-          ]).then(([docsearch]) => {
-            docsearch = docsearch.default
-            docsearch({
-              apiKey: 'a161da32d12c414b40fd88002ec685b2',
-              indexName: 'adonisjs_next',
-              inputSelector: '#algolia-search-input',
-              debug: false,
-              handleSelected: (input, event, suggestion) => {
-                const { pathname, hash } = new URL(suggestion.url)
-                const routepath = pathname.replace(window.location.host, '/')
-                this.$router.push(`${routepath}${hash}`)
-              }
-            })
-            this.$refs.algolia.focus()
-          }).catch((e) => this.booted = false)
-        }
-      },
-
-      updateHighlighterPosition () {
-        const activeTab = this.$refs.tabs[this.activeIndex]
-        if (!activeTab) {
-          return
-        }
-
-        const highlighter = this.$refs.tabsHighlighter
-        highlighter.style.left = `${activeTab.offsetLeft}px`
-        highlighter.style.width = `${activeTab.clientWidth}px`
-      },
-
-      hideResults () {
-        this.model.query = ''
+  data () {
+    return {
+      booted: false,
+      model: {
+        query: '',
       }
     }
+  },
+  watch: {
+    '$route.fullPath' () {
+      this.hideResults()
+    },
+  },
+  methods: {
+    boot () {
+      if (!this.booted) {
+        this.booted = true
+
+        Promise.all([
+          import(/* webpackChunkName: "docsearch" */ 'docsearch.js/dist/cdn/docsearch.min.js'),
+          import(/* webpackChunkName: "docsearch" */ 'docsearch.js/dist/cdn/docsearch.min.css')
+        ]).then(([docsearch]) => {
+          docsearch = docsearch.default
+          docsearch({
+            apiKey: 'a161da32d12c414b40fd88002ec685b2',
+            indexName: 'adonisjs_next',
+            inputSelector: '#algolia-search-input',
+            debug: false,
+            handleSelected: (input, event, suggestion) => {
+              const { pathname, hash } = new URL(suggestion.url)
+              const routepath = pathname.replace(window.location.host, '/')
+              this.$router.push(`${routepath}${hash}`)
+            }
+          })
+          this.$refs.algolia.focus()
+        }).catch((e) => this.booted = false)
+      }
+    },
+
+    updateHighlighterPosition () {
+      const activeTab = this.$refs.tabs[this.activeIndex]
+      if (!activeTab) {
+        return
+      }
+
+      const highlighter = this.$refs.tabsHighlighter
+      highlighter.style.left = `${activeTab.offsetLeft}px`
+      highlighter.style.width = `${activeTab.clientWidth}px`
+    },
+
+    hideResults () {
+      this.model.query = ''
+    }
   }
+}
 </script>
 
 <style scoped>
