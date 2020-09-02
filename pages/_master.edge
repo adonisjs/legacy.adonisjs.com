@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>{{ title }} - AdonisJS</title>
+	@if(title)
+		<title>{{ title }} - AdonisJS</title>
+	@else
+		<title>AdonisJS - The Node.js Web Framework</title>
+	@endif
 
 	<link rel="stylesheet" href="/assets/app.css">
 	<link rel="stylesheet" href="/fonts/calibre.css">
