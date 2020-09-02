@@ -24,17 +24,6 @@ module.exports = {
     },
     {
       use: '@gridsome/plugin-sitemap',
-    },
-    {
-      use: "gridsome-plugin-service-worker",
-      options: {
-        networkFirst: {
-          routes: ['/*']
-        },
-        cacheFirst: {
-          routes: ['/fonts', '/img']
-        }
-      }
     }
   ],
 }
