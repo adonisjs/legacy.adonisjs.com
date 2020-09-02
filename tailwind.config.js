@@ -10,7 +10,6 @@ module.exports = {
           ...defaultTheme.fontFamily.sans,
         ],
         mono: [
-          'SF Mono',
           'Cascadia Code',
           'JetBrains Mono',
           ...defaultTheme.fontFamily.mono,
