@@ -4,6 +4,7 @@ group: Database
 ---
 
 # Setup
+
 In this guide, you will install `@adonisjs/lucid` package, along with the database driver of your choice. Lucid supports the following database engines.
 
 - MYSQL

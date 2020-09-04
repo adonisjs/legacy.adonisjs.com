@@ -13,7 +13,7 @@ When working with a many to many relationship, you will always need a 3rd table 
 
 Let's imagine, you have a `users` table and a `skills` table and you decided to put the `user_id` inside the `skills` table.
 
-```markup{}{skills}
+```text{}{skills}
 +----------------------+
 | skills               |
 +------------+---------+

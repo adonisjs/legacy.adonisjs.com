@@ -1,10 +1,11 @@
 const { join } = require('path')
 const { cwd } = require('process')
-
 const fs = require('fs-extra')
 const readdirp = require('readdirp')
 const matter = require('gray-matter')
 const { Edge, GLOBALS } = require('edge.js')
+const { Renderer, utils, component } = require('dimer-edge')
+const { ShikiRenderer } = require('dimer-edge-shiki')
 const Markdown = require('@dimerapp/markdown')
 const Menu = require('../menu.js')
 
@@ -16,6 +17,7 @@ const guidesPath = join(contentsPath, 'guides')
 const markdownPagesPath = join(contentsPath, 'pages')
 const blogPagesPath = join(contentsPath, 'blog')
 
+/*
 const renderers = [
 	function (node) {
 		if (node.tag === 'dimertitle') {
@@ -34,97 +36,23 @@ const renderers = [
 			return '_elements/_code'
 		}
 	},
-]
+]*/
 
-function propsToAttributes(props) {
-	const attributes = []
-	Object.keys(props).forEach((key) => {
-		const value = props[key]
-		attributes.push(`${key}="${Array.isArray(value) ? value.join(' ') : value}"`)
-	})
-	return attributes.join(' ')
-}
-
-function getComponentFor(node) {
-	let rendererComponent = null
-	for (let renderer of renderers) {
-		rendererComponent = renderer(node)
-		if (rendererComponent !== undefined) {
-			break
-		}
-	}
-
-	if (rendererComponent === false) {
-		return 'components/noop'
-	}
-
-	if (rendererComponent) {
-		return rendererComponent
-	}
-
-	if (node.type === 'element') {
-		return `components/${node.tag}`
-	}
-
-	if (node.type === 'text') {
-		return `components/rawtext`
-	}
-}
-
-function prepareEdge() {
+async function prepareEdge() {
 	const edge = new Edge({ cache: false })
 	edge.mount(pagesPath)
-	Object.keys(GLOBALS).forEach((name) => {
-		edge.global(name, GLOBALS[name])
-	})
 
-	const standardComponents = [
-		'h1',
-		'h2',
-		'h3',
-		'h4',
-		'h5',
-		'p',
-		'a',
-		'span',
-		'ul',
-		'li',
-		'strong',
-		'code',
-		'div',
-		'pre',
-		'img',
-		'em',
-		'video',
-		'source',
-		'ol',
-		'table',
-		'thead',
-		'tr',
-		'th',
-		'td',
-		'tbody',
-		'hr',
-		'br',
-		'blockquote',
-		'iframe',
-	]
+	const shiki = new ShikiRenderer(__dirname)
+	shiki.loadLanguage({ id: 'edge', scopeName: 'text.html.edge', path: './languages/edge.tmLanguage.json' })
+	shiki.loadLanguage({ id: 'diff', scopeName: 'source.diff', path: './languages/diff.tmLanguage.json' })
+	shiki.useTheme('github-light')
+	await shiki.boot()
 
-	standardComponents.forEach((component) => {
-		edge.registerTemplate(`components/${component}`, {
-			template: `<${component} {{{ propsToAttributes(node.props) }}}>
-      @each(child in node.children)
-        @!component(getComponentFor(child), { node: child })
-      @endeach
-      </${component}>`,
-		})
-	})
-
-	edge.registerTemplate('components/rawtext', { template: `{{ node.value }}` })
-	edge.registerTemplate('components/noop', { template: '' })
-
-	edge.global('getComponentFor', getComponentFor)
-	edge.global('propsToAttributes', propsToAttributes)
+	const renderer = new Renderer(edge)
+	renderer.use(shiki.handleCodeBlocks)
+	// renderer.hook((node) => {
+	// 	console.log(node)
+	// })
 
 	return edge
 }
@@ -158,7 +86,7 @@ async function buildEdgePages() {
  * Build all pages from their markdown files.
  */
 async function buildGuidePages() {
-	const edge = prepareEdge()
+	const edge = await prepareEdge()
 
 	for await (const entry of readdirp(guidesPath)) {
 		const source = await fs.readFile(entry.fullPath)
@@ -186,7 +114,7 @@ async function buildGuidePages() {
 }
 
 async function buildMarkdownPages() {
-	const edge = prepareEdge()
+	const edge = await prepareEdge()
 
 	for await (const entry of readdirp(markdownPagesPath)) {
 		const source = await fs.readFile(entry.fullPath)
@@ -204,7 +132,7 @@ async function buildMarkdownPages() {
 }
 
 async function buildBlogPages() {
-	const edge = prepareEdge()
+	const edge = await prepareEdge()
 	const blog = []
 
 	for await (const entry of readdirp(blogPagesPath)) {

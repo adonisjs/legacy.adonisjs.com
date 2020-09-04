@@ -38,9 +38,7 @@
 
 		{{-- Doc --}}
 		<article class="p-8 doc markdown">
-      @each(node in content.children)~
-        @!component(getComponentFor(node), { node })
-      @endeach
+      @dimerTree(content.children)
 		</article>
 	</div>
 @endsection

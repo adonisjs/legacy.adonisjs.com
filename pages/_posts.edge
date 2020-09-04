@@ -15,8 +15,6 @@
 	</div>
 
 	<article class="mx-auto mt-24 markdown">
-		@each(node in content.children)~
-			@!component(getComponentFor(node), { node })
-		@endeach
+		@dimerTree(content.children)
 	</article>
 @endsection

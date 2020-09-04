@@ -76,7 +76,7 @@ Now, start the development server `node ace serve --watch` and make a POST reque
 ## Authentication
 Once, the token has been issued, the client can use it to authenticate themselves. The token must be passed inside the `Authorization` header. For example:
 
-```markup
+```text
 Authorization: Bearer token-value-goes-here
 ```
 
