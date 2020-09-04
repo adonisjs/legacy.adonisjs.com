@@ -1,9 +1,9 @@
 <template>
   <div class="feature">
-    <h2 class="feature-title">
+    <div class="feature-title">
       <div v-html="icon" class="icon"></div>
-      <span>{{ title }}</span>
-    </h2>
+      <h2><span>{{ title }}</span></h2>
+    </div>
     <div><slot></slot></div>
   </div>
 </template>
@@ -24,12 +24,15 @@ export default {
   }
 
   .feature-title {
-    color: var(--grey-900);
-    margin-bottom: 10px;
-    font-size: 2.1rem;
-    font-weight: 700;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .feature-title h2 {
+    color: var(--grey-900);
+    font-size: 2.1rem;
+    font-weight: 700;
   }
 
   .feature-title span {
@@ -41,7 +44,7 @@ export default {
   }
 
   @media (min-width: 1024px) {
-    .feature-title {
+    .feature-title h2 {
       font-size: 2.3rem;
     }
   }
