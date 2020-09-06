@@ -1,3 +1,4 @@
+// @ts-check
 const { join } = require('path')
 const { cwd } = require('process')
 const fs = require('fs-extra')
@@ -9,6 +10,7 @@ const { ShikiRenderer } = require('dimer-edge-shiki')
 const Markdown = require('@dimerapp/markdown')
 const Menu = require('../menu.js')
 
+// Paths
 const contentsPath = join(cwd(), 'contents')
 const pagesPath = join(cwd(), 'pages')
 const staticPath = join(cwd(), 'static')
@@ -17,27 +19,10 @@ const guidesPath = join(contentsPath, 'guides')
 const markdownPagesPath = join(contentsPath, 'pages')
 const blogPagesPath = join(contentsPath, 'blog')
 
-/*
-const renderers = [
-	function (node) {
-		if (node.tag === 'dimertitle') {
-			return false
-		}
-
-		if (node.tag === 'div' && node.props.className && node.props.className.includes('alert')) {
-			return '_elements/_alert'
-		}
-
-		if (
-			node.tag === 'div' &&
-			node.props.className &&
-			node.props.className.includes('dimer-highlight')
-		) {
-			return '_elements/_code'
-		}
-	},
-]*/
-
+/**
+ * Preparing a custom instance of edge with
+ * multiple renderers attached to it.
+ */
 async function prepareEdge() {
 	const edge = new Edge({ cache: false })
 	edge.mount(pagesPath)
@@ -45,14 +30,40 @@ async function prepareEdge() {
 	const shiki = new ShikiRenderer(__dirname)
 	shiki.loadLanguage({ id: 'edge', scopeName: 'text.html.edge', path: './languages/edge.tmLanguage.json' })
 	shiki.loadLanguage({ id: 'diff', scopeName: 'source.diff', path: './languages/diff.tmLanguage.json' })
-	shiki.useTheme('github-light')
+	shiki.useTheme('material-theme-palenight')
 	await shiki.boot()
 
 	const renderer = new Renderer(edge)
 	renderer.use(shiki.handleCodeBlocks)
-	// renderer.hook((node) => {
-	// 	console.log(node)
-	// })
+	renderer.hook((node) => {
+		// Code examples.
+		if (utils.hasClass(node, 'dimer-highlight')) {
+	 		return component('_elements/_code', { node })
+		}
+
+		// Tabbed code examples.
+		if (utils.hasClass(node, 'tabs')) {
+			const tabListItems = node.children[0].children[0].children.filter((li) => li.tag === 'li')
+			const tabsContentPanes = node.children[1].children
+
+			return component('_elements/_tabbed-example', {
+				links: tabListItems.map(item => item.children[0].value),
+				panes: tabsContentPanes
+			})
+		}
+
+		// Alerts.
+		if (utils.hasClass(node, 'alert')) {
+			const type = node.props.className[1].split('-')[1]
+			const color = type === 'note' ? 'adonis-brand' : type === 'tip' ? 'adonis-green' : 'adonis-red'
+
+			return component('_elements/_alert', {
+				node,
+				type,
+				color
+			})
+		}
+	})
 
 	return edge
 }

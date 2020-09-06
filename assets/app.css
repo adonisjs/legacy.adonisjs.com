@@ -34,6 +34,48 @@
 	}
 }
 
+.dimer-edge-shiki {
+	@apply p-8 rounded-md text-base;
+	@apply bg-adonis-pre-bg !important
+}
+
+.code {
+	@apply rounded-md relative;
+
+	.filename {
+		@apply absolute right-0 top-0 py-1 px-3 m-4 bg-grey-300 text-sm rounded-md font-mono;
+	}
+}
+
+.codegroup {
+	.filename {
+		display: none;
+	}
+
+	.dimer-edge-shiki {
+		@apply pt-4;
+	}
+
+	.tabs {
+		.active {
+			@apply text-white border-b-2 border-adonis-brand !important;
+			margin-bottom: -2px;
+		}
+
+		> * {
+			@apply font-mono text-base text-grey-400 transition-colors duration-150;
+
+			&:hover {
+				@apply text-white
+			}
+		}
+
+		> * + * {
+			@apply ml-8;
+		}
+	}
+}
+
 .markdown {
 	@apply text-xl font-normal leading-relaxed text-grey-800;
 	max-width: 70ch;

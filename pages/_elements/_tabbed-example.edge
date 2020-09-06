@@ -1,0 +1,13 @@
+<div class="codegroup rounded-md bg-adonis-pre-bg" x-data="{ activeTab: 0 }">
+	<div class="tabs rounded-md rounded-b-none flex border-b-2 border-grey-800 bg-adonis-pre-bg pl-8">
+		@each((link, index) in links)
+			<button class="p-4" :class="{ 'active': activeTab === {{ index }} }" @click="activeTab = {{ index }}">{{ link }}</button>
+		@endeach
+	</div>
+
+	@each((pane, index) in panes)
+		<div x-show="activeTab === {{ index }}">
+			@dimerTree(pane.children)
+		</div>
+	@endeach
+</div>
