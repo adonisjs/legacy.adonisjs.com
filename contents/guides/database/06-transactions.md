@@ -135,7 +135,7 @@ await trx.rollback()
 ## Using Transactions with Lucid Models
 You can also make use of transactions when persisting or fetching rows using a Lucid model. For example:
 
-```ts
+```ts{8-9}
 import User from 'App/Models/User'
 import Database from '@ioc:Adonis/Lucid/Database'
 
@@ -143,10 +143,8 @@ await Database.transaction(async (trx) => {
   const user = new User()
   user.username = 'virk'
 
-  // highlight-start
   user.useTransaction(trx)
   await user.save()
-  // highlight-end
 })
 ```
 
@@ -169,7 +167,7 @@ const users = await User
 ### Persisting Relationships Inside a Transaction
 The most common use case for transactions is to persist relationships. Consider the following example of **creating a new user** and **their profile** by wrapping them inside a single transaction.
 
-```ts
+```ts{11-14}
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
 
@@ -180,12 +178,10 @@ await Database.transaction(async (trx) => {
   user.useTransaction(trx)
   await user.save()
 
-  // highlight-start
   await user.related('profile').create({
     fullName: 'Harminder Virk',
     avatar: 'some-url.jpg',
   })
-  // highlight-end
 })
 ```
 

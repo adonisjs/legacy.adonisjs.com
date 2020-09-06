@@ -12,7 +12,7 @@ If the foreign key exists on the parent model, then it will always belong to a r
 ## Relationship models
 Continuing with the profile and the user example. Following is the Profile model with `belongsTo` relationship.
 
-```ts{}{app/Models/Profile.ts}
+```ts{9-10}{app/Models/Profile.ts}
 import { column, BaseModel, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import User from 'App/Models/User'
 
@@ -21,10 +21,8 @@ export default class Profile extends BaseModel {
   @column()
   public userId: number
 
-  // highlight-start
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
-  // highlight-end
 }
 ```
 

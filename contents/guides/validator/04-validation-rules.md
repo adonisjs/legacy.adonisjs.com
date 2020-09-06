@@ -18,13 +18,11 @@ import {
 
 And then define them on the schema types.
 
-```ts
+```ts{3-4}
 schema.create({
   email: schema.string({}, [
-    // highlight-start
     rules.email(),
     rules.unique({ table: 'users', column: 'email' })
-    // highlight-end
   ])
 })
 ```
@@ -231,23 +229,19 @@ If you are caching your validation schema using the `cacheKey` and your **where 
 
 Example with refs.
 
-```ts
+```ts{3-5,12}
 class UserValidator {
 
-  // highlight-start
   public refs = schema.refs({
     tenantId: this.ctx.auth.user.tenantId
   })
-  // highlight-end
 
   public schema = schema.create({
     username: schema.string({}, [
       rules.exists({
         table: 'categories',
         column: 'id',
-        // highlight-start
         where: { tenant_id: this.refs.tenantId },
-        // highlight-end
       })
     ])
   })

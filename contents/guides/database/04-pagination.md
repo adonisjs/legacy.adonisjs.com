@@ -57,7 +57,7 @@ SimplePaginator {
 ## Displaying pagination links
 In this section, we will use the pagination meta data to render the pagination links as anchor tags. The first step is to render the view and pass the posts collection to it.
 
-```ts
+```ts{9}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 class PostsController {
@@ -66,16 +66,14 @@ class PostsController {
     const limit = 10
 
     const posts = await Post.query().paginate(page, limit)
-    // highlight-start
     return view.render('posts/index', { posts })
-    // highlight-end
   }
 }
 ``` 
 
 Next open `posts/index.edge` file and paste the following code snippet inside it.
 
-```edge
+```edge{10-16}
 <div>
   @each(post in posts.rows)
     <h1>{{ post.title }}</h1>
@@ -85,7 +83,6 @@ Next open `posts/index.edge` file and paste the following code snippet inside it
 
 <hr>
 
-// highlight-start
 <div>
   @each(anchor in posts.getUrlsForRange(1, posts.lastPage))
     <a href="{{ anchor.url }}">
@@ -93,7 +90,6 @@ Next open `posts/index.edge` file and paste the following code snippet inside it
     </a>
   @endeach
 </div>
-// highlight-end
 ```
 
 The `getUrlsForRange` method returns an array of objects with following properties.
@@ -118,11 +114,9 @@ The `getUrlsForRange` method returns an array of objects with following properti
 
 If you notice carefully, the `url` property uses the `/` route. You can change this inside the controller before rendering the view, as shown in the following example.
 
-```ts
+```ts{2}
 const posts = await Post.query().paginate(page, limit)
-// highlight-start
 posts.baseUrl('/posts')
-// highlight-end
 
 return view.render('posts/index', { posts })
 ```

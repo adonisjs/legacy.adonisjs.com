@@ -12,7 +12,7 @@ Content negotiation is helpful, when you (the webservice provider) decides to su
 
 The client sets the appropriate `Accept` header and server uses its value to respond with the correct response type. In AdonisJS, you can use the `request.accepts` method to find the best possible response type for a given HTTP request.
 
-```ts
+```ts{9-16}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
@@ -21,7 +21,6 @@ export default class PostsController {
       title: 'Adonis 101',
     }]
 
-    // highlight-start
     switch (request.accepts(['html', 'json'])) {
       case 'html':
         return view.render('posts/index', { posts })
@@ -30,7 +29,6 @@ export default class PostsController {
       default:
         return view.render('posts/index', { posts })
     }
-    // highlight-end
   }
 }
 ```

@@ -134,15 +134,13 @@ Similar to the `Event.trap`, you can also place a trap for all the events.
 The `Event.trapAll` is only called for events with no existing trap.
 [/note]
 
-```ts
+```ts{4-6}
 Event.trap('new:user', (data) => {
 })
 
-// highlight-start
 Event.trapAll((event, data) => {
   // only called for "send:email"
 })
-// highlight-end
 
 Event.emit('new:user', {})
 Event.emit('send:email', {})

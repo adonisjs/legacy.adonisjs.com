@@ -53,19 +53,15 @@ npm i -D sqlite3
 
 Next, open the `config/database.ts` file to review the configuration options.
 
-```ts{}{config/database.ts}
+```ts{2,8}{config/database.ts}
 {
-  // highlight-start
   connection: Env.get('DB_CONNECTION', 'sqlite') as string,
-  // highlight-end
 
   connections: {
     sqlite: {
       client: 'sqlite',
       connection: {
-        // highlight-start
         filename: Application.tmpPath('db.sqlite3'),
-        // highlight-end
       },
       useNullAsDefault: true,
       healthCheck: false,
@@ -98,23 +94,19 @@ npm i mysql
 
 Next, open the database config file to review the configuration options.
 
-```ts{}{config/database.ts}
+```ts{2,8-12}{config/database.ts}
 {
-  // highlight-start
   connection: Env.get('DB_CONNECTION', 'sqlite') as string,
-  // highlight-end
 
   connections: {
     mysql: {
       client: 'mysql',
       connection: {
-        // highlight-start
         host: Env.get('DB_HOST', '127.0.0.1') as string,
         port: Number(Env.get('DB_PORT', 3306)),
         user: Env.get('DB_USER', 'lucid') as string,
         password: Env.get('DB_PASSWORD', 'lucid') as string,
         database: Env.get('DB_NAME', 'lucid') as string,
-        // highlight-end
       },
       healthCheck: false,
     },
@@ -134,14 +126,12 @@ Next, open the database config file to review the configuration options.
 
 With MySQL, you can also connect using the unix domain socket. Setting the `socketPath` will ignore host and port.
 
-```ts
+```ts{5}
 connections: {
   mysql: {
     client: 'mysql',
     connection: {
-      // highlight-start
       socketPath: '/path/to/socket.sock',
-      // highlight-end
       user: Env.get('DB_USER', 'lucid') as string,
       password: Env.get('DB_PASSWORD', 'lucid') as string,
       database: Env.get('DB_NAME', 'lucid') as string,
@@ -162,23 +152,19 @@ npm i pg
 
 Next, open the database config file to review the configuration options.
 
-```ts
+```ts{2,8-12}
 {
-  // highlight-start
   connection: Env.get('DB_CONNECTION', 'sqlite') as string,
-  // highlight-end
 
   connections: {
     pg: {
       client: 'pg',
       connection: {
-        // highlight-start
         host: Env.get('DB_HOST', '127.0.0.1') as string,
         port: Number(Env.get('DB_PORT', 5432)),
         user: Env.get('DB_USER', 'lucid') as string,
         password: Env.get('DB_PASSWORD', 'lucid') as string,
         database: Env.get('DB_NAME', 'lucid') as string,
-        // highlight-end
       },
       healthCheck: false,
     },

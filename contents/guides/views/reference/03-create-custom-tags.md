@@ -29,18 +29,16 @@ When creating a custom tag, you will be dealing with only one type of lexer toke
 
 The above mentioned `@svg` tag will be tokenized into following JSON structure.
 
-```json
+```json{5-9}
 [
   {
     "type": "tag",
     "filename": "welcome.edge",
-    // highlight-start
     "properties": {
       "name": "svg",
       "jsArg": "'home'",
       "selfclosed": false
     },
-    // highlight-end
     "loc": {
       "start": {
         "line": 1,

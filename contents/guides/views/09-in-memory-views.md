@@ -28,7 +28,7 @@ And then use it as a component or as a partial inside your templates.
 ## Distributing Templates Inside a Package
 As a package author you can register custom templates inside a provider `boot` method.
 
-```ts
+```ts{9-11}
 import { IocContract } from '@adonisjs/fold'
 
 export default class AppProvider {
@@ -37,11 +37,9 @@ export default class AppProvider {
 
   public async boot () {
     this.$container.with(['Adonis/Core/View'], (View) => {
-      // highlight-start
       View.registerTemplate('button', {
         template: `<button type="{{ type || 'submit' }}">{{ title }}</button>`,
       })
-      // highlight-end
     })
   }
 }
@@ -53,7 +51,7 @@ It is recommended to create template files within your views folder. However, if
 ### Inside Provider
 Open, `providers/AppProvider.ts` file and paste following code snippet inside it.
 
-```ts{}{providers/AppProvider.ts}
+```ts{10-12}{providers/AppProvider.ts}
 import { IocContract } from '@adonisjs/fold'
 
 export default class AppProvider {
@@ -63,11 +61,9 @@ export default class AppProvider {
   public async boot () {
     const View = (await import('@ioc:Adonis/Core/View')).default
 
-    // highlight-start
     View.registerTemplate('button', {
       template: `<button type="{{ type || 'submit' }}">{{ title }}</button>`,
     })
-    // highlight-end
   }
 }
 ```

@@ -10,28 +10,24 @@ The `HasOne` relationship creates a **one-to-one** relationship between two mode
 ## Relationship models
 Continuing with the user and the profile example. Following is the User model with the `hasOne` relationship.
 
-```ts{}{app/Models/User.ts}
+```ts{5-6}{app/Models/User.ts}
 import { column, BaseModel, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import Profile from 'App/Models/Profile'
 
 export default class User extends BaseModel {
-  // highlight-start
   @hasOne(() => Profile)
   public profile: HasOne<typeof Profile>
-  // highlight-end
 }
 ```
 
 The Profile model must have a foreign key column `userId` defined on it.
 
-```ts{}{app/Models/Profile.ts}
+```ts{4-5}{app/Models/Profile.ts}
 import { column, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Profile extends BaseModel {
-  // highlight-start
   @column()
   public userId: number
-  // highlight-end
 }
 ```
 

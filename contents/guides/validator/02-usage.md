@@ -19,10 +19,8 @@ This guide only cover inline validation. If you'd like to create a validator cla
 ## Validating HTTP requests
 Most of the times, you will be using the validator to validate the forms submitted over an HTTP request. So, lets begin with an HTTP specific example first and later we will see how to use the validator directly.
 
-```ts{}{app/Controllers/Http/AuthController.ts}
-// highlight-start
+```ts{1}{app/Controllers/Http/AuthController.ts}
 import { schema } from '@ioc:Adonis/Core/Validator'
-// highlight-end
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
@@ -94,16 +92,13 @@ import {
 const postsSchema = schema.create({ ... })
 
 // Define the data to validate
-// highlight-start
 const data = {
   title: 'Adonis 101',
   content: 'Lets get started',
   tags: [1, 4, 8],
 }
-// highlight-end
 
 // Run validations
-// highlight-start
 try {
   await validator.validate({
     schema: postsSchema,
@@ -112,7 +107,6 @@ try {
 } catch (error) {
   console.log(error.messages)
 }
-// highlight-end
 ``` 
 
 ## Schema 101
@@ -147,13 +141,11 @@ So, here we are saying, the `content` property must be defined as a **string**, 
 ### Validating nested objects/arrays
 You can define schema for a nested object using the [schema.object](/guides/validator/schema-types#schemaobject) data type. For example:
 
-```ts
+```ts{2-4}
 schema.create({
-  // highlight-start
   profile: schema.object().members({
     name: string.string(),
   })
-  // highlight-end
 })
 ```
 

@@ -10,15 +10,13 @@ The `HasMany` relationship creates a **one-to-many** relationship between two mo
 ## Relationship models
 Continuing with the user and the posts example. Following is the User model with `hasMany` relationship.
 
-```ts{}{app/Models/User.ts}
+```ts{5-6}{app/Models/User.ts}
 import { column, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Post from 'App/Models/Post'
 
 export default class User extends BaseModel {
-  // highlight-start
   @hasMany(() => Post)
   public posts: HasMany<typeof Post>
-  // highlight-end
 }
 ```
 

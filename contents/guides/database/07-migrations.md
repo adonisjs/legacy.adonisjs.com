@@ -151,7 +151,7 @@ node ace make:migration add_last_login_column --table=users
 # ✔  create    database/migrations/1584415438372_add_last_login_columns.ts
 ```
 
-```ts{}{Migration}
+```ts{8}{Migration}
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Users extends BaseSchema {
@@ -159,9 +159,7 @@ export default class Users extends BaseSchema {
 
   public async up () {
     this.schema.table(this.$tableName, (table) => {
-      // highlight-start
       table.dateTime('last_login_at')
-      // highlight-end
     })
   }
 

@@ -62,11 +62,9 @@ Event.on('db:query', (query) => Logger.debug(query))
 
 You can also conditionally decide the listener for the `db:query` event based upon the application environment.
 
-```ts{}{start/events.ts}
+```ts{7-11}{start/events.ts}
 import Event from '@ioc:Adonis/Core/Event'
 import Logger from '@ioc:Adonis/Core/Logger'
-
-// highlight-start
 import Database from '@ioc:Adonis/Lucid/Database'
 import Application from '@ioc:Adonis/Core/Application'
 
@@ -77,7 +75,6 @@ Event.on('db:query', (query) => {
     Database.prettyPrint(query)
   }
 })
-// highlight-end
 ```
 
 ## Selectively Logging Queries

@@ -28,13 +28,11 @@ Route
 
 First lets use the CURL command to visit the `/posts` route.
 
-```sh
+```sh{4}
 curl -i http://localhost:3333/posts
 
 # HTTP/1.1 401 Unauthorized
-// highlight-start
 www-authenticate: Basic realm="Login", charset="UTF-8"
-// highlight-end
 # content-length: 13
 # content-type: text/plain; charset=utf-8
 # Date: Mon, 10 Aug 2020 04:29:13 GMT

@@ -32,15 +32,13 @@ Route.get('users/:id', 'UsersController.show')
 Then, inside your controller or the view template, you can generate a URL by referencing the `Controller.action` name.
 
 [codegroup]
-```ts{}{Inside JavaScript Code}
+```ts{6}{Inside JavaScript Code}
 import Route from '@ioc:Adonis/Core/Route'
 
 export default class UsersController {
   public async index ({ response }) {
     response.redirect(
-      // highlight-start
       Route.makeUrl('UsersController.show', { params: { id: 1 } })
-      // highlight-end
     )
   }
 }
@@ -159,15 +157,13 @@ For demonstration, let's create a dummy app to verify the user email address usi
 ### Expiring Signed URLs
 By default, the signed URLs lives forever. However, you can add expiry to them at the time of generating one.
 
-```ts
+```ts{6}
   Route.get('/get_verification_link', async () => {
     const signedUrl = Route.makeSignedUrl('verifyEmail', {
       params: {
         email: 'foo@bar.com',
       },
-      // highlight-start
       expiresIn: '30m',
-      // highlight-end
     })
 
     return `Click <a href="${signedUrl}">here</a> to verify email address`

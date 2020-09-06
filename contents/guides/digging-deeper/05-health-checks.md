@@ -34,14 +34,12 @@ spec:
 
 As you can notice, the `livenessProbe` relies on the `/healthz` route to know the health of the application. If your app will respond with anything other than a `200`, then Kubernetes will consider it as unstable.
 
-```ts
+```ts{5}
 import Route from '@ioc:Adonis/Core/Route'
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 
 Route.get('/healthz', async ({ response }) => {
-  // highlight-start
   const isLive = await HealthCheck.isLive()
-  // highlight-end
 
   return isLive
     ? response.status(200).send({})
@@ -106,14 +104,13 @@ You can also register your own health checkers using the Health check module. Si
 
 For demonstration, lets open the `providers/AppProvider.ts` and paste the following code inside the `boot` method.
 
-```ts
+```ts{7-20}
 import { IocContract } from '@adonisjs/fold'
 
 export default class AppProvider {
   constructor (protected $container: IocContract) {
   }
 
-  // highlight-start
   public async boot () {
     const HealthCheck = (await import('@ioc:Adonis/Core/HealthCheck')).default
 
@@ -128,7 +125,6 @@ export default class AppProvider {
       }
     })
   }
-  // highlight-end
 }
 ```
 

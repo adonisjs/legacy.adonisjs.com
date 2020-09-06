@@ -10,7 +10,7 @@ Query scopes helps you extract fragments of a SQL query to their own methods. Th
 ## Creating a query scope
 query scopes are defined as static functions on the model itself. For example:
 
-```ts{}{app/Models/Post.ts}
+```ts{10-12}{app/Models/Post.ts}
 import { DateTime } from 'luxon'
 import {
   BaseModel,
@@ -20,11 +20,9 @@ import {
 
 export default class Post extends BaseModel {
 
-  // highlight-start
   public static published = scope((query) => {
     query.where('publishedOn', '<=', DateTime.utc().toSQLDate())
   })
-  // highlight-end
 
 }
 ```

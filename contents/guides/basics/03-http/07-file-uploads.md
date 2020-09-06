@@ -117,28 +117,24 @@ export default class UsersController {
 ### Renaming Uploaded Files
 Currently the user uploaded files are saved with the original file name. However, you can rename them during the move operation.
 
-```ts
+```ts{2}
 await avatar.move(Application.tmpPath('uploads'), {
-  // highlight-start
   name: `${new Date().getTime()}.${avatar.extname}`,
-  // highlight-end
 })
 ```
 
 ## Validating Uploaded Files
 AdonisJS automatically validate files when you try to access them. All you need to do is define the validation options.
 
-```ts
+```ts{7-8}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Application from '@ioc:Adonis/Core/Application'
 
 export default class UsersController {
   public async store ({ request }: HttpContextContract) {
     const avatar = request.file('avatar', {
-      // highlight-start
       size: '2mb',
       extnames: ['jpg', 'png', 'jpeg'],
-      // highlight-end
     })
 
     if (!avatar) {
@@ -158,7 +154,7 @@ export default class UsersController {
 ### Using Request Validator
 Another way to validate files is to make use of the request validator. Assuming you are already aware with the validator syntax from the [form submissions guide](form-submissions#validating-form-data), following is the code snippet for validating files using the validator.
 
-```ts
+```ts{9-12}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema } from '@ioc:Adonis/Core/Validator'
 import Application from '@ioc:Adonis/Core/Application'
@@ -167,12 +163,10 @@ export default class UsersController {
   public async store ({ request }: HttpContextContract) {
     const userSchema = schema.create({
       email: schema.string(),
-      // highlight-start
       avatar: schema.file({
         size: '2mb',
         extnames: ['jpg', 'png', 'jpeg'],
       }),
-      // highlight-end
     })
 
     const data = await request.validate({
@@ -187,7 +181,7 @@ export default class UsersController {
 
 Next step is to display the validation errors to the user. Open the template file `users/create.edge` and replace its contents with the following code snippet.
 
-```edge{}{users/create.edge}
+```edge{18-20,28-30}{users/create.edge}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,11 +199,9 @@ Next step is to display the validation errors to the user. Open the template fil
         <label for="email"> Email </label>
       </p>
       <input type="text" name="email">
-      // highlight-start
       @if(flashMessages.has('errors.email'))
         {{ flashMessages.get('errors.email') }}
       @endif
-      // highlight-end
     </div>
 
     <div>
@@ -217,11 +209,9 @@ Next step is to display the validation errors to the user. Open the template fil
         <label for="avatar"> Upload user avatar </label>
       </p>
       <input type="file" name="avatar">
-      // highlight-start
       @if(flashMessages.has('errors.avatar'))
         {{ flashMessages.get('errors.avatar') }}
       @endif
-      // highlight-end
     </div>
 
     <hr>
@@ -239,18 +229,14 @@ Next step is to display the validation errors to the user. Open the template fil
 ## Custom Error Messages
 Following is an example of defining custom error messages when validating files using the request validator.
 
-```ts
-// highlight-start
+```ts{1-4,8}
 const messages = {
   'avatar.file.extname': 'You can only upload images',
   'avatar.file.size': 'Image size must be under 2mb',
 }
-// highlight-end
 
 const data = await request.validate({
   schema: validator.compile(userSchema),
-  // highlight-start
   messages,
-  // highlight-end
 })
 ```

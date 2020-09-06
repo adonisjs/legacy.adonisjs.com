@@ -198,7 +198,7 @@ Mail.send((message) => {
 ### Defer email sending
 Most of the times, you will be sending emails in respond to some action. For example: Send email after user registration or during the password reset flow.
 
-```ts
+```ts{9-11}
 import User from 'App/Models/User'
 import Mail from '@ioc:Adonis/Addons/Mail'
 
@@ -207,11 +207,9 @@ export default class UsersController {
   public async store () {
     const user = await User.create({})
 
-    // highlight-start
     await Mail.send((message) => {
       // ...configure message
     })
-    // highlight-end
 
     return user
   }
@@ -229,16 +227,14 @@ The `Mail.sendLater` method uses an in-memory queue to send emails in the backgr
 
 [/note]
 
-```ts
+```ts{6-9}
 export default class UsersController {
 
   public async store () {
     const user = await User.create({})
 
-    // highlight-start
     // Pushed to in-memory queue
     await Mail.sendLater((message) => {
-    // highlight-end
       // ...configure message
     })
 

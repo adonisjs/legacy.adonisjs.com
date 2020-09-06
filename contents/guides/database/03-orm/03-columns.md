@@ -30,7 +30,7 @@ export default class User extends BaseModel {
 
 You can also define extra properties or methods on your model and unless they are not using the `@column` decorator, Lucid will ignore them. For example:
 
-```ts
+```ts{10-13}
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class User extends BaseModel {
@@ -40,12 +40,10 @@ export default class User extends BaseModel {
   @column()
   public fullName: string
 
-  // highlight-start
   public get initials () {
     const [first, last] = this.fullName.split(' ')
     return `${first.charAt(0)}${last.charAt(0)}`
   }
-  // highlight-end
 }
 ```
 

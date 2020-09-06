@@ -48,7 +48,7 @@ For demonstration, lets create a new template and paste following contents insid
 
 [codegroup]
 
-```edge{}{View}
+```edge{8}{View}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,9 +56,7 @@ For demonstration, lets create a new template and paste following contents insid
   <title>{{ title }}</title>
 </head>
 <body>
-  // highlight-start
   @debugger
-  // highlight-end
   @if(user.username)
     <h2> Hello {{ user.username }} </h2>
   @endif

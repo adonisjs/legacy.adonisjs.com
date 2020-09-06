@@ -199,7 +199,7 @@ The `import` statement is inside the `boot` method. This is required because, wh
 by AdonisJS, at that time the `View` is not registered and hence top level imports will not work.
 [/note]
 
-```ts{}{providers/AppProvider.ts}
+```ts{9-11}{providers/AppProvider.ts}
 import { IocContract } from '@adonisjs/fold'
 
 export default class AppProvider {
@@ -208,11 +208,9 @@ export default class AppProvider {
 
   public async boot () {
     const View = (await import('@ioc:Adonis/Core/View')).default
-    // highlight-start
     View.global('timestamp', () => {
       return new Date().getTime()
     })
-    // highlight-end
   }
 }
 ```

@@ -12,7 +12,7 @@ A great example of hooks is password hashing. Instead of hashing the user passwo
 ## Creating your first hook
 Lets build on the password hashing example and define a hook to hash the user password before saving it to the database.
 
-```ts{}{app/Models/User.ts}
+```ts{14-19}{app/Models/User.ts}
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
@@ -26,14 +26,12 @@ export default class User extends BaseModel {
   @column()
   public password: string
 
-  // highlight-start
   @beforeSave()
   public static async hashPassword (user: User) {
     if (user.$dirty.password) {
       user.password = await Hash.hash(user.password)
     }
   }
-  // highlight-end
 }
 ```
 

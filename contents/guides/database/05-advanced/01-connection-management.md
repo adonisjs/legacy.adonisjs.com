@@ -52,15 +52,13 @@ The maximum connections are defined to ensure that your application doesn't over
 
 When the pool is full, AdonisJS will queue new queries and waits for the pool to have free resources until the configured timeout. The default timeout is set to `60 seconds` and can be configured using `pool.acquireTimeoutMillis` property.
 
-```ts
+```ts{6}
 {
   mysql: {
     client: 'mysql',
     connection: {},
     pool: {
-      // highlight-start
       acquireTimeoutMillis: 60 * 1000,
-      // highlight-end
     }
   }
 }
@@ -72,7 +70,7 @@ Bigger the pool size, better the performance, is a mis-conception. We recommend 
 
 You can configure the pool settings for a given connection inside the `config/database.ts` file.
 
-```ts{}{config/database.ts}
+```ts{8-11}{config/database.ts}
 {
   connections: {
     mysql: {
@@ -80,12 +78,10 @@ You can configure the pool settings for a given connection inside the `config/da
       connection: {
         ...
       },
-      // highlight-start
       pool: {
         min: 2,
         max: 20,
       },
-      // highlight-end
       healthCheck: false,
     },
   }
@@ -99,7 +95,7 @@ AdonisJS supports read/write replicas as first class citizen. You can configure 
 All read queries are automatically sent to one of the read servers and no manual work is required.
 [/note]
 
-```ts
+```ts{9-25}
 {
   connections: {
     mysql: {
@@ -108,7 +104,6 @@ All read queries are automatically sent to one of the read servers and no manual
         password: Env.get('DB_PASSWORD', 'lucid') as string,
         database: Env.get('DB_NAME', 'lucid') as string,
       },
-      // highlight-start
       replicas: {
         read: {
           connection: [
@@ -126,7 +121,6 @@ All read queries are automatically sent to one of the read servers and no manual
           },
         },
       },
-      // highlight-end
     }
   }
 }

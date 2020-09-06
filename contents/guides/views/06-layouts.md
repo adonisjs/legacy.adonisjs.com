@@ -20,7 +20,7 @@ node ace make:view layouts/blog
 
 Now, open the newly created file and paste the following contents inside it.
 
-```edge{}{resources/views/layouts/blog.edge}
+```edge{22-23}{resources/views/layouts/blog.edge}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,10 +42,8 @@ Now, open the newly created file and paste the following contents inside it.
   </header>
 
   <main>
-    // highlight-start
     @section('content')
     @endsection
-    // highlight-end
   </main>
 </body>
 </html>

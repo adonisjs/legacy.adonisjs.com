@@ -247,7 +247,7 @@ You can also set your own custom flash messages by using the `session.flash` met
 
 [codegroup]
 
-```ts{}{Controller}
+```ts{11-12}{Controller}
 public async store ({ request }: HttpContextContract) {
   const postSchema = validator.compile(schema.create({
     title: schema.string(),
@@ -258,10 +258,8 @@ public async store ({ request }: HttpContextContract) {
     schema: postSchema,
   })
 
-  // highlight-start
   session.flash('success', 'Post created successfully')
   response.redirect('back')
-  // highlight-end
 }
 ```
 
@@ -313,7 +311,7 @@ This time if you submit the form with the valid post title and body, you will se
 ### Using Custom Messages
 Currently the validation error messages are not so descriptive and neither human friendly. However, you can define your own custom messages and pass them to the `request.validate` method, as shown below.
 
-```ts
+```ts{9-12}
 public async store ({ request }: HttpContextContract) {
   const postSchema = validator.compile(schema.create({
     title: schema.string(),
@@ -322,12 +320,10 @@ public async store ({ request }: HttpContextContract) {
 
   const data = await request.validate({
     schema: postSchema,
-    // highlight-start
     messages: {
       'title.required': 'Please enter post title',
       'body.required': 'Please enter post body',
     }
-    // highlight-end
   })
 
   session.flash('success', 'Post created successfully')
@@ -372,26 +368,22 @@ export default class PostValidator {
 
 Finally, you can remove the schema related code from the controller method in favor of the newly created validator.
 
-```ts
+```ts{3,10-15}
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, validator } from '@ioc:Adonis/Core/Validator'
-// highlight-start
 import PostValidator from 'App/Validators/PostValidator'
-// highlight-end
 
 export default class PostsController {
   public async create ({ view }: HttpContextContract) {
     return view.render('posts/create')
   }
 
-  // highlight-start
   public async store ({ request }: HttpContextContract) {
     const data = await request.validate(PostValidator)
 
     session.flash('success', 'Post created successfully')
     response.redirect('back')
   }
-  // highlight-end
 }
 ```
 

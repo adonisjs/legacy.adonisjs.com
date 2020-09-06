@@ -13,7 +13,7 @@ Most of the applications usually make use of a single guard to login/authenticat
 ## Defining multiple guards
 The first step is to define all the guards you are planning to use inside the `contracts/auth.ts` file.
 
-```ts
+```ts{16-19}
 import User from 'App/Models/User'
 
 declare module '@ioc:Adonis/Addons/Auth' {
@@ -29,12 +29,10 @@ declare module '@ioc:Adonis/Addons/Auth' {
       implementation: SessionGuardContract<'user', 'web'>,
       config: SessionGuardConfig<'user'>,
     },
-    // highlight-start
     basic: {
       implementation: BasicAuthGuardContract<'user', 'basic'>,
       config: BasicAuthGuardConfig<'user'>,
     }
-    // highlight-end
   }
 }
 ```

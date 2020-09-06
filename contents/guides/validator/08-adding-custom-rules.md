@@ -142,7 +142,7 @@ To address this concern, we allow you to normalize and mutate the value during v
 ### Normalizing the phone number
 Lets update the rule implementation to normalize the phone number and then mutate its value.
 
-```ts{}{start/validationRules.ts}
+```ts{27-28}{start/validationRules.ts}
 validator.rule('phone', (
   value,
   [{ countryCode }],
@@ -166,13 +166,11 @@ validator.rule('phone', (
    */
   if (!phoneNumber || !phoneNumber.isValid()) {
     errorReporter.report(pointer, 'phone', 'Invalid phone', arrayExpressionPointer)
-    // highlight-start
     return
   }
 
   const normalized = phoneNumber.formatNational()
   mutate(normalized)
-  // highlight-end
 })
 ```
 

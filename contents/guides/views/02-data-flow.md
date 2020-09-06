@@ -14,9 +14,8 @@ The most common way to pass data to a template is during the `view.render` call.
 
 [codegroup]
 
-```ts{}{Rendering View}
+```ts{2-9}{Rendering View}
 Route.get('users/:id', async ({ view }) => {
-  // highlight-start
   const state = {
     user: {
       id: 1,
@@ -25,7 +24,6 @@ Route.get('users/:id', async ({ view }) => {
   }
   
   return view.render('users/show', state)
-  // highlight-end
 })
 ```
 
@@ -43,7 +41,7 @@ Templates also have a global state, which is shared among all the templates and 
 ### Defining globals
 The globals must be defined only once. So keeping them inside a provider is a great option. Open `providers/AppProvider.ts` file and paste the following code snippet inside it.
 
-```ts
+```ts{9-11}
 import { IocContract } from '@adonisjs/fold'
 
 export default class AppProvider {
@@ -52,11 +50,9 @@ export default class AppProvider {
 
   public async boot () {
     const View = (await import('@ioc:Adonis/Core/View')).default
-    // highlight-start
     View.global('timestamp', () => {
       return new Date().getTime()
     })
-    // highlight-end
   }
 }
 ```

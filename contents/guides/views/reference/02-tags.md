@@ -186,14 +186,12 @@ The `@section` tag is used inside both the layout and the template using the lay
 </html>
 ```
 
-```edge{}{Parent Template}
+```edge{3-5}{Parent Template}
 @layout('layouts/master')
 
-// highlight-start
 @section('content')
   <p> Hello world </p>
 @endsection
-// highlight-end
 ```
 
 ```html{10}{Output}

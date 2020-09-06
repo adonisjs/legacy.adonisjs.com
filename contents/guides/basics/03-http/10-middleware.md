@@ -127,16 +127,14 @@ The first step is to create and register the middleware inside `start/kernel.ts`
   ```
 
 2. Open the newly created middleware file and paste following contents to it.
-  ```ts{}{app/Middleware/Acl.ts}
+  ```ts{7}{app/Middleware/Acl.ts}
   import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
   export default class Acl {
     public async handle (
       { request }: HttpContextContract,
       next: () => Promise<void>,
-      // highlight-start
       allowedRoles: string[],
-      // highlight-end
     ) {
       console.log(`"${request.url()}" enforces "${allowedRoles}" roles`)
       await next()

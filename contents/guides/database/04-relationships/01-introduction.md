@@ -32,15 +32,13 @@ node ace make:model Profile
 
 The User model.
 
-```ts{}{app/Models/User.ts}
+```ts{5-6}{app/Models/User.ts}
 import { column, BaseModel, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import Profile from 'App/Models/Profile'
 
 export default class User extends BaseModel {
-  // highlight-start
   @hasOne(() => Profile)
   public profile: HasOne<typeof Profile>
-  // highlight-end
 }
 ```
 
@@ -276,7 +274,7 @@ users.forEach((user) => {
 ## On Query Hook
 Every time you define a relationship, you can also attach an `onQuery` hook with it and this can allow you to create variants of your relationship. For example:
 
-```ts
+```ts{8-11}
 import { column, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import UserEmail from 'App/Models/UserEmail'
 
@@ -284,12 +282,10 @@ export default class User extends BaseModel {
   @hasMany(() => UserEmail)
   public emails: HasMany<typeof UserEmail>
 
-  // highlight-start
   @hasMany(() => UserEmail, {
     onQuery: (query) => query.where('isActive', true)
   })
   public activeEmails: HasMany<typeof UserEmail>
-  // highlight-end
 }
 ```
 
@@ -322,7 +318,7 @@ await user.related('profile').save(profile)
 
 The `related().save` method will wrap both the insert calls inside a transaction. However, you can also define a custom transaction by setting it on the parent model. For example:
 
-```ts
+```ts{9}
 const user = new User()
 user.email = 'virk@adonisjs.com'
 user.password = 'secret'
@@ -331,9 +327,7 @@ const profile = new Profile()
 profile.avatarUrl = 'foo.jpg'
 profile.isActive = true
 
-// highlight-start
 user.$trx = await Database.transaction()
-// highlight-end
 
 try {
   await user.related('profile').save(profile)

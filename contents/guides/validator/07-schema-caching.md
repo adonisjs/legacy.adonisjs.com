@@ -59,7 +59,7 @@ The first option is to give up caching. This will add a delay of couple of milli
 ### Option 2 (Create a unique key)
 Considering the above example, you can append the selected state to the `cacheKey` and hence each state will have its own copy of cache schema. For example:
 
-```ts
+```ts{9}
 export default class AddressValidator {
   public selectedState = this.ctx.request.input('state')
 
@@ -68,9 +68,7 @@ export default class AddressValidator {
     city: schema.enum(CITIES[this.selectedState] || [])
   })
 
-  // highlight-start
   public cacheKey = `${this.ctx.routeKey}-${selectedState}`
-  // highlight-end
 }
 ```
 
@@ -81,15 +79,13 @@ In fact, giving up caching is better than caching too many schemas with small va
 ### Option 3 (Using refs)
 Refs gives you the best of the both worlds. You can still cache your schema and also reference the runtime values inside them. Following is an example of the same:
 
-```ts
+```ts{4-6}
 export default class AddressValidator {
   public selectedState = this.ctx.request.input('state')
 
-  // highlight-start
   public refs = schema.refs({
     cities: CITIES[this.selectedState] || []
   })
-  // highlight-end
 
   public schema = schema.create({
     state: schema.enum(STATES),

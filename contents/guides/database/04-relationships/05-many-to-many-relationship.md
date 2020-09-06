@@ -40,15 +40,13 @@ Just like the other relationships, you will have to create just two models. The 
 
 Following is an example of the User model.
 
-```ts{}{app/Models/User.ts}
+```ts{5-6}{app/Models/User.ts}
 import { column, BaseModel, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Skill from 'App/Models/Skill'
 
 export default class User extends BaseModel {
-  // highlight-start
   @manyToMany(() => Skill)
   public skills: ManyToMany<typeof Skill>
-  // highlight-end
 }
 ```
 

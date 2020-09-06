@@ -66,13 +66,11 @@ Output
 ## Customizing property names
 By default, Lucid will convert `camelCase` property names to `snake_case`. However, you can easily customize the property names by using the `serializeAs` option. For example:
 
-```ts
+```ts{4}
 export default class Post extends BaseModel {
   @column.dateTime({
     autoCreate: true,
-    // highlight-start
     serializeAs: 'creation_date',
-    // highlight-end
   })
   public createdAt: DateTime
 }
@@ -94,11 +92,9 @@ console.log(post.serialize())
 
 To hide a property from getting serialized, you can set `serializeAs = null`.
 
-```ts
+```ts{2}
 export default class Post extends BaseModel {
-  // highlight-start
   @column({ serializeAs: null })
-  // highlight-end
   public slug: string
 }
 ```
@@ -164,15 +160,13 @@ The users of your API doesn't know about the property names that exists on your 
 ## Customizing value
 Along with the serialized property names, you can also customize the value of a given column by defining a custom `serialize` method.
 
-```ts
+```ts{4-6}
 export default class Post extends BaseModel {
   @column.dateTime({
     autoCreate: true,
-    // highlight-start
     serialize: (value?: DateTime) => {
       return value ? value.setZone('utc').toISO() : value
     },
-    // highlight-end
   })
   public createdAt: DateTime
 }
@@ -216,12 +210,10 @@ Output
 ### Customizing relationship name
 You can customize the property name for the serialized relationship.
 
-```ts
+```ts{3}
 export class User extends BaseModel {
   @hasMany(() => Post, {
-    // highlight-start
     serializeAs: 'writings'
-    // highlight-end
   })
   public posts: HasMany<typeof Post>
 }
