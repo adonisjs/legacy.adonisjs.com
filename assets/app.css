@@ -42,6 +42,14 @@
 .code {
 	@apply rounded-md relative;
 
+	.line:empty {
+		height: 1em;
+
+		&:last-of-type {
+			height: 0;
+		}
+	}
+
 	.filename {
 		@apply absolute right-0 top-0 py-1 px-3 m-4 bg-grey-300 text-sm rounded-md font-mono;
 	}
@@ -50,6 +58,14 @@
 .codegroup {
 	.filename {
 		display: none;
+	}
+
+	.line:empty {
+		height: 1em;
+
+		&:last-of-type {
+			height: 0;
+		}
 	}
 
 	.tabs {
