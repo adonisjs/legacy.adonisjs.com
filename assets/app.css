@@ -166,6 +166,7 @@
 		@apply relative;
 	}
 
+	ol li,
 	ul li {
 		@apply pl-8 mb-4;
 
@@ -174,6 +175,17 @@
 			content: '—';
 			width: 15px;
 		}
+	}
+
+	ol {
+		counter-reset: numbered-counter;
+	}
+
+	ol li::before {
+		@apply absolute top-0 left-0 block;
+
+		content: counter(numbered-counter, decimal) ".";
+		counter-increment: numbered-counter;
 	}
 
 	/*
