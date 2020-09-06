@@ -52,10 +52,6 @@
 		display: none;
 	}
 
-	.dimer-edge-shiki {
-		@apply pt-4;
-	}
-
 	.tabs {
 		.active {
 			@apply text-white border-b-2 border-adonis-brand !important;
