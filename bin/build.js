@@ -38,7 +38,14 @@ async function prepareEdge() {
 	renderer.hook((node) => {
 		// Code examples.
 		if (utils.hasClass(node, 'dimer-highlight')) {
-	 		return component('_elements/_code', { node })
+			const hasFilename = node.children[0].tag === 'span'
+			const filename = hasFilename ? node.children[0].children[0].value : null
+			const code = hasFilename ? [node.children[1]] : [node.children[0]]
+
+	 		return component('_elements/_code', {
+	 			filename,
+	 			code,
+	 		})
 		}
 
 		// Tabbed code examples.

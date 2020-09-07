@@ -1,4 +1,10 @@
 <div class="code bg-adonis-pre-bg overflow-auto">
-	@dimerTree(node.children)
+	@if(filename)
+		<div class="rounded-b-none flex border-b-2 border-grey-800 pl-8 p-4 font-mono text-base text-grey-400">
+			{{ filename }}
+		</div>
+	@endif
+
+	@dimerTree(code)
 </div>
 
