@@ -22,7 +22,7 @@ import {
 } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Country extends BaseModel {
-  @hasManyThrough(() => Post, () => User)
+  @hasManyThrough([() => Post, () => User])
   public posts: HasManyThrough<typeof Post>
 }
 ```
@@ -51,6 +51,31 @@ export default class Post extends BaseModel {
   @column()
   public userId: number
 }
+```
+
+## Relationship keys
+A many to many through relation relies on many different keys to properly setup the relationship. All of these are keys are computed using standard conventions. However, you are free to override them.
+
+### `localKey`
+The local key is mostly the primary key of the **first model**. In our example: Country is the first model and `localKey` will be the `id`.
+
+### `foreignKey`
+The foreign key is in the pivot table to create the relationship with the **first model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `foreignKey` will be `country_id`.
+
+### `throughLocalKey`
+The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `throughLocalKey` will be `id`.
+
+### `throughForeignKey`
+The through foreign key is mostly the foreign key of the **related model**. In our example: Skill is the related model and `throughForeignKey` will also be the `user_id`.
+
+```ts
+@manyToMany([() => Post, () => User], {
+  localKey: 'id',
+  foreignKey: 'country_id',
+  throughLocalKey: 'id',
+  throughForeignKey: 'user_id'
+})
+public posts: HasManyThrough<typeof Post>
 ```
 
 ## Table Structure

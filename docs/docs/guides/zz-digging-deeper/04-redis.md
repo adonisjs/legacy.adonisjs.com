@@ -100,7 +100,7 @@ Open the newly created file and paste the following code snippet inside it.
 import Redis from '@ioc:Adonis/Addons/Redis'
 
 Redis.subscribe('user:signup', (user: string) => {
-  console.log(JSON.stringify(user))
+  console.log(JSON.parse(user))
 })
 ```
 
