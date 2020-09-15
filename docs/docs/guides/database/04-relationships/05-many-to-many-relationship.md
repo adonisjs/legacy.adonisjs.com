@@ -13,7 +13,7 @@ When working with a many to many relationship, you will always need a 3rd table 
 
 Let's imagine, you have a `users` table and a `skills` table and you decided to put the `user_id` inside the `skills` table.
 
-```markup{}{skills}
+```text{}{skills}
 +----------------------+
 | skills               |
 +------------+---------+
@@ -40,15 +40,13 @@ Just like the other relationships, you will have to create just two models. The 
 
 Following is an example of the User model.
 
-```ts{}{app/Models/User.ts}
+```ts{5-6}{app/Models/User.ts}
 import { column, BaseModel, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Skill from 'App/Models/Skill'
 
 export default class User extends BaseModel {
-  // highlight-start
   @manyToMany(() => Skill)
   public skills: ManyToMany<typeof Skill>
-  // highlight-end
 }
 ```
 
@@ -79,7 +77,7 @@ The related key is mostly the primary key of the **related model**. In our examp
 The foreign key is in the pivot table to create the relationship with the **parent model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `pivotForeignKey` will be `user_id`.
 
 ### `pivotRelatedForeignKey`
-The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is **snake_casE** representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skill_id`.
+The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skill_id`.
 
 ```ts
 @manyToMany(() => Skill, {
