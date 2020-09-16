@@ -79,7 +79,7 @@ The related key is mostly the primary key of the **related model**. In our examp
 The foreign key is in the pivot table to create the relationship with the **parent model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `pivotForeignKey` will be `user_id`.
 
 ### `pivotRelatedForeignKey`
-The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is **snake_casE** representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skill_id`.
+The related foreign key is in the pivot table to create the relationship with the **related model**. Conventionally, it is **snake_case** representation of the model name and its primary key. In our example: The `pivotRelatedForeignKey` will be `skill_id`.
 
 ```ts
 @manyToMany(() => Skill, {
