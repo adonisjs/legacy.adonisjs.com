@@ -12,7 +12,7 @@ In this guide, you will get a birds eye view of handling HTTP requests and how d
 
 ## Router
 
-Routes are the starting point for your application. Using Routes, you define the URL's for your website and hence without registering any routes, your application is not accessible to the outside world.
+Routes are the starting point for your application. Using Routes, you define the URLs for your website and hence without registering any routes, your application is not accessible to the outside world.
 
 You can register routes using the Router module of AdonisJS as shown in the following example:
 
