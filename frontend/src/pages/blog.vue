@@ -11,12 +11,12 @@
       </template>
 
       <div class="post-card" v-for="post in posts" :key="post.path">
-        <a :href="post.path">
+        <GLink :to="`/${post.context.doc.permalink}`">
           <h2>{{ post.context.doc.title }}</h2>
           <small class="publish_date">
             Published the <DateTime :time="post.context.doc.meta.published_on" format="do LLLL yyyy" />
           </small>
-        </a>
+        </GLink>
       </div>
     </Article>
 

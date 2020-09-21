@@ -7,9 +7,6 @@
 module.exports = {
   siteName: 'AdonisJS',
   siteUrl: 'https://preview.adonisjs.com',
-  permalinks: {
-    trailingSlash: true,
-  },
   plugins: [
     {
       use: '@gridsome/plugin-google-analytics',

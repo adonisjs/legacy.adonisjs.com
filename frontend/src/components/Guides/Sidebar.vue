@@ -35,7 +35,7 @@
             <ul v-for="(category, index) in categories" :key="index">
               <h3 class="title" v-if="category.name !== 'root'">{{ category.name }}</h3>
               <li v-for="doc in category.docs" :key="doc.permalink">
-                <GLink :to="`/${doc.permalink}/`">
+                <GLink :to="`/${doc.permalink}`">
                   <span class="label"> {{ doc.sidebarTitle || doc.title }} </span>
                 </GLink>
               </li>
