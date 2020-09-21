@@ -22,7 +22,7 @@ You can change the active driver and its settings inside `config/session.ts` fil
 
 - **Cookies (default)** are great when you are not storing multi megabytes of data. Cookies are encrypted by default and hence there is no concern of data security.
 - **File System** can be used to keep the sessions data on the server side. However, horizontally scaling and sharing sessions is impossible. Also there can be data loss, when code is running inside containers, like Docker.
-- **Redis** is the best of both. You can store large chunks of data and also share it across multiple servers. 
+- **Redis** is the best of both. You can store large chunks of data and also share it across multiple servers.
 
 You can configure the session storage by choosing between one of the available session drivers. They are:
 
@@ -72,7 +72,7 @@ node ace invoke @adonisjs/session
 ```
 
 ## Using sessions
-As soon as the package is configured, you can access the `session` object on the [HTTP context](introduction#http-context). For demonstration, lets create a dummy app to store the user language preference inside the session.
+As soon as the package is configured, you can access the `session` object on the [HTTP context](/guides/http/introduction#http-context). For demonstration, lets create a dummy app to store the user language preference inside the session.
 
 1. Register the route to render the `welcome` view and pass the user language by reading it from the session.
   ```ts
@@ -142,7 +142,7 @@ export default class PostsController {
 
 A standard practice is to redirect the request after you have set the flash messages. After the redirect, the new request can access the previously set flash messages inside the controllers or the views templates.
 
-### Access Flash Messages inside Controllers 
+### Access Flash Messages inside Controllers
 
 ```ts
 public async create ({ view, session }: HttpContextContract) {

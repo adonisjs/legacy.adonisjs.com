@@ -53,7 +53,7 @@ For example, following is the HTML form to create a new blog post by accepting t
 
 As you can notice, the entire document is vanilla HTML with no special syntax inside it. However, you can replace the hard coded form action `/posts`  with a helper method `route`.
 
-Assuming the following route declarations. 
+Assuming the following route declarations.
 
 ```ts
 import Route from '@ioc:Adonis/Core/Route'
@@ -104,7 +104,7 @@ export default class PostsController {
   public async store ({ request }: HttpContextContract) {
     const data = request.only(['title', 'body'])
     console.log(data)
-    
+
     return 'Handled'
   }
 }
@@ -133,7 +133,7 @@ export default class PostsController {
       title: schema.string(),
       body: schema.string(),
     })
-  
+
     const data = await request.validate({
       schema: postSchema,
       cacheKey: request.url(),
@@ -157,7 +157,7 @@ Along with the runtime validations, the schema also returns **type information**
 
 
 ### Displaying Validation Errors
-The `request.validate` method uses [flash messages](sessions#flash-messages) to pass the validation errors to the template. You can access them using the `flashMessages` global object.
+The `request.validate` method uses [flash messages](/guides/http/sessions#flash-messages) to pass the validation errors to the template. You can access them using the `flashMessages` global object.
 
 Following is an example of displaying the error messages next to the input fields.
 
@@ -399,5 +399,5 @@ export default class PostsController {
 
 We have just scratched the surface with form validation and flash messages. We also recommend you to read the dedicated guides on the following topics.
 
-- Crash course on [Flash messages](sessions#flash-messages)
+- Crash course on [Flash messages](/guides/http/sessions#flash-messages)
 - [Validator deep dive](/guides/validator/introduction)

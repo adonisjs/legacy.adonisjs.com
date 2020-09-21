@@ -26,7 +26,7 @@ Each connection must specify a `client`, which determines the database backend t
 - `oracledb` for Oracle.
 - `mssql` for SQL server.
 
-After defining the `client`, you will have to define the connection options. Read the [setup guide](setup#configure-sqlite) to learn about the connection options for each client.
+After defining the `client`, you will have to define the connection options. Read the [setup guide](/guides/database/setup#configure-sqlite) to learn about the connection options for each client.
 
 ### Connections LifeCycle
 The database connections are lazy loaded. It means, until you execute a query, the database connection is not created. You can check the state of connections using the connection manager.
@@ -146,7 +146,7 @@ Lucid allows you to run queries in one of the following connection modes.
 - `dual`: Read queries are sent to the read server and write queries are sent to the write server.
 - `read`: Only read queries are allowed.
 - `write`: Both read and write queries are sent to the write server.
- 
+
 Flexibility to choose between the available modes is helpful when you want subsequent write and read calls to always to always use the `write` server. For example: Reading the list of users right after adding a new user.
 
 ```ts
@@ -206,7 +206,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class TenantDb {
   public async handle (ctx: HttpContextContract, next: () => Promise<void>) {
-    
+
     const tenantId = ctx.request.input('tenant')
     ctx.response.abortIf(!tenantId, 'Define tenant id using the query string')
 

@@ -29,7 +29,7 @@ Server.middleware.register([
 ### Config
 
 The configuration for file uploads is stored inside `config/bodyparser.ts` file under the `multipart` object. The config file is extensively documented, so feel free to go through all the available options and tweak them as per your needs.
- 
+
 ## Basic File Upload
 All of the user uploaded files can be accessed using one of the following methods.
 
@@ -156,7 +156,7 @@ export default class UsersController {
 ```
 
 ### Using Request Validator
-Another way to validate files is to make use of the request validator. Assuming you are already aware with the validator syntax from the [form submissions guide](form-submissions#validating-form-data), following is the code snippet for validating files using the validator.
+Another way to validate files is to make use of the request validator. Assuming you are already aware with the validator syntax from the [form submissions guide](/guides/http/form-submissions#validating-form-data), following is the code snippet for validating files using the validator.
 
 ```ts
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'

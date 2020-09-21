@@ -8,7 +8,7 @@ group: Authentication
 The basic auth guard uses the [HTTP Basic Auth](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#Basic_authentication_scheme) for authenticating requests. By the end of this guide, you will be able to authenticate requests using the auth middleware.
 
 ## Authenticating requests
-There is **no concept of login and logout** with HTTP basic auth. The client is supposed to pass a base64 encoded string containing the user credentials as the `Authorization` header. If the credentials are valid, the request will be permitted. Otherwise, AdonisJS will deny the request with `WWW-Authenticate` response header. 
+There is **no concept of login and logout** with HTTP basic auth. The client is supposed to pass a base64 encoded string containing the user credentials as the `Authorization` header. If the credentials are valid, the request will be permitted. Otherwise, AdonisJS will deny the request with `WWW-Authenticate` response header.
 
 For demonstration, let's create a dummy route and use the `auth` middleware to force basic authentication.
 
@@ -49,4 +49,4 @@ If you make the same request using a browser, it will prompt you to enter the cr
 
 ## What's next?
 
-- [Understanding the flow](handling-exceptions) of exceptions raised by the auth module.
+- [Understanding the flow](/guides/auth/handling-exceptions) of exceptions raised by the auth module.

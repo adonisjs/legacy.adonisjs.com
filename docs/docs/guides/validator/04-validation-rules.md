@@ -141,7 +141,7 @@ You can also use the distinct rule with an array of literal values by using the 
 
 
 ## `rules.email`
-Enforces the value to be properly formatted as an email. 
+Enforces the value to be properly formatted as an email.
 
 [note]
 Can only be used only with the **string schema type**.
@@ -213,7 +213,7 @@ Additionally, you can also define `where` and `whereNot` constraints. For exampl
 
 [note]
 
-If you are caching your validation schema using the `cacheKey` and your **where constraints** relies on a runtime value, then you must make use of [refs](schema-caching#refs).
+If you are caching your validation schema using the `cacheKey` and your **where constraints** relies on a runtime value, then you must make use of [refs](/guides/validator/schema-caching#refs).
 
 [/note]
 
@@ -341,7 +341,7 @@ Ensure, the value is contained in the specified range.
 ```
 
 ## `rules.regex`
-Define a custom regex to validate the value against. 
+Define a custom regex to validate the value against.
 
 ```ts
 {

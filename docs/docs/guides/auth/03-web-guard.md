@@ -5,7 +5,7 @@ group: Authentication
 
 # Web Guard
 
-The web guard uses `sessions` to login and authenticate users. By the end of this guide, you will know: 
+The web guard uses `sessions` to login and authenticate users. By the end of this guide, you will know:
 
 - When to use the web guard
 - How to register and login user
@@ -25,7 +25,7 @@ Ensure to install the [@adonisjs/session](/guides/http/sessions) module before c
 [/note]
 
 ## Register new users
-Let's begin by defining the required routes and create the HTML form to register new users. 
+Let's begin by defining the required routes and create the HTML form to register new users.
 
 ```ts{}{start/routes.ts}
 Route.on('register').render('register')
@@ -232,14 +232,14 @@ export default class AuthController {
     const email = request.input('email')
     const password = request.input('password')
     await auth.attempt(email, password)
-    
+
     response.redirect('/dashboard')
   }
 }
 
 ```
 
-- Instead of using the `auth.login` method, we make use of the `auth.attempt` method. 
+- Instead of using the `auth.login` method, we make use of the `auth.attempt` method.
 - This method accepts a `uid` and the `password`. It will self handle the process of finding the user and verifying their password.
 - If the credentials are valid, the user will be logged in automatically.
 - If the credentials are not valid, then the user will be redirected back to the login form with the errors.
@@ -269,5 +269,5 @@ await auth.logout()
 
 ## What's next?
 
-- [Using middleware](middleware) to protect routes from unauthenticated users.
-- [Understanding the flow](handling-exceptions) of exceptions raised by the auth module.
+- [Using middleware](/guides/auth/middleware) to protect routes from unauthenticated users.
+- [Understanding the flow](/guides/auth/handling-exceptions) of exceptions raised by the auth module.

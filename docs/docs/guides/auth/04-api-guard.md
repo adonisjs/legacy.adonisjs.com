@@ -7,14 +7,14 @@ group: Authentication
 The `api` guard uses database backed **opaque tokens** for authenticating users. In this guide, we will discuss about the different authentication strategies, along with the usage of the opaque tokens.
 
 ## Authenticating APIs
-**The tokens based authentication is mainly targeted towards the API servers**. If you are creating a traditional, server rendered application, then we highly recommend using the [web guard](web-guard), as it is most simplest and the secure way to authenticate users.
+**The tokens based authentication is mainly targeted towards the API servers**. If you are creating a traditional, server rendered application, then we highly recommend using the [web guard](/guides/auth/web-guard), as it is most simplest and the secure way to authenticate users.
 
 The authentication strategy for an API server highly depends upon its consumers.
 
 ---
 
 ### Frontend application on the same domain/subdomain
-If the consumer of your API server is only a frontend application (written in Vue, React and so on) running on the same domain/subdomain, then we recommend using the [web guard](web-guard).
+If the consumer of your API server is only a frontend application (written in Vue, React and so on) running on the same domain/subdomain, then we recommend using the [web guard](/guides/auth/web-guard).
 
 The web guard uses sessions and cookies for authentication. The cookies on the same domain works great with Ajax calls and provides you the best combination of simplicity and security.
 
@@ -41,7 +41,7 @@ If you are creating an API server, which is consumed by third party applications
 Unfortunately, there is no first class support for Oauth2 in AdonisJS (as of you today). However, you can use other packages from npm to implement an Oauth2 server.
 
 ## Login
-Once, the [setup](setup) has been completed, you can use the `api` guard to generate the **oat tokens** for a given user.
+Once, the [setup](/guides/auth/setup) has been completed, you can use the `api` guard to generate the **oat tokens** for a given user.
 
 Open `start/routes.ts` file and paste the following route declaration inside it.
 
@@ -149,7 +149,7 @@ The default database connection (defined inside `config/database.ts`) file is us
     driver: 'database',
     table: 'api_tokens',
     connection: 'a-different-connection' // 👈
-  },  
+  },
 }
 ```
 
@@ -175,5 +175,5 @@ await Database.from('api_tokens').where('id', tokenId).delete()
 
 ## What's next?
 
-- [Using middleware](middleware) to protect routes from unauthenticated users.
-- [Understanding the flow](handling-exceptions) of exceptions raised by the auth module.
+- [Using middleware](/guides/auth/middleware) to protect routes from unauthenticated users.
+- [Understanding the flow](/guides/auth/handling-exceptions) of exceptions raised by the auth module.

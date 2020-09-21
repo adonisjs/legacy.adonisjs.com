@@ -40,6 +40,7 @@ The opposite of `mount` method. This methods removes the mounted directory.
 ## `registerTemplate`
 Method to register an in-memory templates. Make sure to also read the dedicated guide on [in memory views](/guides/views/in-memory-views)
 
+<!-- creating-svg-tag page not found -->
 ## `registerTag`
 Method to register your custom tags to the templating layer. Again, it is recommended to read the [dedicated guides](/guides/views/creating-svg-tag) for in-depth understanding.
 

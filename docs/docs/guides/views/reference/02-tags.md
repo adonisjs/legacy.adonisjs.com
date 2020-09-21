@@ -124,7 +124,7 @@ Similar to `@include`, but accepts an additional value to conditionally include 
 The `@component` tag allows you to render re-usable components. It is a block tag and can optionally accept `slots` for the component.
 
 [note]
-We have also have a dedicated guide on [components](components). Make sure to check it out.
+We have also have a dedicated guide on [components](/guides/views/components). Make sure to check it out.
 [/note]
 
 ```edge
@@ -248,4 +248,4 @@ function template (state) {
 As expected, the `console.log` statement will not show the value of the `title` variable, since it is not part of the `state` object. Same is the case with Edge `inspect` call.
 
 ## `@debugger`
-The `@debugger` tag allows you to debug your template output using Chrome DevTools. We recommend you to read the [dedicated doc on debugging](guides/views/debugging#using-debugger).
+The `@debugger` tag allows you to debug your template output using Chrome DevTools. We recommend you to read the [dedicated doc on debugging](/guides/views/debugging#using-debugger).

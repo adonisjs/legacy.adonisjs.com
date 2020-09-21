@@ -24,7 +24,7 @@ The global exception handler lives inside `app/Exceptions/Handler.ts` file. You 
 The exception handler class extends the `Adonis/Core/HttpExceptionHandler` provided by AdonisJS. All of the functionality we are about to discuss are inherited from the base `HttpExceptionHandler` class.
 
 ## The `handle` method
-The `handle` method is invoked everytime an unhandled exception is raised within an HTTP request cycle. The handle method receives an error object, along with the [HTTP context](introduction#http-context).
+The `handle` method is invoked everytime an unhandled exception is raised within an HTTP request cycle. The handle method receives an error object, along with the [HTTP context](/guides/http/introduction#http-context).
 
 You can let the base exception handler handle the exceptions for you, unless, you want to manually handle a specific exception. For example:
 
@@ -50,7 +50,7 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 ```
 
 ## The `report` method
-The `report` method is meant to report/log exceptions for debugging. By default, the base exception handler will use the [application logger](logger) to log all exceptions. However, you can also implement this method to manually handle reporting in a different way.
+The `report` method is meant to report/log exceptions for debugging. By default, the base exception handler will use the [application logger](/guides/logger) to log all exceptions. However, you can also implement this method to manually handle reporting in a different way.
 
 ```ts
 import Logger from '@ioc:Adonis/Core/Logger'

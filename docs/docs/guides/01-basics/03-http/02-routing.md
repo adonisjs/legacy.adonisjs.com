@@ -88,7 +88,7 @@ Every route must have a corresponding handler to handle the request. Handlers ca
 
 The inline closures are functions, directly attached on the route definition. They are great for quickly testing out some code. However, we highly recommend keeping the routes file clean by using Controllers.
 
-On the other hand, Controllers provides a great structure to your application by making you extract the code for handling requests to dedicated controller files. Make sure to read the [guide on controllers](controllers) for in-depth understanding.
+On the other hand, Controllers provides a great structure to your application by making you extract the code for handling requests to dedicated controller files. Make sure to read the [guide on controllers](/guides/http/controllers) for in-depth understanding.
 
 [codegroup]
 
@@ -332,7 +332,7 @@ AdonisJS provides two layers at which middleware can be executed.
 - **Route middleware** are executed when request for the corresponding route is received.
 
 [note]
-This section focuses on the usage of Middleware with Routes. Make sure to read the [dedicated guide on middleware](middleware) to learn more about them.
+This section focuses on the usage of Middleware with Routes. Make sure to read the [dedicated guide on middleware](/guides/http/middleware) to learn more about them.
 [/note]
 
 You can add middleware to the routes using the `middleware` method, as shown below:
@@ -354,7 +354,7 @@ Route
 
 Just like Controllers, you can extract inline middleware functions to their own dedicated classes and keep your routes file clean and tidy.
 
-Creating and using middleware classes involves an extra step of registering middleware aliases and then using the alias as an identifier on the route. The [middleware guide](middleware) covers the concept of aliases in depth.
+Creating and using middleware classes involves an extra step of registering middleware aliases and then using the alias as an identifier on the route. The [middleware guide](/guides/http/middleware) covers the concept of aliases in depth.
 
 1. Run the following command to create a new middleware class.
 
