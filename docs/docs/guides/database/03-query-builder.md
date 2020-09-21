@@ -35,7 +35,7 @@ Following is the list different query builders instances.
 - Query builder for selecting, updating or deleting rows.
   ```ts
   Database.query().from('users')
-  
+
   // Shortcut
   Database.from('users')
   ```
@@ -177,4 +177,4 @@ await Database.query().count('* as total').from('users')
 ```
 
 ## What's Next?
-This guide introduces you to the concept of Query builder and how to use it inside your application. However, the API surface of the query builder is quite big and we recommend you reading the [API docs](/api/database/query-builder) for same.
+This guide introduces you to the concept of Query builder and how to use it inside your application. However, the API surface of the query builder is quite big and we recommend you reading the [API docs](/guides/database/query-builder) for same.

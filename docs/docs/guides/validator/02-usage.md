@@ -4,7 +4,7 @@ group: Validator
 ---
 
 # Usage
-In this guide, we will take a glimpse of the AdonisJS validator by covering only the basics and later, you can deep dive into individual topics to have a stronger understanding. 
+In this guide, we will take a glimpse of the AdonisJS validator by covering only the basics and later, you can deep dive into individual topics to have a stronger understanding.
 
 By the end of this guide, you will know:
 
@@ -27,7 +27,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class PostsController {
   public async register ({ request }: HttpContextContract) {
-    
+
     const postsSchema = schema.create({
       title: schema.string(),
       content: schema.string(),
@@ -60,7 +60,7 @@ Upon failure, the `request.validate` method will raise an exception, containing 
 try {
   await request.validate({
     schema: postsSchema,
-  })  
+  })
 } catch (error) {
   console.log(error.messages)
   response.status(422).send(error.messages)
@@ -113,7 +113,7 @@ try {
   console.log(error.messages)
 }
 // highlight-end
-``` 
+```
 
 ## Schema 101
 The schema definition is divided into three main parts.
@@ -197,6 +197,6 @@ schema.create({
 ## What's next?
 We hope, the usage guide gave a head start with the validator. However, we do recommend reading the following guides to explore all available data types and validation rules.
 
-- Available [schema data types](schema-types)
-- List of available [validation rules](rules)
-- [Custom messages](custom-messages)
+- Available [schema data types](/guides/validator/schema-types)
+- List of available [validation rules](/guides/validator/rules)
+- [Custom messages](/guides/validator/custom-messages)

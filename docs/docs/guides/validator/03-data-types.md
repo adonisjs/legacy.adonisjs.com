@@ -75,7 +75,7 @@ We cast `on` and `off` values to a boolean, since the HTML form `input[type="che
 ```
 
 ## `schema.date`
-Enforces the value to be a valid date object or a string representing a date. The values are casted to an instance of [luxon.DateTime](https://moment.github.io/luxon/docs/manual/tour.html#creating-a-datetime) 
+Enforces the value to be a valid date object or a string representing a date. The values are casted to an instance of [luxon.DateTime](https://moment.github.io/luxon/docs/manual/tour.html#creating-a-datetime)
 
 ```ts
 {
@@ -144,7 +144,7 @@ schema.enum(Object.values(SocialAccounts))
 
 [note]
 
-If you are caching your validation schema using the `cacheKey` and your **enum options** relies on a runtime value, then you must make use of [refs](schema-caching#refs).
+If you are caching your validation schema using the `cacheKey` and your **enum options** relies on a runtime value, then you must make use of [refs](/guides/validator/schema-caching#refs).
 
 [/note]
 
@@ -169,7 +169,7 @@ In the following example, we expect the user to select one or more of the pre-de
 
 [note]
 
-If you are caching your validation schema using the `cacheKey` and your **enumSet options** relies on a runtime value, then you must make use of [refs](schema-caching#refs).
+If you are caching your validation schema using the `cacheKey` and your **enumSet options** relies on a runtime value, then you must make use of [refs](/guides/validator/schema-caching#refs).
 
 [/note]
 

@@ -75,7 +75,7 @@ Route.get('/', async () => {
 })
 ```
 
-[Learn more](routing) about routes
+[Learn more](/guides/http/routing) about routes
 
 ## Controllers
 
@@ -111,7 +111,7 @@ export default class PostsController {
 
 [/codegroup]
 
-[Learn more](controllers) about controllers
+[Learn more](/guides/http/controllers) about controllers
 
 ## Views
 
@@ -133,7 +133,7 @@ The views layer of AdonisJS is powered by [Edge](https://edge.adonisjs.com) temp
 </body>
 ```
 
-All that fancy syntax `@set`, `@each` are part of the Edge templating syntax. Make sure to read the [views documentation](views-and-templates) for better understanding.
+All that fancy syntax `@set`, `@each` are part of the Edge templating syntax. Make sure to read the [views documentation](/guides/http/views-and-templates) for better understanding.
 
 ## Models
 
@@ -174,7 +174,7 @@ await user.save()
 
 [/codegroup]
 
-Along with Models, AdonisJS also gives you robust API for [database migrations](), [seeders]() and ability to construct and execute queries using the [Database query builder]().
+Along with Models, AdonisJS also gives you robust API for [database migrations](/guides/database/migrations), [seeders](/guides/database/seeds) and ability to construct and execute queries using the [Database query builder](/guides/database/query-builder).
 
 ## Middleware
 
@@ -200,7 +200,7 @@ export class AuthMiddleware {
 }
 ```
 
-[Learn more](middleware) about middleware.
+[Learn more](/guides/http/middleware) about middleware.
 
 ## Http Context
 
