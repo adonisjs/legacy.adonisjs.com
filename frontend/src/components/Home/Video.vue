@@ -3,15 +3,16 @@
     <div class="container">
       <div class="video-container">
 
-        <span class="label"> AdonisJS in Action </span>
-        <SectionTitle theme="light"> Build a Blog in 15 Mins </SectionTitle>
+        <SectionTitle theme="light"> AdonisJS v5 tour </SectionTitle>
 
         <SectionSubTitle theme="light">
-          Inspired by the popular Ruby on Rails demo, let's create a blog together to feel the essence of the framework.
+          Let's take a tour of AdonisJS together. The screencast will not make you the framework expert, but instead it serves as a great building block before moving forward.
         </SectionSubTitle>
 
         <div class="embed-player" ref="embed-player">
-          <p> Coming Next Week </p>
+          <div class="embed-container">
+            <iframe class="embed" src="https://www.youtube.com/embed/TysfaNcFX_Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
         </div>
       </div>
     </div>
@@ -24,19 +25,6 @@
 
   export default {
     components: { SectionSubTitle, SectionTitle },
-
-    mounted () {
-      // const script1 = document.createElement('script')
-      // script1.setAttribute('src', 'https://fast.wistia.com/embed/medias/1ca836h6wc.jsonp')
-      // script1.setAttribute('async', true)
-
-      // const script2 = document.createElement('script')
-      // script2.setAttribute('src', 'https://fast.wistia.com/assets/external/E-v1.js')
-      // script2.setAttribute('async', true)
-
-      // this.$refs['embed-player'].appendChild(script1)
-      // this.$refs['embed-player'].appendChild(script2)
-    }
   }
 </script>
 
@@ -65,16 +53,23 @@
 
   .embed-player {
     margin-top: 40px;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
     background: var(--pre-bg);
     font-size: 2.5rem;
     font-family: var(--font-mono);
     color: #7a7b90;
     z-index: 1;
     position: relative;
+    padding-bottom: 56.25%;
+    border-radius: 4px;
+  }
+
+  .embed-container .embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 8px;
+    width: 100%;
+    height: 100%;
   }
 
   @media (min-width: 768px) {
@@ -88,16 +83,11 @@
   @media (min-width: 1024px) {
     .video-container {
       max-width: 800px;
-      padding-top: 160px;
+      padding-top: 100px;
     }
 
     .video-container .subtitle {
-      padding: 0 60px;
-    }
-
-    .embed-player {
-      margin-top: 80px;
-      padding: 0 50px;
+      padding: 0 70px;
     }
   }
 </style>
