@@ -342,7 +342,7 @@ exports.secondaryFeatures = [
       {
         title: 'Web Shield',
         icon: `<svg class="feature-icon" width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h40v40H0z"/><g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"><path d="M20 2.5C15 6.25 7.5 8.75 2.5 8.75 2.5 20.416 8.334 32.5 20 37.5c11.666-5 17.5-17.084 17.5-28.75-5 0-12.5-2.5-17.5-6.25z" stroke="#17161A"/><path stroke="#5A45FF" d="M13.361 20h13.278M20 28.5v-17"/></g></g></svg>`,
-        body: `THe shield package of AdonisJS comes with a suite of guards to protect your applications from common attacks like <strong>XSS</strong>, <strong>clickjacking</strong>, <strong>script injection</strong> and many more.`,
+        body: `The shield package of AdonisJS comes with a suite of guards to protect your applications from common attacks like <strong>XSS</strong>, <strong>clickjacking</strong>, <strong>script injection</strong> and many more.`,
       },
       {
         title: 'CORS Enabled',
