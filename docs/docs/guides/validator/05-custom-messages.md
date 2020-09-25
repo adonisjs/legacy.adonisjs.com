@@ -129,7 +129,7 @@ The `minLength` and `maxLength` validation rules will pass the `options.length` 
 
 ```ts
 {
-  'minLength': 'The array must have {{ minLength }} items',
+  'minLength': 'The array must have {{ options.minLength }} items',
 }
 ```
 
