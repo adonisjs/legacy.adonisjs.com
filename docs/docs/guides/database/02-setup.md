@@ -6,7 +6,7 @@ group: Database
 # Setup
 In this guide, you will install `@adonisjs/lucid` package, along with the database driver of your choice. Lucid supports the following database engines.
 
-- MYSQL
+- MySQL
 - SQLite
 - MSSQL
 - PostgreSQL (along with Amazon Redshift)
@@ -29,7 +29,7 @@ yarn add @adonisjs/lucid@alpha
 ```
 [/codegroup]
 
-Next, you must setup Lucid by running the `node ace invoke` command. The following command will create the default config file and also registers `@adonisjs/lucid` under the `providers` array.
+Next, you must setup Lucid by running the `node ace invoke` command. The following command will create the default config file and also register `@adonisjs/lucid` under the `providers` array.
 
 ```sh
 node ace invoke @adonisjs/lucid
@@ -100,7 +100,7 @@ Next, open the database config file to review the configuration options.
 ```ts{}{config/database.ts}
 {
   // highlight-start
-  connection: Env.get('DB_CONNECTION', 'sqlite') as string,
+  connection: Env.get('DB_CONNECTION', 'mysql') as string,
   // highlight-end
 
   connections: {
