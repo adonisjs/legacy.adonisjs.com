@@ -44,12 +44,12 @@ const user = await Database
 The goal of the query builder is to offer you a declarative API to construct SQL queries, without preventing you from using the power of SQL. Everything that you can write in raw SQL is also supported by the [query builder](/guides/database/query-builder) or the [raw query builder](/guides/database/query-builder#executing-raw-queries).
 
 ## Data Models
-The database query builder does a great job by letting your write SQL queries using the JavaScript API. However, the result of every query is an array of plain JavaScript objects with no behavior.
+The database query builder does a great job by letting you write SQL queries using the JavaScript API. However, the result of every query is an array of plain JavaScript objects with no behavior.
 
 Imagine, you fetch an array of users and each user object has a `date_of_birth` property. Before returning the data back to the client, you want to compute the `age` of the user. How would you do it?
 
 - Well, you will have to loop over the array.
-- Subtract the users `date_of_birth` from the current date.
+- Subtract the user's `date_of_birth` from the current date.
 - Attach a new property to the existing object.
 - Delete the `date_of_birth` property.
 - Send response.
@@ -69,7 +69,7 @@ return users.map((user) => {
 })
 ```
 
-The above code example is not bad by any means. But imagine writing these transformations everywhere inside you codebase. Well, we can do better this by using data models.
+The above code example is not bad by any means. But imagine writing these transformations everywhere inside your codebase. Well, we can do better than this by using data models.
 
 ### Say Hello to Data Models
 Data models are defined as JavaScript classes and each class is meant to query a single database table. Instead of using the `Database` object for executing queries, you will make use of the model to create and run SQL queries. For example:
@@ -103,9 +103,9 @@ const user = await User.query().where('username', 'virk').first()
 ```
 [/codegroup]
 
-One of the major differences between **Database query builder** and **Models** is that models returns an array of **class instances over plain objects**. This simple distinction makes models way more powerful over the standard query builder.
+One of the major differences between **Database query builder** and **Models** is that models return an array of **class instances over plain objects**. This simple distinction makes models way more powerful over the standard query builder.
 
-Coming back to the earlier example of computing user `age` from the `date_of_birth`. Following is an example of achieving the same result without performing inline transformations inside a loop.
+Coming back to the earlier example of computing user's `age` from the `date_of_birth`. Following is an example of achieving the same result without performing inline transformations inside a loop.
 
 ```ts{11,14-17}{}
 import { DateTime } from 'luxon'
@@ -144,20 +144,20 @@ return users.map((user) => user.toJSON())
 - Next, we define a computed property `age` on the model. Computed properties are values that are created on the fly, but doesn't exists in the database.
 - The `toJSON` method serializes a model instance to a plain Javascript object and this is where all the magic happens.
 
-As you can see, models makes it possible to attach behavior to the rows fetched from the database and this alone will help you cleanup a lot of inline data transformations.
+As you can see, models make it possible to attach behavior to the rows fetched from the database and this alone will help you cleanup a lot of inline data transformations.
 
 There is a lot more to uncover with Data models. We recommend you to read the [dedicated guide](/guides/models/introduction) for better in-depth understanding.
 
 ## Schema migrations
-Schema migrations enables you to programmatically **create/alter database tables**. At first, schema migrations may feel trivial, as one can login to a GUI application like Sequel Pro and can manually create tables.
+Schema migrations enable you to programmatically **create/alter database tables**. At first, schema migrations may feel trivial, as one can login to a GUI application like Sequel Pro and can manually create tables.
 
-However, the manual process has its own set of shortcomings like.
+However, the manual process has its own set of shortcomings like-
 
 - Production database must be exposed publicly for a GUI application to connect.
 - Schema changes are not tied to deployment workflows and manual intervention is always required.
 - There is no history around the evolution of the database.
 
-The schema migrations addresses all of the above issues by offering a robust layer for managing database changes as code. Make sure to read the [schema migrations](/guides/database/migrations) guide for better understanding. 
+The schema migrations address all of the above issues by offering a robust layer for managing database as code changes. Make sure to read the [schema migrations](/guides/database/migrations) guide for better understanding. 
 
 ## Seeds & Factories
 Every application under development needs dummy data at some stage. It can be during tests, or when sharing your code with a colleague. 
