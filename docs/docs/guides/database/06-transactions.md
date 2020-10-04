@@ -4,7 +4,7 @@ group: Database
 ---
 
 # Transactions
-Being a SQL ORM, Lucid has first class support for Transactions and save points. By the end of this guide, you will know:
+Being an SQL ORM, Lucid has first class support for Transactions and save points. By the end of this guide, you will know:
 
 - How to create and manage transactions
 - How to create nested transactions (aka save points)
@@ -117,7 +117,7 @@ Database
 ```
 
 ## Save points
-Every time you create a nested transaction, Lucid behinds the scenes creates a new [savepoint](https://en.wikipedia.org/wiki/Savepoint). Since transactions needs a dedicated connection, using savepoints reduces the number of required connections.
+Every time you create a nested transaction, Lucid behind the scenes creates a new [savepoint](https://en.wikipedia.org/wiki/Savepoint). Since transactions need a dedicated connection, using savepoints reduces the number of required connections.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'

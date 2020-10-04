@@ -63,7 +63,7 @@ await UserFactory
   .create()
 ```
 
-When creating multiple instances, you can define an array of attributes and they will merge based upon their indexes. For example:
+When creating multiple instances, you can define an array of attributes and they will merge based upon their indices. For example:
 
 ```ts
 await UserFactory
@@ -81,7 +81,7 @@ In the above example
 - And, the third user will use the default email address, since the merge array has a length of 2.
 
 ## Factory states
-Factory states allows you to define variations of your factories as states. For example: On a `Post` factory, you can have different states to **represent published and draft posts**.
+Factory states allow you to define variations of your factories as states. For example: On a `Post` factory, you can have different states to **represent published and draft posts**.
 
 ```ts
 import Factory from '@ioc:Adonis/Lucid/Factory'
