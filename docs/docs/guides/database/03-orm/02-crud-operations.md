@@ -151,7 +151,7 @@ await User.query().where('is_verified', false).delete()
 Models come with a lot of helpful methods to simplify the record creation by first finding them inside the database and performing the create query(only when the record doesn't exists).
 
 ### `firstOrCreate`
-Search for record inside the database or create a new one(only when the lookup fails). 
+Search for record inside the database or create a new one (only when the lookup fails). 
 
 In the following example, we attempt to search a user with an email, but persist both the `email` and the `password`, when the initial lookup fails. In other words, the `searchPayload` and the `savePayload` are merged during the create call.
 
