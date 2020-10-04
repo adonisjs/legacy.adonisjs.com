@@ -5,10 +5,10 @@ group: Database
 ---
 
 # Query Scopes
-Query scopes helps you extract fragments of a SQL query to their own methods. They are usually helpful in moving complex SQL queries behind 
+Query scopes help you extract fragments of an SQL query to their own methods. They are usually helpful in moving complex SQL queries behind 
 
 ## Creating a query scope
-query scopes are defined as static functions on the model itself. For example:
+Query scopes are defined as static functions on the model itself. For example:
 
 ```ts{}{app/Models/Post.ts}
 import { DateTime } from 'luxon'

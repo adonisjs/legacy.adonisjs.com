@@ -119,7 +119,7 @@ console.log(post.serialize())
 
 ### Cherry picking fields
 
-The `serializedAs` option turn off the properties from getting serialized at the global level. However, there we will be times, when you want to decide this on per request basis and this is where cherry picking fields can help you.
+The `serializeAs` option turn off the properties from getting serialized at the global level. However, there we will be times, when you want to decide this on per request basis and this is where cherry picking fields can help you.
 
 The `serialize` method optionally accepts an option to pick/omit fields from getting serialized.
 

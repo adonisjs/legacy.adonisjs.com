@@ -31,10 +31,10 @@ The simplest way to create database tables is to make use of a GUI application l
 Another option is to create SQL scripts and run them during the deployment process. However, you will have to manually build a tracking system to ensure that you are not running the previously ran SQL scripts. For example:
 
 - You write a SQL script to create a new `users` table.
-- You run this script as part of the deployment workflow. However, you have to make sure that the next deployment must ignore the previously executed sql script.
+- You run this script as part of the deployment workflow. However, you have to make sure that the next deployment must ignore the previously executed SQL script.
 
 ### Using Schema Migrations
-Schema migrations addresses the above issues and offers a robust API for evolving and tracking database changes. There are many tools available for schema migrations ranging from framework agnostic tools like [flywaydb](https://flywaydb.org/) to framework specific tooling offered by Rails, Laravel and so on.
+Schema migrations address the above issues and offer a robust API for evolving and tracking database changes. There are many tools available for schema migrations ranging from framework agnostic tools like [flywaydb](https://flywaydb.org/) to framework specific tooling offered by Rails, Laravel and so on.
 
 Similarly, AdonisJS also has its own migrations system. You can create/modify database by just writing Javascript.
 
@@ -42,7 +42,7 @@ Similarly, AdonisJS also has its own migrations system. You can create/modify da
 Let's begin by executing the following ace command to create a new migration file.
 
 [note]
-AdonisJS uses the compiled Javascript code for running migrations. So make sure, that you are compiling your project in a separate terminal window using `node ace serve --watch` command. 
+AdonisJS uses the compiled Javascript code for running migrations. So make sure that you are compiling your project in a separate terminal window using `node ace serve --watch` command. 
 [/note]
 
 ```sh

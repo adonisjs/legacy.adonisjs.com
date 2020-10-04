@@ -148,10 +148,10 @@ await User.query().where('is_verified', false).delete()
 ```
 
 ## Find Or Create
-Models comes a lot of helpful methods to simplify the record creation by first finding them inside the database and performing the create query, only when the record doesn't exists.
+Models come with a lot of helpful methods to simplify the record creation by first finding them inside the database and performing the create query(only when the record doesn't exists).
 
 ### `firstOrCreate`
-Search for record inside the database and create a new one, when the lookup fails. 
+Search for record inside the database or create a new one(only when the lookup fails). 
 
 In the following example, we attempt to search a user with an email, but persist both the `email` and the `password`, when the initial lookup fails. In other words, the `searchPayload` and the `savePayload` are merged during the create call.
 
@@ -168,7 +168,7 @@ await User.firstOrCreate(searchPayload, savePayload)
 The `fetchOrCreateMany` is similar to the `firstOrCreate` method, but instead you can create more than one rows. **This method is great for creating missing records**.
 
 - You need to define a unique key as the first argument. The value for this key is used to determine, if the record exists in the database or not.
-- The 2nd argument is an array of records to persist, but only the missing one's.
+- The 2nd argument is an array of records to persist, but only the missing ones.
 
 ```ts
 import User from 'App/Models/User'
