@@ -13,12 +13,12 @@ The web guard uses `sessions` to login and authenticate users. By the end of thi
 - Using the remember me token for long lived sessions
 
 ## When to use the web guard?
-The web guard relies on the sessions for managing the state of an authenticated user. It is a great fit:
+The web guard relies on the sessions for managing the state of an authenticated user. It is a great fit for the following use cases:
 
-- For applications running on a single domain or subdomains.
+- Applications running on a single domain or subdomain.
 - An API server serving the frontend application on the same domain or subdomain.
 
-If you creating an API server, that needs to support **mobile applications** or **3rd party web applications**, then we recommend using the `api` guard.
+If you're creating an API server that needs to support **mobile applications** or **3rd party web applications**, then we recommend using the [API guard](/guides/auth/api-guard).
 
 [note]
 Ensure to install the [@adonisjs/session](/guides/http/sessions) module before continuing.
@@ -247,7 +247,7 @@ export default class AuthController {
 Voila 🎉 You have just implemented a fully working registration and login flow. Also, you have the complete freedom to self design the HTML pages and setup the routes as you want.
 
 ## Remember Me
-The `web` guard has first class support for the remember me feature. All of you need to do is, pass a boolean flag to the `auth.attempt` or the `auth.login` methods.
+The `web` guard has first class support for a "remember me" functionality. In order to enable it you'll need to provide `auth.attempt` or `auth.login` methods with a `boolean` value as the last parameter indicating whether the user should be remembered or not.
 
 ```ts
 const email = request.input('email')
@@ -261,7 +261,7 @@ await auth.login(user, rememberUser)
 ```
 
 ## Logout
-In order to logout a user, you just need to call the `auth.logout` method and the user session will be invalidated.
+In order to log out a user, you need to call the `auth.logout` method and the user session will be invalidated.
 
 ```ts
 await auth.logout()
