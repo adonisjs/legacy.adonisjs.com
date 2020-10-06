@@ -43,6 +43,10 @@ const user = await Database
 
 The goal of the query builder is to offer you a declarative API to construct SQL queries, without preventing you from using the power of SQL. Everything that you can write in raw SQL is also supported by the [query builder](/guides/database/query-builder) or the [raw query builder](/guides/database/query-builder#executing-raw-queries).
 
+[note]
+The `await` keyword should always be used inside an `async` function(this is the syntactical rule of `async/await`). Everywhere in the documentation where `await` is used, it should be assumed that it is enclosed inside an async function. Learn about async/await [here](https://javascript.info/async-await).
+[/note]
+
 ## Data Models
 The database query builder does a great job by letting you write SQL queries using the JavaScript API. However, the result of every query is an array of plain JavaScript objects with no behavior.
 
