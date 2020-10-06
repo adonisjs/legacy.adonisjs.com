@@ -52,7 +52,7 @@ Following is the list different query builders instances.
   ```
 
 ## Fetching Rows
-Fetching rows is as sample as executing a select query using the Database query builder. The result of a query is always an array of objects, even when a single row is returned from the database.
+Fetching rows is as simple as executing a select query using the Database query builder. The result of a query is always an array of objects, even when a single row is returned from the database.
 
 ```ts
 const users = await Database.query().select('*').from('users')
@@ -161,7 +161,9 @@ const user = await Database
 The aggregate methods like `count`, `min`, `avg` returns an array with the aggregate key and its value. For example:
 
 ```ts
-const total = Database.query().count('*').from('users')
+import Database from '@ioc:Adonis/Lucid/Database'
+
+const total = await Database.query().count('*').from('users')
 
 // SQLITE: [{ "count(*)": 4 }]
 // POSTGRESQL: [{ "count": "4" }]
