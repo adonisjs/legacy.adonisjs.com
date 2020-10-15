@@ -35,7 +35,7 @@
               <img src="https://res.cloudinary.com/adonis-js/image/upload/q_auto,w_200,f_auto,fl_lossy/v1594956820/adonisjs.com/pivale_cqsexe.png" />
             </a>
 
-            <a href="https://cleaver.cloud/adonis/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card cleaver">
+            <a href="https://cleavr.io/adonis/?utm_source=adonisjs" target="_blank" referrerpolicy="origin" class="sponsor-card cleaver">
               <img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1598366137/adonisjs.com/cleaver-logo-2x_v02ehs.png" />
             </a>
           </div>
