@@ -22,7 +22,8 @@
                 <span>Last updated: </span> {{ $context.last_updated_on }}
               </p>
             </div>
-            <Doc :doc="$context.doc" />
+
+            <Doc :toc="$context.toc" :doc="$context.doc" />
           </div>
 
           <div class="toc-wrapper" v-if="$context.toc">
