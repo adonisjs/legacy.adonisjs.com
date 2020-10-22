@@ -3,7 +3,7 @@
     <MarkdownStyling>
       <DimerTree :node="docTitle" />
 
-      <div class="toc-wrapper">
+      <div class="toc-wrapper" v-if="toc">
         <DimerTree :node="toc" />
       </div>
 
