@@ -18,7 +18,7 @@ yarn add @adonisjs/auth@alpha
 ```
 [/codegroup]
 
-## Commits
+## Changes
 
 - **addition**: Add support for oat tokens [f59a1e0](https://github.com/adonisjs/auth/commit/f59a1e05aaaebcefd9ecf448631a8805c9331c8f)
 - **change**: Instructions to setup config and contracts file for the tokens auth [a77b124](https://github.com/adonisjs/auth/commit/a77b12403416fb16367da5d3427bbf1a14e3406f)

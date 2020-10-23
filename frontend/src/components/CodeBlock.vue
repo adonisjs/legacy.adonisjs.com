@@ -218,13 +218,11 @@
   }
 
   .code-highlight .token.inserted {
-    display: block;
     color: #84f1a6;
   }
 
   .code-highlight .token.deleted {
     color: #e25f68;
-    display: block;
   }
 
   .code-highlight .language-css .token.property,

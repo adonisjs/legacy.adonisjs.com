@@ -18,7 +18,7 @@ yarn add @adonisjs/auth@alpha
 ```
 [/codegroup]
 
-## Commits
+## Changes
 
 - **addition**: Add support for basic auth [9d684e82](https://github.com/adonisjs/auth/commit/9d684e82b2914f506f929a0668efc1e87ae858af)
 
