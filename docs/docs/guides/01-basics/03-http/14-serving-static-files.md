@@ -7,10 +7,6 @@ group: Basics
 # Static Files
 AdonisJS comes with an inbuilt static file server to serve files from a dedicated directory. By the end of this guide, you will know how to configure and use the static file server.
 
-[note]
-For performance reason, we do not recommend using AdonisJS static file server in production. You can use a web server (ie: Nginx, Apache, Caddy, etc.) or a CDN to serve your static assets.
-[/note]
-
 ## Setup
 The static file server is inbuilt into the core of the framework and hence there is no need to install any additional packages. However, do make sure that your project has `config/static.ts` config file with `enabled = true`.
 
@@ -22,12 +18,18 @@ Next, open the `.adonisrc.json` file and make sure that `public/**` glob pattern
 The `metaFiles` tells AdonisJS compiler to copy the mentioned files to the `build` folder.
 [/tip]
 
-```json{5}{.adonisrc.json}
+```json{9}{.adonisrc.json}
 "metaFiles": [
   ".env",
   ".adonisrc.json",
-  "resources/views/**/*.edge",
-  "public/**"
+  {
+    "pattern": "resources/views/**/*.edge",
+    "reloadServer": false
+  },
+  {
+    "pattern": "public/**",
+    "reloadServer": false
+  }
 ]
 ```
 

@@ -10,7 +10,7 @@ Welcome to AdonisJS! The guides are designed to help you get up and running with
 - The code examples are in TypeScript, so we expect you to have some familarity with it.
 
 [note]
-The core of the framework under the preview release is quite stable and ready for production use. It's just that some of the old AdonisJS packages are not migrated to work with new core.
+The core of the framework is under the preview release is quite stable and ready for production use. It's just that some of the old AdonisJS packages are not migrated to work with new core.
 [/note]
 
 ## Creating a New Project
@@ -60,7 +60,7 @@ A web application project structure is packed with all the required components t
 
 ### API Server
 
-On the other hand, the API server is more tailored towards creating JSON API servers and doesn't include all of the above mentioned packages. However, the following configuration options are tweaked
+On the other hand, the API server is more tailored towards creating JSON API servers and doesn't include all of the above mentioned packages. Also, the following configuration options are tweaked
 
 - The `config/cors.ts` file enables the support for CORS.
 - Content negotiation is forced to JSON inside `config/app.ts` file, using `forceContentNegotiationToJSON` flag.
@@ -72,14 +72,12 @@ You can start the development server by running the following `ace` command.
 node ace serve --watch
 ```
 
-The `serve` command first compiles the TypeScript code to JavaScript and then starts the HTTP server from the compiled code. The `--watch` flag is meant to watch the file system for changes.
-
-[note]
-Since all of the AdonisJS runtime behavior relies on the compiled JavaScript code. It is advised to always have a terminal session compiling the TypeScript source.
-[/note]
+The `serve` command will start the HTTP server and performs in-memory compilition of Typescript to Javascript. The `--watch` flag is meant to watch the file system for changes and re-start the server automatically.
 
 ## Compiling For Production
-AdonisJS uses the concept of standalone builds. It means, you can deploy the compiled output without moving the source files to the server. Run the following command to create a production build.
+AdonisJS uses the concept of standalone builds. It means, you can deploy the compiled output without moving the source files to the production server. The standalone builds are really helpful in creating slim docker images.
+
+Run the following command to create a production build.
 
 ```sh
 node ace build --production
@@ -87,11 +85,11 @@ node ace build --production
 
 The above command performs the following steps in sequence.
 
-1. Compile TypeScript source files.
+1. Compile TypeScript source files to Javascript.
 2. Copy `metaFiles` mentioned inside `.adonisrc.json` to the `build` folder.
 3. Copy `package.json`, along with `package-lock.json` or `yarn.lock` inside the `build` folder.
 
-At this stage, you can upload the `build` folder to your production server, install the dependencies and run `node server.js`.
+At this stage, you can upload the `build` folder to your production server, install the dependencies and run `node server.js` to start the server.
 
 ## CLI Help
 You can view the help for all the available commands by running the following ace command.

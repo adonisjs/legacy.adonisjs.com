@@ -23,30 +23,25 @@ By the end of this guide, you will have a fairly good understanding of the proje
 ├── start
 │   ├── kernel.ts
 │   └── routes.ts
-├── .adonisrc.json
-├── .editorconfig
 ├── .env
-├── .env.example
-├── .eslintignore
-├── .eslintrc.json
-├── .gitignore
+├── .adonisrc.json
 ├── ace
+├── ace-manifest.json
+├── env.ts
+├── package-lock.json
 ├── package.json
 ├── server.ts
-├── tsconfig.json
+└── tsconfig.json
 ```
 
 ## The Project Root
-The root of the project has all the necessary config/meta files to setup the development workspace. Let's skim through the list of files and their purpose.
+The root of the project has all the necessary config/meta files to setup the development workspace. Let's go through the folder structure and understand the purpose of every file/directory.
 
 #### tsconfig.json
-The `tsconfig.json` contains the configuration for the [TypeScript compiler](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html). This file must exist in order for AdonisJS to compile your code to JavaScript. Also, your text editor may use this same file for features like intellisense, auto imports and error detection.
-
-#### .eslintrc.json and .eslintignore
-These files are created to lint your TypeScript code using [eslint](https://eslint.org/). You can run `npm run lint` command to run the linter or install the eslint plugin for your text editor for a tighter feedback loop.
+The `tsconfig.json` contains the configuration for the [TypeScript compiler](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html). This file must exist in order for AdonisJS to compile your code to JavaScript. Also, your text editor may use this same file for features like intellisense, auto imports, error detection and so on.
 
 #### .adonisrc.json
-The `.adonisrc.json` file configures the workspace for AdonisJS projects. The application runtime, the CLI commands and your project dependencies rely on this file to understand the requirements of your project.
+The `.adonisrc.json` file configures the workspace for your AdonisJS projects. The application runtime, the CLI commands and your project dependencies rely on this file to understand the requirements of your project.
 
 This file contains the bare minimum config required to run the application. However, you can execute the following command to see the possible configuration options and their default values.
 
@@ -54,9 +49,10 @@ This file contains the bare minimum config required to run the application. Howe
 node ace dump:rcfile
 ```
 
-#### .env
+#### env.ts
 
-AdonisJS relies on [environment variables](environment-variables) to hold the environment specific configuration. 
+#### .env
+AdonisJS relies on environment variables to hold the environment specific configuration. 
 
 For example: The database credentials on your local machine will always be different from the one in production and hence you must use the environment variables to configure them.
 
@@ -73,10 +69,6 @@ Since you never commit `.env` file to the version control systems like GIT. We c
 NODE_ENV=
 MYSQL_USERNAME=
 ```
-
-#### .gitignore
-
-AdonisJS creates the `.gitignore` file by default with an assumption that you maybe using Git for version control.Remove this file if you are not using Git.
 
 #### .editorconfig
 
