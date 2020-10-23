@@ -72,6 +72,14 @@
     background: var(--selection);
   }
 
+  pre ::-moz-selection {
+    background: #3e3e51;
+  }
+
+  pre ::selection {
+    background: #3e3e51;
+  }
+
   .container {
     max-width: 1260px;
     padding: 0 30px;
@@ -79,7 +87,7 @@
   }
 
   h1 > a, h2 > a, h3 > a, h4 > a {
-   text-decoration: none; 
+   text-decoration: none;
    background-image: none !important;
   }
 
