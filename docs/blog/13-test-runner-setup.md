@@ -9,7 +9,7 @@ meta:
 ---
 
 [note]
-This article was been updated on **26th October, 2020** to work with the most recent version of `@adonisjs/core`. You can find the old copy of the article in the [Github history](https://github.com/adonisjs/adonisjs.com/blob/d3ed9bfa9df816d2db2055eb041171c89e9d5594/docs/blog/13-test-runner-setup.md).
+This article was updated on **26th October, 2020** to work with the most recent version of `@adonisjs/core`. You can find the old copy of the article in the [Github history](https://github.com/adonisjs/adonisjs.com/blob/d3ed9bfa9df816d2db2055eb041171c89e9d5594/docs/blog/13-test-runner-setup.md).
 [/note]
 
 The tests runner of AdonisJS v4 has not been migrated to v5 yet and hence, I receive a lot of questions regarding testing in v5. In this article, **I will show you, how to setup [japa](https://github.com/thetutlage/japa) to test your AdonisJS applications.**
