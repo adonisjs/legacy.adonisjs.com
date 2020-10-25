@@ -1,13 +1,11 @@
 <template>
   <div class="doc wysiwyg">
     <MarkdownStyling>
-      <DimerTree :node="docTitle" />
-
+      <h1> {{ doc.title }} </h1>
       <div class="toc-wrapper" v-if="toc">
         <DimerTree :node="toc" />
       </div>
-
-      <DimerTree :node="docContent" />
+      <DimerTree :node="doc.content" />
     </MarkdownStyling>
   </div>
 </template>
@@ -20,24 +18,24 @@
 
     components: { MarkdownStyling },
 
-    computed: {
-      docContent () {
-        const children = this.doc.content.children.slice()
-        children.splice(0, 2)
+    // computed: {
+    //   docContent () {
+    //     const children = this.doc.content.children.slice()
+    //     children.splice(0, 2)
 
-        return { 
-          type: 'root',
-          children
-        }
-      },
+    //     return {
+    //       type: 'root',
+    //       children
+    //     }
+    //   },
 
-      docTitle () {
-        return {
-          type: 'root',
-          children: [this.doc.content.children[1]]
-        }
-      }
-    }
+    //   docTitle () {
+    //     return {
+    //       type: 'root',
+    //       children: [this.doc.content.children[1]]
+    //     }
+    //   }
+    // }
   }
 </script>
 

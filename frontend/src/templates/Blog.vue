@@ -21,7 +21,7 @@
 
       <div class="page-content">
         <MarkdownStyling>
-          <DimerTree :node="$context.doc.content" :custom-renderers="customRenderers" />
+          <DimerTree :node="$context.doc.content" />
         </MarkdownStyling>
       </div>
 
@@ -89,20 +89,5 @@
       utterancesScript.setAttribute('crossorigin', 'anonymous')
       this.$refs.postComments.appendChild(utterancesScript)
     },
-
-    methods: {
-      /**
-       * Defines a custom renderer for DimerTree that removes the title
-       * from the renderer since we want to display it
-       * inside the hero of the page.
-       */
-      customRenderers (globalRenderers) {
-        return globalRenderers.concat((node, rerender, createElement) => {
-          if (node.tag === 'h1') {
-            return false
-          }
-        })
-      }
-    }
   }
 </script>

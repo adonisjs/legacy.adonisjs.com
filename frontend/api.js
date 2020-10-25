@@ -153,6 +153,13 @@ function getDocPageData (zone, doc, groups) {
       && node.props.className.includes('toc-container')
   })
 
+  /**
+   * Remove h1
+   */
+  utils.extractNode(doc.content, (node) => {
+    return node.tag === 'h1'
+  })
+
   const docGroup = groups.find(({ name }) => name === doc.group) || {}
   return {
     path: `/${doc.permalink}`,
