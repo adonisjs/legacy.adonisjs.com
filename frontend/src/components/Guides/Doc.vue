@@ -15,27 +15,7 @@
 
   export default {
     props: ['doc', 'toc'],
-
     components: { MarkdownStyling },
-
-    // computed: {
-    //   docContent () {
-    //     const children = this.doc.content.children.slice()
-    //     children.splice(0, 2)
-
-    //     return {
-    //       type: 'root',
-    //       children
-    //     }
-    //   },
-
-    //   docTitle () {
-    //     return {
-    //       type: 'root',
-    //       children: [this.doc.content.children[1]]
-    //     }
-    //   }
-    // }
   }
 </script>
 
