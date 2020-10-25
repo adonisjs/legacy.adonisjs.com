@@ -50,6 +50,9 @@ node ace dump:rcfile
 ```
 
 #### env.ts
+In this file we define the rules for validating environment variables. By performing validation we ensure that your application is running in a stable environment with correct configuration values.
+
+This file is read automatically by the framework during the boot lifecycle and hence do not rename or move this file to a different location.
 
 #### .env
 AdonisJS relies on environment variables to hold the environment specific configuration. 
