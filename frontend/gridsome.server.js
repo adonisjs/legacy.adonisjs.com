@@ -33,6 +33,7 @@ module.exports = function (gsApi) {
 
   gsApi.createPages(async ({ createPage, removePageByPath }) => {
     const zones = await api.getZones()
+    let blogPosts = []
 
     /**
      * After this loop, we will have an initial set of pages for all
@@ -49,6 +50,16 @@ module.exports = function (gsApi) {
               return
             }
             const pageData = api.getDocPageData(zone, doc, zoneGroupsCategories)
+
+            if (pageData.component === './src/templates/Blog.vue') {
+              blogPosts.push({
+                title: pageData.context.doc.title,
+                permalink: pageData.context.doc.permalink,
+                publishedOn: pageData.context.doc.meta.published_on,
+                order: pageData.context.doc.meta.number,
+              })
+            }
+
             console.log(green(`create page ${pageData.path}`))
             createPage(pageData)
           })
@@ -82,5 +93,7 @@ module.exports = function (gsApi) {
         console.log(red(error))
       })
     }
+
+    console.log(JSON.stringify(blogPosts.sort((a, b) => b.order - a.order), null, 2))
   })
 }
