@@ -173,10 +173,25 @@ function getDocPageData (zone, doc, groups) {
         meta: doc.meta || null,
       },
       toc: toc,
-      groups: groups,
+      groups: groups.map((group) => {
+        return {
+          name: group.name,
+          permalink: group.categories[0].docs[0].permalink,
+        }
+      }),
       under_progress: docGroup.under_progress,
       last_updated_on: docGroup.last_updated_on,
-      categories: docGroup.categories,
+      categories: docGroup.categories.map((category) => {
+        return {
+          name: category.name,
+          docs: category.docs.map((doc) => {
+            return {
+              title: doc.title,
+              permalink: doc.permalink,
+            }
+          })
+        }
+      }),
     },
   }
 }
