@@ -227,3 +227,12 @@ Projects setup to use [Japa test runner](/blog/running-tests-in-adonisjs-v5) als
   ```sh
   node -r @adonisjs/assembler/build/register japaFile.ts
   ```
+
+## Release notes
+
+Checkout the following links to learn more about what's included in the release.
+
+- [Preview release rc-2](/releases/core/preview-rc-2)
+- [Lucid 8.5 - 9.0](/releases/lucid/version-9)
+- [Auth 5.0](/releases/auth/version-5)
+- [Shield 4.0](/releases/shield/version-4)
