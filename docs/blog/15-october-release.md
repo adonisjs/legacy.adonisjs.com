@@ -37,7 +37,19 @@ Before we dive into the specifics and the motivation behind the changes. Let's q
    + import { BaseCommand } from '@adonisjs/core/build/standalone'
    ```
 
-4. Also update the `./commands/index.ts` file to use the following code snippet.
+4. The commands `handle` method has been deprecated in favor of the the `run` method. It feels natural to say **run the command** vs saying **handle the command**.
+
+5. The process started by the command will close itself after the `run` method has finished executing. If you want your commands to stay alive, then you need to use the `stayAlive` flag on the settings object.
+
+   ```ts
+   class MyCommand extends BaseCommand {
+     public static settings = {
+       stayAlive: true,
+     }
+   }
+   ```
+
+6. Also update the `./commands/index.ts` file to use the following code snippet.
 
    ```ts
    import { listDirectoryFiles } from '@adonisjs/core/build/standalone'
@@ -46,7 +58,7 @@ Before we dive into the specifics and the motivation behind the changes. Let's q
    export default listDirectoryFiles(__dirname, Application.appRoot, ['./commands/index'])
    ```
 
-5. If you are using the `@adonisjs/auth` package. You need to update the `config/auth.ts` file to lazy import the models used for finding the users.
+7. If you are using the `@adonisjs/auth` package. You need to update the `config/auth.ts` file to lazy import the models used for finding the users.
 
    So begin by removing the top level import statement
 
@@ -63,9 +75,9 @@ Before we dive into the specifics and the motivation behind the changes. Let's q
    }
    ```
 
-6. Finally, we have depreciated the `Env.getOrFail` method in favor of the Env validations. You just need to find its usages and replace it with `Env.get` to avoid getting deprecation warnings.
+8. Finally, we have deprecated the `Env.getOrFail` method in favor of the Env validations. You just need to find its usages and replace it with `Env.get` to avoid getting deprecation warnings.
 
-7. Using Japa as your test runner? [Here are the instructions](#using-japa) to upgrade the test runner to run tests using the Typescript source directly.
+9. Using Japa as your test runner? [Here are the instructions](#using-japa) to upgrade the test runner to run tests using the Typescript source directly.
 
 ## In-memory Typescript compilation
 
