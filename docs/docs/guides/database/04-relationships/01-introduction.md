@@ -54,6 +54,19 @@ export default class Profile extends BaseModel {
 }
 ```
 
+
+But..., if in your case you have custom foreign key in your table relation. As an example, in your Profile Model, your foreign key column name is 'have_user_id' not userId,
+Then in User Model files, you add second parameters in relation decorator to define your custom foreign key column name
+
+```ts{}{app/Models/User.ts}
+export default class User extends BaseModel {
+  // highlight-start
+  @hasOne(() => Profile, { foreignKey: 'haveUserId' })
+  public profile: HasOne<typeof Profile>
+  // highlight-end
+}
+```
+
 ### Points to note
 - The `User` model uses the `hasOne` decorator to setup the relationship with the `Profile` model.
 - It also uses a `HasOne` type on the `profile` property. It is required to **distinguish between relationships and other model properties** for better intellisense support.
