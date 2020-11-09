@@ -209,7 +209,7 @@ server {
 }
 ```
 
-## 6. Github Action: Set up Your Continuous Deployment Process
+## 6. Set up Your Continuous Deployment Process with Github Actions
 
 If you are looking to deploy a new version of Adonis while merging on your production branch, here is a GitHub action file that connects to your remove server, run some instructions and notify you on Slack if something fails or succeeds.
 
