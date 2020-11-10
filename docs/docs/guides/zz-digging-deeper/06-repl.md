@@ -5,17 +5,17 @@ group: Digging Deeper
 
 # AdonisJS REPL
 
-REPL stands for **read–eval–print loop** , a way to quickly execute single-line inputs and return the result. Node.js also has its REPL and to give it try, you can open up your terminal, type node, and press enter.
+REPL stands for **read–eval–print loop**, a way to quickly execute single-line inputs and return the result. Node.js also has its REPL and to give it try, you can open up your terminal, type node, and press enter.
 
 [video url="https://res.cloudinary.com/adonis-js/video/upload/v1603467681/adonisjs.com/node-repl_s6hsuz.mp4", controls]
 
-Similar to Node.js, AdonisJS has its own application aware REPL that gets started after booting the app and therefore you have access to everything inside the REPL.
+Similar to Node.js, AdonisJS has its application-aware REPL that gets started after booting the app, and therefore you have access to everything inside the REPL.
 
 ## Features
 
-Following features over the standard Node.js REPL are supported.
+The following features over the standard Node.js REPL are supported.
 
-- Ability to use the `await` keyword anywhere inside the REPL session. Also known as **top level await**.
+- Ability to use the `await` keyword anywhere inside the REPL session. Also known as **top-level await**.
 - Support for typescript imports.
 - Transparently compiles the typescript source to Javascript.
 
@@ -27,7 +27,7 @@ Run the following ace command to start the REPL session.
 node ace repl
 ```
 
-Lets import the Encryptioon module and try encrypting/decrypting a string value.
+Let's import the Encryption module and try encrypting/decrypting a string value.
 
 [video url="https://res.cloudinary.com/adonis-js/video/upload/v1604936668/adonisjs.com/adonis-repl_ibios2.mp4", controls]
 
@@ -45,16 +45,16 @@ You can view all of the helper methods by typing the `.ls` command.
 
 Just like everything else, the REPL also has an extensible API and as you will install new packages you will see the list of helper methods growing.
 
-For example: The Lucid ORM comes with the `loadModels` helper to recursively load models from the `app/Models` directory.
+For example, The Lucid ORM comes with the `loadModels` helper to recursively load models from the `app/Models` directory.
 
 [video url="https://res.cloudinary.com/adonis-js/video/upload/v1604939564/adonisjs.com/repl-load-models_ye0rdy.mp4", controls]
 
 ## Adding custom helpers
 
-You can add your own custom helpers by creating a preload file inside the `start` directory. Begin by creating a new file by running the following command.
+You can add your custom helpers by creating a preload file inside the `start` directory. Begin by creating a new file by running the following command.
 
 [note]
-Make sure to select environment as `repl` by pressing the `<SPACE>` key and hit enter.
+Make sure to select the environment as `repl` by pressing the `<SPACE>` key and hit enter.
 [/note]
 
 ```sh
@@ -75,4 +75,4 @@ Repl.addMethod(
 )
 ```
 
-Finally, start the repl session and type `sayHi()` to execute the method. Currently we are writing to the console, however you can perform any action inside this function.
+Finally, start the repl session and type `sayHi()` to execute the method. Currently, we are writing to the console, however, you can perform any action inside this function.
