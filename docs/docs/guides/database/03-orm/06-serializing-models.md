@@ -117,6 +117,85 @@ console.log(post.serialize())
 */
 ```
 
+## Serializing optional fields on Model instance creation
+Let's imagine a User model defined like the following :
+
+```ts
+class User extends BaseUser {
+  @column()
+  public firstName: string
+
+  @column()
+  public email: string
+
+  @column({serializeAs: null})
+  public password: string
+}
+```
+
+With this model, we might have a `register` endpoint that would take these 3 model fields as input, but `firstName` being an optional field, like that :
+
+```ts
+class UserController {
+  public async register({request}: HttpContextContract) {
+    const validationSchema = schema.create({
+      email: schema.string({ trim: true }, [
+        rules.email(),
+        rules.required()
+      ]),
+      password: schema.string({ trim: true }, [rules.maxLength(180), rules.required()]),
+      firstName: schema.string.optional({ trim: true }, [rules.maxLength(150)]),
+  })
+
+  const validatedData = await request.validate({schema: validationSchema})
+  const createdUser = await User.create(validatedData)
+  return createdUser.serialize()
+}
+```
+
+Now, if I send the following `POST` request to this endpoint and look at the answer : 
+
+```json
+// Request 
+{
+  "email": "foo@bar.com",
+  "password": "someDummyPassword"
+}
+
+// Response
+{
+  "email": "foo@bar.com"
+}
+```
+As you can see, the `firstName` property was not serialized despite the fact that it should be as we didn't mark the field as `serializeAs: null` in the Model file.
+
+By default, when creating an instance of this model using the `User.create(validatedData)` method, if one of the model fields is missing in the data, the returned instance will have `undefined` value for this field (eg: `firstName`), and by consequent, this field will be excluded from the response you send. 
+
+If you want to include these fields, even if they have not been defined in the request, you will have to re-fetch the data from the database. To avoid manually doing this, Adonis Models have a builtin method, called refresh. So, going back at our `UserController`, let's modify the end of the `register` method like that :
+
+```ts
+  const validatedData = await request.validate({schema: validationSchema})
+  const createdUser = await User.create(validatedData)
+  await createdUser.refresh()
+  return createdUser.serialize()
+```
+
+And with this change, we actually have the expected serialization : 
+
+```json
+// Request
+{
+  "email": "foo@bar.com",
+  "password": "someDummyPassword"
+}
+
+// Response
+{
+  "email": "foo@bar.com",
+  "first_name": null
+}
+```
+
 ### Cherry picking fields
 
 The `serializeAs` option turn off the properties from getting serialized at the global level. However, there we will be times, when you want to decide this on per request basis and this is where cherry picking fields can help you.
