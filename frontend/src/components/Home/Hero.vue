@@ -27,7 +27,7 @@
               <span>
                 Star
               </span>
-              <span class="count">8K+</span>
+              <span class="count">9K+</span>
             </div>
           </Button>
         </div>
