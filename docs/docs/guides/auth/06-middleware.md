@@ -11,7 +11,7 @@ In this [last guide](/guides/auth/web-guard#time-to-login), we made use of `auth
 
 Instead, you can make use of a middleware to protect routes from public access. In fact, during the initial setup, we create the `Auth` middleware for you.
 
-The middleware is stored inside `app/Middleware/Auth.ts` file, just make sure to register it inside the `start/kernel.ts` file.
+The middleware is stored inside `App/Middleware/Auth.ts` file, just make sure to register it inside the `start/kernel.ts` file.
 
 ```ts{}{start/kernel.ts}
 Server.middleware.registerNamed({
@@ -32,11 +32,11 @@ The middleware will use the default guard *(configured inside the config file)* 
 ```ts
 Route
   .get('/dashboard', 'DashboardController.index')
-  .middleware('auth:web,api')
+  .middleware('auth:web, api')
 ```
 
 ## Silent Auth Middleware
-Along with auth middleware, there is an another middleware stored inside `app/Middleware/SilentAuth.ts` file. 
+Along with auth middleware, there is an another middleware stored inside `App/Middleware/SilentAuth.ts` file. 
 
 The purpose of this middleware is to silently check if the user is logged-in or not. If the user is logged-in, then you can access the user instance inside your controllers, otherwise the request will continue as usual.
 
