@@ -125,6 +125,81 @@ await avatar.move(Application.tmpPath('uploads'), {
 })
 ```
 
+## Streaming Files
+
+## Disable auto-processing
+
+First, disable file auto-processing for your upload routes via the `config/bodyparser.ts` file:
+
+```ts
+processManually: ['/upload']
+```
+
+Alternatively, you can do this for all routes, like so:
+
+```ts
+autoProcess: false
+```
+
+### Single File
+
+```ts
+request.multipart.onFile('file', {}, async (file) => {
+  AWS.config.update({
+    accessKeyId: Env.get('AWS_ACCESS_KEY_ID') as string,
+    secretAccessKey: Env.get('AWS_SECRET_ACCESS_KEY') as string,
+  });
+
+  const params = {
+    Bucket: 'my-bucket',
+    Key: 'my-folder/my-filename.mp3',
+    Body: file,
+  };
+
+  const s3 = new AWS.S3();
+
+  await s3.upload(params).promise();
+});
+```
+
+### Multiple Files
+
+Download the library [get-stream](https://github.com/sindresorhus/get-stream) to save the files into an array. You will then be creating a promise array to use with `promise.all()`.
+
+```ts
+import getStream from 'get-stream';
+
+const s3 = new AWS.S3();
+
+const files = [];
+
+request.multipart.onFile('files', {}, async (file) => {
+  const fileContent = await getStream.buffer(file);
+
+  files.push(fileContent);
+});
+
+await request.multipart.process();
+
+const uploadPromises = [];
+
+files.forEach((file, index) => {
+  const params = {
+    Bucket: 'my-bucket',
+    Key: `my-folder/${index}.jpg`,
+    Body: file,
+  };
+
+  uploadPromises.push(s3.upload(params).promise());
+});
+
+await Promise.all(uploadPromises);
+```
+
+### Retrieving FormData Text Request Before Processing File
+
+You should pass in URL query parameter if you need to get text data before processing your file(s) with `request.only()`.
+
 ## Validating Uploaded Files
 AdonisJS automatically validate files when you try to access them. All you need to do is define the validation options.
 
