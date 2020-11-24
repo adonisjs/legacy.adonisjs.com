@@ -186,7 +186,7 @@ const uploadPromises = files.map((file, index) => {
   return s3.upload(params).promise();
 });
 
-await Promise.all(uploadPromises);
+if (uploadPromises.length > 0) await Promise.all(uploadPromises);
 ```
 
 ### Multiple Files with Distinct File Names
@@ -233,7 +233,9 @@ const uploadDogPromises = files.map((file, index) => {
   return s3.upload(params).promise();
 });
 
-await Promise.all([...uploadCatPromises, ...uploadDogPromises]);
+if (uploadCatPromises.length > 0 || uploadDogPromises.length > 0) {
+  await Promise.all([...uploadCatPromises, ...uploadDogPromises]);
+}
 ```
 
 ### Retrieving FormData Text Request Before Processing File
