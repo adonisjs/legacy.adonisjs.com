@@ -145,11 +145,6 @@ autoProcess: false
 
 ```ts
 request.multipart.onFile('file', {}, async (file) => {
-  AWS.config.update({
-    accessKeyId: Env.get('AWS_ACCESS_KEY_ID') as string,
-    secretAccessKey: Env.get('AWS_SECRET_ACCESS_KEY') as string,
-  });
-
   const params = {
     Bucket: 'my-bucket',
     Key: 'my-folder/my-filename.mp3',
@@ -181,16 +176,50 @@ request.multipart.onFile('files', {}, async (file) => {
 
 await request.multipart.process();
 
-const uploadPromises = [];
-
-files.forEach((file, index) => {
+const uploadPromises = files.map((file, index) => {
   const params = {
     Bucket: 'my-bucket',
     Key: `my-folder/${index}.jpg`,
     Body: file,
   };
 
-  uploadPromises.push(s3.upload(params).promise());
+  return s3.upload(params).promise();
+});
+
+await Promise.all(uploadPromises);
+```
+
+### Multiple Files with Distinct File Names
+
+```ts
+import getStream from 'get-stream';
+
+const s3 = new AWS.S3();
+
+const files = [];
+
+request.multipart.onFile('catPhotos', {}, async (file) => {
+  const fileContent = await getStream.buffer(file);
+
+  files.push(fileContent);
+});
+
+request.multipart.onFile('dogPhotos', {}, async (file) => {
+  const fileContent = await getStream.buffer(file);
+
+  files.push(fileContent);
+});
+
+await request.multipart.process();
+
+const uploadPromises = files.map((file, index) => {
+  const params = {
+    Bucket: 'my-bucket',
+    Key: `my-folder/${index}.jpg`,
+    Body: file,
+  };
+
+  return s3.upload(params).promise();
 });
 
 await Promise.all(uploadPromises);
@@ -198,7 +227,7 @@ await Promise.all(uploadPromises);
 
 ### Retrieving FormData Text Request Before Processing File
 
-You should pass in URL query parameter if you need to get text data before processing your file(s) with `request.only()`.
+You should pass in a URL query string parameter, with `/upload?param1=val1?&param2=val2` if you need to get text data before processing your file(s) with `request.only()`.
 
 ## Validating Uploaded Files
 AdonisJS automatically validate files when you try to access them. All you need to do is define the validation options.
