@@ -144,7 +144,7 @@ autoProcess: false
 ### Single File
 
 ```ts
-request.multipart.onFile('file', {}, async (file) => {
+request.multipart?.onFile('file', {}, async (file) => {
   const params = {
     Bucket: 'my-bucket',
     Key: 'my-folder/my-filename.mp3',
@@ -155,6 +155,8 @@ request.multipart.onFile('file', {}, async (file) => {
 
   await s3.upload(params).promise();
 });
+
+await request.multipart?.process();
 ```
 
 ### Multiple Files
@@ -168,13 +170,13 @@ const s3 = new AWS.S3();
 
 const files = [];
 
-request.multipart.onFile('files', {}, async (file) => {
+request.multipart?.onFile('files', {}, async (file) => {
   const fileContent = await getStream.buffer(file);
 
   files.push(fileContent);
 });
 
-await request.multipart.process();
+await request.multipart?.process();
 
 const uploadPromises = files.map((file, index) => {
   const params = {
@@ -205,13 +207,13 @@ request.multipart.onFile('catPhotos', {}, async (file) => {
   catFiles.push(fileContent);
 });
 
-request.multipart.onFile('dogPhotos', {}, async (file) => {
+request.multipart?.onFile('dogPhotos', {}, async (file) => {
   const fileContent = await getStream.buffer(file);
 
   dogFiles.push(fileContent);
 });
 
-await request.multipart.process();
+await request.multipart?.process();
 
 const uploadCatPromises = files.map((file, index) => {
   const params = {
