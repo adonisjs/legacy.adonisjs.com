@@ -196,33 +196,44 @@ import getStream from 'get-stream';
 
 const s3 = new AWS.S3();
 
-const files = [];
+const catFiles = [];
+const dogFiles = [];
 
 request.multipart.onFile('catPhotos', {}, async (file) => {
   const fileContent = await getStream.buffer(file);
 
-  files.push(fileContent);
+  catFiles.push(fileContent);
 });
 
 request.multipart.onFile('dogPhotos', {}, async (file) => {
   const fileContent = await getStream.buffer(file);
 
-  files.push(fileContent);
+  dogFiles.push(fileContent);
 });
 
 await request.multipart.process();
 
-const uploadPromises = files.map((file, index) => {
+const uploadCatPromises = files.map((file, index) => {
   const params = {
     Bucket: 'my-bucket',
-    Key: `my-folder/${index}.jpg`,
+    Key: `cats/${index}.jpg`,
     Body: file,
   };
 
   return s3.upload(params).promise();
 });
 
-await Promise.all(uploadPromises);
+const uploadDogPromises = files.map((file, index) => {
+  const params = {
+    Bucket: 'my-bucket',
+    Key: `dogs/${index}.jpg`,
+    Body: file,
+  };
+
+  return s3.upload(params).promise();
+});
+
+await Promise.all([...uploadCatPromises, ...uploadDogPromises]);
 ```
 
 ### Retrieving FormData Text Request Before Processing File
