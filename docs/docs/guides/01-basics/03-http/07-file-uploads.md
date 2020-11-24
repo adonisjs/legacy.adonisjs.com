@@ -238,7 +238,7 @@ await Promise.all([...uploadCatPromises, ...uploadDogPromises]);
 
 ### Retrieving FormData Text Request Before Processing File
 
-You should pass in a URL query string parameter, with `/upload?param1=val1?&param2=val2` if you need to get text data before processing your file(s) with `request.only()`.
+You should pass in a URL query string parameter, with `/upload?param1=val1?&param2=val2`, if you need to get text data before processing your file(s) with `request.only()`.
 
 ## Validating Uploaded Files
 AdonisJS automatically validate files when you try to access them. All you need to do is define the validation options.
