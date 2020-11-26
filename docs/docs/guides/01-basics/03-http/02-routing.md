@@ -412,7 +412,7 @@ The `Route.resource` method also exposes the API to register middleware on all o
 ```ts
 Route
   .resource('users', 'UsersController')
-  .middleware('auth')
+  .middleware({'*': ['auth']})
 ```
 
 When selectively applying middleware to certain routes, the object **key is the name of the route** and **value is an array of middleware** to apply.
