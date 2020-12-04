@@ -10,7 +10,7 @@ We have released `@adonisjs/core@5.0.4-preview-rc-2` on **October 23rd, 2020** a
 ## Highlights
 - Support for in-memory compilition of Typescript. In other words, the development workflow of AdonisJS will no longer write the compiled Javascript to the disk and uses in memory compilition. It has become possible because of the [@adonisjs/require-ts](https://github.com/adonisjs/require-ts) module.
 - Ability to validate environment variables. Learn more about it [here]().
-- Introducing [@adonisjs/repl](https://github.com/adonisjs/require-ts)
+- Introducing [@adonisjs/repl](https://github.com/adonisjs/repl)
 
 ## Http Server
 - **addition**: Adding `request.param` and `request.params` methods as an alternative to read the route params. [06c0f0ebc](https://github.com/adonisjs/http-server/commit/06c0f0ebc2b416bddfdc8c2929f867e6a42e67e1)
