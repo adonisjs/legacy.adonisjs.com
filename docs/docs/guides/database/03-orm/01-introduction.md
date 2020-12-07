@@ -107,12 +107,71 @@ export default class User extends BaseModel {
   }
   ```
 
+## Models config
+Following are the configuration options to overwrite the conventional defaults.
+
+### `primaryKey`
+Define a custom primary key. Lucid needs **atleast and only one unique/primary key** to work.
+
+```ts
+class User extends Basemodel {
+  public static primaryKey = 'email'
+}
+```
+
+Or use the `primaryKey` column option
+
+```ts
+class User extends Basemodel {
+  @column({ primaryKey: true })
+  public email: string
+}
+```
+
+### `table`
+Define a custom database table name.
+
+```ts
+export default class User extends BaseModel {
+  public static table = 'app_users'
+}
+```
+
+### `selfAssignPrimaryKey`
+Set this option to `true` if you don't rely on the database to generate the primary keys. For example: You want to self assign `uuid` to the new rows.
+
+```ts
+import uuid from 'uuid/v4'
+import { BaseModel, beforeCreate } from '@ioc:Adonis/Lucid/Orm'
+
+export default class User extends BaseModel {
+  public static selfAssignPrimaryKey = true
+
+  @column({ primaryKey: true })
+  public id: string
+
+  @beforeCreate()
+  public static assignUuid(user: User) {
+    user.id = uuid()
+  }
+}
+```
+
+### `connection`
+Instruct model to use a custom database connection defined inside the `config/database` file.
+
+```ts
+export default class User extends BaseModel {
+  public static connection = 'pg'
+}
+```
+
 ## FAQ's
 
 [collapse title="Does models creates the database tables automatically?"]
   No. We do not sync your models with the database. Creating/altering tables must be done using [migrations](/guides/database/migrations). Here are some of the reasons for not using models to create database schema.
 
-  1. Generating database tables from models means will make them bloated with all the database level configuration that you don't even need after generating table.
+  1. Generating database tables from models means, we need to define all database level constraint and config within the models. This adds unnecessary bloat to the models.
   2. Not every database change is as simple as renaming a column. There are scenarios, in which you want to migrate data from one table to another during re-structuring and this cannot/should not be expressed within models.
 [/collapse]
 

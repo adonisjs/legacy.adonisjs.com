@@ -253,3 +253,38 @@ export default class Post extends BaseModel {
 ```
 
 The properties using the `@computed` decorator will be included inside the serialized output.
+
+## Serializing `$extras`
+Properties not defined on the model as [columns](/guides/models/columns) are moved to the `$extras` object. For example:
+
+```ts
+const posts = await Post.query().withCount('comments')
+```
+
+The above query loads the number of comments for every post as `comments_count` property. Since `comments_count` is a runtime value (not pre-defined on the model), the value will be moved to the `$extras` object.
+
+```ts
+posts.forEach((post) => {
+  console.log(post.$extras.comments_count)
+})
+```
+
+The `$extras` object is not serialized when using `post.serialize` or `post.toJSON`, since it may contain sensitive data. However, you can instruct the model to serialize the `$extras` by defining the `serializeExtras` property.
+
+```ts
+class Post extends BaseModel {
+  public serializeExtras = true
+}
+```
+
+Or define a custom serialize function.
+
+```ts
+class Post extends BaseModel {
+  public serializeExtras() {
+    return {
+      commentsCount: this.$extras.comments_count,
+    }
+  }
+}
+```

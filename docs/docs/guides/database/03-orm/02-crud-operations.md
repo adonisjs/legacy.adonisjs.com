@@ -204,7 +204,7 @@ await User.updateOrCreate(searchPayload, savePayload)
 ```
 
 ### `updateOrCreateMany`
-The `updateOrCreateMany` method is a great candidate for sync rows by avoid duplicate entries.
+The `updateOrCreateMany` method allows syncing rows by avoiding duplicate entries.
 
 - You need to define a unique key as the first argument. The value for this key is used to determine, if the record exists in the database or not.
 - The 2nd argument is an array of records to persist.

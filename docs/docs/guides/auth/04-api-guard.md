@@ -90,7 +90,6 @@ Route.get('dashboard', async ({ auth }) => {
     hello: 'world',
   }
 })
-
 ```
 
 Now, lets the visit the `dashboard` route without and with the `Authorization` header.
@@ -130,28 +129,33 @@ const token = await auth.use('api').generate(user, {
 ```
 
 ## Where tokens are saved?
-The storage of tokens is decided by the driver in use. Currently, we only have `database` driver that stores the tokens inside a SQL table called `api_tokens`. You can inspect the config by opening `config/auth.ts` file.
+The storage of tokens is decided by the provider in use. 
 
-```ts
-{
-  tokenProvider: {
-    driver: 'database',
-    table: 'api_tokens',
-  },
-}
-```
+- The `database` provider stores the tokens inside a SQL table called `api_tokens`.
+  ```ts{}{config/auth.ts}
+  {
+    tokenProvider: {
+      driver: 'database',
+      table: 'api_tokens',
+      connection: 'a-different-connection' // 👈 use a different connection
+    },
+  }
+  ```
 
-The default database connection (defined inside `config/database.ts`) file is used. If you want to use a different connection, you can specify it inside the config.
+- The `redis` provider stores the tokens inside the redis database.
 
-```ts
-{
-  tokenProvider: {
-    driver: 'database',
-    table: 'api_tokens',
-    connection: 'a-different-connection' // 👈
-  },
-}
-```
+  [note]
+  Make sure to also define the `redisConnection` inside the `config/redis.ts` file.
+  [/note]
+
+  ```ts{}{config/auth.ts}
+  {
+    tokenProvider: {
+      driver: 'redis',
+      redisConnection: 'local',
+    },
+  }
+  ```
 
 ### Points to note
 
@@ -165,12 +169,18 @@ You can delete a token using the `auth.logout` method or manually run a delete q
 await auth.use('api').logout()
 ```
 
-Using the database query builder
+Using the database query builder directly.
 
 ```ts
 import Database from '@ioc:Adonis/Lucid/Database'
-
 await Database.from('api_tokens').where('id', tokenId).delete()
+```
+
+Directly using the redis module
+
+```ts
+import Redis from '@ioc:Adonis/Addons/Redis'
+await Redis.del(tokenId)
 ```
 
 ## What's next?

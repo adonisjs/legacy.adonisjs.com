@@ -325,6 +325,82 @@ await Mail.sendLater((message) => {
 - The `img[src]` needs the unique id, along with the `cid:` prefix.
 - Learn more about [CID attachments](https://blog.mailtrap.io/embedding-images-in-html-email-have-the-rules-changed/#CID_attachments_or_embedding_an_image_using_MIME_object).
 
+## Mailer classes
+Mailer classes are dedicated ES6 classes to configure an email. A mailer should always be responsible for sending email of a given type. For example: You should create different mailers for **email change**, **password reset** or for **welcoming a new user**.
+
+To begin, run the following command to create a new mailer
+
+```sh
+node ace make:mailer VerifyEmail
+
+# CREATE: app/Mailers/VerifyEmail.ts
+```
+
+Open the newly created file to inspect its source code. For the most part, you will be working inside the `prepare` method to configure the mail message.
+
+```ts{}{app/Mailers/VerifyEmail.ts}
+import { BaseMailer, MessageContract } from '@ioc:Adonis/Addons/Mail'
+
+export default class VerifyEmail extends BaseMailer {
+  public prepare(message: MessageContract) {
+    message
+      .subject('The email subject')
+      .from('admin@example.com')
+      .to('user@example.com')
+  }
+}
+```
+
+Finally, you can use the mailer class as follows
+
+```ts
+import VerifyEmail from 'App/Mailers/VerifyEmail'
+
+await new VerifyEmail().sendLater()
+```
+
+### Passing data to the mailer class
+Mailer can accept data using the constructor arguments. For example:
+
+```ts{}{app/Mailers/VerifyEmail.ts}
+export default class VerifyEmail extends BaseMailer {
+  // highlight-start
+  constructor (private user: User) {}
+  // highlight-end
+
+  public prepare(message: MessageContract) {
+    message
+      .subject('The email subject')
+      .from('admin@example.com')
+      .to(this.user.email) // 👈
+  }
+}
+
+const user = await User.find(1)
+await new VerifyEmail(user).sendLater()
+```
+
+### Use a different mailer
+The mailer classes uses the default mailer configured inside the `config/mail` file. However, you can use a different one by defining the following property on the class instance.
+
+```ts
+export default class VerifyEmail extends BaseMailer {
+  // highlight-start
+  // Definining options is optional
+  public mailer = this.mail.use('mailgun').options({
+    oTags: ['transactional'],
+  })
+  // highlight-end
+
+  public prepare(message: MessageContract) {
+    message
+      .subject('The email subject')
+      .from('admin@example.com')
+      .to('user@example.com')
+  }
+}
+```
+
 ## Switching mailers at runtime
 You can make use of the `Mail.use()` method to switch between the mailers.
 
@@ -371,7 +447,7 @@ Open the newly created file and paste the following contents inside it.
 import Event from '@ioc:Adonis/Core/Event'
 import Mail from '@ioc:Adonis/Addons/Mail'
 
-Event.on('adonis:mail:sent', Mail.prettyPrint)
+Event.on('mail:sent', Mail.prettyPrint)
 ```
 
 Now, if you send an email, it will be pretty printed on the terminal.

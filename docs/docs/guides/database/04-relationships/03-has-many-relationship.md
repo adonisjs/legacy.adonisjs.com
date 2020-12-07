@@ -104,3 +104,42 @@ post1.body = 'Lorem Ipsum is simply dummy text'
 
 const posts = await user.related('posts').saveMany([post, post1])
 ```
+
+### `updateOrCreateMany`
+The `updateOrCreateMany` method allows syncing rows by avoiding duplicate entries.
+
+```ts
+const posts = await user.related('posts').updateOrCreateMany([
+  {
+    title: 'Adonis 101',
+    body: 'Lorem Ipsum is simply dummy text'
+  },
+  {
+    title: 'NodeJS 101',
+    body: 'Lorem Ipsum is simply dummy text'
+  }
+])
+```
+
+If required you can also define additional keys to be used along with the foreign key to identify a row as unique. 
+
+In the following example, we want to sync the variants of a product making sure there is always one variant of a given color.
+
+```ts
+const product = await Product.find(1)
+
+const variants = await product.related('variants').updateOrCreateMany([
+  {
+    color: 'green',
+    price: 3220,
+  },
+  {
+    color: 'red',
+    price: 3299,
+  },
+  {
+    color: 'white',
+    price: 3200,
+  },
+], 'color')
+```

@@ -107,6 +107,12 @@ Env.schema.string({ format: 'url' })
 Env.schema.string({ format: 'email' })
 ```
 
+When validating for the `url` format. You can also define additional options to force/ignore the `tld` and `protocol`.
+
+```ts
+Env.schema.string({ format: 'url', tld: false, protocol: false })
+```
+
 #### `Env.schema.boolean`
 Enforces the value to be a valid string representation of a boolean. Following values are considered as valid booleans and are casted to `true` or `false`.
 

@@ -256,7 +256,11 @@ class UserValidator {
 ```
 
 ## `rules.unique`
-The `rules.unique` method is the opposite of `rules.exists` method. Instead of checking the existence of the value in a given table, it ensures that missing doesn't exists.
+The `rules.unique` method is the opposite of `rules.exists` method. Instead of checking the existence of the value in a given table, it ensures the value doesn't exists.
+
+[note]
+The validation rule is added by `@adonisjs/lucid` package. So make sure it is [installed and configured](/guides/database/setup), before using this rule.
+[/note]
 
 ```ts
 {
@@ -572,3 +576,77 @@ Enforce the value of field is not inside the blacklist. The `blacklist` rule is 
   ])
 }
 ```
+
+## `rules.url`
+Ensure the field under validation is a valid URL.
+
+```ts
+{
+  website: schema.string({}, [
+    rules.url()
+  ])
+}
+```
+
+Along with the format validation, you can also enforce the url to be from a certain domain. For example:
+
+```ts
+{
+  twitterProfile: schema.string({}, [
+    rules.url({
+      hostWhitelist: ['twitter.com']
+    })
+  ])
+}
+```
+
+Or use the `hostBlacklist` option to disallow certain hosts.
+
+```ts
+{
+  website: schema.string({}, [
+    rules.url({
+      hostBlacklist: [
+        'acme.com',
+        'example.com'
+      ]
+    })
+  ])
+}
+```
+
+### Validation options
+Following is the list of all the validation options.
+
+```ts
+{
+  website: schema.string({}, [
+    rules.url({
+      protocols: ['http', 'https'],
+      requireTld: true
+      requireProtocol: false
+      requireHost: true
+      hostWhitelist: []
+      hostBlacklist: []
+      validateLength: false
+    })
+  ])
+}
+```
+
+### Normalization options
+Along with the validation, you can also use the following options to normalize urls.
+
+```ts
+{
+  website: schema.string({}, [
+    rules.url({
+      ensureProtocol: 'https',
+      stripWWW: true,
+    })
+  ])
+}
+```
+
+- The `ensureProtocol` will make sure that all URLs after validation have the `https` protocol.
+- The `stripWWW` option will remove the `www` from the URL.
