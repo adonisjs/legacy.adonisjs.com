@@ -40,6 +40,12 @@ export default {
     return {
       posts: [
         {
+          title: 'December Release (2020)',
+          permalink: 'blog/december-2020-release',
+          publishedOn: '2020-12-7T00:00:00.000Z',
+          order: 16,
+        },
+        {
           title: 'October Release (2020)',
           permalink: 'blog/october-2020-release',
           publishedOn: '2020-10-25T00:00:00.000Z',
