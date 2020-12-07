@@ -1,31 +1,33 @@
 {
-  "name": "adonisjs.com",
+  "name": "app",
   "version": "1.0.0",
-  "description": "AdonisJS.com",
-  "main": "app.js",
-  "bin": {
-    "adonisjs.com": "build.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
+  "private": true,
   "scripts": {
-    "build": "node bin/build.js"
+    "build": "node ace build --production",
+    "start": "node server.js",
+    "dev": "node ace serve --watch",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/adonisjs/adonisjs.com.git"
-  },
-  "author": "virk,adonisjs",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/adonisjs/adonisjs.com/issues"
-  },
-  "homepage": "https://github.com/adonisjs/adonisjs.com#readme",
   "devDependencies": {
-    "execa": "^4.0.3"
+    "@adonisjs/assembler": "^3.0.6",
+    "adonis-preset-ts": "^1.1.0",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-adonis": "^1.0.15",
+    "eslint-plugin-prettier": "^3.2.0",
+    "pino-pretty": "^4.3.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.2",
+    "youch": "^2.1.1",
+    "youch-terminal": "^1.0.1"
   },
   "dependencies": {
-    "kleur": "^4.1.1"
+    "@adonisjs/core": "^5.0.4-preview-rc-2.1",
+    "@adonisjs/repl": "^1.1.6",
+    "@adonisjs/view": "^3.1.0",
+    "proxy-addr": "^2.0.6",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.19"
   }
 }

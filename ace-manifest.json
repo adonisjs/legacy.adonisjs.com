@@ -1,0 +1,36 @@
+{
+  "dump:rcfile": {
+    "settings": {},
+    "commandPath": "@adonisjs/core/build/commands/DumpRc",
+    "commandName": "dump:rcfile",
+    "description": "Dump contents of .adonisrc.json file along with defaults",
+    "args": [],
+    "flags": []
+  },
+  "list:routes": {
+    "settings": { "loadApp": true },
+    "commandPath": "@adonisjs/core/build/commands/ListRoutes",
+    "commandName": "list:routes",
+    "description": "List application routes",
+    "args": [],
+    "flags": [
+      { "name": "json", "propertyName": "json", "type": "boolean", "description": "Output as JSON" }
+    ]
+  },
+  "generate:key": {
+    "settings": {},
+    "commandPath": "@adonisjs/core/build/commands/GenerateKey",
+    "commandName": "generate:key",
+    "description": "Generate a new APP_KEY secret",
+    "args": [],
+    "flags": []
+  },
+  "repl": {
+    "settings": { "loadApp": true, "environment": "repl", "stayAlive": true },
+    "commandPath": "@adonisjs/repl/build/commands/AdonisRepl",
+    "commandName": "repl",
+    "description": "Start a new REPL session",
+    "args": [],
+    "flags": []
+  }
+}

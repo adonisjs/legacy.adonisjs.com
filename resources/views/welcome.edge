@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AdonisJS - A Modern Web Framework For Node.js</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      background-color: #F7F8FA;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      color: #46444c;
+      position: relative;
+    }
+
+    body:before {
+      content: '';
+      background: #5A45FF;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      position: absolute;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: #5A45FF;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 620px;
+      margin: auto;
+      height: 100vh;
+      padding: 0 30px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .title {
+      font-size: 50px;
+      line-height: 50px;
+      margin-bottom: 10px;
+      color: #17161A;
+    }
+
+    .subtitle {
+      font-size: 26px;
+      margin-bottom: 40px;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    main ul {
+      list-style: none;
+    }
+
+    main li {
+      margin-bottom: 5px;
+      position: relative;
+      padding-left: 25px;
+    }
+
+    main li:before {
+      content: '—';
+      position: absolute;
+      left: 0;
+    }
+
+    main code {
+      font-size: 16px;
+      background: #e6e2ff;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div>
+      <h1 class="title"> It Works! </h1>
+      <p class="subtitle">
+        Congratulations, you have just created your first AdonisJS app.
+      </p>
+
+      <ul>
+        <li>
+          The route for this page is defined inside <code>start/routes.ts</code> file
+        </li>
+
+        <li>
+          You can update this page by editing <code>resources/views/welcome.edge</code> file
+        </li>
+
+        <li>
+          If you run into problems, you can reach us on <a href="https://discord.gg/vDcEjq6?">Discord</a> or the <a href="https://forum.adonisjs.com/">Forum</a>.
+        </li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>
