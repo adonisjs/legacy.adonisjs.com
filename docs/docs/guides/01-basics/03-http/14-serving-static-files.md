@@ -63,7 +63,7 @@ You can customize the directory for storing static files by updating the value o
 
 Also, make sure to update the `metaFiles` array and restart the server.
 
-```diff-json{}{.adonisrc.json}
+```diff{}{.adonisrc.json}
 "metaFiles": [
   ".env",
   ".adonisrc.json",
