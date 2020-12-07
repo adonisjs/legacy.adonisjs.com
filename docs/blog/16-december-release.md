@@ -4,7 +4,7 @@ title: December Release (2020)
 group: blog
 meta:
   number: 16
-  published_on: 2020-12-7
+  published_on: 2020-12-07
   author: Harminder Virk
 ---
 

@@ -42,7 +42,7 @@ export default {
         {
           title: 'December Release (2020)',
           permalink: 'blog/december-2020-release',
-          publishedOn: '2020-12-7T00:00:00.000Z',
+          publishedOn: '2020-12-07T00:00:00.000Z',
           order: 16,
         },
         {
