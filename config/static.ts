@@ -5,6 +5,7 @@
  * file.
  */
 
+import Env from '@ioc:Adonis/Core/Env'
 import { AssetsConfig } from '@ioc:Adonis/Core/Static'
 
 const staticConfig: AssetsConfig = {
@@ -20,7 +21,7 @@ const staticConfig: AssetsConfig = {
   |
   |
   */
-  enabled: true,
+  enabled: Env.get('NODE_ENV') !== 'production',
 
   /*
   |--------------------------------------------------------------------------

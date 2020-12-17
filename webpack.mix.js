@@ -9,8 +9,9 @@ if (!mix.inProduction()) {
 mix.sourceMaps(true, 'source-map')
 
 // NOTE: Don't remove this, Because it's the default public folder path on AdonisJs
-mix.setPublicPath('public').js('resources/assets/js/app.js', 'public/js')
-
-mix.postCss('resources/assets/css/app.css', 'public/css', [require('tailwindcss')])
+mix
+  .setPublicPath('public/static')
+  .js('resources/assets/js/app.js', 'public/static/js')
+  .postCss('resources/assets/css/app.css', 'public/static/css', [require('tailwindcss')])
 
 // Add your assets here
