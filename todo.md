@@ -1,0 +1,2 @@
+- Allow passing custom values to the edge template when using `Content.render(url)`
+- Allow hooking into edge renderer

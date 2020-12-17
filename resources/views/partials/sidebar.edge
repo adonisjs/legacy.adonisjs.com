@@ -1,0 +1,38 @@
+<div
+  x-data="{ opened: false }"
+  x-on:toggle.window="opened = !opened"
+>
+
+  {{-- Mobile overlay --}}
+  <div class="bg-gray-900 inset-0 z-20 fixed sidebar-overlay" :class="{ opened }" @click="opened = false"></div>
+
+  <aside
+    class="sidebar fixed top-0 bottom-0 left-0 overflow-auto bg-white shadow z-20 w-9/12 md:w-72"
+    :class="{ opened }"
+  >
+    <div class="lg:mt-16 h-full w-full">
+      <div class="bg-brand py-3 px-9 lg:hidden">
+        @!logo()
+      </div>
+
+      <div class="lg:pt-10 pb-8">
+        @each(category in groups.find((group) => group.name === doc.group).categories)
+          @if(category.name !== 'Root')
+            <div class="px-11 py-2">
+              @!sidebar.navTitle({ title: category.name })
+            </div>
+          @endif
+          <ul class="pb-7 lg:px-8">
+            @each(categoryDoc in category.docs)
+              @!sidebar.navItem({
+                title: categoryDoc.title,
+                url: categoryDoc.url,
+                active: doc.url === categoryDoc.url
+              })
+            @endeach
+          </ul>
+        @endeach
+      </div>
+    </div>
+  </aside>
+</div>

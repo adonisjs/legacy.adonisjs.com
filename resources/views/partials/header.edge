@@ -1,0 +1,38 @@
+<div class="lg:h-14 relative">
+  <header class="bg-brand shadow-dropdown z-30 lg:fixed lg:top-0 lg:right-0 lg:left-0">
+    <div class="flex flex-col lg:flex-row lg:items-center">
+
+      <!-- First half -->
+      <div class="w-72 pl-4 md:pl-8 h-14">
+        <div class="flex h-full items-center">
+
+          <div class="mr-4 lg:hidden">
+            @include('partials/hamburger')
+          </div>
+
+          <div class="hidden lg:block">
+            @!logo()
+          </div>
+
+          <div class="lg:hidden -mt-0.5">
+            @!logo(hideIcon = true)
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Second half -->
+      <div class="mx-2 mt-2 lg:mt-0 md:mx-6 lg:mx-12 lg:flex lg:justify-between lg:items-center lg:flex-1">
+        <div>
+          @include('partials/navbar')
+        </div>
+
+        <div class="md:w-72 mr-2 absolute right-0 top-0 mt-3 lg:w-60 lg:relative lg:mt-0 font-display lg:pl-2">
+          <div class="lg:border-1 lg:border-l lg:border-opacity-40 lg:border-white w-full lg:pl-2">
+            @include('partials/search')
+          </div>
+        </div>
+    </div>
+    </div>
+  </header>
+</div>

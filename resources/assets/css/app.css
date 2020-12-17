@@ -1,0 +1,485 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-padding-top: 66px;
+  scroll-behavior: smooth;
+}
+
+.sidebar {
+  scroll-padding-top: 66px;
+}
+
+/*
+* -----------------------------------------------------------
+*                       FONTS STACK
+* -----------------------------------------------------------
+*/
+@font-face {
+  font-family: 'Calibre';
+  src: local('Calibre-Bold'),
+      url('../fonts/Calibre/Calibre-Bold.woff2') format('woff2'),
+      url('../fonts/Calibre/Calibre-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibre';
+  src: local('Calibre-Semibold'),
+      url('../fonts/Calibre/Calibre-Semibold.woff2') format('woff2'),
+      url('../fonts/Calibre/Calibre-Semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibre';
+  src: local('Calibre-Medium'),
+      url('../fonts/Calibre/Calibre-Medium.woff2') format('woff2'),
+      url('../fonts/Calibre/Calibre-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibre';
+  src: local('Calibre'),
+      url('../fonts/Calibre/Calibre.woff2') format('woff2'),
+      url('../fonts/Calibre/Calibre.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+* -----------------------------------------------------------
+*                     STANDARD STYLES
+* -----------------------------------------------------------
+*/
+code, kbd, pre, samp {
+  @apply text-base font-mono;
+}
+
+::selection {
+  @apply bg-blue-100 text-blue-900;
+}
+
+/*
+* -----------------------------------------------------------
+*                         APP SIDEBAR
+* -----------------------------------------------------------
+*
+*  Animations with tailwind classes are bit too much. The
+*  simplest option is to self assign these properties.
+*
+*/
+.sidebar {
+  transition: transform 200ms ease;
+  transform: translateX(-100%);
+}
+
+.sidebar.opened {
+  transform: translateX(0);
+}
+
+.sidebar-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease 100ms;
+}
+
+.sidebar-overlay.opened {
+  opacity: 0.5;
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    transition: none;
+    transform: none;
+  }
+}
+
+/*
+* -----------------------------------------------------------
+*                         DOC TOC
+* -----------------------------------------------------------
+*
+*  Cannot be styled using Tailwind since HTML is not under
+*  out control.
+*
+*/
+.toc-container li {
+  padding-bottom: 4px;
+}
+
+.toc-container div > li {
+  @apply list-none;
+}
+
+.toc-container div > li > p {
+  @apply hidden;
+}
+
+.toc-container div > li > ul > li {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px dashed theme('colors.gray.300');
+}
+
+.toc-container div > li > ul li ul {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.toc-container div li {
+  line-height: 1.2;
+}
+
+.toc-container div li a:hover, .toc-container div li a.active {
+  @apply text-gray-800;
+}
+
+/*
+* -----------------------------------------------------------
+*                     ALGOLIA SEARCH
+* -----------------------------------------------------------
+*
+* Again HTML is out of our control and hence needs to be
+* styled within css using selectors
+*
+*/
+.DocSearch {
+  --docsearch-highlight-color: theme('colors.brand.DEFAULT');
+  --docsearch-searchbox-shadow: inset 0 0 0 2px theme('colors.brand.DEFAULT');
+  --docsearch-primary-color: theme('colors.brand.DEFAULT');
+  --docsearch-text-color: theme('colors.gray.800');
+  --docsearch-muted-color: theme('colors.purple.600');
+  --docsearch-modal-background: theme('colors.gray.100');
+  --docsearch-searchbox-background: #4533cc;
+  --docsearch-key-gradient: theme('colors.gray.200');
+  --docsearch-key-shadow: '';
+  --docsearch-modal-shadow: theme('boxShadow.dropdown');
+}
+
+.DocSearch.DocSearch-Button {
+  @apply opacity-70 w-full flex rounded text-white relative m-0;
+  transition: background 200ms ease;
+  background: #4533cc;
+}
+
+@media (min-width: 1024px) {
+  .DocSearch.DocSearch-Button {
+    background: transparent;
+  }
+}
+
+.DocSearch.DocSearch-Button:hover {
+  background: #4533cc;
+  opacity: 1;
+  color: #fff;
+}
+
+.DocSearch-Button-Placeholder {
+  flex: 1;
+  text-align: left;
+}
+
+.DocSearch .DocSearch-Button-Placeholder {
+  font-size: 1.125rem;
+}
+
+.DocSearch.DocSearch-Button .DocSearch-Button-Key {
+  display: none;
+}
+
+.DocSearch.DocSearch-Button:active, .DocSearch.DocSearch-Button:focus, .DocSearch.DocSearch-Button:hover {
+  box-shadow: none;
+}
+
+.DocSearch.DocSearch-Button .DocSearch-Search-Icon {
+  color: #fff;
+  width: 18px;
+  margin: 0 5px 0 5px;
+}
+@media (min-width: 751px) {
+  .DocSearch.DocSearch-Button .DocSearch-Search-Icon {
+    color: inherit;
+  }
+}
+
+/*
+* -----------------------------------------------------------
+*                     MARKDOWN STYLES
+* -----------------------------------------------------------
+*
+*  Styling elements generated by converting markdown to HTML
+*
+*/
+.markdown-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
+
+.markdown-content code {
+  @apply text-gray-700 font-medium bg-gray-200;
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+.markdown-content strong {
+  @apply font-semibold text-gray-700;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  border-width: 0;
+  border-radius: 0;
+  padding: 0;
+  font-weight: 400;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.markdown-content pre {
+  white-space: pre;
+  overflow-x: auto;
+  padding: 30px;
+  border-radius: 4px;
+}
+
+.markdown-content pre .line {
+  min-height: 18px;
+}
+
+.markdown-content .icon.icon-link {
+  @apply text-gray-300;
+  position: absolute;
+  transition: color 100ms ease;
+  left: -43px;
+  margin-top: -2px;
+  text-align: center;
+  width: 48px;
+  display: none;
+}
+
+.markdown-content h1:hover .icon.icon-link,
+.markdown-content h2:hover .icon.icon-link,
+.markdown-content h3:hover .icon.icon-link,
+.markdown-content h4 .icon.icon-link {
+  @apply text-gray-400;
+  display: block;
+}
+
+.markdown-content .icon.icon-link:after {
+  content: "#";
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  @apply text-gray-900 font-display font-semibold relative;
+}
+
+.markdown-content h1 {
+  @apply text-5xl font-bold mb-7 pb-4;
+}
+.markdown-content h1 .icon.icon-link {
+  display: none;
+}
+
+.markdown-content p,
+.markdown-content .embed,
+.markdown-content img,
+.markdown-content pre,
+.markdown-content table {
+  @apply mb-8;
+}
+
+.markdown-content h2 {
+  @apply mt-14 pt-12 mb-6 text-3.5;
+  border-top: .1rem solid theme('colors.gray.400');
+}
+
+.markdown-content h3 {
+  @apply text-2.5 mt-16 pb-2 mb-4;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.markdown-content h4 {
+  @apply text-lg text-gray-900 font-semibold mb-2 mt-14 font-mono bg-coolGray-200;
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+.markdown-content h5 {
+  @apply font-semibold text-gray-900;
+  margin-bottom: 5px;
+}
+
+.markdown-content h4 .icon.icon-link {
+  @apply font-sans text-2xl;
+  left: -39px;
+}
+
+.markdown-content ul, .markdown-content ol {
+  @apply mb-8 ml-4;
+}
+
+.markdown-content .relaxed ol, .markdown-content .relaxed ul {
+  @apply mt-4 ml-4;
+}
+
+.markdown-content li ul, .markdown-content li ol {
+  margin: 0;
+}
+
+.markdown-content li {
+  @apply pl-5 relative mb-1.5;
+}
+
+.markdown-content .relaxed li {
+  @apply mb-4;
+}
+
+.markdown-content ul li:before {
+  @apply top-0 left-0 block absolute;
+  content: "•";
+}
+
+.markdown-content ol {
+  counter-reset: numbered-counter;
+}
+
+.markdown-content ol li:before {
+  @apply top-0 left-0 block absolute;
+  counter-increment: numbered-counter;
+  content: counter(numbered-counter,decimal) ".";
+}
+
+.markdown-content a {
+  @apply text-brand;
+  text-decoration: none;
+  background-image: linear-gradient(to bottom, transparent 50%, theme('colors.brand.DEFAULT') 50%);
+  background-position: 0 93%;
+  background-repeat: repeat-x;
+  background-size: 100% .15rem;
+
+  text-shadow: 0.1rem 0 theme('colors.gray.100'),
+    0.15rem 0 theme('colors.gray.100'),
+    -0.1rem 0 theme('colors.gray.100'),
+    -0.15rem 0 theme('colors.gray.100');
+}
+
+.markdown-content a strong {
+  @apply text-brand;
+}
+
+.markdown-content .codegroup-nav {
+  @apply font-mono text-sm font-medium;
+  padding: 10px 20px 10px 20px;
+  border-bottom: 2px solid rgba(102,105,118,.34);
+}
+
+.markdown-content .codegroup-nav-tab {
+  text-shadow: none;
+  background: none;
+  color: #a2afd6;
+  padding: 4px 13px;
+  z-index: 1;
+}
+
+.codegroup.ready .tab-highlighter {
+  transition: left 200ms ease, width 300ms ease-out;
+}
+
+.tab-highlighter {
+  @apply absolute bg-blue-200;
+  height: 3px;
+  bottom: -2px;
+}
+
+.markdown-content .codegroup-nav-tab.active {
+  @apply text-white;
+}
+
+.markdown-content a code {
+  color: inherit;
+  text-shadow: none;
+}
+
+.markdown-content img {
+  @apply bg-coolGray-200;
+}
+
+.markdown-content .alert :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content p+pre {
+  @apply -mt-4;
+}
+
+.markdown-content table {
+  border-radius: 4px;
+  width: 100%;
+  border: 1px solid theme('colors.gray.300');
+  border-spacing: 0;
+  overflow: hidden;
+  border-collapse: separate;
+}
+
+.markdown-content table td, .markdown-content table th {
+  padding: .5rem 1rem;
+}
+
+.markdown-content table td {
+  border-bottom: 1px solid theme('colors.gray.300');
+  border-right: 1px solid theme('colors.gray.300');
+}
+
+.markdown-content table th {
+  @apply text-gray-900 bg-coolGray-200;
+  text-align: left;
+  font-weight: 600;
+  border-right: 1px solid theme('colors.gray.300');
+}
+
+.markdown-content table th:first-child, .markdown-content table td:first-child{
+  border-left: 0;
+}
+
+.markdown-content table th:last-child, .markdown-content table td:last-child{
+  border-right: 0;
+}
+
+.markdown-content table tr:last-child td {
+  border-bottom: 0;
+}
+
+.markdown-content .alert ul {
+  margin-left: 0;
+}
+
+.markdown-content .alert-note h5 {
+  @apply text-brand;
+  margin-bottom: 10px;
+}
+
+.markdown-content .alert-tip h5 {
+  @apply text-green-400;
+  margin-bottom: 10px;
+}
+
+.turbolinks-progress-bar {
+  @apply bg-blue-200;
+}

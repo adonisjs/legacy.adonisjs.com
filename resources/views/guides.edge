@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+  <script src="{{ mix('js/app.js') }}" defer></script>
+</head>
+
+<body class="font-sans text-xl bg-body text-gray-600 antialiased leading-6">
+  <div>
+    @include('partials/header')
+  </div>
+
+  <section>
+    @include('partials/sidebar')
+
+    <article
+      class="lg:ml-72"
+      x-data="initializeIntersectionObserver('.markdown-content h2, .markdown-content h3', '.toc-container', 'active')"
+      x-init="mounted"
+    >
+      <div class="flex flex-col-reverse xl:flex-row xl:justify-between">
+        <div class="flex-1">
+          @include('partials/doc')
+        </div>
+
+        <div class="w-full lg:max-w-2xl lg:mx-auto xl:w-72 xl:mx-0">
+          @include('partials/toc')
+        </div>
+      </div>
+    </article>
+  </section>
+
+</body>
+</html>

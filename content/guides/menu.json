@@ -1,0 +1,132 @@
+[
+  {
+    "name": "root",
+    "categories": [
+      {
+        "name": "Root",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "introduction",
+            "contentPath": "introduction.md"
+          }
+        ]
+      },
+      {
+        "name": "Http",
+        "docs": [
+          {
+            "title": "Context",
+            "permalink": "context",
+            "contentPath": "http/context.md"
+          },
+          {
+            "title": "Routing",
+            "permalink": "routing",
+            "contentPath": "http/routing.md"
+          },
+          {
+            "title": "Request & Response",
+            "permalink": "request-response",
+            "contentPath": "http/request-response.md"
+          },
+          {
+            "title": "Forms & Validation",
+            "permalink": "forms-and-validations",
+            "contentPath": "http/forms-and-validations.md"
+          },
+          {
+            "title": "File uploads",
+            "permalink": "file-uploads",
+            "contentPath": "http/file-uploads.md"
+          },
+          {
+            "title": "Controllers",
+            "permalink": "controllers",
+            "contentPath": "http/controllers.md"
+          },
+          {
+            "title": "Middleware",
+            "permalink": "middleware",
+            "contentPath": "http/middleware.md"
+          },
+          {
+            "title": "Session",
+            "permalink": "session",
+            "contentPath": "http/session.md"
+          },
+          {
+            "title": "Cookies",
+            "permalink": "cookies",
+            "contentPath": "http/cookies.md"
+          },
+          {
+            "title": "Server",
+            "permalink": "server",
+            "contentPath": "http/server.md"
+          },
+          {
+            "title": "Hooks",
+            "permalink": "hooks",
+            "contentPath": "http/hooks.md"
+          },
+          {
+            "title": "Exception Handling",
+            "permalink": "exception-handling",
+            "contentPath": "http/exception-handling.md"
+          },
+          {
+            "title": "Content negotiation",
+            "permalink": "content-negotiation",
+            "contentPath": "http/content-negotiation.md"
+          },
+          {
+            "title": "Static assets",
+            "permalink": "static-assets",
+            "contentPath": "http/static-assets.md"
+          },
+          {
+            "title": "Url generation",
+            "permalink": "url-generation",
+            "contentPath": "http/url-generation.md"
+          }
+        ]
+      },
+      {
+        "name": "Views & Templates",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "views/introduction",
+            "contentPath": "views/introduction.md"
+          },
+          {
+            "title": "Rendering views",
+            "permalink": "views/rendering",
+            "contentPath": "views/rendering.md"
+          },
+          {
+            "title": "Template syntax",
+            "permalink": "views/templates-syntax",
+            "contentPath": "views/templates-syntax.md"
+          },
+          {
+            "title": "Layouts & Partials",
+            "permalink": "views/layouts-and-partials",
+            "contentPath": "views/layouts-and-partials.md"
+          },
+          {
+            "title": "Components",
+            "permalink": "views/components",
+            "contentPath": "views/components.md"
+          },
+          {
+            "title": "Debugging",
+            "permalink": "views/debugging",
+            "contentPath": "views/debugging.md"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+<nav>
+  <ul class="flex relative">
+    <li>
+      @!header.navItem({ title: 'Tutorials', url: '/guides/context' })
+    </li>
+
+    <li>
+      @!header.navItem({ title: 'Docs', url: '/guides/routing' })
+    </li>
+
+    <li>
+      @header.dropdown()
+        @slot('trigger')
+          @header.navItem({
+            url: '#',
+            '@click.prevent': 'opened = !opened'
+          })
+            <span class="mr-2">Reference Guides</span>
+            <span class="hidden lg:block mt-1 transform" :class="{ 'rotate-180': opened }" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5"><path d="M0 0l5 5 5-5z" fill="currentColor" fill-rule="nonzero"></path></svg>
+            </span>
+          @end
+        @end
+        @!header.dropdownItem({ title: 'HTTP Context', url: '/' })
+        @!header.dropdownItem({ title: 'Router', url: '/' })
+        @!header.dropdownItem({ title: 'Validator', url: '/' })
+        @!header.dropdownItem({ title: 'Database', url: '/' })
+        @!header.dropdownItem({ title: 'Config', url: '/' })
+      @end
+  </ul>
+</nav>

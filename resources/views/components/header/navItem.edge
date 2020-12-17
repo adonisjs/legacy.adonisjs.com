@@ -1,0 +1,7 @@
+<a
+  href="{{ url }}"
+  {{ $props.serializeExcept(['url', 'title']) }}
+  class="text-white font-display text-lg opacity-70 whitespace-nowrap block py-1.5 px-3 lg:flex lg:items-center lg:px-4 lg:py-3 lg:transition lg:ease-in-out lg:duration-200 lg:hover:opacity-100"
+>
+  {{ title || $slots.render('main') }}
+</a>

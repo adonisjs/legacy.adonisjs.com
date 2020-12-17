@@ -1,0 +1,26 @@
+@set('tabs', JSON.parse(node.properties.dataTabs))
+<div
+  x-data="initializeCodegroups()"
+  x-init="mounted"
+  style="background: #292D3E;"
+  class="rounded codegroup"
+>
+  <div class="flex codegroup-nav relative">
+    <div x-ref="highlighter" class="tab-highlighter" style="width: 0; left: 20px;"></div>
+    @each((tab, index) in tabs)
+      <a
+        href=""
+        {{ index === 0 ? 'x-ref=firstTab' : '' }}
+        @click.prevent="changeTab({{ index + 1 }}, event.target)"
+        class="codegroup-nav-tab"
+        :class="{ active: {{index + 1}} === activeTab }">{{ tab }}</a>
+    @end
+  </div>
+  <div class="-mt-2">
+    @each((child, index) in node.children)
+      <div x-show="activeTab === {{index + 1}}">
+        @dimerTree([child])~
+      </div>
+    @end
+  </div>
+</div>

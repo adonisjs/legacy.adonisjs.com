@@ -16,9 +16,9 @@ Routes are the starting point for your application. Using Routes, you define the
 
 You can register routes using the Router module of AdonisJS as shown in the following example:
 
-[note]
+:::note
 Routes are registered inside `start/routes.ts` file
-[/note]
+:::
 
 ```ts{}{start/routes.ts}
 import Route from '@ioc:Adonis/Core/Route'
@@ -36,7 +36,7 @@ The output of the handler function is sent back as response. You can send **HTML
 
 #### Rendering views
 
-[codegroup]
+:::codegroup
 
 ```ts{4}{Route}
 import Route from '@ioc:Adonis/Core/Route'
@@ -57,7 +57,7 @@ Route.get('/', async ({ view }) => {
 </html>
 ```
 
-[/codegroup]
+:::
 
 #### JSON Response
 
@@ -81,7 +81,7 @@ Route.get('/', async () => {
 
 AdonisJS follows the **MVC (Model-View-Controller) architecture**. The job of Controllers is to handle and fulfill the HTTP requests by working with the other parts of the application. For example: Using the database model to load the data and then passing it to the view for rendering the HTML.
 
-[codegroup]
+:::codegroup
 
 ```ts{}{Route}
 import Route from '@ioc:Adonis/Core/Route'
@@ -109,7 +109,7 @@ export default class PostsController {
 @endeach
 ```
 
-[/codegroup]
+:::
 
 [Learn more](/guides/http/controllers) about controllers
 
@@ -139,7 +139,7 @@ All that fancy syntax `@set`, `@each` are part of the Edge templating syntax. Ma
 
 Models represents the database layer of your application. AdonisJS has inbuilt support for data models built on top of [Active Record pattern](https://en.wikipedia.org/wiki/Active_record_pattern). You can describe your database tables as JavaScript classes and use JavaScript methods for reading, writing and deleting rows. For example:
 
-[codegroup]
+:::codegroup
 
 ```ts{}{Declaring a Model}
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
@@ -172,7 +172,7 @@ user.email = 'virk@adonisjs.com'
 await user.save()
 ```
 
-[/codegroup]
+:::
 
 Along with Models, AdonisJS also gives you robust API for [database migrations](/guides/database/migrations), [seeders](/guides/database/seeds) and ability to construct and execute queries using the [Database query builder](/guides/database/query-builder).
 
