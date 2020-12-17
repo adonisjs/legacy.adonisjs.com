@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN npm ci \
-  && npm run build:front \
+  && npm run front:build \
   && node ace build --production \
   && cd build \
   && npm ci --production
