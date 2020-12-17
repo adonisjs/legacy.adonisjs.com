@@ -4,8 +4,7 @@
 
 html {
   scroll-padding-top: 66px;
-/*  scroll-behavior: smooth;
-*/
+  scroll-behavior: smooth;
 }
 
 body.js-stop-transition * { transition:none !important; }

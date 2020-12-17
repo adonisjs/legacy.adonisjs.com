@@ -5,8 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+  <link href="{{ mix('css/app.css') }}" rel="preload" as="style" crossorigin="anonymous" onload="this.rel='stylesheet'">
   <script src="{{ mix('js/app.js') }}" defer></script>
+  <title>{{ doc.title }}</title>
+  <meta name="description" description="{{ dimerUtils.getText(file.ast.children[2]) }}">
 </head>
 
 <body class="font-sans text-xl bg-body text-gray-600 antialiased leading-6 js-stop-transition">
