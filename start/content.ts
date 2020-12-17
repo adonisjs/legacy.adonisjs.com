@@ -8,10 +8,11 @@
 |
 */
 
+import Application from '@ioc:Adonis/Core/Application'
 import Content from 'App/Services/Content'
 import Guides from '../content/guides/menu.json'
 
-Content.cache('markup')
+Content.cache(Application.inProduction ? 'full' : 'markup')
   .zone('guides')
   .baseUrl('guides')
   .baseContentPath('./content/guides')
