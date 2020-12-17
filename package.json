@@ -7,26 +7,29 @@
     "start": "node server.js",
     "dev": "node ace serve --watch",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "front:build": "run-p front:build:js front:build:css front:build:static",
+    "front:build:js": "esbuild resources/js/app.js --bundle --outfile=public/static/app.js",
+    "front:build:css": "postcss resources/css/app.css -o public/static/app.css",
+    "front:build:static": "copyfiles -u 2 resources/static/**/* public/static"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^3.0.6",
-    "@docsearch/css": "^1.0.0-alpha.28",
-    "@docsearch/js": "^1.0.0-alpha.28",
     "@tailwindcss/typography": "^0.3.1",
     "adonis-preset-ts": "^1.1.0",
-    "alpinejs": "^2.7.3",
     "autoprefixer": "^10.1.0",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.8.23",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-adonis": "^1.0.15",
     "eslint-plugin-prettier": "^3.2.0",
-    "laravel-mix": "^6.0.0-beta.17",
+    "npm-run-all": "^4.1.5",
     "pino-pretty": "^4.3.0",
     "postcss": "^8.2.1",
+    "postcss-cli": "^8.3.1",
     "prettier": "^2.2.1",
     "tailwindcss": "^2.0.1",
-    "turbolinks": "^5.2.0",
     "typescript": "^4.1.2",
     "youch": "^2.1.1",
     "youch-terminal": "^1.0.1"
@@ -36,7 +39,6 @@
     "@adonisjs/repl": "^1.1.6",
     "@adonisjs/view": "^3.1.0",
     "@dimerapp/content": "^1.2.0",
-    "adonis-mix-asset": "^2.0.1",
     "hoverintent": "^2.2.1",
     "proxy-addr": "^2.0.6",
     "reflect-metadata": "^0.1.13",
@@ -44,7 +46,6 @@
     "turbolinks-prefetch": "^1.0.3"
   },
   "description": "> Source code for the official website",
-  "main": "tailwind.config.js",
   "directories": {
     "doc": "docs"
   },

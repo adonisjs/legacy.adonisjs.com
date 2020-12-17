@@ -7,8 +7,12 @@ html {
   scroll-behavior: smooth;
 }
 
-body.js-stop-transition * { transition:none !important; }
-[x-cloak=""] { display: none; }
+body.js-stop-transition * {
+  transition: none !important;
+}
+[x-cloak=''] {
+  display: none;
+}
 
 .sidebar {
   scroll-padding-top: 66px;
@@ -21,9 +25,8 @@ body.js-stop-transition * { transition:none !important; }
 */
 @font-face {
   font-family: 'Calibre';
-  src: local('Calibre-Bold'),
-      url('../fonts/Calibre/Calibre-Bold.woff2') format('woff2'),
-      url('../fonts/Calibre/Calibre-Bold.woff') format('woff');
+  src: local('Calibre-Bold'), url('/static/fonts/Calibre/Calibre-Bold.woff2') format('woff2'),
+    url('/static/fonts/Calibre/Calibre-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -32,8 +35,8 @@ body.js-stop-transition * { transition:none !important; }
 @font-face {
   font-family: 'Calibre';
   src: local('Calibre-Semibold'),
-      url('../fonts/Calibre/Calibre-Semibold.woff2') format('woff2'),
-      url('../fonts/Calibre/Calibre-Semibold.woff') format('woff');
+    url('/static/fonts/Calibre/Calibre-Semibold.woff2') format('woff2'),
+    url('/static/fonts/Calibre/Calibre-Semibold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -41,9 +44,8 @@ body.js-stop-transition * { transition:none !important; }
 
 @font-face {
   font-family: 'Calibre';
-  src: local('Calibre-Medium'),
-      url('../fonts/Calibre/Calibre-Medium.woff2') format('woff2'),
-      url('../fonts/Calibre/Calibre-Medium.woff') format('woff');
+  src: local('Calibre-Medium'), url('/static/fonts/Calibre/Calibre-Medium.woff2') format('woff2'),
+    url('/static/fonts/Calibre/Calibre-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -51,9 +53,8 @@ body.js-stop-transition * { transition:none !important; }
 
 @font-face {
   font-family: 'Calibre';
-  src: local('Calibre'),
-      url('../fonts/Calibre/Calibre.woff2') format('woff2'),
-      url('../fonts/Calibre/Calibre.woff') format('woff');
+  src: local('Calibre'), url('/static/fonts/Calibre/Calibre.woff2') format('woff2'),
+    url('/static/fonts/Calibre/Calibre.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -64,12 +65,15 @@ body.js-stop-transition * { transition:none !important; }
 *                     STANDARD STYLES
 * -----------------------------------------------------------
 */
-code, kbd, pre, samp {
-  @apply text-base font-mono;
+code,
+kbd,
+pre,
+samp {
+  @apply font-mono text-base;
 }
 
 ::selection {
-  @apply bg-blue-100 text-blue-900;
+  @apply text-blue-900 bg-blue-100;
 }
 
 /*
@@ -144,7 +148,8 @@ code, kbd, pre, samp {
   line-height: 1.2;
 }
 
-.toc-container div li a:hover, .toc-container div li a.active {
+.toc-container div li a:hover,
+.toc-container div li a.active {
   @apply text-gray-800;
 }
 
@@ -171,7 +176,7 @@ code, kbd, pre, samp {
 }
 
 .DocSearch.DocSearch-Button {
-  @apply opacity-70 w-full flex rounded text-white relative m-0 items-center font-medium;
+  @apply relative flex items-center w-full m-0 font-medium text-white rounded opacity-70;
   height: 36px;
   margin: 0 0 0 16px;
   padding: 0 8px;
@@ -200,7 +205,9 @@ code, kbd, pre, samp {
   display: none;
 }
 
-.DocSearch.DocSearch-Button:active, .DocSearch.DocSearch-Button:focus, .DocSearch.DocSearch-Button:hover {
+.DocSearch.DocSearch-Button:active,
+.DocSearch.DocSearch-Button:focus,
+.DocSearch.DocSearch-Button:hover {
   box-shadow: none;
 }
 
@@ -231,7 +238,7 @@ code, kbd, pre, samp {
 }
 
 .markdown-content code {
-  @apply text-gray-700 font-medium bg-gray-200;
+  @apply font-medium text-gray-700 bg-gray-200;
   border-radius: 3px;
   padding: 0 4px;
 }
@@ -283,18 +290,18 @@ code, kbd, pre, samp {
 }
 
 .markdown-content .icon.icon-link:after {
-  content: "#";
+  content: '#';
 }
 
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
 .markdown-content h4 {
-  @apply text-gray-900 font-display font-semibold relative;
+  @apply relative font-semibold text-gray-900 font-display;
 }
 
 .markdown-content h1 {
-  @apply text-5xl font-bold mb-7 pb-4;
+  @apply pb-4 text-5xl font-bold mb-7;
 }
 .markdown-content h1 .icon.icon-link {
   display: none;
@@ -310,7 +317,7 @@ code, kbd, pre, samp {
 
 .markdown-content h2 {
   @apply mt-14 pt-12 mb-6 text-3.5;
-  border-top: .1rem solid theme('colors.gray.400');
+  border-top: 0.1rem solid theme('colors.gray.400');
 }
 
 .markdown-content h3 {
@@ -319,7 +326,7 @@ code, kbd, pre, samp {
 }
 
 .markdown-content h4 {
-  @apply text-lg text-gray-900 font-semibold mb-2 mt-14 font-mono bg-coolGray-200;
+  @apply mb-2 font-mono text-lg font-semibold text-gray-900 mt-14 bg-coolGray-200;
   border-radius: 3px;
   padding: 0 4px;
 }
@@ -334,15 +341,18 @@ code, kbd, pre, samp {
   left: -39px;
 }
 
-.markdown-content ul, .markdown-content ol {
+.markdown-content ul,
+.markdown-content ol {
   @apply mb-8 ml-4;
 }
 
-.markdown-content .relaxed ol, .markdown-content .relaxed ul {
+.markdown-content .relaxed ol,
+.markdown-content .relaxed ul {
   @apply mt-4 ml-4;
 }
 
-.markdown-content li ul, .markdown-content li ol {
+.markdown-content li ul,
+.markdown-content li ol {
   margin: 0;
 }
 
@@ -355,8 +365,8 @@ code, kbd, pre, samp {
 }
 
 .markdown-content ul li:before {
-  @apply top-0 left-0 block absolute;
-  content: "•";
+  @apply absolute top-0 left-0 block;
+  content: '•';
 }
 
 .markdown-content ol {
@@ -364,9 +374,9 @@ code, kbd, pre, samp {
 }
 
 .markdown-content ol li:before {
-  @apply top-0 left-0 block absolute;
+  @apply absolute top-0 left-0 block;
   counter-increment: numbered-counter;
-  content: counter(numbered-counter,decimal) ".";
+  content: counter(numbered-counter, decimal) '.';
 }
 
 .markdown-content a {
@@ -375,12 +385,10 @@ code, kbd, pre, samp {
   background-image: linear-gradient(to bottom, transparent 50%, theme('colors.brand.DEFAULT') 50%);
   background-position: 0 93%;
   background-repeat: repeat-x;
-  background-size: 100% .15rem;
+  background-size: 100% 0.15rem;
 
-  text-shadow: 0.1rem 0 theme('colors.gray.100'),
-    0.15rem 0 theme('colors.gray.100'),
-    -0.1rem 0 theme('colors.gray.100'),
-    -0.15rem 0 theme('colors.gray.100');
+  text-shadow: 0.1rem 0 theme('colors.gray.100'), 0.15rem 0 theme('colors.gray.100'),
+    -0.1rem 0 theme('colors.gray.100'), -0.15rem 0 theme('colors.gray.100');
 }
 
 .markdown-content a strong {
@@ -390,7 +398,7 @@ code, kbd, pre, samp {
 .markdown-content .codegroup-nav {
   @apply font-mono text-sm font-medium;
   padding: 10px 20px 10px 20px;
-  border-bottom: 2px solid rgba(102,105,118,.34);
+  border-bottom: 2px solid rgba(102, 105, 118, 0.34);
 }
 
 .markdown-content .codegroup-nav-tab {
@@ -428,7 +436,7 @@ code, kbd, pre, samp {
   margin-bottom: 0;
 }
 
-.markdown-content p+pre {
+.markdown-content p + pre {
   @apply -mt-4;
 }
 
@@ -441,8 +449,9 @@ code, kbd, pre, samp {
   border-collapse: separate;
 }
 
-.markdown-content table td, .markdown-content table th {
-  padding: .5rem 1rem;
+.markdown-content table td,
+.markdown-content table th {
+  padding: 0.5rem 1rem;
 }
 
 .markdown-content table td {
@@ -457,11 +466,13 @@ code, kbd, pre, samp {
   border-right: 1px solid theme('colors.gray.300');
 }
 
-.markdown-content table th:first-child, .markdown-content table td:first-child{
+.markdown-content table th:first-child,
+.markdown-content table td:first-child {
   border-left: 0;
 }
 
-.markdown-content table th:last-child, .markdown-content table td:last-child{
+.markdown-content table th:last-child,
+.markdown-content table td:last-child {
   border-right: 0;
 }
 

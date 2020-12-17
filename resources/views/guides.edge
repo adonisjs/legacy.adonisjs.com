@@ -5,13 +5,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="{{ mix('css/app.css') }}" rel="preload" as="style" crossorigin="anonymous" onload="this.rel='stylesheet'">
-  <script src="{{ mix('js/app.js') }}" defer></script>
-  <title>{{ doc.title }}</title>
   <meta name="description" description="{{ dimerUtils.getText(file.ast.children[2]) }}">
+
+  <title>{{ doc.title }}</title>
+
+  {{-- Styling --}}
+  <link hrel="stylesheet "ref="/static/app.css" >
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha512-HPYPKXDDcZZ6ia5a6d4el3ergqhI5uS4Uc0XolyaO3R92iE1PBEBzc2WzoMDFrWMeWtuYaAfO3SrLajtqia6qg==" crossorigin="anonymous" />
+
+  {{-- Scripts --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" integrity="sha512-G3jAqT2eM4MMkLMyQR5YBhvN5/Da3IG6kqgYqU9zlIH4+2a+GuMdLb5Kpxy6ItMdCfgaKlo2XFhI0dHtMJjoRw==" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.0/alpine.js" integrity="sha512-H/czL7oaLIK//KA+gobIejOMDjfHlfoPbM4QKJLvy1hxN18xdhXiaXPek6r5Q4KwcSZkKwlyQmLO8FvPRLl0FA==" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.js" integrity="sha512-PjI+WVy3+EZgAxjHNRx7NbRVD91/H4YfeSkXG38zCVFtWv+lj/wjnqohcwHr/qwajVVeRw+/MeojPsXGEK0BOg==" crossorigin="anonymous" defer></script>
+  <script src="/static/app.js'" defer></script>
 </head>
 
-<body class="font-sans text-xl bg-body text-gray-600 antialiased leading-6 js-stop-transition">
+<body class="font-sans text-xl antialiased leading-6 text-gray-600 bg-body js-stop-transition">
   <div>
     @include('partials/header')
   </div>

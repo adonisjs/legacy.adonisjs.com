@@ -1,6 +1,3 @@
-import 'alpinejs'
-import Turbolinks from 'turbolinks'
-
 Turbolinks.start()
 
 Turbolinks.scroll = {}
@@ -9,14 +6,9 @@ window.initializeSearch = function () {
   return {
     docsearchReady: false,
     mounted() {
-      Promise.all([
-        import(/* webpackChunkName: "docsearch" */ '@docsearch/js'),
-        import(/* webpackChunkName: "docsearch" */ '@docsearch/css'),
-      ]).then(([docsearch]) => {
-        this.docsearchReady = true
-        docsearch.default({
-          container: '#docsearch',
-        })
+      this.docsearchReady = true
+      docsearch.default({
+        container: '#docsearch',
       })
     },
   }

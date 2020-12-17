@@ -3,8 +3,7 @@
   "commands": [
     "./commands",
     "@adonisjs/core/build/commands",
-    "@adonisjs/repl/build/commands",
-    "adonis-mix-asset/build/commands"
+    "@adonisjs/repl/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -26,8 +25,7 @@
   "providers": [
     "./providers/AppProvider",
     "@adonisjs/core",
-    "@adonisjs/view",
-    "adonis-mix-asset"
+    "@adonisjs/view"
   ],
   "metaFiles": [
     {
