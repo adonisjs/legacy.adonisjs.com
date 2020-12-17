@@ -45,6 +45,10 @@
     {
       "pattern": "content/**/*.json",
       "reloadServer": true
+    },
+    {
+      "pattern": "edge.tmLanguage.json",
+      "reloadServer": false
     }
   ],
   "aceProviders": [
