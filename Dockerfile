@@ -5,7 +5,8 @@ RUN apk add --no-cache git
 WORKDIR /app
 COPY . .
 
-RUN npm i \
+RUN npm ci \
+  && npm run build:front \
   && node ace build --production \
   && cd build \
   && npm ci --production
