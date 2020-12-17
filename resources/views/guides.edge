@@ -9,7 +9,7 @@
   <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
-<body class="font-sans text-xl bg-body text-gray-600 antialiased leading-6">
+<body class="font-sans text-xl bg-body text-gray-600 antialiased leading-6 js-stop-transition">
   <div>
     @include('partials/header')
   </div>
@@ -34,5 +34,6 @@
     </article>
   </section>
 
+  <script>document.body.classList.remove('js-stop-transition')</script>
 </body>
 </html>

@@ -4,8 +4,12 @@
 
 html {
   scroll-padding-top: 66px;
-  scroll-behavior: smooth;
+/*  scroll-behavior: smooth;
+*/
 }
+
+body.js-stop-transition * { transition:none !important; }
+[x-cloak=""] { display: none; }
 
 .sidebar {
   scroll-padding-top: 66px;
@@ -168,9 +172,10 @@ code, kbd, pre, samp {
 }
 
 .DocSearch.DocSearch-Button {
-  @apply opacity-70 w-full flex rounded text-white relative m-0;
-  transition: background 200ms ease;
-  background: #4533cc;
+  @apply opacity-70 w-full flex rounded text-white relative m-0 items-center font-medium;
+  height: 36px;
+  margin: 0 0 0 16px;
+  padding: 0 8px;
 }
 
 @media (min-width: 1024px) {
@@ -185,13 +190,11 @@ code, kbd, pre, samp {
   color: #fff;
 }
 
-.DocSearch-Button-Placeholder {
-  flex: 1;
-  text-align: left;
-}
-
 .DocSearch .DocSearch-Button-Placeholder {
   font-size: 1.125rem;
+  flex: 1;
+  text-align: left;
+  padding: 0 12px 0 6px;
 }
 
 .DocSearch.DocSearch-Button .DocSearch-Button-Key {
@@ -206,6 +209,7 @@ code, kbd, pre, samp {
   color: #fff;
   width: 18px;
   margin: 0 5px 0 5px;
+  stroke-width: 1.6;
 }
 @media (min-width: 751px) {
   .DocSearch.DocSearch-Button .DocSearch-Search-Icon {

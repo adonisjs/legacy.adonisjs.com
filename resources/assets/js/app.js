@@ -6,14 +6,20 @@ Turbolinks.start()
 Turbolinks.scroll = {}
 
 window.initializeSearch = function () {
-  Promise.all([
-    import(/* webpackChunkName: "docsearch" */ '@docsearch/js'),
-    import(/* webpackChunkName: "docsearch" */ '@docsearch/css'),
-  ]).then(([docsearch]) => {
-    docsearch.default({
-      container: '#docsearch',
-    })
-  })
+  return {
+    docsearchReady: false,
+    mounted() {
+      Promise.all([
+        import(/* webpackChunkName: "docsearch" */ '@docsearch/js'),
+        import(/* webpackChunkName: "docsearch" */ '@docsearch/css'),
+      ]).then(([docsearch]) => {
+        this.docsearchReady = true
+        docsearch.default({
+          container: '#docsearch',
+        })
+      })
+    },
+  }
 }
 
 window.initializeCodegroups = function () {
