@@ -26,9 +26,14 @@
             "contentPath": "http/routing.md"
           },
           {
-            "title": "Request & Response",
-            "permalink": "request-response",
-            "contentPath": "http/request-response.md"
+            "title": "Request",
+            "permalink": "request",
+            "contentPath": "http/request.md"
+          },
+          {
+            "title": "Response",
+            "permalink": "response",
+            "contentPath": "http/response.md"
           },
           {
             "title": "Forms & Validation",
@@ -86,9 +91,14 @@
             "contentPath": "http/static-assets.md"
           },
           {
-            "title": "Url generation",
-            "permalink": "url-generation",
-            "contentPath": "http/url-generation.md"
+            "title": "Web security",
+            "permalink": "web-security",
+            "contentPath": "http/web-security.md"
+          },
+          {
+            "title": "CORS",
+            "permalink": "cors",
+            "contentPath": "http/cors.md"
           }
         ]
       },

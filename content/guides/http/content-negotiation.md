@@ -1,0 +1,7 @@
+# Content negotiation
+
+- Content negotiation as a concept?
+- Methods on request class for content negotiation?
+- How AdonisJS uses it internally?
+- How can one use it to create application that adapts to the client needs?
+- Spoofing content negotiation using a middleware
