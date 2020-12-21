@@ -145,7 +145,7 @@ The storage of tokens is decided by the provider in use.
 - The `redis` provider stores the tokens inside the redis database.
 
   [note]
-  Make sure to also define the `redisConnection` inside the `config/redis.ts` file.
+  Make sure to also define the `redisConnection` inside the `config/auth.ts` file.
   [/note]
 
   ```ts{}{config/auth.ts}
