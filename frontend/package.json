@@ -15,7 +15,7 @@
     "date-fns": "^2.16.0",
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
-    "gridsome": "^0.7.20",
+    "gridsome": "^0.7.23",
     "gridsome-plugin-service-worker": "^0.2.6",
     "kleur": "^4.1.1",
     "typeit": "^7.0.4"
