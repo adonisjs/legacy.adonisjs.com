@@ -11,7 +11,7 @@
     "@gridsome/plugin-critical": "^0.2.0",
     "@gridsome/plugin-google-analytics": "^0.1.1",
     "@gridsome/plugin-sitemap": "^0.4.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "date-fns": "^2.16.0",
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
