@@ -26,6 +26,6 @@
     "execa": "^4.0.3"
   },
   "dependencies": {
-    "kleur": "^4.1.1"
+    "kleur": "^4.1.3"
   }
 }
