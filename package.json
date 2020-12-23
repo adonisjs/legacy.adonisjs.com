@@ -10,8 +10,8 @@
     "format": "prettier --write .",
     "front:build": "run-p front:build:js front:build:css front:build:static",
     "front:build:js": "esbuild resources/js/app.js --bundle --outfile=public/static/app.js",
-    "front:build:css": "postcss resources/css/app.css -o public/static/app.css",
-    "front:build:static": "copyfiles -u 2 resources/static/**/* public/static"
+    "front:build:css": "NODE_ENV=production postcss resources/css/app.css -o public/static/app.css",
+    "front:build:static": "copyfiles -u 2 \"resources/static/**/*\" public/static"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^3.0.6",

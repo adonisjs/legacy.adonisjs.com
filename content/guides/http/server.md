@@ -1,5 +1,3 @@
-# Server
-
 - Explain the HTTP server of AdonisJS
 - How one can hook into it for basic use cases
   - Using custom HTTPs server

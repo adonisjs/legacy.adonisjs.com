@@ -1,0 +1,1 @@
+Setting up database for every driver. We should go through the driver docs and see if we should mention something here. The doc should serve as one stop shop for setting up all the drivers for the basic setup

@@ -1,0 +1,4 @@
+- Share link to schema types
+- Share link to validation rules
+- Share link to API for adding custom messages
+- Share link to API on how to deal with nulls

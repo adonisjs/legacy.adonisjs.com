@@ -1,5 +1,3 @@
-# Web security
-
 - Security for webapps
 - Installing and configuring shield
 - Different headers and their role

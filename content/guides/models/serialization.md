@@ -1,0 +1,5 @@
+- Serializing models `toJSON`
+- Serializing models `toObject`
+- Computed properties
+- Omitting fields
+- Picking fields

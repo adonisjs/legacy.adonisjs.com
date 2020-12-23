@@ -1,5 +1,3 @@
-# CORS
-
 - Covering how CORS works
 
 ## Take aways

@@ -1,5 +1,3 @@
-# Session
-
 - Introduce the session package
 - How it works
 - The storage options

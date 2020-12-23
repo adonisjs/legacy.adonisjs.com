@@ -1,5 +1,3 @@
-# Request
-
 - Sharing what they are and how to access them
 - Reading request body and little bit about the body parser middleware
 - Request headers

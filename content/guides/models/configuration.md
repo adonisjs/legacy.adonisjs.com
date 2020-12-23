@@ -1,0 +1,4 @@
+- Covering the conventional options on the model
+- Destructuring models into multiple pieces
+- Talking about defining columns
+- Covering the ORM config

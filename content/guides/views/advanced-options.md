@@ -1,0 +1,5 @@
+- Talking about disks mounting
+- Registering in-memory template
+- Rendering raw string
+- Using hooks
+  - Show example of using MJML for hooks by inspecting the file extension

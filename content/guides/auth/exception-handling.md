@@ -1,0 +1,3 @@
+- Exception handling in auth
+- Exception points and how to handle them
+- The exceptions raised by the module

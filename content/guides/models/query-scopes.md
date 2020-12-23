@@ -1,0 +1,3 @@
+- Introducing query scopes and their purpose
+- Local query scopes
+- Global query scopes

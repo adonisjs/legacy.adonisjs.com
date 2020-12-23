@@ -126,6 +126,11 @@
             "contentPath": "views/layouts-and-partials.md"
           },
           {
+            "title": "Conditionals & Loops",
+            "permalink": "views/conditionals-and-loops",
+            "contentPath": "views/conditionals-and-loops.md"
+          },
+          {
             "title": "Components",
             "permalink": "views/components",
             "contentPath": "views/components.md"
@@ -134,6 +139,291 @@
             "title": "Debugging",
             "permalink": "views/debugging",
             "contentPath": "views/debugging.md"
+          },
+          {
+            "title": "Advanced Options",
+            "permalink": "views/advanced-options",
+            "contentPath": "views/advanced-options.md"
+          },
+          {
+            "title": "FAQs",
+            "permalink": "views/faqs",
+            "contentPath": "views/faqs.md"
+          }
+        ]
+      },
+      {
+        "name": "Validator",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "validator/introduction",
+            "contentPath": "validator/introduction.md"
+          },
+          {
+            "title": "Validations 101",
+            "permalink": "validator/validations-101",
+            "contentPath": "validator/validations-101.md"
+          },
+          {
+            "title": "Custom messages",
+            "permalink": "validator/custom-messages",
+            "contentPath": "validator/custom-messages.md"
+          },
+          {
+            "title": "Error reporters",
+            "permalink": "validator/error-reporters",
+            "contentPath": "validator/error-reporters.md"
+          },
+          {
+            "title": "Schema caching",
+            "permalink": "validator/schema-caching",
+            "contentPath": "validator/schema-caching.md"
+          },
+          {
+            "title": "Schema Composition",
+            "permalink": "validator/schema-composition",
+            "contentPath": "validator/schema-composition.md"
+          },
+          {
+            "title": "FAQs",
+            "permalink": "validator/faqs",
+            "contentPath": "validator/faqs.md"
+          }
+        ]
+      },
+      {
+        "name": "Database",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "database/introduction",
+            "contentPath": "database/introduction.md"
+          },
+          {
+            "title": "Setup",
+            "permalink": "database/setup",
+            "contentPath": "database/setup.md"
+          },
+          {
+            "title": "Query builder",
+            "permalink": "database/query-builder",
+            "contentPath": "database/query-builder.md"
+          },
+          {
+            "title": "Transactions",
+            "permalink": "database/transactions",
+            "contentPath": "database/transactions.md"
+          },
+          {
+            "title": "Pagination",
+            "permalink": "database/pagination",
+            "contentPath": "database/pagination.md"
+          },
+          {
+            "title": "Migrations",
+            "permalink": "database/migrations",
+            "contentPath": "database/migrations.md"
+          },
+          {
+            "title": "Seeders",
+            "permalink": "database/seeders",
+            "contentPath": "database/seeders.md"
+          },
+          {
+            "title": "Connection management",
+            "permalink": "database/connection-management",
+            "contentPath": "database/connection-management.md"
+          },
+          {
+            "title": "Debugging queries",
+            "permalink": "database/debugging-queries",
+            "contentPath": "database/debugging-queries.md"
+          }
+        ]
+      },
+      {
+        "name": "Data Models",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "models/introduction",
+            "contentPath": "models/introduction.md"
+          },
+          {
+            "title": "Configuring models",
+            "permalink": "models/configuration",
+            "contentPath": "models/configuration.md"
+          },
+          {
+            "title": "CRUD",
+            "permalink": "models/crud",
+            "contentPath": "models/crud.md"
+          },
+          {
+            "title": "Model query builder",
+            "permalink": "models/query-builder",
+            "contentPath": "models/query-builder.md"
+          },
+          {
+            "title": "Hooks",
+            "permalink": "models/hooks",
+            "contentPath": "models/hooks.md"
+          },
+          {
+            "title": "Query scopes",
+            "permalink": "models/query-scopes",
+            "contentPath": "models/query-scopes.md"
+          },
+          {
+            "title": "Model factories",
+            "permalink": "models/factories",
+            "contentPath": "models/factories.md"
+          },
+          {
+            "title": "Serializing models",
+            "permalink": "models/serialization",
+            "contentPath": "models/serialization.md"
+          }
+        ]
+      },
+      {
+        "name": "Model relationships",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "relationships/introduction",
+            "contentPath": "relationships/introduction.md"
+          },
+          {
+            "title": "Belongs To",
+            "permalink": "relationships/belongs-to",
+            "contentPath": "relationships/belongs-to.md"
+          },
+          {
+            "title": "Has One",
+            "permalink": "relationships/has-one",
+            "contentPath": "relationships/has-one.md"
+          },
+          {
+            "title": "Has Many",
+            "permalink": "relationships/has-many",
+            "contentPath": "relationships/has-many.md"
+          },
+          {
+            "title": "Many To Many",
+            "permalink": "relationships/many-to-many",
+            "contentPath": "relationships/many-to-many.md"
+          },
+          {
+            "title": "Has Many Through",
+            "permalink": "relationships/has-many-through",
+            "contentPath": "relationships/has-many-through.md"
+          }
+        ]
+      },
+      {
+        "name": "Authentication",
+        "docs": [
+          {
+            "title": "Introduction",
+            "permalink": "auth/introduction",
+            "contentPath": "auth/introduction.md"
+          },
+          {
+            "title": "Setup",
+            "permalink": "auth/setup",
+            "contentPath": "auth/setup.md"
+          },
+          {
+            "title": "Guards",
+            "permalink": "auth/guards",
+            "contentPath": "auth/guards.md"
+          },
+          {
+            "title": "Data providers",
+            "permalink": "auth/data-providers",
+            "contentPath": "auth/data-providers.md"
+          },
+          {
+            "title": "Middleware",
+            "permalink": "auth/middleware",
+            "contentPath": "auth/middleware.md"
+          },
+          {
+            "title": "Handling Exceptions",
+            "permalink": "auth/exception-handling",
+            "contentPath": "auth/exception-handling.md"
+          },
+          {
+            "title": "Social Auth",
+            "permalink": "auth/social-auth",
+            "contentPath": "auth/social-auth.md"
+          }
+        ]
+      },
+      {
+        "name": "Digging Deeper",
+        "docs": [
+          {
+            "title": "Events",
+            "permalink": "events",
+            "contentPath": "digging-deeper/events.md"
+          },
+          {
+            "title": "Logger",
+            "permalink": "logger",
+            "contentPath": "digging-deeper/logger.md"
+          },
+          {
+            "title": "Helpers",
+            "permalink": "helpers",
+            "contentPath": "digging-deeper/helpers.md"
+          },
+          {
+            "title": "HTTP Client",
+            "permalink": "http-client",
+            "contentPath": "digging-deeper/http-client.md"
+          },
+          {
+            "title": "Redis",
+            "permalink": "redis",
+            "contentPath": "digging-deeper/redis.md"
+          },
+          {
+            "title": "Mail",
+            "permalink": "mail",
+            "contentPath": "digging-deeper/mail.md"
+          },
+          {
+            "title": "Ace Commands",
+            "permalink": "ace-commands",
+            "contentPath": "digging-deeper/ace-commands.md"
+          }
+        ]
+      },
+      {
+        "name": "Security",
+        "docs": [
+          {
+            "title": "Encryption",
+            "permalink": "encryption",
+            "contentPath": "security/encryption.md"
+          },
+          {
+            "title": "Hashing",
+            "permalink": "hashing",
+            "contentPath": "security/hashing.md"
+          },
+          {
+            "title": "Signed URLs",
+            "permalink": "signed-urls",
+            "contentPath": "security/signed-urls.md"
+          },
+          {
+            "title": "Signing values",
+            "permalink": "signing-values",
+            "contentPath": "security/signing-values.md"
           }
         ]
       }

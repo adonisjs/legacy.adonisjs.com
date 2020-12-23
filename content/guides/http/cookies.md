@@ -1,5 +1,3 @@
-# Cookies
-
 - Working with cookies
 - Cookies config
 - The types of cookies (encrypted, signed and plain)

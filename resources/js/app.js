@@ -6,10 +6,10 @@ window.initializeSearch = function () {
   return {
     docsearchReady: false,
     mounted() {
-      this.docsearchReady = true
-      docsearch.default({
-        container: '#docsearch',
-      })
+      // this.docsearchReady = true
+      // docsearch.default({
+      //   container: '#docsearch',
+      // })
     },
   }
 }

@@ -1,0 +1,3 @@
+- Talking about the auth middleware
+- It is in your own codebase and you are free to tweak and change it
+- The silent auth middleware and purpose

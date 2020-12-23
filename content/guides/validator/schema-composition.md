@@ -1,0 +1,3 @@
+- Composing multiple schemas to create one to be used inside a validator
+- Tell do not over use it to avoid duplication. Duplication is okay, if it is simple
+- Composition should be used accept trees of entities.

@@ -1,0 +1,3 @@
+- Showcase crud operations
+- Showcase idempotent methods
+- Showcase query builder instantiation

@@ -1,5 +1,3 @@
-# Routing
-
 - Put emphasis that AdonisJS router is richer than the express router
 - Here we begin by explaining the routing as a concept
 - Next show basic routing with an example and demo

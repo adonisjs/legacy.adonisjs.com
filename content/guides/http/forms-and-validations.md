@@ -1,5 +1,3 @@
-# Forms & Validation
-
 - Talking about the bodyparser
 - Talking about the validator
 - The role of the form validator

@@ -1,5 +1,3 @@
-# Content negotiation
-
 - Content negotiation as a concept?
 - Methods on request class for content negotiation?
 - How AdonisJS uses it internally?

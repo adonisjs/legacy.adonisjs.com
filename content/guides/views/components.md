@@ -1,0 +1,8 @@
+- Talking about components and the inspiration
+- How they are different from Vue or React components?
+- Components API. Props & Slots
+- Passing data to the components
+- Passing data from the component to the caller
+- Creating a simple button component
+- Creating an interactive dropdown component
+- Creating a complex modal component

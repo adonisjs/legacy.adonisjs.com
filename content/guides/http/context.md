@@ -1,5 +1,3 @@
-# Context
-
 - Here we talk about the http context in general
 - Explain that Node.js is not a thread language and hence we need a per request context
 - Also how it is different from ExpressJS `req`, `res`

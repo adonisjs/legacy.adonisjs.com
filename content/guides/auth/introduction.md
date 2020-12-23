@@ -1,0 +1,4 @@
+- Introducing auth in AdonisJS
+- The concept of guards
+- The process of verifying and user
+- Social auth is just another way of verifying users

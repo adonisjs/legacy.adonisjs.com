@@ -1,0 +1,4 @@
+- The concept of social auth in AdonisJS
+- Setup
+- The available providers
+- And using it

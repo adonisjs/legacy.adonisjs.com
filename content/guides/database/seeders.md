@@ -1,0 +1,3 @@
+- Covering the concept and need of seeders
+- Seeders are not idempotent. You can write code that is
+- Development only seeders to avoid running them in production by accident

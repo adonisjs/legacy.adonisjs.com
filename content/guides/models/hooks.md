@@ -1,0 +1,3 @@
+- Covering hooks and their purpose
+- Types of hooks and their API
+- Couple of hooks examples

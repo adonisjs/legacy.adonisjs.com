@@ -1,5 +1,3 @@
-# Response
-
 Covering the Response API and some important aspects
 
 ## Take aways

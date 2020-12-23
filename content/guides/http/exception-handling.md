@@ -1,5 +1,3 @@
-# Exception handling
-
 - The spirit of handling exceptions at a global level
 - Custom exceptions
 - Self handled exceptions

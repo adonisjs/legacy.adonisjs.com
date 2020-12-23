@@ -1,0 +1,5 @@
+- Begin with the basic example of validating values
+- Explain schema building
+- Explain the concept of validation rules
+- Validator classes
+- Request validator

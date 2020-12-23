@@ -1,5 +1,3 @@
-# Static Assets
-
 - Serving static files
 - Websites assets vs user uploaded files
 - Cache forever

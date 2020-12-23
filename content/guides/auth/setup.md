@@ -1,0 +1,2 @@
+- Setup authentication package
+- If using social auth, then also setup ally

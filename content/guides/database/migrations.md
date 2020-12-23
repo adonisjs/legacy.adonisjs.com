@@ -1,0 +1,5 @@
+- We must begin by explaining the problem of managing the database
+- Then what is migrations and how it works
+- The concept of rollbacks and why it should be avoided
+- Disabling rollbacks completely in prod
+- No rollbacks should be a rule, that you break during development until you have finalized a table

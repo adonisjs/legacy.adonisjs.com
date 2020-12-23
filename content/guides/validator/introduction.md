@@ -1,0 +1,3 @@
+- Introduce validator
+- Put emphasis on static types & runtime validations
+- Performance & Comparisons
