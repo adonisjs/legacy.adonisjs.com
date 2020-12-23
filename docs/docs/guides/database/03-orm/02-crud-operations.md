@@ -200,7 +200,7 @@ import User from 'App/Models/User'
 const searchPayload = { email: 'virk@adonisjs.com' }
 const persistancePayload = { password: 'secret' }
 
-await User.updateOrCreate(searchPayload, savePayload)
+await User.updateOrCreate(searchPayload, persistancePayload)
 ```
 
 ### `updateOrCreateMany`
