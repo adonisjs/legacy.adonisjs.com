@@ -213,7 +213,7 @@ The purpose of the context is to hold the information related to the current req
 - Session module to store and read session values.
 - Template engine object to render views in context of current request, and much more.
 
-You also can attach additional properties to the context. For example: A multitenant application can preload tenant details inside a middleware and then pass is around using the request context.
+You also can attach additional properties to the context. For example: A multitenant application can preload tenant details inside a middleware and then pass it around using the request context.
 
 ### Reference to Context
 
