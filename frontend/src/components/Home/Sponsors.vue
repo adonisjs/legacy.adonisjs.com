@@ -54,6 +54,17 @@
                 src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1603167397/adonisjs.com/cleavr-logo_sikybj.png"
               />
             </a>
+
+            <a
+              href="https://fossunited.org/?utm_source=adonisjs"
+              target="_blank"
+              referrerpolicy="origin"
+              class="sponsor-card foss"
+            >
+              <img
+                src="https://res.cloudinary.com/adonis-js/image/upload/v1608876266/adonisjs.com/foss-united.jpg"
+              />
+            </a>
           </div>
         </div>
       </div>
@@ -107,6 +118,10 @@ export default {
   justify-content: center;
   max-width: 300px;
   margin-top: 20px;
+}
+
+.sponsor-card.foss {
+  padding: 0 26px;
 }
 
 .sponsor-card img {
