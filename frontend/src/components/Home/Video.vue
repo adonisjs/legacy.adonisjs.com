@@ -3,9 +3,9 @@
     <div class="container">
       <div class="video-container">
 
-        <SectionTitle theme="light"> AdonisJS v5 tour </SectionTitle>
+        <SectionTitle theme="light" v-if="title" v-text="title">AdonisJS v5 tour</SectionTitle>
 
-        <SectionSubTitle theme="light">
+        <SectionSubTitle theme="light" v-if="subtitle" v-text="subtitle">
           Let's take a tour of AdonisJS together. The screencast will not make you the framework expert, but instead it serves as a great building block before moving forward.
         </SectionSubTitle>
 
@@ -27,7 +27,9 @@
     components: { SectionSubTitle, SectionTitle },
     data () {
       return {
-        videoUrl: null
+        videoUrl: null,
+        title: null,
+        subtitle: null,
       }
     },
     mounted () {
@@ -35,8 +37,13 @@
 
       if (['pt-br', 'pt-pt'].includes(language.toLowerCase())) {
         this.videoUrl = 'https://www.youtube.com/embed/d7hPxh9kUbg'
+        this.title = 'Por que utilizar AdonisJS?'
+        this.subtitle = `Por que utilizar AdonisJS?
+Vamos entender alguns conceitos e colocar a mão na massa juntos. Esse vídeo e o seguinte não fará de você um especialista no framework, mas, em vez disso, ele serve como um ponto de partida.`
       } else {
         this.videoUrl = 'https://www.youtube.com/embed/TysfaNcFX_Y'
+        this.title = 'AdonisJS v5 tour'
+        this.subtitle = `Let's take a tour of AdonisJS together. The screencast will not make you the framework expert, but instead it serves as a great building block before moving forward.`
       }
     }
   }
