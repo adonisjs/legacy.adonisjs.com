@@ -10,8 +10,8 @@
         </SectionSubTitle>
 
         <div class="embed-player" ref="embed-player">
-          <div class="embed-container">
-            <iframe class="embed" src="https://www.youtube.com/embed/TysfaNcFX_Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="embed-container" v-if="videoUrl">
+            <iframe class="embed" :src="videoUrl" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -25,6 +25,20 @@
 
   export default {
     components: { SectionSubTitle, SectionTitle },
+    data () {
+      return {
+        videoUrl: null
+      }
+    },
+    mounted () {
+      const language = navigator.language || navigator.userLanguage || ''
+
+      if (['pt-br', 'pt-pt'].includes(language.toLowerCase())) {
+        this.videoUrl = 'https://www.youtube.com/embed/d7hPxh9kUbg'
+      } else {
+        this.videoUrl = 'https://www.youtube.com/embed/TysfaNcFX_Y'
+      }
+    }
   }
 </script>
 
