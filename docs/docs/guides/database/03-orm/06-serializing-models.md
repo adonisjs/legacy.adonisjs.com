@@ -230,7 +230,7 @@ export class User extends BaseModel {
 ## Computed properties
 As stated earlier, the `serialize` method ignores all the model properties except the one using the `@column` decorator. 
 
-There will be times, when you want to include custom properties inside the serialized output, but without defining them inside the database, and this is where the computed properties comes into the picture.
+There will be times, when you want to include custom properties inside the serialized output, but without defining them inside the database, and this is where the computed properties come into the picture.
 
 [note]
 The serialization process is synchronous and hence you cannot use `async/await` on the computed properties.
