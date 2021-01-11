@@ -36,9 +36,9 @@
       const language = navigator.language || navigator.userLanguage || ''
 
       if (['pt-br', 'pt-pt'].includes(language.toLowerCase())) {
-        this.videoUrl = 'https://www.youtube.com/embed/d7hPxh9kUbg'
-        this.title = 'Por que utilizar AdonisJS?'
-        this.subtitle = `Vamos entender alguns conceitos e colocar a mão na massa juntos. Esse vídeo e o seguinte não fará de você um especialista no framework, mas, em vez disso, ele serve como um ponto de partida.`
+        this.videoUrl = 'https://www.youtube.com/embed/wbB2JlRuDEw'
+        this.title = 'Introdução ao AdonisJS'
+        this.subtitle = `Vamos entender alguns conceitos e colocar a mão na massa juntos. Esse vídeo não fará de você um especialista no framework, mas, em vez disso, ele serve como um ponto de partida.`
       } else {
         this.videoUrl = 'https://www.youtube.com/embed/TysfaNcFX_Y'
         this.title = 'AdonisJS v5 tour'
