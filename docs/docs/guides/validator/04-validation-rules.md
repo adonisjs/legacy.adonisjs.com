@@ -623,11 +623,11 @@ Following is the list of all the validation options.
   website: schema.string({}, [
     rules.url({
       protocols: ['http', 'https'],
-      requireTld: true
-      requireProtocol: false
-      requireHost: true
-      hostWhitelist: []
-      hostBlacklist: []
+      requireTld: true,
+      requireProtocol: false,
+      requireHost: true,
+      hostWhitelist: [],
+      hostBlacklist: [],
       validateLength: false
     })
   ])
