@@ -132,7 +132,7 @@ The HTTP methods that should be protected against the CSRF attacks. You should a
 ```
 
 ### `enableXsrfCookie`
-If you are application is rendering not forms on the frontend and hence not using the `XSRF-TOKEN` cookie, then it is recommended to turn off the cookie feature all together.
+If your application is rendering forms serverside and hence not using the `XSRF-TOKEN` cookie, then it is recommended to turn off the cookie feature all together.
 
 ```ts
 {
