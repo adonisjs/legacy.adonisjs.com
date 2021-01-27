@@ -114,7 +114,7 @@ auth.login()
 ```
 
 ### `list`
-The `list` property holds a collection of one or more guards you want to use. Majority of applications will only need a single guard. However, there can be situations, when you want support multiple style of login. For example:
+The `list` property holds a collection of one or more guards you want to use. Majority of applications will only need a single guard. However, there can be situations, when you want to support multiple styles of login. For example:
 
 - Using the `web` guard to login and authenticate users on your web application.
 - And using the `api` guard for mobile app authentication.
