@@ -25,7 +25,7 @@ The simplest way to create database tables is to make use of a GUI application l
 
 - You need to expose your database server to the internet, so that the GUI application on your computer can connect to the production database.
 - You cannot tie the database changes to your deployment workflow. Every deployment impacting the database will require manual intervention.
-- Their is no history of your tables. You do not know, when and how a database modification was done.
+- There is no history of your tables. You do not know, when and how a database modification was done.
 
 ### Custom SQL Scripts
 Another option is to create SQL scripts and run them during the deployment process. However, you will have to manually build a tracking system to ensure that you are not running the previously ran SQL scripts. For example:
