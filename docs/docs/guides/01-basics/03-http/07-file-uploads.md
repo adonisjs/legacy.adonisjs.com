@@ -12,7 +12,6 @@ By the end of this guide you will know:
 
 1. How to access user uploaded files.
 2. How to validate and store files locally on the filesystem.
-3. How to stream files directly to the cloud services.
 
 ## Setup
 
