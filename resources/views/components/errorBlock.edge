@@ -1,0 +1,7 @@
+<div class="border-l-4 mt-8 mb-8 py-6 pr-8 pl-8 rounded bg-gray-200" style="border-left-color: #FECDD3;">
+  <div class="flex space-x-2 mb-8">
+    <svg class="w-6 h-6 flex-none mt-0.5" fill="none"><circle cx="12" cy="12" r="12" fill="#FECDD3"></circle><path d="M8 8l8 8M16 8l-8 8" stroke="#B91C1C" stroke-width="2"></path></svg>
+    <strong>{{ node.properties.dataTitle }}</strong>
+  </div>
+  @dimerTree(node.children)~
+</div>

@@ -1,0 +1,6 @@
+<figure class="mb-8" x-data="zoomImage()" x-init="mounted">
+  <img src="{{ node.properties.src }}" alt="{{ node.properties.alt }}" x-ref="image">
+  @if(node.properties.alt)
+    <figcaption class="text-gray-400 italic text-base text-center mt-2">{{ node.properties.alt }}</figcaption>
+  @endif
+</figure>

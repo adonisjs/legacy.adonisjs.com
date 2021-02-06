@@ -1,3 +1,4 @@
+const tailwind = require('tailwindcss/defaultConfig')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
@@ -63,6 +64,7 @@ module.exports = {
       dropdown: '0px 4px 16px rgba(46,41,51,0.08),0px 8px 24px rgba(71,63,79,0.16)',
     },
     fontFamily: {
+      // sans: tailwind.theme.fontFamily.sans,
       sans: ['Calibre', 'sans-serif'],
       display: ['Basic sans', 'sans-serif'],
       mono: ['Operator Mono', 'Menlo', 'ui-monospace', 'SFMono-Regular', 'monospace'],

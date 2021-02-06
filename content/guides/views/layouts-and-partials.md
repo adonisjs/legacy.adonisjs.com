@@ -1,5 +1,6 @@
 - Discussing about layouts and sections
 - Discussing about partials
+- Sections and inherit super contents
 - Tell how sections have to be at top level. Explain it with the ESM exports example
 
 ## Take aways

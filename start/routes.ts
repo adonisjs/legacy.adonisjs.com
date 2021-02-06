@@ -23,6 +23,7 @@ import Content from 'App/Services/Content'
 
 Route.get('*', async ({ request, response }) => {
   const { html, error } = await Content.render(request.url())
+
   if (error && error.includes('Unable to lookup')) {
     response.notFound('Doc not found')
   } else if (error) {

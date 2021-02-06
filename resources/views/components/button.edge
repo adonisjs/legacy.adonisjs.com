@@ -1,0 +1,15 @@
+@set('prop', Object.assign($props.except(['css']), {
+  as: 'button',
+  css: Object.assign({
+    color: 'gray',
+    '&:hover': {
+      color: 'black',
+    },
+    borderColor: 'black',
+    padding: '1rem',
+  }, $props.css)
+}))
+
+@styled({ prop })
+{{ $slots.render('main') }}
+@end

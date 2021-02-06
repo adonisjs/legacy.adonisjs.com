@@ -1,6 +1,9 @@
+- There are only two primitives. ie `mustache` and `tags`
 - Talking about the curly braces
 - Safe curly braces
+- Multiline curly braces
 - Tags
 - Whitespace management with tags
 - Escaping curly brace
 - Escaping tags
+- Inline and block level comments

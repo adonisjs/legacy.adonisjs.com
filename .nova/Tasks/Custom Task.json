@@ -1,0 +1,10 @@
+{
+  "actions" : {
+    "run" : {
+      "enabled" : true,
+      "script" : "#!\/bin\/sh\nnode ace serve --watch"
+    }
+  },
+  "identifier" : "D78507DD-49D6-4E7D-802A-246D23C50238",
+  "openLogOnRun" : "start"
+}

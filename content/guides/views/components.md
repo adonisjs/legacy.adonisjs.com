@@ -1,8 +1,15 @@
 - Talking about components and the inspiration
 - How they are different from Vue or React components?
-- Components API. Props & Slots
+- Passing and using props
+  - Props except
+  - Props serialize. serializeExcept
+- Passing slots
+  - Rendering slots
+  - Passing data from component to slot as a function
 - Passing data to the components
-- Passing data from the component to the caller
-- Creating a simple button component
-- Creating an interactive dropdown component
-- Creating a complex modal component
+- Context API for sharing data without props
+- Links to the blog posts on creating custom components using alpine + edge. Should be designed. Headless has its   own naunces and should not be part of blog and instead be part of a package.
+  - Creating a simple button component
+  - Creating an interactive dropdown component
+  - Creating a complex modal component
+  - Creating a tabs component

@@ -1,6 +1,7 @@
-Turbolinks.start()
-
-Turbolinks.scroll = {}
+import mediumZoom from 'medium-zoom'
+import '@hotwired/turbo'
+import 'alpine-hotwire-turbo-adapter'
+import 'alpinejs'
 
 window.initializeSearch = function () {
   return {
@@ -10,6 +11,16 @@ window.initializeSearch = function () {
       // docsearch.default({
       //   container: '#docsearch',
       // })
+    },
+  }
+}
+
+window.zoomImage = function () {
+  return {
+    mounted() {
+      return mediumZoom({
+        background: 'rgba(0, 0, 0, 0.6)',
+      }).attach(this.$refs.image)
     },
   }
 }
@@ -39,7 +50,7 @@ window.initializeIntersectionObserver = function (elementsContainer, linksContai
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 1.0) {
+            if (entry.isIntersecting && entry.intersectionRatio >= 1) {
               const id = entry.target.getAttribute('id')
               const existingActive = this.$el.querySelector(`${linksContainer} .${activeClass}`)
               if (existingActive) {
@@ -53,7 +64,7 @@ window.initializeIntersectionObserver = function (elementsContainer, linksContai
             }
           })
         },
-        { threshold: 1.0, rootMargin: '0px' }
+        { threshold: 1.0, rootMargin: '0px', target: '.markdown-content' }
       )
 
       const subsections = this.$el.querySelectorAll(elementsContainer)
@@ -64,15 +75,8 @@ window.initializeIntersectionObserver = function (elementsContainer, linksContai
   }
 }
 
-document.addEventListener('turbolinks:render', function () {
-  const sidebar = document.querySelector('.sidebar')
-  let top = Turbolinks.scroll['top']
-  if (top) {
-    sidebar.scrollTo(0, top)
-  }
-})
-
-document.addEventListener('turbolinks:click', function () {
-  const sidebar = document.querySelector('.sidebar')
-  Turbolinks.scroll['top'] = sidebar.scrollTop
+document.addEventListener('turbo:load', () => {
+  quicklink.listen({
+    el: document.querySelector('#sidebar'),
+  })
 })

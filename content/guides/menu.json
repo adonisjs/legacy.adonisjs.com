@@ -26,6 +26,11 @@
             "contentPath": "http/routing.md"
           },
           {
+            "title": "Controllers",
+            "permalink": "controllers",
+            "contentPath": "http/controllers.md"
+          },
+          {
             "title": "Request",
             "permalink": "request",
             "contentPath": "http/request.md"
@@ -46,11 +51,6 @@
             "contentPath": "http/file-uploads.md"
           },
           {
-            "title": "Controllers",
-            "permalink": "controllers",
-            "contentPath": "http/controllers.md"
-          },
-          {
             "title": "Middleware",
             "permalink": "middleware",
             "contentPath": "http/middleware.md"
@@ -66,11 +66,6 @@
             "contentPath": "http/cookies.md"
           },
           {
-            "title": "Server",
-            "permalink": "server",
-            "contentPath": "http/server.md"
-          },
-          {
             "title": "Hooks",
             "permalink": "hooks",
             "contentPath": "http/hooks.md"
@@ -79,11 +74,6 @@
             "title": "Exception Handling",
             "permalink": "exception-handling",
             "contentPath": "http/exception-handling.md"
-          },
-          {
-            "title": "Content negotiation",
-            "permalink": "content-negotiation",
-            "contentPath": "http/content-negotiation.md"
           },
           {
             "title": "Static assets",

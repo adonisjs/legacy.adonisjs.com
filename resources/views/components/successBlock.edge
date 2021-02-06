@@ -1,0 +1,9 @@
+<div class="border-l-4 mt-8 mb-8 py-6 pr-8 pl-8 rounded bg-gray-200" style="border-left-color: #86EFAC;">
+  <div class="flex space-x-2 mb-8">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 flex-none mt-1" stroke="#15803D">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <strong>{{ node.properties.dataTitle }}</strong>
+  </div>
+  @dimerTree(node.children)~
+</div>

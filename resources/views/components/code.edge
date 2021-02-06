@@ -1,0 +1,16 @@
+<div style="background: #292D3E;" class="rounded dimer-highlight">
+  @if(node.properties.dataFileName)
+    <div class="code-file-name text-gray-200">
+      {{ node.properties.dataFileName }}
+    </div>
+    <div class="-mt-2">
+<pre>
+@dimerTree(node.children)~
+</pre>
+    </div>
+  @else
+<pre>
+@dimerTree(node.children)~
+</pre>
+  @endif
+</div>

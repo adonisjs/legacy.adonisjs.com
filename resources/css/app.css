@@ -73,7 +73,7 @@ samp {
 }
 
 ::selection {
-  @apply text-blue-900 bg-blue-100;
+  @apply bg-blue-100;
 }
 
 /*
@@ -125,21 +125,21 @@ samp {
   padding-bottom: 4px;
 }
 
-.toc-container div > li {
+.toc-container div > ul > li {
   @apply list-none;
 }
 
-.toc-container div > li > p {
+/* .toc-container div > li > p {
   @apply hidden;
-}
+} */
 
-.toc-container div > li > ul > li {
+.toc-container div > ul > li {
   padding-top: 7px;
   padding-bottom: 7px;
   border-bottom: 1px dashed theme('colors.gray.300');
 }
 
-.toc-container div > li > ul li ul {
+.toc-container div > ul > li > ul {
   margin-left: 10px;
   margin-top: 5px;
 }
@@ -262,12 +262,61 @@ samp {
 .markdown-content pre {
   white-space: pre;
   overflow-x: auto;
-  padding: 30px;
+  word-wrap: normal;
+  padding: 30px 0;
   border-radius: 4px;
 }
 
 .markdown-content pre .line {
-  min-height: 18px;
+  min-height: 21px;
+  padding: 0 30px;
+  position: relative;
+}
+
+.markdown-content pre .line.dim {
+  opacity: 0.5;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-delay: initial;
+  transition-property: opacity;
+}
+
+.markdown-content pre .line span {
+  position: relative;
+  z-index: 1;
+}
+
+.markdown-content pre .line.highlight:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  height: 100%;
+  width: calc(100% - 3px);
+  left: 1px;
+  background: #181c2b;
+  border-left: 3px solid rgb(0, 149, 230);
+}
+
+.markdown-content pre .line.highlight-delete:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  height: 100%;
+  width: calc(100% - 3px);
+  left: 1px;
+  background: rgb(189 63 63 / 52%);
+  border-left: 3px solid #ef5050;
+}
+
+.markdown-content pre .line.highlight-insert:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  height: 100%;
+  width: calc(100% - 3px);
+  left: 1px;
+  background: rgb(23 125 84 / 47%);
+  border-left: 3px solid #3ebf84;
 }
 
 .markdown-content .icon.icon-link {
@@ -284,7 +333,7 @@ samp {
 .markdown-content h1:hover .icon.icon-link,
 .markdown-content h2:hover .icon.icon-link,
 .markdown-content h3:hover .icon.icon-link,
-.markdown-content h4 .icon.icon-link {
+.markdown-content h4:hover .icon.icon-link {
   @apply text-gray-400;
   display: block;
 }
@@ -309,7 +358,6 @@ samp {
 
 .markdown-content p,
 .markdown-content .embed,
-.markdown-content img,
 .markdown-content pre,
 .markdown-content table {
   @apply mb-8;
@@ -326,14 +374,12 @@ samp {
 }
 
 .markdown-content h4 {
-  @apply mb-2 font-mono text-lg font-semibold text-gray-900 mt-14 bg-coolGray-200;
-  border-radius: 3px;
-  padding: 0 4px;
+  @apply mb-2 text-xl font-semibold text-gray-900 mt-14;
 }
 
 .markdown-content h5 {
   @apply font-semibold text-gray-900;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .markdown-content h4 .icon.icon-link {
@@ -379,8 +425,12 @@ samp {
   content: counter(numbered-counter, decimal) '.';
 }
 
+.markdown-content .lead {
+  @apply text-2xl;
+}
+
 .markdown-content a {
-  @apply text-brand;
+  @apply text-brand font-medium;
   text-decoration: none;
   background-image: linear-gradient(to bottom, transparent 50%, theme('colors.brand.DEFAULT') 50%);
   background-position: 0 93%;
@@ -395,7 +445,7 @@ samp {
   @apply text-brand;
 }
 
-.markdown-content .codegroup-nav {
+.markdown-content .codegroup-nav, .markdown-content .code-file-name {
   @apply font-mono text-sm font-medium;
   padding: 10px 20px 10px 20px;
   border-bottom: 2px solid rgba(102, 105, 118, 0.34);
@@ -436,7 +486,7 @@ samp {
   margin-bottom: 0;
 }
 
-.markdown-content p + pre {
+.markdown-content p + .dimer-highlight, .markdown-content p + figure {
   @apply -mt-4;
 }
 
@@ -484,6 +534,11 @@ samp {
   margin-left: 0;
 }
 
+.markdown-content .alert a {
+  text-shadow: 0.1rem 0 theme('colors.gray.200'), 0.15rem 0 theme('colors.gray.200'),
+    -0.1rem 0 theme('colors.gray.200'), -0.15rem 0 theme('colors.gray.200');
+}
+
 .markdown-content .alert-note h5 {
   @apply text-brand;
   margin-bottom: 10px;
@@ -496,4 +551,12 @@ samp {
 
 .turbolinks-progress-bar {
   @apply bg-blue-200;
+}
+
+.medium-zoom-overlay {
+  z-index: 30;
+}
+
+.medium-zoom-image {
+  z-index: 30;
 }

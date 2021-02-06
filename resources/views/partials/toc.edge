@@ -5,8 +5,8 @@
   >
     <p class="uppercase font-display font-semibold text-gray-800 mb-4">On this page</p>
     <div class="pb-10">
-      <ul>
-        @dimerTree(file.toc.children)~
+      <ul data-turbo="false">
+        @dimerTree(file.toc.children, tocRenderer)~
       </ul>
     </div>
   </div>

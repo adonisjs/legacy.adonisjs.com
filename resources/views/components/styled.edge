@@ -1,0 +1,3 @@
+@if(as === 'button')
+  <button class="{{ stylesheet(css).toString() }}"{{ $props.serializeExcept(['type', 'as']) }}>{{$slots.render('main')}}</button>
+@endif
