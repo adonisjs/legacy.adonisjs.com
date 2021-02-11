@@ -18,7 +18,7 @@ I (the author) had past experience of working with Laravel (which was fun). Afte
 
 To summarize: A common theme among all the frameworks is to stay super small and unopinionated. Of course, libraries like Koa and Express are useful in certain use cases, but there is huge section of people who can benefit from a full stack framework like Rails or Laravel, but for Node.js.
 
-Also, I have never been a fan of **duck taping** and hence AdonisJS is not a wrapper on top of ExpressJs, over selling the idea of re-using the Express middleware. AdonisJS is written from ground up with strong principles and clear goals in mind.
+Also, I have never been a fan of **duct taping** and hence AdonisJS is not a wrapper on top of ExpressJs, over selling the idea of re-using the Express middleware. AdonisJS is written from ground up with strong principles and clear goals in mind.
 
 ## Value Integrated Systems
 
