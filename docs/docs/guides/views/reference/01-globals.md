@@ -130,7 +130,7 @@ Similar to the `route` method, but instead creates a signed route. We recommend 
 Reference to the AdonisJS [Application](https://github.com/adonisjs/application/blob/develop/src/Application.ts) instance. You can use it to generate paths to certain directories, get the current framework version and so on.
 
 ```edge
-The current framework version is {{ application.adonisVersion.toString() }}
+The current framework version is {{ app.adonisVersion.toString() }}
 ```
 
 You can also access the application inside your Typescript code by importing it from the `IoC` container.
