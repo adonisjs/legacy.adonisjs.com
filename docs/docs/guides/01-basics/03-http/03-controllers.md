@@ -71,7 +71,7 @@ class UsersController {
 The above approach may seem really good at first glance, however it has certain drawbacks.
 
 - The framework has to load all the controllers during boot and register routes exposed by them. For bigger projects this will increase the boot time of the application.
-- A developer working on the codebase for the first time has to scan many controllers in order get a complete view of the application.
+- A developer working on the codebase for the first time has to scan many controllers in order to get a complete view of the application.
 - If controllers are not part of the application code base (registered using 3rd party dependencies), then you may have no idea about the routes registered by them.
 
 The AdonisJS has a simple rule to treat the routes file as the source of truth. One should be able to see all the **registered routes**, **controllers and middleware attached to them** at a single place and then branch out from there to work on individual pieces.
