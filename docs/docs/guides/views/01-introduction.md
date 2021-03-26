@@ -34,7 +34,7 @@ npm i @adonisjs/view@alpha
 ```
 
 ```sh{}{yarn}
-yarn add @adonisjs/view
+yarn add @adonisjs/view@alpha
 ```
 
 [/codegroup]
