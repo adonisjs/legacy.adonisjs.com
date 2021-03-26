@@ -30,7 +30,7 @@ If not, then follow the below instructions to install it from the npm package re
 [codegroup]
 
 ```sh{}{npm}
-npm i @adonisjs/view
+npm i @adonisjs/view@alpha
 ```
 
 ```sh{}{yarn}
