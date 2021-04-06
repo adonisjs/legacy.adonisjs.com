@@ -322,6 +322,24 @@ Route
 
 You can also define [middleware](#applying-middleware-to-route-groups), [sub-domains](#domains) and [route names](#naming-routes) on a group of routes.
 
+### Route's Controller Namespace
+
+You can change the default namespace of your controller by using the `.namespace` method.
+
+```ts
+Route
+  .group(() => {
+    Route.get('/', 'PostsController.index')
+  })
+  .namespace('App/Controllers/Http/Api')
+```
+
+In this example, `PostsController` will be imported from `App/Controllers/Http/Api` instead of `App/Controllers/Http`.
+
+[note]
+The namespace should be an absolute path from the root of your application.
+[/note]
+
 ## Route Middleware
 
 Middleware offers an API to execute a series of actions before a given HTTP request reaches the route handler.
