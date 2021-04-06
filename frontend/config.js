@@ -89,6 +89,11 @@ exports.footer = [
     isExternal: false,
     children: [
       {
+        title: 'Discord',
+        permalink: 'https://discord.gg/vDcEjq6',
+        isExternal: true,
+      },
+      {
         title: 'Github',
         permalink: 'https://github.com/adonisjs',
         isExternal: true,
