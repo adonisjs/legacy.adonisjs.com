@@ -10,7 +10,9 @@ Welcome to AdonisJS! The guides are designed to help you get up and running with
 - The code examples are in TypeScript, so we expect you to have some familarity with it.
 
 [note]
-The core of the framework is under the preview release is quite stable and ready for production use. It's just that some of the old AdonisJS packages are not migrated to work with new core.
+The core of the framework is under the preview release. It is **quite stable and ready for production use**.
+
+However, some AdonisJS v4 packages are not migrated to work with new core and few parts are missing documentation.
 [/note]
 
 ## Creating a New Project
