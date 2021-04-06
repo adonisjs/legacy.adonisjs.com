@@ -177,6 +177,3 @@ await Database.query().count('* as total').from('users')
 // SQLITE: [{ "total": 4 }]
 // POSTGRESQL: [{ "total": "4" }]
 ```
-
-## What's Next?
-This guide introduces you to the concept of Query builder and how to use it inside your application. However, the API surface of the query builder is quite big and we recommend you reading the [API docs](/guides/database/query-builder) for same.
