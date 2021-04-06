@@ -41,10 +41,6 @@ Route.get('users', 'UsersController.index')
 - Controllers are always referenced as a string on the route. This enables AdonisJS to lazy load controllers and keep the routes file free from dozens of import statements.
 - Since AdonisJS knows that the controllers conventionally lives inside `app/Controllers/Http` directory, you don't have to type the complete path inside your routes file.
 
-[tip]
-The Vscode extension of AdonisJS autosuggests the controller and method names as you type them within your routes.
-[/tip]
-
 ## Reusing Controllers?
 A lot of developers tend to make a mistake of attempting to re-use controllers by importing them inside other controllers.
 
