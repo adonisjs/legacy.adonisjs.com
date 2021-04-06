@@ -50,7 +50,9 @@ node ace dump:rcfile
 ```
 
 #### env.ts
-The `env.ts` file in the root of your project is meant to validate the environment variables. If coming from a different framework, this maybe a new concept to you and hence we recommend reading about [environment variables](environment-variables) in depth.
+The `env.ts` file in the root of your project is meant to validate the environment variables. By performing validation we ensure that your application is running in a stable environment with correct configuration values.
+
+If you are coming from a different framework, this is maybe a new concept to you and hence we recommend reading about [environment variables](environment-variables) in depth.
 
 #### .env
 AdonisJS relies on environment variables to hold the environment specific configuration. 
