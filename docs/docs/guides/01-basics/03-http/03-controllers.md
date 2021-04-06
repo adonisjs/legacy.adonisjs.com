@@ -68,6 +68,10 @@ class UsersController {
 }
 ```
 
+[tip]
+Re-read the subtitle of this section.
+[/tip]
+
 The above approach may seem really good at first glance, however it has certain drawbacks.
 
 - The framework has to load all the controllers during boot and register routes exposed by them. For bigger projects this will increase the boot time of the application.
