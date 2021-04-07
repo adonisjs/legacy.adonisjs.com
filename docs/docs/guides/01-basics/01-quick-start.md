@@ -20,10 +20,10 @@ AdonisJS requires `Node.js >= 14.5.0`, along with `npm >= 6.0.0`. You can check 
 
 ```sh
 node -v
-# v12.14.1
+# v14.5.X
 
 npm -v
-# 6.13.7
+# 6.X.X
 ```
 
 You can create a new AdonisJS project by using [npm init](https://docs.npmjs.com/cli/init) or [yarn create](https://classic.yarnpkg.com/en/docs/cli/create/). 
