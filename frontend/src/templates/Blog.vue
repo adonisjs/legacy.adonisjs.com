@@ -85,7 +85,7 @@ export default {
     const utterancesScript = document.createElement('script')
     utterancesScript.src = 'https://utteranc.es/client.js'
     utterancesScript.async = true
-    utterancesScript.setAttribute('repo', 'AdonisCommunity/adonisjs.com-blog-comments')
+    utterancesScript.setAttribute('repo', 'adonisjs-community/adonisjs.com-blog-comments')
     utterancesScript.setAttribute('issue-term', 'pathname')
     utterancesScript.setAttribute('theme', 'github-light')
     utterancesScript.setAttribute('crossorigin', 'anonymous')
