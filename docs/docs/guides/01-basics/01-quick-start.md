@@ -16,7 +16,7 @@ However, some AdonisJS v4 packages are not migrated to work with new core and fe
 [/note]
 
 ## Creating a New Project
-AdonisJS requires `Node.js >= 12.0.0`, along with `npm >= 6.0.0`. You can check the version of Node.js and npm by running the following commands.
+AdonisJS requires `Node.js >= 14.5.0`, along with `npm >= 6.0.0`. You can check the version of Node.js and npm by running the following commands.
 
 ```sh
 node -v
