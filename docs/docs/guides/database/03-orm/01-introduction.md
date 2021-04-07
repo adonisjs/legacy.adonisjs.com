@@ -178,3 +178,7 @@ export default class User extends BaseModel {
 [collapse title="I am coming from TypeORM, how should I define column types?"]
   You do not. We follow the approach of **lean models** and do not define database level types and constraints inside models.
 [/collapse]
+
+[collapse title="Can I move my Models somewhere else?"]
+  Yes. You are free to put your model wherever you want! If your models are inside the `app/Something` folder, you would use `App/Something/XXX` to load your model.
+[/collapse]
