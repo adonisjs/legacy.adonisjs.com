@@ -287,6 +287,13 @@ message.textView('emails/welcome.plain', {})
 message.watchView('emails/welcome.watch', {})
 ```
 
+### Using MJML to create your template
+
+You may want to use an email template engine like [MJML](https://mjml.io/) to help you build your layout.
+We created a video that shows how to implements an MJML layout using AdonisJS.
+
+[youtube url="https://youtu.be/zehb-qUzRCM"]
+
 ## Sending attachments
 You can send attachments in email using the `message.attach` or `message.embed` methods.
 
