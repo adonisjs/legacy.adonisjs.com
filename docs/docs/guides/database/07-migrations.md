@@ -41,10 +41,6 @@ Similarly, AdonisJS also has its own migrations system. You can create/modify da
 ## Creating Your First Migration
 Let's begin by executing the following ace command to create a new migration file.
 
-[note]
-AdonisJS uses the compiled Javascript code for running migrations. So make sure that you are compiling your project in a separate terminal window using `node ace serve --watch` command. 
-[/note]
-
 ```sh
 node ace make:migration users
 # ✔  create    database/migrations/1584350623957_users.ts
