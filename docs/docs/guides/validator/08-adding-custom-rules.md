@@ -311,3 +311,31 @@ The validation function is executed for the `username` property, the `tip` will 
 We maintain a reference to the `tip`, so that we are not performing nested lookups for multiple properties of the same object and for multiple validation rules applied on a single property.
 
 So, now as you know about the `root` and the `tip` properties, you need to pass these values to the `helpers.getFieldValue` method and it will lookup the value for you.
+
+## Async calls
+If you need call to async functions you have to tell the validator in advance, that you are going to create an async validation by defining a third argument.
+
+```ts
+validator.rule('userType', async (value, _, { pointer, arrayExpressionPointer, errorReporter }) => {
+  const user = await User.query().where('id', value).firstOrFail()
+
+  if (user.type !== 'admin') {
+    errorReporter.report(pointer, 'userType', 'Invalid user type', arrayExpressionPointer)
+  }
+},
+() => {
+  return {
+    async: true
+  }
+})
+```
+The validator.rule function receive an instance of a compile function.
+
+```ts
+() => {
+  return {
+    async: true
+  }
+}
+```
+Where returns the async option as true.
