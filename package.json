@@ -23,7 +23,7 @@
     "@adonisjs/generic-exceptions": "^2.0.1",
     "@adonisjs/ignitor": "^2.0.8",
     "clear-require": "^2.0.0",
-    "csv-reader": "^1.0.3",
+    "csv-reader": "^1.0.7",
     "fs-extra": "^7.0.1",
     "got": "^9.6.0",
     "lodash": "^4.17.11",
@@ -45,8 +45,8 @@
     "imports-loader": "^0.8.0",
     "klaw": "^3.0.0",
     "mute": "^2.0.6",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
+    "sass": "^1.32.12",
+    "sass-loader": "^8.0.2",
     "through2": "^2.0.5",
     "watch": "^1.0.2",
     "webpack": "^4.29.2",
@@ -55,6 +55,6 @@
     "zepto": "^1.2.0"
   },
   "volta": {
-    "node": "8.0.0"
+    "node": "16.1.0"
   }
 }
