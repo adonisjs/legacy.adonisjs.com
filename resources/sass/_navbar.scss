@@ -3,14 +3,12 @@
 //////////////////////
 
 .pinned-alert {
-  align-items: center;
   background-color: $footer-background-color;
   border-bottom: 1px solid $light-gray;
   font-family: $family-code;
-  display: flex;
-  height: 50px;
-  justify-content: center;
-  text-transform: uppercase;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
 
   p {
     font-feature-settings: normal !important;
