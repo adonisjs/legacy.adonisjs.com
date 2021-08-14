@@ -16,7 +16,7 @@
     "dimer-vue": "^3.0.3",
     "docsearch.js": "^2.6.3",
     "gridsome": "^0.7.23",
-    "gridsome-plugin-service-worker": "^0.2.6",
+    "gridsome-plugin-service-worker": "^0.2.8",
     "kleur": "^4.1.3",
     "typeit": "^7.0.4"
   },
