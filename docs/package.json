@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@dimerapp/http-server": "^2.0.3",
-    "ws": "^7.4.0"
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "@dimerapp/cli": "^1.0.15",
