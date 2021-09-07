@@ -76,7 +76,7 @@ export default class UserSeeder extends BaseSeeder {
 }
 ```
 
-The `developmentOnly` flag ensures that this file is only executed when `process.env.NODE_ENV = 'development'`.
+The `developmentOnly` flag ensures that this file is only executed when `process.env.NODE_ENV = 'development'` or `process.env.NODE_ENV = 'testing'`.
 
 ## Idempotent operations
 Unlike migrations, there is no tracking system in place for the database seeders. In other words, executing a seeder multiple times will perform the inserts multiple times as well.
